@@ -384,14 +384,29 @@ footer p {
 }
 
 /* Dark mode: Add light background to make dark text in images visible */
+/* This handles both manual theme toggle and system/browser dark mode (e.g., Brave dark mode) */
+@media (prefers-color-scheme: dark) {
+    .whitepaper-content img {
+        background-color: rgba(255, 255, 255, 0.35);
+        padding: 0.75rem;
+        border-radius: 6px;
+    }
+
+    .whitepaper-content figure {
+        background-color: rgba(255, 255, 255, 0.3);
+        padding: 1.5rem;
+        border-radius: 8px;
+    }
+}
+
 [data-theme="dark"] .whitepaper-content img {
-    background-color: rgba(255, 255, 255, 0.22);
+    background-color: rgba(255, 255, 255, 0.35);
     padding: 0.75rem;
     border-radius: 6px;
 }
 
 [data-theme="dark"] .whitepaper-content figure {
-    background-color: rgba(255, 255, 255, 0.18);
+    background-color: rgba(255, 255, 255, 0.3);
     padding: 1.5rem;
     border-radius: 8px;
 }
