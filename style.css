@@ -1,0 +1,602 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bitcoin-orange: #F7931A;
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --border-color: #e0e0e0;
+    --max-width: 800px;
+    --spacing: 2rem;
+}
+
+/* Dark mode variables */
+[data-theme="dark"] {
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2a2a2a;
+    --border-color: #404040;
+}
+
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.7;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-top: 0;
+}
+
+h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+}
+
+h3 {
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    margin-bottom: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+h4 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    margin-top: 1.25rem;
+}
+
+h4.subheading {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+}
+
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing);
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+    padding: 4rem 0;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.hero .logo {
+    width: 60%;
+    max-width: 400px;
+    height: auto;
+    margin-bottom: 2rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero a {
+    display: block;
+    text-decoration: none;
+}
+
+.hero h2 {
+    color: var(--text-secondary);
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+
+.hero .tagline {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.875rem 1.75rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+    font-size: 1rem;
+    min-width: 160px;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: var(--bitcoin-orange);
+    color: white;
+    border-color: var(--bitcoin-orange);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #e8840a;
+    border-color: #e8840a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(247, 147, 26, 0.3);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--bitcoin-orange);
+    border-color: var(--bitcoin-orange);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+    background-color: var(--bitcoin-orange);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(247, 147, 26, 0.2);
+}
+
+/* Value Props */
+.value-props {
+    padding: 4rem 0;
+    background-color: var(--bg-primary);
+}
+
+.value-props h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.column {
+    padding: 1.5rem;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+}
+
+.column h3 {
+    color: var(--bitcoin-orange);
+    margin-bottom: 1rem;
+}
+
+.column p {
+    color: var(--text-secondary);
+}
+
+/* Coming Soon */
+.coming-soon {
+    padding: 4rem 0;
+    background-color: var(--bg-secondary);
+    text-align: center;
+}
+
+.coming-soon h2 {
+    margin-bottom: 1rem;
+}
+
+.coming-soon p {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.updates {
+    margin-top: 1rem;
+    font-style: italic;
+    color: var(--text-secondary);
+}
+
+/* Footer */
+footer {
+    padding: 3rem 0;
+    background-color: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+}
+
+footer nav {
+    margin-bottom: 1rem;
+}
+
+footer nav a {
+    color: var(--bitcoin-orange);
+    text-decoration: none;
+    margin: 0 1rem;
+    font-weight: 500;
+}
+
+footer nav a:hover,
+footer nav a:focus {
+    text-decoration: underline;
+}
+
+footer p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+}
+
+.copyright {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+}
+
+/* Whitepaper Styles */
+.whitepaper-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 2rem var(--spacing);
+}
+
+.whitepaper-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.whitepaper-header .logo {
+    width: 40%;
+    max-width: 300px;
+    margin-bottom: 1.5rem;
+}
+
+.whitepaper-header a {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.whitepaper-header h2 {
+    color: var(--text-secondary);
+    font-weight: 400;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.whitepaper-header .tagline {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.download-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.toc {
+    background-color: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 3rem;
+}
+
+.toc h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.toc ol {
+    list-style: none;
+    padding-left: 0;
+}
+
+.toc li {
+    margin: 0.5rem 0;
+}
+
+.toc a {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.toc a:hover,
+.toc a:focus {
+    color: var(--bitcoin-orange);
+    text-decoration: underline;
+}
+
+.whitepaper-content {
+    font-size: 1.125rem;
+    line-height: 1.8;
+}
+
+.whitepaper-content p {
+    margin-bottom: 1.25rem;
+}
+
+.whitepaper-content ul,
+.whitepaper-content ol {
+    margin-bottom: 1.25rem;
+    padding-left: 2rem;
+}
+
+.whitepaper-content li {
+    margin-bottom: 0.5rem;
+}
+
+.whitepaper-content strong {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.whitepaper-content em {
+    font-style: italic;
+}
+
+.whitepaper-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 2rem auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: filter 0.3s ease;
+}
+
+.whitepaper-content figure {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.whitepaper-content figure img {
+    margin-bottom: 0.5rem;
+}
+
+/* Dark mode: Add light background to make dark text in images visible */
+[data-theme="dark"] .whitepaper-content img {
+    background-color: rgba(255, 255, 255, 0.22);
+    padding: 0.75rem;
+    border-radius: 6px;
+}
+
+[data-theme="dark"] .whitepaper-content figure {
+    background-color: rgba(255, 255, 255, 0.18);
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+/* Optional: For images that are purely diagrams/charts with dark text, 
+   you can uncomment this to invert them (but it may look odd for photos) */
+/* [data-theme="dark"] .whitepaper-content img {
+    filter: invert(1) hue-rotate(180deg);
+} */
+
+.whitepaper-content figcaption {
+    font-style: italic;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+}
+
+.whitepaper-content code {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.9em;
+    background-color: var(--bg-secondary);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+}
+
+.whitepaper-content pre {
+    background-color: var(--bg-secondary);
+    padding: 1rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+}
+
+.whitepaper-content pre code {
+    background: none;
+    padding: 0;
+}
+
+.whitepaper-content blockquote {
+    border-left: 4px solid var(--bitcoin-orange);
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.whitepaper-content hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 2rem 0;
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: var(--bitcoin-orange);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 1000;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background-color: #e8840a;
+    transform: translateY(-2px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    :root {
+        --spacing: 1rem;
+    }
+
+    .hero {
+        padding: 2rem 0;
+    }
+
+    .hero .logo {
+        max-width: 250px;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .columns {
+        grid-template-columns: 1fr;
+    }
+
+    .toc {
+        padding: 1.5rem;
+    }
+
+    .whitepaper-content {
+        font-size: 1rem;
+    }
+
+    .back-to-top {
+        bottom: 1rem;
+        right: 1rem;
+        width: 44px;
+        height: 44px;
+        font-size: 1.25rem;
+    }
+
+    .theme-toggle {
+        top: 1rem;
+        right: 1rem;
+        width: 44px;
+        height: 44px;
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .hero {
+        padding: 1.5rem 0;
+    }
+
+    .value-props,
+    .coming-soon {
+        padding: 2rem 0;
+    }
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+    z-index: 1001;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] .theme-toggle {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.theme-toggle:focus {
+    outline: 2px solid var(--bitcoin-orange);
+    outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+    .cta-buttons,
+    .download-buttons,
+    .back-to-top,
+    .theme-toggle {
+        display: none;
+    }
+
+    .hero,
+    footer {
+        border: none;
+    }
+
+    .whitepaper-content img {
+        max-width: 100%;
+        page-break-inside: avoid;
+    }
+}
+
