@@ -140,9 +140,9 @@
 <p><strong>Hayek + Ostrom Solution:</strong> Competitive discovery of governance models using proven institutional principles</p>
 <p><strong>The Result:</strong> Governance that is proven (Ostrom's research), evolving (Hayek's competition), and enforceable (Bitcoin's cryptography).</p>
 <h3>Bitcoin Core's Current State</h3>
-<p>Bitcoin Core has informal implementations of some Ostrom (1990) principles but lacks systematic enforcement. The comparison below (under "Mapping Ostrom's Principles to Implementation") details how Commons implements all seven principles through technical architecture.</p>
+<p>Bitcoin Core has informal implementations of some Ostrom (1990) principles but lacks systematic enforcement. The mapping below details how Commons implements all seven principles through technical architecture.</p>
 <h3>Mapping The Principles to Implementation</h3>
-<p>The modular architecture implements Ostrom's seven principles through cryptographic enforcement rather than social pressure. Below is the explicit mapping of principles to technical implementation:</p>
+<p>The modular architecture implements Ostrom's seven principles through cryptographic enforcement rather than social pressure. The chart below shows how these principles integrate with principles from Hayek, Bitcoin, and Cypherpunk frameworks:</p>
 <figure>
 <img src="/assets/images/principles_matrix_complete.png" alt="Principles of Bitcoin Commons" style="">
 <figcaption>Figure: Integration of four key philosophies: Hayek (spontaneous order), Bitcoin (cryptographic enforcement), Cypherpunk (privacy through technology), and Ostrom (commons governance).</figcaption>
@@ -532,6 +532,12 @@
 </ol>
 <h3>Current State</h3>
 <p>Phase 1 infrastructure provides substantial code implementing core capabilities. The system includes mathematical foundation and clean architecture. Governance infrastructure enables cryptographic enforcement.</p>
+<h3>Recent Technical Implementations</h3>
+<p>The reference node implementation includes extensive Bitcoin protocol support:</p>
+<p><strong>BIP Implementations:</strong> Block filtering (BIP157/158), compact block relay (BIP152), hardware wallet support via PSBT (BIP174), Bech32m address encoding (BIP350/351), hierarchical deterministic wallets (BIP32/39/44), and Bitcoin URI scheme with OS-level registration (BIP21).</p>
+<p><strong>Consistent Networking:</strong> Transport abstraction layer supporting both TCP and Iroh QUIC transports, with unified message routing across transport types. This enables nodes to choose transport based on network conditions while maintaining protocol compatibility.</p>
+<p><strong>Network Optimizations:</strong> Integrated coordination between compact blocks and block filtering for bandwidth efficiency. UTXO commitments support optional inclusion of block filters in responses. Transport-aware feature negotiation optimizes protocol usage based on available transports.</p>
+<p><strong>Advanced Networking:</strong> Package relay (BIP331) and privacy-preserving transaction relay options provide additional network efficiency and privacy capabilities.</p>
 <h2 id="development-roadmap">Development Roadmap</h2>
 <figure>
 <img src="/assets/images/development-trajectory.png" alt="Development Trajectory" style="width: 100%; display: block; margin: 0 auto;">
@@ -602,7 +608,7 @@
 <h2 id="references">References</h2>
 <h3>Academic Sources</h3>
 <ul>
-<li>Ostrom, E. (2009). <em>Governing the Commons: The Evolution of Institutions for Collective Action</em>. Cambridge University Press.</li>
+<li>Ostrom, E. (1990). <em>Governing the Commons: The Evolution of Institutions for Collective Action</em>. Cambridge University Press.</li>
 <li>Hardin, G. (1968). The Tragedy of the Commons. <em>Science</em>, 162(3859), 1243-1248.</li>
 <li>Hayek, F. A. (1945). The Use of Knowledge in Society. <em>American Economic Review</em>, 35(4), 519-530.</li>
 <li>De Filippi, P., & Loveluck, B. (2016). The Invisible Politics of Bitcoin: Governance Crisis of a Decentralized Infrastructure. <em>Internet Policy Review</em>, 5(3).</li>
