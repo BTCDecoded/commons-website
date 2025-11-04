@@ -243,8 +243,17 @@
 <figcaption>Figure: Proof maintenance cost by area, highlighting refactor hotspots. Commons aims for lower proof churn than Core.</figcaption>
 </figure>
 <p><strong>Status:</strong> Complete specification available at <a href="https://github.com/BTCDecoded/the-orange-paper">https://github.com/BTCDecoded/the-orange-paper</a>. The specification is actively maintained and verified against network behavior through automated testing.</p>
+<h3>4.4 BLLVM Architecture</h3>
+<p>BLLVM (Bitcoin LLVM) applies compiler-like infrastructure to Bitcoin implementations. The Orange Paper serves as an intermediate representation (IR), enabling reusable optimizations and multiple implementations.</p>
+<p><strong>Single Source of Truth:</strong> All consensus logic resides in <code>consensus-proof</code>. Upper tiers (<code>protocol-engine</code>, <code>reference-node</code>) delegate validation calls with no duplicate implementations. Path dependencies ensure changes propagate immediately through Rust's type system.</p>
+<p><strong>Optimization Pipeline:</strong> Multiple passes apply: formal verification (Kani model checking), property testing (proptest edge case discovery), LLVM compiler optimizations (opt-level 3, fat LTO, SIMD), and differential testing against network behavior.</p>
+<figure>
+<img src="/assets/images/Consensus-Coverage-Comparison.png" alt="Consensus Coverage Comparison" style="width: 100%; display: block; margin: 0 auto;">
+<figcaption>Figure: Consensus coverage comparison: Bitcoin Core achieves 25% coverage through testing alone. Bitcoin Commons achieves 65% formal verification coverage (172 Kani proofs) plus 77% test coverage. Commons uses 93 consensus-focused test files with 667+ test functions compared to Core's 316 total files (only ~53 consensus-focused). The mathematical specification enables both formal verification and comprehensive testing.</figcaption>
+</figure>
+<p>Formal verification in <code>consensus-proof</code> applies to all tiers because all consensus decisions flow through verified functions. The dependency chain prevents bypassing verification.</p>
 <h2 id="5-architectural-solution-modular-governance">5. Architectural Solution: Modular Governance</h2>
-<p>Two innovations work together: <strong>BLLVM</strong> provides the mathematical foundation (Orange Paper, formal verification, consensus matching); <strong>Commons</strong> provides the governance framework (coordination without civil war). The modular architecture is where both innovations meet—BLLVM ensures correctness, Commons ensures coordination.</p>
+<p>Two innovations work together: <strong>BLLVM</strong> provides the mathematical foundation and compiler-like architecture (Orange Paper as IR, formal verification passes); <strong>Commons</strong> provides the governance framework (coordination without civil war). The modular architecture is where both innovations meet. BLLVM ensures correctness through architectural enforcement; Commons ensures coordination.</p>
 <h3>Three-Layer Stack</h3>
 <p>The modular architecture consists of three layers that transform governance conflicts from political battles into architectural choices:</p>
 <h4 class="subheading">Layer 1: Mandatory Consensus (Base Node)</h4>
@@ -538,6 +547,8 @@
 <p><strong>Consistent Networking:</strong> Transport abstraction layer supporting both TCP and Iroh QUIC transports, with unified message routing across transport types. This enables nodes to choose transport based on network conditions while maintaining protocol compatibility.</p>
 <p><strong>Network Optimizations:</strong> Integrated coordination between compact blocks and block filtering for bandwidth efficiency. UTXO commitments support optional inclusion of block filters in responses. Transport-aware feature negotiation optimizes protocol usage based on available transports.</p>
 <p><strong>Advanced Networking:</strong> Package relay (BIP331) and privacy-preserving transaction relay options provide additional network efficiency and privacy capabilities.</p>
+<p><strong>Module System Architecture:</strong> Process-isolated module system with IPC communication, sandboxing, security validation, and module registry. Enables optional features (Lightning, merge mining, privacy enhancements) without affecting consensus or base node stability.</p>
+<p><strong>Stratum V2 + Merge Mining:</strong> Stratum V2 implementation with merge mining coordination for secondary chains (RSK, Namecoin, etc.). Multiplexed QUIC channels enable simultaneous mining of Bitcoin and secondary chains.</p>
 <h2 id="development-roadmap">Development Roadmap</h2>
 <figure>
 <img src="/assets/images/development-trajectory.png" alt="Development Trajectory" style="width: 100%; display: block; margin: 0 auto;">
@@ -563,10 +574,10 @@
 </ul>
 <h4 class="subheading">Phase 2 Milestones:</h4>
 <p><strong>Working Base Node:</strong> Complete Reference Node implementation with full network compatibility (mainnet, testnet, regtest). Milestone: At least one major miner committed to merge mining model</p>
-<p><strong>Module System Architecture:</strong> Design and implement module API, loading system, and basic examples. Milestone: Module system is functional and documented</p>
+<p><strong>Module System Architecture:</strong> Module API, loading system, and infrastructure. Milestone: Lightning module integration and module marketplace operational</p>
 <p><strong>Cryptographic Governance:</strong> Multisig infrastructure, distributed keyholder system, transparent processes, Governance App deployment. Milestone: Governance system is operational with full three-layer verification</p>
 <p><strong>Lightning Integration Module:</strong> Build Lightning Network module demonstrating architecture-based conflict resolution. Milestone: Lightning module is working and adopted</p>
-<p><strong>Merge Mining Support:</strong> Implement infrastructure targeting RSK, DATUM, Namecoin; set up revenue collection. Milestone: First revenue collection from merge mining fees</p>
+<p><strong>Merge Mining Support:</strong> Stratum V2 infrastructure and merge mining coordination. Milestone: First revenue collection from merge mining fees (requires miner adoption)</p>
 <p><strong>Module Marketplace:</strong> Build distribution infrastructure with quality control, security audits, and adoption metrics. Milestone: Module marketplace is operational</p>
 <p><strong>Revenue-Positive Operation:</strong> Achieve sustainable funding through merge mining, demonstrate economic model viability. Milestone: 1000+ node operators, revenue-positive operation (Level 1 success)</p>
 <figure>
