@@ -1,0 +1,21 @@
+# Bitcoin Commons Implementations Registry
+# 
+# This is a public, self-service registry. Anyone can submit a pull request to add their implementation.
+# No approval needed - if the PR passes automated validation, it will be merged.
+#
+# Format:
+# - name: Display name
+# - description: Brief description (1-2 sentences)
+# - website: Full URL to implementation website
+# - downloads: Full URL to downloads page (or #download anchor)
+# - github: Full URL to GitHub organization/repository
+# - verified: true/false (set to true after basic verification that it uses Commons)
+
+implementations:
+  - name: BTCDecoded
+    description: Complete 6-tier implementation stack with formal governance infrastructure. First implementation of Bitcoin Commons.
+    website: https://btcdecoded.org
+    downloads: https://btcdecoded.org#download
+    github: https://github.com/BTCDecoded
+    verified: true
+

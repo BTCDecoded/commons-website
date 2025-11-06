@@ -1,0 +1,9 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Bitcoin Commons Discussion
+    url: https://github.com/BTCDecoded/governance/discussions
+    about: Ask questions and discuss Bitcoin Commons framework
+  - name: Add Implementation
+    url: https://github.com/BTCDecoded/commons-website/blob/main/IMPLEMENTATIONS_REGISTRY.md
+    about: Learn how to add your implementation to the registry
+
