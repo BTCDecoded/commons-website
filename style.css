@@ -250,6 +250,26 @@ h4.subheading {
     color: var(--text-secondary);
 }
 
+.step ol {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.step ol li {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+}
+
+.step code {
+    background-color: var(--bg-secondary);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
 .step a {
     color: var(--bitcoin-orange);
     text-decoration: none;
