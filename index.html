@@ -13,7 +13,8 @@
             <a href="/"><img src="/assets/bitcoin-commons-logo.png" alt="Bitcoin Commons Logo" class="logo"></a>
             <h1>The Bitcoin Commons</h1>
             <h2>Coordination Without Authority: An Architectural Solution</h2>
-            <p class="tagline">Applying proven commons management principles to Bitcoin's development layer</p>
+            <p class="tagline">A forkable governance model for Bitcoin implementations</p>
+            <p class="subtagline">Applying proven commons management principles to Bitcoin's development layer</p>
             
             <div class="cta-buttons">
                 <a href="/whitepaper.html" class="btn btn-primary">Read White Paper</a>
@@ -44,12 +45,72 @@
             </div>
         </section>
 
-        <section class="coming-soon">
+        <section id="how-to-adopt" class="how-to-adopt">
             <div class="container">
-                <h2>📖 Full Book: Coming Soon</h2>
-                <p><strong>Bitcoin Commons: Decentralizing the Decentralizers</strong></p>
-                <p>A comprehensive framework for Bitcoin governance reform, providing the complete narrative treatment and practical implementation guide.</p>
-                <p class="updates">Updates coming soon.</p>
+                <h2>How to Adopt</h2>
+                <p>Fork the Bitcoin Commons governance framework for your Bitcoin implementation. Multiple implementations can coexist using this model.</p>
+                
+                <div class="adoption-steps">
+                    <div class="step">
+                        <h3>Step 1: Export Governance Ruleset</h3>
+                        <p>Use the <a href="https://github.com/BTCDecoded/governance/blob/main/config/ruleset-export-template.yml" target="_blank" rel="noopener">ruleset export template</a> to understand the governance configuration structure.</p>
+                    </div>
+                    
+                    <div class="step">
+                        <h3>Step 2: Fork Governance Configuration</h3>
+                        <p>Fork the <a href="https://github.com/BTCDecoded/governance" target="_blank" rel="noopener">governance repository</a> and customize for your organization (maintainers, thresholds, etc.).</p>
+                    </div>
+                    
+                    <div class="step">
+                        <h3>Step 3: Set Up Cryptographic Enforcement</h3>
+                        <p>Implement cryptographic enforcement using the <a href="https://github.com/BTCDecoded/developer-sdk" target="_blank" rel="noopener">developer-sdk</a> and <a href="https://github.com/BTCDecoded/governance-app" target="_blank" rel="noopener">governance-app</a> as reference.</p>
+                    </div>
+                    
+                    <div class="step">
+                        <h3>Step 4: Configure Governance Fork Mechanism</h3>
+                        <p>Set up the governance fork mechanism for user sovereignty. See <a href="https://github.com/BTCDecoded/governance/blob/main/architecture/GOVERNANCE_FORK.md" target="_blank" rel="noopener">GOVERNANCE_FORK.md</a> for technical details.</p>
+                    </div>
+                    
+                    <div class="step">
+                        <h3>Step 5: Join Implementations Directory</h3>
+                        <p>Contact us to add your implementation to the directory. Multiple implementations using Commons demonstrate the framework's forkability.</p>
+                    </div>
+                </div>
+                
+                <div class="technical-resources">
+                    <h3>Technical Resources</h3>
+                    <ul>
+                        <li><a href="https://github.com/BTCDecoded/governance/blob/main/architecture/GOVERNANCE_FORK.md" target="_blank" rel="noopener">Governance Fork Architecture</a></li>
+                        <li><a href="https://github.com/BTCDecoded/governance/blob/main/config/ruleset-export-template.yml" target="_blank" rel="noopener">Ruleset Export Template</a></li>
+                        <li><a href="https://github.com/BTCDecoded/governance/tree/main/config" target="_blank" rel="noopener">Governance Configuration</a></li>
+                        <li><a href="https://github.com/BTCDecoded/governance" target="_blank" rel="noopener">Governance Repository</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="implementations">
+            <div class="container">
+                <h2>Implementations</h2>
+                <p>Multiple implementations using the Bitcoin Commons framework. Each maintains its own governance while sharing common principles.</p>
+                
+                <div class="implementation-cards">
+                    <div class="implementation-card">
+                        <h3>BTCDecoded</h3>
+                        <p>Complete 6-tier implementation stack with formal governance infrastructure. First implementation of Bitcoin Commons.</p>
+                        <div class="implementation-links">
+                            <a href="https://btcdecoded.org" target="_blank" rel="noopener" class="btn btn-outline">Website</a>
+                            <a href="https://btcdecoded.org#download" target="_blank" rel="noopener" class="btn btn-outline">Downloads</a>
+                            <a href="https://github.com/BTCDecoded" target="_blank" rel="noopener" class="btn btn-outline">GitHub</a>
+                        </div>
+                    </div>
+                    
+                    <div class="implementation-card coming-soon-card">
+                        <h3>Your Implementation</h3>
+                        <p>Build your own Bitcoin implementation using the Bitcoin Commons governance framework. Fork the governance model and customize for your organization.</p>
+                        <a href="#how-to-adopt" class="btn btn-secondary">Learn How to Adopt</a>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -59,8 +120,10 @@
             <nav>
                 <a href="https://github.com/BTCDecoded" target="_blank" rel="noopener">GitHub</a>
                 <a href="https://btcdecoded.org" target="_blank" rel="noopener">BTCDecoded.org</a>
+                <a href="https://thebitcoincommons.org/whitepaper.html">White Paper</a>
             </nav>
-            <p>BTCDecoded.org is one implementation of this framework.</p>
+            <p>Multiple implementations can coexist using this framework.</p>
+            <p><a href="https://thebitcoincommons.org" target="_blank" rel="noopener">Book: Bitcoin Commons: Decentralizing the Decentralizers</a> (Amazon KDP)</p>
             <p class="copyright">&copy; 2025 BTCDecoded</p>
         </div>
     </footer>
