@@ -114,6 +114,44 @@
                 </div>
             </div>
         </section>
+
+        <section id="book" class="book-section">
+            <div class="container">
+                <h2>The Book</h2>
+                <div class="book-content">
+                    <div class="book-info">
+                        <h3>Bitcoin Commons: Decentralizing the Decentralizers</h3>
+                        <p class="book-tagline">Bitcoin solved trust in transactions. Now we must solve trust in development.</p>
+                        
+                        <div class="book-toc">
+                            <h4>Table of Contents</h4>
+                            <ul>
+                                <li><strong>Part I: Recovery and Discovery</strong> - The governance crisis Gavin Andresen predicted</li>
+                                <li><strong>Part II: The Framework</strong> - Ostrom's commons principles and the cypherpunk blind spot</li>
+                                <li><strong>Part III: The Solution Built</strong> - Orange Paper, 6-tier stack, governance system</li>
+                                <li><strong>Part IV: The Path Forward</strong> - How to build uncapturable governance institutions</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="book-purchase">
+                        <div class="book-cover">
+                            <h3>Bitcoin Commons</h3>
+                            <p>Decentralizing the Decentralizers</p>
+                        </div>
+                        
+                        <div class="price">$10</div>
+                        
+                        <div class="purchase-buttons">
+                            <a href="#" class="btn btn-primary btn-large" onclick="alert('Amazon Kindle version coming soon!')">Buy on Amazon Kindle</a>
+                            <button id="bitcoin-pay" class="btn btn-secondary btn-large">Pay with Bitcoin</button>
+                        </div>
+                        
+                        <p class="coming-soon">Amazon Kindle version coming soon</p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -121,13 +159,61 @@
             <nav>
                 <a href="https://github.com/BTCDecoded" target="_blank" rel="noopener">GitHub</a>
                 <a href="https://btcdecoded.org" target="_blank" rel="noopener">BTCDecoded.org</a>
-                <a href="https://thebitcoincommons.org/whitepaper.html">White Paper</a>
+                <a href="/whitepaper.html">White Paper</a>
+                <a href="#book">Book</a>
             </nav>
             <p>Multiple implementations can coexist using this framework.</p>
             <p><a href="https://thebitcoincommons.org" target="_blank" rel="noopener">Book: Bitcoin Commons: Decentralizing the Decentralizers</a> (Amazon KDP)</p>
             <p class="copyright">&copy; 2025 BTCDecoded</p>
         </div>
     </footer>
+
+    <!-- Bitcoin Payment Modal -->
+    <div id="payment-modal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+        <div class="modal-content" style="background-color: var(--bg-primary); margin: 15% auto; padding: 2rem; border-radius: 8px; max-width: 500px; position: relative;">
+            <span class="close" style="color: var(--text-secondary); float: right; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
+            <h3>Pay with Bitcoin</h3>
+            <div id="invoice-content">
+                <p>Creating invoice...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple Bitcoin payment handler (same as BTCDecoded site)
+        document.addEventListener('DOMContentLoaded', function() {
+            const bitcoinPayBtn = document.getElementById('bitcoin-pay');
+            const modal = document.getElementById('payment-modal');
+            const modalContent = document.getElementById('invoice-content');
+            const closeBtn = document.querySelector('.close');
+            
+            if (bitcoinPayBtn) {
+                bitcoinPayBtn.addEventListener('click', function() {
+                    modal.style.display = 'block';
+                    modalContent.innerHTML = `
+                        <div style="text-align: center; padding: 2rem;">
+                            <p>Bitcoin payment integration coming soon.</p>
+                            <p style="margin-top: 1rem; color: var(--text-secondary);">For now, please use the Amazon Kindle option.</p>
+                        </div>
+                    `;
+                });
+            }
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                });
+            }
+            
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
 
