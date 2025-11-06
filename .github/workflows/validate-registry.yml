@@ -1,0 +1,72 @@
+name: Validate Implementations Registry
+
+on:
+  pull_request:
+    paths:
+      - 'implementations-registry.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Validate YAML syntax
+        run: |
+          python3 -c "import yaml; yaml.safe_load(open('implementations-registry.yml'))"
+      
+      - name: Validate registry structure
+        run: |
+          python3 << 'EOF'
+          import yaml
+          import re
+          
+          with open('implementations-registry.yml') as f:
+              data = yaml.safe_load(f)
+          
+          required_fields = ['name', 'description', 'website', 'downloads', 'github']
+          url_pattern = re.compile(r'^https?://')
+          
+          for impl in data.get('implementations', []):
+              # Check required fields
+              for field in required_fields:
+                  if field not in impl:
+                      raise ValueError(f"Missing required field: {field}")
+              
+              # Validate URLs
+              for url_field in ['website', 'downloads', 'github']:
+                  value = impl[url_field]
+                  if not (url_pattern.match(value) or value.startswith('#')):
+                      raise ValueError(f"Invalid URL format for {url_field}: {value}")
+              
+              # Validate description length
+              if len(impl['description']) > 500:
+                  raise ValueError(f"Description too long (max 500 chars): {impl['name']}")
+              
+              # Validate name
+              if len(impl['name']) > 100:
+                  raise ValueError(f"Name too long (max 100 chars): {impl['name']}")
+          
+          print("✓ Registry validation passed")
+          EOF
+      
+      - name: Check for duplicates
+        run: |
+          python3 << 'EOF'
+          import yaml
+          
+          with open('implementations-registry.yml') as f:
+              data = yaml.safe_load(f)
+          
+          names = [impl['name'].lower() for impl in data.get('implementations', [])]
+          githubs = [impl['github'].lower() for impl in data.get('implementations', [])]
+          
+          if len(names) != len(set(names)):
+              raise ValueError("Duplicate implementation names found")
+          
+          if len(githubs) != len(set(githubs)):
+              raise ValueError("Duplicate GitHub URLs found")
+          
+          print("✓ No duplicates found")
+          EOF
+
