@@ -245,16 +245,16 @@
 <img src="/assets/images/proof-maintenance-cost.png" alt="Proof Maintenance Cost" style="width: 100%; display: block; margin: 0 auto;">
 <figcaption>Figure: Proof maintenance cost by area, highlighting refactor hotspots. Commons aims for lower proof churn than Core.</figcaption>
 </figure>
-<p><strong>Status:</strong> Complete specification available at <a href="https://github.com/BTCDecoded/the-orange-paper">https://github.com/BTCDecoded/the-orange-paper</a>. The specification is actively maintained and verified against network behavior through automated testing.</p>
+<p><strong>Status:</strong> Complete specification available at <a href="https://github.com/BTCDecoded/bllvm-spec">https://github.com/BTCDecoded/bllvm-spec</a>. The specification is actively maintained and verified against network behavior through automated testing.</p>
 <h3>4.4 BLLVM Architecture</h3>
 <p>BLLVM (Bitcoin LLVM) applies compiler-like infrastructure to Bitcoin implementations. The Orange Paper serves as an intermediate representation (IR), enabling reusable optimizations and multiple implementations.</p>
-<p><strong>Single Source of Truth:</strong> All consensus logic resides in <code>consensus-proof</code>. Upper tiers (<code>protocol-engine</code>, <code>reference-node</code>) delegate validation calls with no duplicate implementations. Path dependencies ensure changes propagate immediately through Rust's type system.</p>
+<p><strong>Single Source of Truth:</strong> All consensus logic resides in <code>bllvm-consensus</code>. Upper tiers (<code>bllvm-protocol</code>, <code>bllvm-node</code>) delegate validation calls with no duplicate implementations. Path dependencies ensure changes propagate immediately through Rust's type system.</p>
 <p><strong>Optimization Pipeline:</strong> Multiple passes apply: formal verification (Kani model checking), property testing (proptest edge case discovery), LLVM compiler optimizations (opt-level 3, fat LTO, SIMD), and differential testing against network behavior.</p>
 <figure>
 <img src="/assets/images/Consensus-Coverage-Comparison.png" alt="Consensus Coverage Comparison" style="width: 100%; display: block; margin: 0 auto;">
 <figcaption>Figure: Consensus coverage comparison: Bitcoin Core achieves 25% coverage through testing alone. Bitcoin Commons achieves 65% formal verification coverage (172 Kani proofs) plus 77% test coverage. Commons uses 93 consensus-focused test files with 667+ test functions compared to Core's 316 total files (only ~53 consensus-focused). The mathematical specification enables both formal verification and comprehensive testing.</figcaption>
 </figure>
-<p>Formal verification in <code>consensus-proof</code> applies to all tiers because all consensus decisions flow through verified functions. The dependency chain prevents bypassing verification.</p>
+<p>Formal verification in <code>bllvm-consensus</code> applies to all tiers because all consensus decisions flow through verified functions. The dependency chain prevents bypassing verification.</p>
 <h2 id="5-architectural-solution-modular-governance">5. Architectural Solution: Modular Governance</h2>
 <p>Two innovations work together: <strong>BLLVM</strong> provides the mathematical foundation and compiler-like architecture (Orange Paper as IR, formal verification passes); <strong>Commons</strong> provides the governance framework (coordination without civil war). The modular architecture is where both innovations meet. BLLVM ensures correctness through architectural enforcement; Commons ensures coordination.</p>
 <h3>Three-Layer Stack</h3>
@@ -655,11 +655,11 @@
 </ul>
 <h3>Repository Links</h3>
 <ul>
-<li><a href="https://github.com/BTCDecoded/the-orange-paper">https://github.com/BTCDecoded/the-orange-paper</a></li>
-<li><a href="https://github.com/BTCDecoded/protocol-engine">https://github.com/BTCDecoded/protocol-engine</a></li>
-<li><a href="https://github.com/BTCDecoded/consensus-proof">https://github.com/BTCDecoded/consensus-proof</a></li>
-<li><a href="https://github.com/BTCDecoded/reference-node">https://github.com/BTCDecoded/reference-node</a></li>
-<li><a href="https://github.com/BTCDecoded/developer-sdk">https://github.com/BTCDecoded/developer-sdk</a></li>
+<li><a href="https://github.com/BTCDecoded/bllvm-spec">https://github.com/BTCDecoded/bllvm-spec</a></li>
+<li><a href="https://github.com/BTCDecoded/bllvm-protocol">https://github.com/BTCDecoded/bllvm-protocol</a></li>
+<li><a href="https://github.com/BTCDecoded/bllvm-consensus">https://github.com/BTCDecoded/bllvm-consensus</a></li>
+<li><a href="https://github.com/BTCDecoded/bllvm-node">https://github.com/BTCDecoded/bllvm-node</a></li>
+<li><a href="https://github.com/BTCDecoded/bllvm-sdk">https://github.com/BTCDecoded/bllvm-sdk</a></li>
 <li><a href="https://github.com/BTCDecoded/governance">https://github.com/BTCDecoded/governance</a></li>
 <li><a href="https://github.com/BTCDecoded/governance-app">https://github.com/BTCDecoded/governance-app</a></li>
 </ul>
