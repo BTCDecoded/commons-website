@@ -247,12 +247,16 @@
 </figure>
 <p><strong>Status:</strong> Complete specification available at <a href="https://github.com/BTCDecoded/bllvm-spec">https://github.com/BTCDecoded/bllvm-spec</a>. The specification is actively maintained and verified against network behavior through automated testing.</p>
 <h3>4.4 BLLVM Architecture</h3>
+<figure>
+<img src="/assets/images/stack.png" alt="BLLVM Stack Architecture" style="">
+<figcaption>Figure: BLLVM architecture showing bllvm-spec (Orange Paper) as the foundation, bllvm-consensus as the core implementation with verification paths (Kani proofs, spec drift detection, hash verification), and dependent components (bllvm-protocol, bllvm-node, bllvm-sdk) building on the verified consensus layer.</figcaption>
+</figure>
 <p>BLLVM (Bitcoin LLVM) applies compiler-like infrastructure to Bitcoin implementations. The Orange Paper serves as an intermediate representation (IR), enabling reusable optimizations and multiple implementations.</p>
 <p><strong>Single Source of Truth:</strong> All consensus logic resides in <code>bllvm-consensus</code>. Upper tiers (<code>bllvm-protocol</code>, <code>bllvm-node</code>) delegate validation calls with no duplicate implementations. Path dependencies ensure changes propagate immediately through Rust's type system.</p>
 <p><strong>Optimization Pipeline:</strong> Multiple passes apply: formal verification (Kani model checking), property testing (proptest edge case discovery), LLVM compiler optimizations (opt-level 3, fat LTO, SIMD), and differential testing against network behavior.</p>
 <figure>
 <img src="/assets/images/Consensus-Coverage-Comparison.png" alt="Consensus Coverage Comparison" style="width: 100%; display: block; margin: 0 auto;">
-<figcaption>Figure: Consensus coverage comparison: Bitcoin Core achieves 25% coverage through testing alone. Bitcoin Commons achieves 65% formal verification coverage (172 Kani proofs) plus 77% test coverage. Commons uses 93 consensus-focused test files with 667+ test functions compared to Core's 316 total files (only ~53 consensus-focused). The mathematical specification enables both formal verification and comprehensive testing.</figcaption>
+<figcaption>Figure: Consensus coverage comparison: Bitcoin Core achieves 25% coverage through testing alone. Bitcoin Commons achieves 65% formal verification coverage (176 Kani proofs) plus 77% test coverage. Commons uses 93 consensus-focused test files with 667+ test functions compared to Core's 316 total files (only ~53 consensus-focused). The mathematical specification enables both formal verification and comprehensive testing.</figcaption>
 </figure>
 <p>Formal verification in <code>bllvm-consensus</code> applies to all tiers because all consensus decisions flow through verified functions. The dependency chain prevents bypassing verification.</p>
 <h2 id="5-architectural-solution-modular-governance">5. Architectural Solution: Modular Governance</h2>
@@ -306,7 +310,7 @@
 <h3>Architecture Diagrams</h3>
 <figure>
 <img src="/assets/images/tier-architecture.png" alt="Tiered Architecture" style="width: 100%; display: block; margin: 0 auto;">
-<figcaption>Figure: Tiered architecture: Tier 1 = Orange Paper + Consensus Proof (mathematical foundation); Tier 2 = Protocol Engine (protocol abstraction); Tier 3 = Reference Node (complete implementation); Tier 4 = Developer SDK + Governance (governance infrastructure).</figcaption>
+<figcaption>Figure: Tiered architecture: Tier 1 = Orange Paper + Consensus Proof (mathematical foundation); Tier 2 = Protocol Engine (protocol abstraction); Tier 3 = Reference Node (complete implementation); Tier 4 = Developer SDK + Governance (developer toolkit + governance enforcement).</figcaption>
 </figure>
 <figure>
 <img src="/assets/images/how-the-stack-works-in-practice.png" alt="How the Stack Works" style="width: 100%; display: block; margin: 0 auto;">
@@ -540,7 +544,7 @@
 <li><strong>Protocol Engine</strong>: Core protocol logic and state management</li>
 <li><strong>Consensus Proof</strong>: Formal verification of consensus rules</li>
 <li><strong>Reference Node</strong>: Complete Bitcoin implementation</li>
-<li><strong>Developer SDK</strong>: Governance primitives and composition framework</li>
+<li><strong>Developer SDK</strong>: Toolkit for building alternative Bitcoin implementations. Provides module composition framework for declaratively assembling custom Bitcoin nodes, plus governance cryptographic primitives.</li>
 <li><strong>Governance</strong>: Configuration repository for governance rules</li>
 <li><strong>Governance App</strong>: GitHub App that enforces governance rules</li>
 </ol>
@@ -663,6 +667,7 @@
 <li><a href="https://github.com/BTCDecoded/governance">https://github.com/BTCDecoded/governance</a></li>
 <li><a href="https://github.com/BTCDecoded/governance-app">https://github.com/BTCDecoded/governance-app</a></li>
 </ul>
+<p><strong>System Status:</strong> For verified implementation status, see <a href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md">SYSTEM_STATUS.md</a> in the BTCDecoded organization repository.</p>
         </article>
     </div>
     
