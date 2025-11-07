@@ -12,7 +12,7 @@
     --bg-primary: #ffffff;
     --bg-secondary: #f8f9fa;
     --border-color: #e0e0e0;
-    --max-width: 800px;
+    --max-width: 1200px;
     --spacing: 2rem;
 }
 
@@ -394,7 +394,14 @@ button.btn {
 
 @media (min-width: 768px) {
     .book-content {
-        grid-template-columns: 2fr 1fr;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 4rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .book-content {
+        gap: 5rem;
     }
 }
 
@@ -457,7 +464,7 @@ button.btn {
     border-radius: 8px;
     margin-bottom: 2rem;
     width: 100%;
-    max-width: 300px;
+    max-width: 350px;
 }
 
 .book-cover h3 {
@@ -489,7 +496,7 @@ button.btn {
     flex-direction: column;
     gap: 1rem;
     width: 100%;
-    max-width: 300px;
+    max-width: 350px;
 }
 
 .btn-large {
