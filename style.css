@@ -227,6 +227,37 @@ button.btn {
     color: var(--text-secondary);
 }
 
+.framework-visual {
+    margin: 4rem 0 0 0;
+    text-align: center;
+    width: 100%;
+}
+
+.framework-visual img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.diagram-caption {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    line-height: 1.6;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* How to Adopt */
 .how-to-adopt {
     padding: 4rem 0;
