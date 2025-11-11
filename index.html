@@ -666,20 +666,32 @@
                     
                     allAnswersInCategory.forEach(a => {
                         if (a !== answer) {
-                            a.style.maxHeight = '0';
+                            a.style.height = '0';
                             a.style.padding = '0 2rem';
+                            const q = a.previousElementSibling;
+                            if (q) q.setAttribute('aria-expanded', 'false');
                         }
                     });
                     
                     // Toggle current item
                     if (isExpanded) {
                         this.setAttribute('aria-expanded', 'false');
-                        answer.style.maxHeight = '0';
+                        answer.style.height = '0';
                         answer.style.padding = '0 2rem';
                     } else {
                         this.setAttribute('aria-expanded', 'true');
-                        answer.style.maxHeight = answer.scrollHeight + 'px';
+                        // Set padding first to get accurate measurement
                         answer.style.padding = '1.5rem 2rem 2rem 2rem';
+                        // Measure the natural height of the content
+                        // Temporarily set to auto to get accurate scrollHeight
+                        const currentHeight = answer.style.height;
+                        answer.style.height = 'auto';
+                        const fullHeight = answer.scrollHeight;
+                        answer.style.height = currentHeight || '0';
+                        // Animate to full height
+                        setTimeout(() => {
+                            answer.style.height = fullHeight + 'px';
+                        }, 10);
                     }
                 });
                 
