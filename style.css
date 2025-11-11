@@ -328,77 +328,101 @@ button.btn {
 
 /* How to Adopt */
 .how-to-adopt {
-    padding: 4rem 0;
+    padding: 2rem 0;
     background-color: var(--bg-primary);
 }
 
+.how-to-adopt h2 {
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+}
+
+.how-to-adopt > .container > p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
 .adoption-steps {
-    margin: 2rem 0;
+    margin: 1.5rem 0;
 }
 
 .step {
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    background-color: var(--bg-secondary);
-    border-radius: 8px;
-    border-left: 4px solid var(--bitcoin-orange);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border-radius: 4px;
+    border-left: 2px solid var(--border-color);
 }
 
 .step h3 {
-    color: var(--bitcoin-orange);
-    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
     margin-top: 0;
 }
 
 .step p {
     margin-bottom: 0;
     color: var(--text-secondary);
+    font-size: 0.9rem;
 }
 
 .step ol {
-    margin-top: 0.75rem;
-    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
     margin-left: 0;
     padding-left: 1.5rem;
     color: var(--text-secondary);
     list-style-position: outside;
+    font-size: 0.9rem;
 }
 
 .step ol li {
-    margin: 0.5rem 0;
-    line-height: 1.6;
+    margin: 0.4rem 0;
+    line-height: 1.5;
     padding-left: 0;
 }
 
 .step code {
     background-color: var(--bg-secondary);
-    padding: 0.2rem 0.4rem;
-    border-radius: 4px;
+    padding: 0.15rem 0.3rem;
+    border-radius: 3px;
     font-family: 'Courier New', monospace;
-    font-size: 0.9em;
+    font-size: 0.85em;
 }
 
 .step a {
-    color: var(--bitcoin-orange);
-    text-decoration: none;
+    color: var(--text-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--border-color);
+    text-underline-offset: 2px;
 }
 
 .step a:hover,
 .step a:focus {
-    text-decoration: underline;
+    color: var(--bitcoin-orange);
+    text-decoration-color: var(--bitcoin-orange);
 }
 
 .technical-resources {
-    margin-top: 3rem;
-    padding: 2rem;
-    background-color: var(--bg-secondary);
-    border-radius: 8px;
+    margin-top: 2rem;
+    padding: 1rem 0;
+    background-color: transparent;
+    border-radius: 0;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1.5rem;
 }
 
 .technical-resources h3 {
     margin-top: 0;
-    margin-bottom: 1rem;
-    color: var(--bitcoin-orange);
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 500;
 }
 
 .technical-resources ul {
@@ -407,18 +431,21 @@ button.btn {
 }
 
 .technical-resources li {
-    margin: 0.75rem 0;
+    margin: 0.5rem 0;
 }
 
 .technical-resources a {
-    color: var(--text-primary);
-    text-decoration: none;
+    color: var(--text-secondary);
+    text-decoration: underline;
+    text-decoration-color: var(--border-color);
+    text-underline-offset: 2px;
+    font-size: 0.9rem;
 }
 
 .technical-resources a:hover,
 .technical-resources a:focus {
-    color: var(--bitcoin-orange);
-    text-decoration: underline;
+    color: var(--text-primary);
+    text-decoration-color: var(--text-primary);
 }
 
 /* Implementations */
