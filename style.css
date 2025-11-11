@@ -80,10 +80,63 @@ h4.subheading {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+    position: relative;
     padding: 4rem 0;
     text-align: center;
     border-bottom: 1px solid var(--border-color);
+    overflow: hidden;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.2;
+    transition: opacity 0.3s ease;
+    filter: grayscale(20%);
+}
+
+@media (prefers-color-scheme: dark) {
+    .hero-image {
+        opacity: 0.12;
+        filter: grayscale(30%);
+    }
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--bg-primary) 0%, rgba(255, 255, 255, 0.88) 50%, var(--bg-primary) 100%);
+    z-index: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+    .hero-overlay {
+        background: linear-gradient(135deg, var(--bg-primary) 0%, rgba(26, 26, 26, 0.92) 50%, var(--bg-primary) 100%);
+    }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
 }
 
 .hero .logo {
@@ -956,10 +1009,25 @@ footer p a:focus {
 
     .hero {
         padding: 2rem 0;
+        min-height: 500px;
     }
 
     .hero .logo {
         max-width: 250px;
+    }
+    
+    .hero-image {
+        opacity: 0.1;
+    }
+    
+    .hero-overlay {
+        background: linear-gradient(135deg, var(--bg-primary) 0%, rgba(255, 255, 255, 0.92) 50%, var(--bg-primary) 100%);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        .hero-overlay {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, rgba(26, 26, 26, 0.95) 50%, var(--bg-primary) 100%);
+        }
     }
 
     .cta-buttons {
