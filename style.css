@@ -103,12 +103,25 @@ h4.subheading {
     overflow: hidden;
 }
 
+.hero-background::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
 .hero-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
     display: block;
+    position: relative;
+    z-index: 0;
 }
 
 .hero-content {
@@ -608,44 +621,75 @@ footer {
     padding: 3rem 0;
     background-color: var(--bg-secondary);
     border-top: 1px solid var(--border-color);
-    text-align: center;
 }
 
-footer nav {
-    margin-bottom: 1rem;
+footer .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
 }
 
-footer nav a {
-    color: var(--bitcoin-orange);
+footer .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+footer .footer-links a {
+    color: var(--text-primary);
     text-decoration: none;
-    margin: 0 1rem;
     font-weight: 500;
+    transition: color 0.2s ease;
 }
 
-footer nav a:hover,
-footer nav a:focus {
-    text-decoration: underline;
+footer .footer-links a:hover,
+footer .footer-links a:focus {
+    color: var(--bitcoin-orange);
 }
 
-footer p {
+footer .social-links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+footer .social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    color: var(--text-primary);
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+footer .social-links a:hover,
+footer .social-links a:focus {
+    color: var(--bitcoin-orange);
+    transform: scale(1.1);
+}
+
+footer .social-links svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+footer .footer-text {
+    text-align: center;
     color: var(--text-secondary);
     font-size: 0.9rem;
-    margin: 0.5rem 0;
+    margin: 0;
 }
 
-footer p a {
-    color: var(--bitcoin-orange);
-    text-decoration: none;
-}
-
-footer p a:hover,
-footer p a:focus {
-    text-decoration: underline;
-}
-
-.copyright {
-    margin-top: 1rem;
+footer .copyright {
+    margin-top: 0.5rem;
     font-size: 0.85rem;
+    color: var(--text-secondary);
 }
 
 /* Whitepaper Styles */
