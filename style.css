@@ -28,7 +28,7 @@
 }
 
 body {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     line-height: 1.7;
     color: var(--text-primary);
     background-color: var(--bg-primary);
@@ -449,7 +449,7 @@ button.btn {
 .book-info h3 {
     color: var(--text-primary);
     margin-bottom: 0.5rem;
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .book-tagline {
@@ -512,7 +512,7 @@ button.btn {
     font-size: 2rem;
     margin-bottom: 0.5rem;
     color: white;
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     margin-top: 0;
 }
 
@@ -916,12 +916,12 @@ footer p a:focus {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease, padding 0.3s ease;
-    padding: 0 1.5rem;
+    padding: 0 2rem;
 }
 
 .faq-question[aria-expanded="true"] + .faq-answer {
     max-height: 2000px;
-    padding: 0 1.5rem 1.5rem 1.5rem;
+    padding: 1.5rem 2rem 2rem 2rem;
 }
 
 .faq-answer p {
@@ -1009,11 +1009,11 @@ footer p a:focus {
     }
 
     .faq-answer {
-        padding: 0 1.25rem;
+        padding: 0 1.5rem;
     }
 
     .faq-question[aria-expanded="true"] + .faq-answer {
-        padding: 0 1.25rem 1.25rem 1.25rem;
+        padding: 1rem 1.5rem 1.5rem 1.5rem;
     }
 
 }
