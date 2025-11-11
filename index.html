@@ -72,59 +72,6 @@
             </div>
         </section>
 
-        <section id="how-to-adopt" class="how-to-adopt">
-            <div class="container">
-                <h2>How to Adopt</h2>
-                <p>Fork the Bitcoin Commons governance framework for your Bitcoin implementation. Multiple implementations can coexist using this model.</p>
-                
-                <div class="adoption-steps">
-                    <div class="step">
-                        <h3>Step 1: Export Governance Ruleset</h3>
-                        <p>Use the <a href="https://github.com/BTCDecoded/governance/blob/main/config/ruleset-export-template.yml" target="_blank" rel="noopener">ruleset export template</a> to understand the governance configuration structure.</p>
-                    </div>
-                    
-                    <div class="step">
-                        <h3>Step 2: Fork Governance Configuration</h3>
-                        <p>Fork the <a href="https://github.com/BTCDecoded/governance" target="_blank" rel="noopener">governance repository</a> and customize for your organization (maintainers, thresholds, etc.).</p>
-                    </div>
-                    
-                    <div class="step">
-                        <h3>Step 3: Set Up Cryptographic Enforcement</h3>
-                        <p>Implement cryptographic enforcement using the <a href="https://github.com/BTCDecoded/bllvm-sdk" target="_blank" rel="noopener">bllvm-sdk</a> and <a href="https://github.com/BTCDecoded/governance-app" target="_blank" rel="noopener">governance-app</a> as reference.</p>
-                    </div>
-                    
-                    <div class="step">
-                        <h3>Step 4: Configure Governance Fork Mechanism</h3>
-                        <p>Set up the governance fork mechanism for user sovereignty. See <a href="https://github.com/BTCDecoded/governance/blob/main/architecture/GOVERNANCE_FORK.md" target="_blank" rel="noopener">GOVERNANCE_FORK.md</a> for technical details.</p>
-                    </div>
-                    
-                    <div class="step">
-                        <h3>Step 5: Join Implementations Directory</h3>
-                        <p>Add your implementation to the public registry via self-service pull request:</p>
-                        <ol>
-                            <li>Fork the <a href="https://github.com/BTCDecoded/governance" target="_blank" rel="noopener">governance repository</a></li>
-                            <li>Edit <code>implementations-registry.yml</code> and add your implementation entry</li>
-                            <li>Submit a <a href="https://github.com/BTCDecoded/governance/compare" target="_blank" rel="noopener">pull request</a> (GitHub will auto-populate the <a href="https://github.com/BTCDecoded/governance/blob/main/.github/pull_request_template.md" target="_blank" rel="noopener">PR template</a>)</li>
-                            <li>Automated validation checks YAML syntax, required fields, URL formats, and prevents duplicates</li>
-                            <li>If validation passes, PR merges automatically: no approval needed</li>
-                        </ol>
-                        <p>See <a href="https://github.com/BTCDecoded/governance/blob/main/IMPLEMENTATIONS_REGISTRY.md" target="_blank" rel="noopener">IMPLEMENTATIONS_REGISTRY.md</a> for complete instructions. This permissionless process demonstrates the framework's decentralized, cypherpunk-aligned nature.</p>
-                    </div>
-                </div>
-                
-                <div class="technical-resources">
-                    <h3>Technical Resources</h3>
-                    <ul>
-                        <li><a href="https://github.com/BTCDecoded/governance/blob/main/architecture/GOVERNANCE_FORK.md" target="_blank" rel="noopener">Governance Fork Architecture</a></li>
-                        <li><a href="https://github.com/BTCDecoded/governance/blob/main/config/ruleset-export-template.yml" target="_blank" rel="noopener">Ruleset Export Template</a></li>
-                        <li><a href="https://github.com/BTCDecoded/governance/tree/main/config" target="_blank" rel="noopener">Governance Configuration</a></li>
-                        <li><a href="https://github.com/BTCDecoded/governance" target="_blank" rel="noopener">Governance Repository</a></li>
-                        <li><a href="https://github.com/BTCDecoded/governance/blob/main/IMPLEMENTATIONS_REGISTRY.md" target="_blank" rel="noopener">Add Your Implementation (Self-Service Registry)</a></li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
         <section class="implementations">
             <div class="container">
                 <h2>Implementations</h2>
