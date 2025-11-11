@@ -680,18 +680,36 @@
                         answer.style.padding = '0 2rem';
                     } else {
                         this.setAttribute('aria-expanded', 'true');
-                        // Set padding first to get accurate measurement
+                        // Save current styles
+                        const currentTransition = answer.style.transition;
+                        // Set padding first and wait for it to apply
                         answer.style.padding = '1.5rem 2rem 2rem 2rem';
-                        // Measure the natural height of the content
-                        // Temporarily set to auto to get accurate scrollHeight
-                        const currentHeight = answer.style.height;
-                        answer.style.height = 'auto';
-                        const fullHeight = answer.scrollHeight;
-                        answer.style.height = currentHeight || '0';
-                        // Animate to full height
-                        setTimeout(() => {
-                            answer.style.height = fullHeight + 'px';
-                        }, 10);
+                        // Remove transition temporarily
+                        answer.style.transition = 'none';
+                        // Use requestAnimationFrame to ensure padding is applied before measuring
+                        requestAnimationFrame(() => {
+                            // Temporarily remove all height constraints to measure accurately
+                            answer.style.height = 'auto';
+                            answer.style.maxHeight = 'none';
+                            answer.style.minHeight = '0';
+                            // Force browser reflow
+                            void answer.offsetHeight;
+                            // Get the actual content height
+                            // scrollHeight is the total height including padding
+                            const measuredHeight = answer.scrollHeight;
+                            // Reset to collapsed state
+                            answer.style.height = '0';
+                            answer.style.maxHeight = '';
+                            answer.style.minHeight = '';
+                            // Restore transition
+                            answer.style.transition = currentTransition || '';
+                            // Force another reflow
+                            void answer.offsetHeight;
+                            // Animate to full height
+                            requestAnimationFrame(() => {
+                                answer.style.height = measuredHeight + 'px';
+                            });
+                        });
                     }
                 });
                 
