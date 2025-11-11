@@ -667,7 +667,7 @@
                     allAnswersInCategory.forEach(a => {
                         if (a !== answer) {
                             a.style.maxHeight = '0';
-                            a.style.padding = '0 1.5rem';
+                            a.style.padding = '0 2rem';
                         }
                     });
                     
@@ -675,11 +675,11 @@
                     if (isExpanded) {
                         this.setAttribute('aria-expanded', 'false');
                         answer.style.maxHeight = '0';
-                        answer.style.padding = '0 1.5rem';
+                        answer.style.padding = '0 2rem';
                     } else {
                         this.setAttribute('aria-expanded', 'true');
                         answer.style.maxHeight = answer.scrollHeight + 'px';
-                        answer.style.padding = '0 1.5rem 1.5rem 1.5rem';
+                        answer.style.padding = '1.5rem 2rem 2rem 2rem';
                     }
                 });
                 
