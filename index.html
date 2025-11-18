@@ -298,6 +298,7 @@
                                 <div class="parameter-control">
                                     <label>Signature Threshold</label>
                                     <select id="tier1-signatures" class="param-select">
+                                        <option value="2-of-3">2-of-3</option>
                                         <option value="3-of-5" selected>3-of-5 (Default)</option>
                                         <option value="4-of-5">4-of-5</option>
                                         <option value="5-of-5">5-of-5</option>
@@ -332,6 +333,7 @@
                                     <select id="tier3-signatures" class="param-select">
                                         <option value="4-of-5">4-of-5</option>
                                         <option value="5-of-5" selected>5-of-5 (Default)</option>
+                                        <option value="6-of-7">6-of-7</option>
                                     </select>
                                 </div>
                                 <div class="parameter-control">
@@ -1982,13 +1984,32 @@
                 if (fork1.id === 'default') fork1Name = 'BTCDecoded';
                 if (fork2.id === 'default') fork2Name = 'BTCDecoded';
                 
+                // Helper function to calculate differences
+                function calculateDiff(val1, val2, type = 'number') {
+                    if (val1 === 'N/A' || val2 === 'N/A' || val1 === val2) {
+                        return val1 === val2 ? '—' : 'N/A';
+                    }
+                    
+                    if (type === 'number') {
+                        const num1 = parseInt(val1) || 0;
+                        const num2 = parseInt(val2) || 0;
+                        const diff = num1 - num2;
+                        if (diff === 0) return '—';
+                        return diff > 0 ? `+${diff}` : `${diff}`;
+                    } else {
+                        // For signature thresholds, just show if different
+                        return val1 !== val2 ? 'Different' : '—';
+                    }
+                }
+                
                 const comparison = `
                     <table class="compare-table-content">
                         <thead>
                             <tr>
-                                <th style="width: 30%;">Parameter</th>
-                                <th style="width: 35%;">${fork1Name}</th>
-                                <th style="width: 35%;">${fork2Name}</th>
+                                <th style="width: 25%;">Parameter</th>
+                                <th style="width: 25%;">${fork1Name}</th>
+                                <th style="width: 25%;">${fork2Name}</th>
+                                <th style="width: 25%;">Difference</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1996,36 +2017,43 @@
                                 <td><strong>Tier 1: Signature Threshold</strong></td>
                                 <td>${fork1.tier1 || 'N/A'}</td>
                                 <td>${fork2.tier1 || 'N/A'}</td>
+                                <td class="diff-cell">${calculateDiff(fork1.tier1 || 'N/A', fork2.tier1 || 'N/A', 'text')}</td>
                             </tr>
                             <tr>
                                 <td><strong>Tier 1: Review Period</strong></td>
                                 <td>${fork1.tier1_review || 'N/A'} days</td>
                                 <td>${fork2.tier1_review || 'N/A'} days</td>
+                                <td class="diff-cell">${calculateDiff(fork1.tier1_review || 'N/A', fork2.tier1_review || 'N/A', 'number')} ${fork1.tier1_review && fork2.tier1_review && fork1.tier1_review !== fork2.tier1_review ? 'days' : ''}</td>
                             </tr>
                             <tr>
                                 <td><strong>Tier 2: Signature Threshold</strong></td>
                                 <td>${fork1.tier2 || 'N/A'}</td>
                                 <td>${fork2.tier2 || 'N/A'}</td>
+                                <td class="diff-cell">${calculateDiff(fork1.tier2 || 'N/A', fork2.tier2 || 'N/A', 'text')}</td>
                             </tr>
                             <tr>
                                 <td><strong>Tier 2: Review Period</strong></td>
                                 <td>${fork1.tier2_review || 'N/A'} days</td>
                                 <td>${fork2.tier2_review || 'N/A'} days</td>
+                                <td class="diff-cell">${calculateDiff(fork1.tier2_review || 'N/A', fork2.tier2_review || 'N/A', 'number')} ${fork1.tier2_review && fork2.tier2_review && fork1.tier2_review !== fork2.tier2_review ? 'days' : ''}</td>
                             </tr>
                             <tr>
                                 <td><strong>Tier 3: Signature Threshold</strong></td>
                                 <td>${fork1.tier3 || 'N/A'}</td>
                                 <td>${fork2.tier3 || 'N/A'}</td>
+                                <td class="diff-cell">${calculateDiff(fork1.tier3 || 'N/A', fork2.tier3 || 'N/A', 'text')}</td>
                             </tr>
                             <tr>
                                 <td><strong>Tier 3: Review Period</strong></td>
                                 <td>${fork1.tier3_review || 'N/A'} days</td>
                                 <td>${fork2.tier3_review || 'N/A'} days</td>
+                                <td class="diff-cell">${calculateDiff(fork1.tier3_review || 'N/A', fork2.tier3_review || 'N/A', 'number')} ${fork1.tier3_review && fork2.tier3_review && fork1.tier3_review !== fork2.tier3_review ? 'days' : ''}</td>
                             </tr>
                             <tr>
                                 <td><strong>Economic Node Veto Threshold</strong></td>
                                 <td>${fork1.tier3_veto || 'N/A'}%</td>
                                 <td>${fork2.tier3_veto || 'N/A'}%</td>
+                                <td class="diff-cell">${calculateDiff(fork1.tier3_veto || 'N/A', fork2.tier3_veto || 'N/A', 'number')}${fork1.tier3_veto && fork2.tier3_veto && fork1.tier3_veto !== fork2.tier3_veto ? '%' : ''}</td>
                             </tr>
                         </tbody>
                     </table>
