@@ -1266,6 +1266,27 @@
                 });
             });
             
+            // Handle repository selection radio buttons
+            document.querySelectorAll('input[name="fork-repo"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    // Update checked class for styling (fallback for browsers without :has())
+                    document.querySelectorAll('.repo-checkbox-label').forEach(label => {
+                        label.classList.remove('checked');
+                    });
+                    if (this.checked) {
+                        this.closest('.repo-checkbox-label').classList.add('checked');
+                    }
+                    updateRulesetPreview();
+                });
+            });
+            
+            // Initialize checked state on page load
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('input[name="fork-repo"]:checked').forEach(radio => {
+                    radio.closest('.repo-checkbox-label')?.classList.add('checked');
+                });
+            });
+            
             // Initial preview - wait for DOM to be ready
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', function() {

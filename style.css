@@ -807,23 +807,17 @@ button.btn {
     background-color: var(--bg-secondary);
 }
 
-.repo-checkbox-label:has(input:checked),
-.repo-checkbox-label input:checked + .repo-checkbox-text {
-    border-color: var(--bitcoin-orange);
-}
-
 .repo-checkbox-label:has(input:checked) {
+    border-color: var(--bitcoin-orange);
     background-color: rgba(247, 147, 26, 0.05);
     box-shadow: 0 0 0 2px rgba(247, 147, 26, 0.1);
 }
 
-/* Fallback for browsers without :has() support */
-.repo-checkbox:checked {
-    accent-color: var(--bitcoin-orange);
-}
-
-.repo-checkbox-label input[type="radio"]:checked ~ .repo-checkbox-text {
-    /* This won't work due to structure, but we use :has() above */
+/* Fallback for browsers without :has() support - use JavaScript class */
+.repo-checkbox-label.checked {
+    border-color: var(--bitcoin-orange);
+    background-color: rgba(247, 147, 26, 0.05);
+    box-shadow: 0 0 0 2px rgba(247, 147, 26, 0.1);
 }
 
 .repo-checkbox {
