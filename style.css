@@ -643,6 +643,1024 @@ button.btn {
     color: var(--text-secondary);
 }
 
+/* Fork Governance Section */
+.fork-governance-section {
+    padding: 4rem 0;
+    background-color: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+}
+
+.fork-governance-section .section-intro {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.fork-tool-container {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+}
+
+.fork-tool-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.fork-tool-header h3 {
+    margin-bottom: 0.5rem;
+}
+
+.fork-tool-header p {
+    color: var(--text-secondary);
+}
+
+.fork-tool-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+}
+
+@media (max-width: 968px) {
+    .fork-tool-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+.fork-parameters {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.parameter-group {
+    padding: 1.75rem;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.parameter-group h4 {
+    margin-bottom: 1.25rem;
+    font-size: 1.2rem;
+    color: var(--bitcoin-orange);
+    font-weight: 600;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.parameter-control {
+    margin-bottom: 1rem;
+}
+
+.parameter-control:last-child {
+    margin-bottom: 0;
+}
+
+.parameter-control label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+}
+
+.param-input,
+.param-select,
+.param-textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.param-input:focus,
+.param-select:focus,
+.param-textarea:focus {
+    outline: none;
+    border-color: var(--bitcoin-orange);
+    box-shadow: 0 0 0 3px rgba(247, 147, 26, 0.1);
+}
+
+.param-input::placeholder,
+.param-textarea::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+.param-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a4a4a' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+.param-textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.6;
+}
+
+.fork-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.fork-preview h4 {
+    margin-bottom: 0.5rem;
+}
+
+.preview-content {
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    max-height: 450px;
+    overflow-y: auto;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.ruleset-preview-code {
+    margin: 0;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.fork-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.fork-actions .btn {
+    flex: 1;
+    min-width: 120px;
+}
+
+.fork-info {
+    padding: 1.5rem;
+    background-color: var(--bg-secondary);
+    border-radius: 6px;
+    border-left: 3px solid var(--bitcoin-orange);
+}
+
+.fork-info p {
+    margin-bottom: 1rem;
+}
+
+.fork-info ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.fork-info li {
+    margin-bottom: 0.5rem;
+}
+
+.fork-info code {
+    background-color: var(--bg-primary);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.9em;
+}
+
+.fork-note {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: var(--bg-primary);
+    border-radius: 4px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.fork-explanation {
+    margin-top: 3rem;
+}
+
+.fork-explanation h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.explanation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.explanation-item {
+    padding: 1.5rem;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+
+.explanation-item h4 {
+    color: var(--bitcoin-orange);
+    margin-bottom: 0.75rem;
+    font-size: 1.125rem;
+}
+
+.explanation-item p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Fork Tabs */
+.fork-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--border-color);
+    flex-wrap: wrap;
+}
+
+.fork-tab {
+    padding: 1rem 1.5rem;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.fork-tab:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-secondary);
+}
+
+.fork-tab.active {
+    color: var(--bitcoin-orange);
+    border-bottom-color: var(--bitcoin-orange);
+}
+
+.fork-tab-content {
+    display: none;
+}
+
+.fork-tab-content.active {
+    display: block;
+}
+
+/* Marketplace */
+.marketplace-header,
+.templates-header,
+.compare-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.marketplace-header p,
+.templates-header p,
+.compare-header p {
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+}
+
+.marketplace-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.search-input,
+.sort-select {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.search-input:focus,
+.sort-select:focus {
+    outline: none;
+    border-color: var(--bitcoin-orange);
+    box-shadow: 0 0 0 3px rgba(247, 147, 26, 0.1);
+}
+
+.search-input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+.sort-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a4a4a' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+/* Fork Cards Grid */
+.fork-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.fork-card {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fork-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.fork-card.featured {
+    border-color: var(--bitcoin-orange);
+    border-width: 2px;
+}
+
+.fork-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1rem;
+}
+
+.fork-card-header h4 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.fork-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.fork-badge.default {
+    background-color: var(--bitcoin-orange);
+    color: white;
+}
+
+.fork-badge.template {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.fork-description {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.fork-stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: var(--bg-secondary);
+    border-radius: 6px;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.stat-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--bitcoin-orange);
+}
+
+.fork-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature-tag {
+    padding: 0.25rem 0.75rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+}
+
+.fork-btn {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* Template Grid */
+.template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.template-card {
+    background-color: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.template-card:hover {
+    border-color: var(--bitcoin-orange);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.template-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.template-card h4 {
+    margin-bottom: 0.5rem;
+    color: var(--bitcoin-orange);
+}
+
+.template-card > p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.template-features {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+.template-features li {
+    padding: 0.5rem 0;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.95rem;
+}
+
+.template-features li:last-child {
+    border-bottom: none;
+}
+
+.template-features li::before {
+    display: none;
+}
+
+.template-fork-btn {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* Comparison */
+.compare-selectors {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.compare-select {
+    padding: 0.875rem 2.5rem 0.875rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-width: 250px;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a4a4a' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+}
+
+.compare-select:focus {
+    outline: none;
+    border-color: var(--bitcoin-orange);
+    box-shadow: 0 0 0 3px rgba(247, 147, 26, 0.1);
+}
+
+.compare-vs {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.compare-table {
+    background-color: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    overflow-x: auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.compare-table-content {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.compare-table-content thead {
+    background-color: var(--bg-secondary);
+}
+
+.compare-table-content th {
+    padding: 1.25rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 1.05rem;
+}
+
+.compare-table-content th:first-child {
+    width: 30%;
+}
+
+.compare-table-content td {
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+    vertical-align: top;
+}
+
+.compare-table-content tbody tr:hover {
+    background-color: var(--bg-secondary);
+}
+
+.compare-table-content tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.compare-table-content .highlight {
+    background-color: rgba(247, 147, 26, 0.1);
+    font-weight: 600;
+    color: var(--bitcoin-orange);
+}
+
+.compare-error {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 3rem 2rem;
+    background-color: var(--bg-secondary);
+    border-radius: 6px;
+    font-size: 1.05rem;
+}
+
+/* Deployment Modal */
+.deployment-modal-content {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.deployment-modal-close {
+    transition: color 0.2s ease;
+}
+
+.deployment-modal-close:hover {
+    color: var(--text-primary);
+}
+
+.deployment-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.deployment-step {
+    padding: 1rem;
+    background-color: var(--bg-secondary);
+    border-radius: 6px;
+    border-left: 3px solid var(--bitcoin-orange);
+}
+
+.deployment-step h4 {
+    margin-bottom: 0.5rem;
+    color: var(--bitcoin-orange);
+    font-size: 1rem;
+}
+
+.deployment-step p {
+    margin: 0.5rem 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.code-block {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-top: 0.5rem;
+}
+
+.code-block code {
+    flex: 1;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    overflow-x: auto;
+}
+
+.copy-btn {
+    padding: 0.5rem 1rem;
+    background-color: var(--bitcoin-orange);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity 0.2s ease;
+}
+
+.copy-btn:hover {
+    opacity: 0.9;
+}
+
+.deployment-note {
+    font-size: 0.9rem;
+}
+
+.deployment-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.deployment-actions .btn {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* Fork Genealogy Tree */
+.genealogy-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.genealogy-header h3 {
+    margin-bottom: 0.5rem;
+}
+
+.genealogy-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: var(--bg-secondary);
+    border-radius: 6px;
+}
+
+.genealogy-status {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.genealogy-container {
+    min-height: 500px;
+    padding: 2.5rem;
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    overflow-x: auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.genealogy-loading,
+.genealogy-error {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+}
+
+.genealogy-tree-root {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.genealogy-node {
+    position: relative;
+    margin: 1.5rem;
+    min-width: 300px;
+    max-width: 350px;
+}
+
+.genealogy-node-content {
+    background-color: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    height: 100%;
+}
+
+.genealogy-node-content:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.genealogy-node.default .genealogy-node-content {
+    border-color: var(--bitcoin-orange);
+    border-width: 3px;
+}
+
+.genealogy-node.verified .genealogy-node-content {
+    border-color: #10b981;
+}
+
+.genealogy-node.template .genealogy-node-content {
+    border-color: #3b82f6;
+}
+
+.genealogy-node.community .genealogy-node-content {
+    border-color: #8b5cf6;
+}
+
+.genealogy-node-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.genealogy-node-header h4 {
+    margin: 0;
+    font-size: 1.125rem;
+    color: var(--text-primary);
+}
+
+.genealogy-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.genealogy-badge.verified {
+    background-color: #10b981;
+    color: white;
+}
+
+.genealogy-badge.default {
+    background-color: var(--bitcoin-orange);
+    color: white;
+}
+
+.genealogy-node-desc {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.genealogy-node-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.genealogy-detail {
+    padding: 0.25rem 0.5rem;
+    background-color: var(--bg-secondary);
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.genealogy-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: var(--bitcoin-orange);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.genealogy-link:hover {
+    text-decoration: underline;
+}
+
+.genealogy-children {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    position: relative;
+}
+
+.genealogy-children::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 1rem;
+    background-color: var(--border-color);
+    transform: translateX(-50%);
+}
+
+.genealogy-node[data-level="0"] .genealogy-children::before {
+    display: none;
+}
+
+.genealogy-node[data-level="0"] .genealogy-children {
+    padding-top: 0;
+}
+
+.genealogy-node:not([data-level="0"])::before {
+    content: '';
+    position: absolute;
+    top: -1rem;
+    left: 50%;
+    width: 2px;
+    height: 1rem;
+    background-color: var(--border-color);
+    transform: translateX(-50%);
+}
+
+.genealogy-legend {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: var(--bg-secondary);
+    border-radius: 6px;
+}
+
+.genealogy-legend h4 {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.legend-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 2px solid var(--border-color);
+}
+
+.legend-color.default {
+    background-color: var(--bitcoin-orange);
+    border-color: var(--bitcoin-orange);
+}
+
+.legend-color.template {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.legend-color.community {
+    background-color: #8b5cf6;
+    border-color: #8b5cf6;
+}
+
+.legend-color.verified {
+    background-color: #10b981;
+    border-color: #10b981;
+}
+
+@media (max-width: 768px) {
+    .fork-tool-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .fork-actions {
+        flex-direction: column;
+    }
+    
+    .fork-actions .btn {
+        width: 100%;
+    }
+    
+    .explanation-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .fork-tabs {
+        flex-direction: column;
+    }
+    
+    .fork-tab {
+        width: 100%;
+        text-align: left;
+    }
+    
+    .fork-cards-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .template-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .compare-selectors {
+        flex-direction: column;
+    }
+    
+    .compare-select {
+        width: 100%;
+    }
+    
+    .genealogy-controls {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .genealogy-node {
+        min-width: 100%;
+        margin: 0.5rem 0;
+    }
+    
+    .genealogy-children {
+        flex-direction: column;
+    }
+    
+    .legend-items {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}
+
 /* Footer */
 footer {
     padding: 3rem 0;
