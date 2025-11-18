@@ -20,7 +20,90 @@
     <meta name="twitter:description" content="A forkable governance model for Bitcoin implementations. Coordination without authority through proven commons management principles.">
     <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
     
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css?v=3">
+    <style>
+        /* Critical fork governance styles - ensure they load */
+        .fork-governance-section {
+            padding: 4rem 0 !important;
+            background-color: var(--bg-secondary) !important;
+            border-top: 1px solid var(--border-color) !important;
+            display: block !important;
+        }
+        .fork-tabs {
+            display: flex !important;
+            gap: 1rem !important;
+            margin-bottom: 2rem !important;
+            border-bottom: 2px solid var(--border-color) !important;
+            flex-wrap: wrap !important;
+        }
+        .fork-tab {
+            padding: 1rem 1.5rem !important;
+            background: none !important;
+            border: none !important;
+            border-bottom: 3px solid transparent !important;
+            font-size: 1rem !important;
+            font-weight: 500 !important;
+            color: var(--text-secondary) !important;
+            cursor: pointer !important;
+        }
+        .fork-tab.active {
+            color: var(--bitcoin-orange) !important;
+            border-bottom-color: var(--bitcoin-orange) !important;
+        }
+        .fork-tab-content {
+            display: none !important;
+        }
+        .fork-tab-content.active {
+            display: block !important;
+        }
+        .marketplace-header, .templates-header, .compare-header {
+            text-align: center !important;
+            margin-bottom: 2rem !important;
+        }
+        .fork-cards-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+            gap: 1.5rem !important;
+            margin-bottom: 2rem !important;
+        }
+        .fork-card {
+            background-color: var(--bg-primary) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 8px !important;
+            padding: 1.5rem !important;
+        }
+        .template-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+            gap: 2rem !important;
+            margin-bottom: 2rem !important;
+        }
+        .template-card {
+            background-color: var(--bg-primary) !important;
+            border: 2px solid var(--border-color) !important;
+            border-radius: 8px !important;
+            padding: 2rem !important;
+            text-align: center !important;
+        }
+        .fork-tool-container {
+            background-color: var(--bg-primary) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 8px !important;
+            padding: 2rem !important;
+            margin-bottom: 3rem !important;
+        }
+        .fork-tool-content {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 2rem !important;
+        }
+        .parameter-group {
+            padding: 1.5rem !important;
+            background-color: var(--bg-secondary) !important;
+            border-radius: 6px !important;
+            border: 1px solid var(--border-color) !important;
+        }
+    </style>
 </head>
 <body>
     <header class="hero">
