@@ -2091,7 +2091,7 @@
                                 <td><strong>Tier 2: Signature Threshold</strong></td>
                                 <td>${fork1.tier2 || 'N/A'}</td>
                                 <td>${fork2.tier2 || 'N/A'}</td>
-                                <td class="diff-cell">${calculateDiff(fork1.tier2 || 'N/A', fork2.tier2 || 'N/A', 'signature')}</td>
+                                <td class="diff-cell">${calculateDiff(fork1.tier2 || 'N/A', fork2.tier2 || 'N/A', 'signature', fork1Name, fork2Name)}</td>
                             </tr>
                             <tr>
                                 <td><strong>Tier 2: Review Period</strong></td>
@@ -2103,7 +2103,7 @@
                                 <td><strong>Tier 3: Signature Threshold</strong></td>
                                 <td>${fork1.tier3 || 'N/A'}</td>
                                 <td>${fork2.tier3 || 'N/A'}</td>
-                                <td class="diff-cell">${calculateDiff(fork1.tier3 || 'N/A', fork2.tier3 || 'N/A', 'signature')}</td>
+                                <td class="diff-cell">${calculateDiff(fork1.tier3 || 'N/A', fork2.tier3 || 'N/A', 'signature', fork1Name, fork2Name)}</td>
                             </tr>
                             <tr>
                                 <td><strong>Tier 3: Review Period</strong></td>
