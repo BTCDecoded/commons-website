@@ -1444,7 +1444,9 @@
             }
             
             // Fork Registry - Load from GitHub
-            const FORK_REGISTRY_URL = 'https://raw.githubusercontent.com/BTCDecoded/governance/main/fork-registry.yml';
+            // Use commit SHA URL first since it's more reliable (bypasses CDN cache)
+            const FORK_REGISTRY_URL = 'https://raw.githubusercontent.com/BTCDecoded/governance/268f9c4/fork-registry.yml';
+            const FORK_REGISTRY_URL_MAIN = 'https://raw.githubusercontent.com/BTCDecoded/governance/main/fork-registry.yml';
             let forkRegistry = null;
             
             // Initialize on page load
@@ -1508,10 +1510,11 @@
             // Load fork registry with error handling and fallback
             async function loadForkRegistry() {
                 // Try multiple URLs in case of caching issues
+                // Start with commit SHA (most reliable, bypasses CDN cache)
                 const urls = [
-                    FORK_REGISTRY_URL,
-                    'https://raw.githubusercontent.com/BTCDecoded/governance/268f9c4/fork-registry.yml', // Latest commit SHA
-                    'https://api.github.com/repos/BTCDecoded/governance/contents/fork-registry.yml?ref=main' // API endpoint
+                    FORK_REGISTRY_URL, // Commit SHA URL (primary)
+                    FORK_REGISTRY_URL_MAIN, // Main branch URL (fallback)
+                    'https://api.github.com/repos/BTCDecoded/governance/contents/fork-registry.yml?ref=main' // API endpoint (last resort)
                 ];
                 
                 for (let urlIndex = 0; urlIndex < urls.length; urlIndex++) {
