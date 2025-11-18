@@ -364,8 +364,9 @@
                         
                         <div class="fork-preview">
                             <h4>Ruleset Preview</h4>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Your custom governance ruleset will appear below. Adjust the parameters on the left to see changes in real-time.</p>
                             <div class="preview-content">
-                                <pre id="ruleset-preview" class="ruleset-preview-code"></pre>
+                                <pre id="ruleset-preview" class="ruleset-preview-code">Loading preview...</pre>
                             </div>
                             <div class="fork-actions">
                                 <button id="export-yaml" class="btn btn-primary">Export as YAML</button>
@@ -1206,12 +1207,32 @@
             // Update preview on any change
             const forkInputs = document.querySelectorAll('#fork-governance input, #fork-governance select, #fork-governance textarea');
             forkInputs.forEach(input => {
-                input.addEventListener('input', updateRulesetPreview);
-                input.addEventListener('change', updateRulesetPreview);
+                input.addEventListener('input', function() {
+                    try {
+                        updateRulesetPreview();
+                    } catch (e) {
+                        console.error('Error updating preview:', e);
+                        document.getElementById('ruleset-preview').textContent = 'Error: Could not update preview. Please check your inputs.';
+                    }
+                });
+                input.addEventListener('change', function() {
+                    try {
+                        updateRulesetPreview();
+                    } catch (e) {
+                        console.error('Error updating preview:', e);
+                        document.getElementById('ruleset-preview').textContent = 'Error: Could not update preview. Please check your inputs.';
+                    }
+                });
             });
             
-            // Initial preview
-            updateRulesetPreview();
+            // Initial preview - wait for DOM to be ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(updateRulesetPreview, 100);
+                });
+            } else {
+                setTimeout(updateRulesetPreview, 100);
+            }
             
             // Export functions
             document.getElementById('export-yaml').addEventListener('click', function() {
