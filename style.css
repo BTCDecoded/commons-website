@@ -1363,6 +1363,7 @@ button.btn {
     width: 100%;
     border-collapse: collapse;
     min-width: 600px;
+    table-layout: fixed;
 }
 
 .compare-table-content thead {
@@ -1378,8 +1379,14 @@ button.btn {
     font-size: 1.05rem;
 }
 
-.compare-table-content th:first-child {
+.compare-table-content th:first-child,
+.compare-table-content td:first-child {
     width: 30%;
+}
+
+.compare-table-content th:not(:first-child),
+.compare-table-content td:not(:first-child) {
+    width: 35%;
 }
 
 .compare-table-content td {
@@ -1676,11 +1683,14 @@ button.btn {
 
 .genealogy-children {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: flex-start;
     margin-top: 2rem;
     padding-top: 2rem;
     position: relative;
+    gap: 1.5rem;
 }
 
 .genealogy-children::before {
