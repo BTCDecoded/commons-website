@@ -1505,66 +1505,98 @@
                 return forks;
             }
             
-            // Load fork registry with error handling
+            // Load fork registry with error handling and fallback
             async function loadForkRegistry() {
-                try {
-                    // Add timeout for fetch
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-                    
-                    const response = await fetch(FORK_REGISTRY_URL, {
-                        signal: controller.signal,
-                        headers: {
-                            'Accept': 'text/yaml, text/plain, */*'
+                // Try multiple URLs in case of caching issues
+                const urls = [
+                    FORK_REGISTRY_URL,
+                    'https://raw.githubusercontent.com/BTCDecoded/governance/268f9c4/fork-registry.yml', // Latest commit SHA
+                    'https://api.github.com/repos/BTCDecoded/governance/contents/fork-registry.yml?ref=main' // API endpoint
+                ];
+                
+                for (let urlIndex = 0; urlIndex < urls.length; urlIndex++) {
+                    const url = urls[urlIndex];
+                    try {
+                        // Add timeout for fetch
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+                        
+                        const response = await fetch(url, {
+                            signal: controller.signal,
+                            headers: {
+                                'Accept': url.includes('api.github.com') 
+                                    ? 'application/vnd.github.v3+json' 
+                                    : 'text/yaml, text/plain, */*'
+                            }
+                        });
+                        clearTimeout(timeoutId);
+                        
+                        if (!response.ok) {
+                            if (urlIndex < urls.length - 1) continue; // Try next URL
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                         }
-                    });
-                    clearTimeout(timeoutId);
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                    }
-                    
-                    const yamlText = await response.text();
-                    if (!yamlText || yamlText.trim().length === 0) {
-                        throw new Error('Registry file is empty');
-                    }
-                    
-                    forkRegistry = parseYAML(yamlText);
-                    
-                    // Validate parsed data
-                    if (!Array.isArray(forkRegistry) || forkRegistry.length === 0) {
-                        throw new Error('No forks found in registry');
-                    }
-                    
-                    // Validate each fork has required fields
-                    forkRegistry = forkRegistry.filter(fork => {
-                        if (!fork.id || !fork.name) {
-                            console.warn('Skipping fork with missing id or name:', fork);
-                            return false;
+                        
+                        let yamlText;
+                        if (url.includes('api.github.com')) {
+                            // GitHub API returns base64 encoded content
+                            const data = await response.json();
+                            yamlText = atob(data.content.replace(/\n/g, ''));
+                        } else {
+                            yamlText = await response.text();
                         }
-                        return true;
-                    });
-                    
-                    return forkRegistry;
-                } catch (error) {
-                    console.error('Error loading fork registry:', error);
-                    // Fallback to templates
-                    return Object.keys(forkTemplates).map(id => ({
-                        id,
-                        name: forkTemplates[id].name,
-                        forked_from: id === 'default' ? null : 'default',
-                        verified: id === 'default',
-                        created_by: 'BTCDecoded',
-                        tier1: forkTemplates[id].tier1.signatures,
-                        tier1_review: forkTemplates[id].tier1.review,
-                        tier2: forkTemplates[id].tier2.signatures,
-                        tier2_review: forkTemplates[id].tier2.review,
-                        tier3: forkTemplates[id].tier3.signatures,
-                        tier3_review: forkTemplates[id].tier3.review,
-                        tier3_veto: forkTemplates[id].tier3.veto,
-                        description: forkTemplates[id].name
-                    }));
+                        
+                        if (!yamlText || yamlText.trim().length === 0) {
+                            if (urlIndex < urls.length - 1) continue; // Try next URL
+                            throw new Error('Registry file is empty');
+                        }
+                        
+                        forkRegistry = parseYAML(yamlText);
+                        
+                        // Validate parsed data
+                        if (!Array.isArray(forkRegistry) || forkRegistry.length === 0) {
+                            if (urlIndex < urls.length - 1) continue; // Try next URL
+                            throw new Error('No forks found in registry');
+                        }
+                        
+                        // Validate each fork has required fields
+                        forkRegistry = forkRegistry.filter(fork => {
+                            if (!fork.id || !fork.name) {
+                                console.warn('Skipping fork with missing id or name:', fork);
+                                return false;
+                            }
+                            return true;
+                        });
+                        
+                        console.log(`Successfully loaded fork registry from ${urlIndex === 0 ? 'primary' : urlIndex === 1 ? 'commit SHA' : 'API'} URL`);
+                        return forkRegistry;
+                    } catch (error) {
+                        if (urlIndex === urls.length - 1) {
+                            // Last URL failed, log error and fallback
+                            console.error('Error loading fork registry from all URLs:', error);
+                            break;
+                        }
+                        // Continue to next URL
+                        console.warn(`Failed to load from URL ${urlIndex + 1}, trying next...`, error);
+                    }
                 }
+                
+                // Fallback to templates if all URLs failed
+                console.warn('Falling back to template data');
+                return Object.keys(forkTemplates).map(id => ({
+                    id,
+                    name: forkTemplates[id].name,
+                    forked_from: id === 'default' ? null : 'default',
+                    verified: id === 'default',
+                    created_by: 'BTCDecoded',
+                    tier1: forkTemplates[id].tier1.signatures,
+                    tier1_review: forkTemplates[id].tier1.review,
+                    tier2: forkTemplates[id].tier2.signatures,
+                    tier2_review: forkTemplates[id].tier2.review,
+                    tier3: forkTemplates[id].tier3.signatures,
+                    tier3_review: forkTemplates[id].tier3.review,
+                    tier3_veto: forkTemplates[id].tier3.veto,
+                    description: forkTemplates[id].name
+                }));
             }
             
             // Render marketplace cards from registry
