@@ -1439,7 +1439,6 @@ button.btn {
 
 .compare-table-content th {
     padding: 1.25rem 1rem;
-    text-align: left;
     font-weight: 600;
     border-bottom: 2px solid var(--border-color);
     color: var(--text-primary);
@@ -1449,11 +1448,25 @@ button.btn {
 .compare-table-content th:first-child,
 .compare-table-content td:first-child {
     width: 25%;
+    text-align: left;
 }
 
-.compare-table-content th:not(:first-child),
-.compare-table-content td:not(:first-child) {
+.compare-table-content th:nth-child(2),
+.compare-table-content td:nth-child(2) {
     width: 25%;
+    text-align: center;
+}
+
+.compare-table-content th:nth-child(3),
+.compare-table-content td:nth-child(3) {
+    width: 25%;
+    text-align: center;
+}
+
+.compare-table-content th:nth-child(4),
+.compare-table-content td:nth-child(4) {
+    width: 25%;
+    text-align: center;
 }
 
 .compare-table-content .diff-cell {

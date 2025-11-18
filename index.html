@@ -1984,6 +1984,43 @@
                 if (fork1.id === 'default') fork1Name = 'BTCDecoded';
                 if (fork2.id === 'default') fork2Name = 'BTCDecoded';
                 
+                // Helper function to parse signature threshold (e.g., "3-of-5")
+                function parseSignatureThreshold(sig) {
+                    if (!sig || sig === 'N/A') return null;
+                    const match = sig.match(/(\d+)-of-(\d+)/);
+                    if (!match) return null;
+                    return {
+                        required: parseInt(match[1]),
+                        total: parseInt(match[2]),
+                        ratio: parseInt(match[1]) / parseInt(match[2])
+                    };
+                }
+                
+                // Helper function to describe signature threshold differences
+                function describeSignatureDiff(sig1, sig2) {
+                    const parsed1 = parseSignatureThreshold(sig1);
+                    const parsed2 = parseSignatureThreshold(sig2);
+                    
+                    if (!parsed1 || !parsed2) return 'N/A';
+                    if (sig1 === sig2) return '—';
+                    
+                    const ratioDiff = parsed1.ratio - parsed2.ratio;
+                    const requiredDiff = parsed1.required - parsed2.required;
+                    const totalDiff = parsed1.total - parsed2.total;
+                    
+                    // More restrictive = higher ratio or same ratio but more required
+                    if (ratioDiff > 0.01 || (Math.abs(ratioDiff) < 0.01 && requiredDiff > 0)) {
+                        return 'More restrictive';
+                    } else if (ratioDiff < -0.01 || (Math.abs(ratioDiff) < 0.01 && requiredDiff < 0)) {
+                        return 'Less restrictive';
+                    } else if (totalDiff !== 0) {
+                        // Same ratio but different total participants
+                        return 'Different size';
+                    } else {
+                        return 'Different';
+                    }
+                }
+                
                 // Helper function to calculate differences
                 function calculateDiff(val1, val2, type = 'number') {
                     if (val1 === 'N/A' || val2 === 'N/A' || val1 === val2) {
@@ -1996,8 +2033,10 @@
                         const diff = num1 - num2;
                         if (diff === 0) return '—';
                         return diff > 0 ? `+${diff}` : `${diff}`;
+                    } else if (type === 'signature') {
+                        // For signature thresholds, provide descriptive differences
+                        return describeSignatureDiff(val1, val2);
                     } else {
-                        // For signature thresholds, just show if different
                         return val1 !== val2 ? 'Different' : '—';
                     }
                 }
@@ -2017,7 +2056,7 @@
                                 <td><strong>Tier 1: Signature Threshold</strong></td>
                                 <td>${fork1.tier1 || 'N/A'}</td>
                                 <td>${fork2.tier1 || 'N/A'}</td>
-                                <td class="diff-cell">${calculateDiff(fork1.tier1 || 'N/A', fork2.tier1 || 'N/A', 'text')}</td>
+                                <td class="diff-cell">${calculateDiff(fork1.tier1 || 'N/A', fork2.tier1 || 'N/A', 'signature')}</td>
                             </tr>
                             <tr>
                                 <td><strong>Tier 1: Review Period</strong></td>
@@ -2029,7 +2068,7 @@
                                 <td><strong>Tier 2: Signature Threshold</strong></td>
                                 <td>${fork1.tier2 || 'N/A'}</td>
                                 <td>${fork2.tier2 || 'N/A'}</td>
-                                <td class="diff-cell">${calculateDiff(fork1.tier2 || 'N/A', fork2.tier2 || 'N/A', 'text')}</td>
+                                <td class="diff-cell">${calculateDiff(fork1.tier2 || 'N/A', fork2.tier2 || 'N/A', 'signature')}</td>
                             </tr>
                             <tr>
                                 <td><strong>Tier 2: Review Period</strong></td>
@@ -2041,7 +2080,7 @@
                                 <td><strong>Tier 3: Signature Threshold</strong></td>
                                 <td>${fork1.tier3 || 'N/A'}</td>
                                 <td>${fork2.tier3 || 'N/A'}</td>
-                                <td class="diff-cell">${calculateDiff(fork1.tier3 || 'N/A', fork2.tier3 || 'N/A', 'text')}</td>
+                                <td class="diff-cell">${calculateDiff(fork1.tier3 || 'N/A', fork2.tier3 || 'N/A', 'signature')}</td>
                             </tr>
                             <tr>
                                 <td><strong>Tier 3: Review Period</strong></td>
@@ -2067,7 +2106,8 @@
                         const text = cell.textContent.trim();
                         if (text !== '—' && text !== 'N/A' && text !== '') {
                             cell.classList.add('has-diff');
-                            if (text === 'Different') {
+                            // Style descriptive text differences (not numeric)
+                            if (!text.match(/^[+-]?\d+/)) {
                                 cell.classList.add('different-text');
                             }
                         }
