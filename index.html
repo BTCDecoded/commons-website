@@ -2017,7 +2017,7 @@
                 }
                 
                 // Helper function to describe signature threshold differences
-                function describeSignatureDiff(sig1, sig2) {
+                function describeSignatureDiff(sig1, sig2, fork1Name, fork2Name) {
                     const parsed1 = parseSignatureThreshold(sig1);
                     const parsed2 = parseSignatureThreshold(sig2);
                     
@@ -2029,10 +2029,13 @@
                     const totalDiff = parsed1.total - parsed2.total;
                     
                     // More restrictive = higher ratio or same ratio but more required
+                    // Compare ratios: higher ratio = more restrictive
                     if (ratioDiff > 0.01 || (Math.abs(ratioDiff) < 0.01 && requiredDiff > 0)) {
-                        return 'More restrictive';
+                        // sig1 (fork1) has higher ratio, so fork1 is more restrictive
+                        return `${fork1Name} more restrictive`;
                     } else if (ratioDiff < -0.01 || (Math.abs(ratioDiff) < 0.01 && requiredDiff < 0)) {
-                        return 'Less restrictive';
+                        // sig2 (fork2) has higher ratio, so fork2 is more restrictive
+                        return `${fork2Name} more restrictive`;
                     } else if (totalDiff !== 0) {
                         // Same ratio but different total participants
                         return 'Different size';
@@ -2042,7 +2045,7 @@
                 }
                 
                 // Helper function to calculate differences
-                function calculateDiff(val1, val2, type = 'number') {
+                function calculateDiff(val1, val2, type = 'number', fork1Name = '', fork2Name = '') {
                     if (val1 === 'N/A' || val2 === 'N/A' || val1 === val2) {
                         return val1 === val2 ? '—' : 'N/A';
                     }
@@ -2055,7 +2058,7 @@
                         return diff > 0 ? `+${diff}` : `${diff}`;
                     } else if (type === 'signature') {
                         // For signature thresholds, provide descriptive differences
-                        return describeSignatureDiff(val1, val2);
+                        return describeSignatureDiff(val1, val2, fork1Name, fork2Name);
                     } else {
                         return val1 !== val2 ? 'Different' : '—';
                     }
@@ -2076,7 +2079,7 @@
                                 <td><strong>Tier 1: Signature Threshold</strong></td>
                                 <td>${fork1.tier1 || 'N/A'}</td>
                                 <td>${fork2.tier1 || 'N/A'}</td>
-                                <td class="diff-cell">${calculateDiff(fork1.tier1 || 'N/A', fork2.tier1 || 'N/A', 'signature')}</td>
+                                <td class="diff-cell">${calculateDiff(fork1.tier1 || 'N/A', fork2.tier1 || 'N/A', 'signature', fork1Name, fork2Name)}</td>
                             </tr>
                             <tr>
                                 <td><strong>Tier 1: Review Period</strong></td>
