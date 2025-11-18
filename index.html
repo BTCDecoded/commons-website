@@ -1291,7 +1291,7 @@
             // Fork Templates Data
             const forkTemplates = {
                 conservative: {
-                    name: "Conservative Governance",
+                    name: "Conservative",
                     tier1: { signatures: "4-of-5", review: 14 },
                     tier2: { signatures: "5-of-5", review: 60 },
                     tier3: { signatures: "6-of-7", review: 180, veto: 25 }
@@ -1303,7 +1303,7 @@
                     tier3: { signatures: "5-of-5", review: 90, veto: 30 }
                 },
                 agile: {
-                    name: "Agile Governance",
+                    name: "Agile",
                     tier1: { signatures: "2-of-3", review: 3 },
                     tier2: { signatures: "3-of-5", review: 14 },
                     tier3: { signatures: "4-of-5", review: 60, veto: 35 }
@@ -1315,7 +1315,7 @@
                     tier3: { signatures: "5-of-5", review: 90, veto: 20 }
                 },
                 default: {
-                    name: "BTCDecoded Default",
+                    name: "BTCDecoded",
                     tier1: { signatures: "3-of-5", review: 7 },
                     tier2: { signatures: "4-of-5", review: 30 },
                     tier3: { signatures: "5-of-5", review: 90, veto: 30 }
@@ -1721,10 +1721,18 @@
                     const badgeClass = isDefault ? 'default' : (isTemplate ? 'template' : 'community');
                     const badgeText = isDefault ? 'Default' : (isTemplate ? 'Template' : 'Community');
                     
+                    // Clean up name - remove "Governance" and "Default"
+                    let displayName = fork.name || fork.id;
+                    displayName = displayName.replace(/\s+Governance\s*/gi, '');
+                    displayName = displayName.replace(/\s+Default\s*/gi, '');
+                    if (fork.id === 'default') {
+                        displayName = 'BTCDecoded';
+                    }
+                    
                     html += `
                         <div class="fork-card ${cardClass}" data-fork-id="${fork.id}">
                             <div class="fork-card-header">
-                                <h4>${fork.name || fork.id}</h4>
+                                <h4>${displayName}</h4>
                                 <span class="fork-badge ${badgeClass}">${badgeText}</span>
                                 ${fork.verified ? '<span class="fork-badge verified">✓ Verified</span>' : ''}
                             </div>
@@ -1756,20 +1764,28 @@
                 document.querySelectorAll('.fork-btn[data-fork]').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const forkId = this.getAttribute('data-fork');
+                        const fork = forks.find(f => f.id === forkId);
+                        if (!fork) return;
+                        
                         if (forkId === 'default') {
-                            // Show details or switch to compare
+                            // Switch to custom tab and load the default fork
+                            document.querySelectorAll('.fork-tab').forEach(t => t.classList.remove('active'));
+                            document.querySelector('.fork-tab[data-tab="custom"]').classList.add('active');
+                            document.querySelectorAll('.fork-tab-content').forEach(c => c.classList.remove('active'));
+                            document.getElementById('custom-tab').classList.add('active');
+                            
+                            // Load default fork into custom form
+                            loadForkFromRegistry(fork);
+                            updateRulesetPreview();
                             return;
                         }
                         // Load fork from registry and fork it
-                        const fork = forks.find(f => f.id === forkId);
-                        if (fork) {
-                            loadForkFromRegistry(fork);
-                            updateRulesetPreview();
-                            setTimeout(() => {
-                                document.getElementById('export-json').click();
-                                showDeploymentModal(forkId);
-                            }, 100);
-                        }
+                        loadForkFromRegistry(fork);
+                        updateRulesetPreview();
+                        setTimeout(() => {
+                            document.getElementById('export-json').click();
+                            showDeploymentModal(forkId);
+                        }, 100);
                     });
                 });
                 
@@ -1858,13 +1874,21 @@
                 
                 if (!fork1 || !fork2) return;
                 
+                // Clean up names for display
+                let fork1Name = fork1.name || fork1.id;
+                let fork2Name = fork2.name || fork2.id;
+                fork1Name = fork1Name.replace(/\s+Governance\s*/gi, '').replace(/\s+Default\s*/gi, '');
+                fork2Name = fork2Name.replace(/\s+Governance\s*/gi, '').replace(/\s+Default\s*/gi, '');
+                if (fork1.id === 'default') fork1Name = 'BTCDecoded';
+                if (fork2.id === 'default') fork2Name = 'BTCDecoded';
+                
                 const comparison = `
                     <table class="compare-table-content">
                         <thead>
                             <tr>
-                                <th>Parameter</th>
-                                <th>${fork1.name || fork1.id}</th>
-                                <th>${fork2.name || fork2.id}</th>
+                                <th style="width: 30%;">Parameter</th>
+                                <th style="width: 35%;">${fork1Name}</th>
+                                <th style="width: 35%;">${fork2Name}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -2005,11 +2029,19 @@
                     const children = forks.filter(f => f.forked_from === fork.id);
                     const forkType = fork.verified ? 'verified' : (fork.id === 'default' ? 'default' : (fork.created_by === 'BTCDecoded' ? 'template' : 'community'));
                     
+                    // Clean up name - remove "Governance" and "Default"
+                    let displayName = fork.name || fork.id;
+                    displayName = displayName.replace(/\s+Governance\s*/gi, '');
+                    displayName = displayName.replace(/\s+Default\s*/gi, '');
+                    if (fork.id === 'default') {
+                        displayName = 'BTCDecoded';
+                    }
+                    
                     let html = `
                         <div class="genealogy-node ${forkType}" data-level="${level}">
                             <div class="genealogy-node-content">
                                 <div class="genealogy-node-header">
-                                    <h4>${fork.name || fork.id}</h4>
+                                    <h4>${displayName}</h4>
                                     ${fork.verified ? '<span class="genealogy-badge verified">✓ Verified</span>' : ''}
                                     ${fork.id === 'default' ? '<span class="genealogy-badge default">Root</span>' : ''}
                                 </div>
