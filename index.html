@@ -631,15 +631,9 @@
                     <div class="faq-category">
                         <h3>BLLVM: Technical Innovation</h3>
                         <div class="faq-accordion">
-                            <div class="faq-item">
-                                <button class="faq-question" aria-expanded="false">
-                                    <span>What is BLLVM?</span>
-                                    <span class="faq-icon">+</span>
-                                </button>
-                                <div class="faq-answer">
-                                    <p>BLLVM (Bitcoin Low-Level Virtual Machine) is the technical stack that provides mathematical rigor for Bitcoin implementations. It includes: (1) Orange Paper - complete mathematical specification of Bitcoin consensus, (2) bllvm-consensus - pure mathematical implementation with formal verification, (3) bllvm-protocol - Bitcoin abstraction layer, (4) bllvm-node - full node implementation, (5) bllvm-sdk - developer toolkit. Think of it as a compiler-like architecture where the Orange Paper is the IR (intermediate representation).</p>
+                            <div class="faq-answer">
+                                    <p>BLLVM (Bitcoin Low-Level Virtual Machine) is the technical stack that provides mathematical rigor for Bitcoin implementations. It includes: (1) <strong>bllvm-spec</strong> (Orange Paper) - complete mathematical specification of Bitcoin consensus, (2) <strong>bllvm-consensus</strong> - pure mathematical implementation with formal verification, (3) <strong>bllvm-protocol</strong> - Bitcoin abstraction layer, (4) <strong>bllvm-node</strong> - full node implementation, (5) <strong>bllvm</strong> - binary wrapper for bllvm-node, (6) <strong>bllvm-sdk</strong> - developer toolkit. Think of it as a compiler-like architecture where the Orange Paper is the IR (intermediate representation).</p>
                                 </div>
-                            </div>
                             
                             <div class="faq-item">
                                 <button class="faq-question" aria-expanded="false">
@@ -837,6 +831,16 @@
                         <div class="faq-accordion">
                             <div class="faq-item">
                                 <button class="faq-question" aria-expanded="false">
+                                    <span>What is the Fork Registry?</span>
+                                    <span class="faq-icon">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>The Fork Registry is a public, self-service registry for governance forks. Anyone can submit a pull request to add their governance fork—no approval needed, just automated validation. The registry tracks governance forks with their signature thresholds, review periods, and relationships (which fork was created from which). Use the <a href="#fork-governance">"Fork Your Governance"</a> section on this website to browse the registry, compare forks, view the genealogy tree, and create your own fork.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-question" aria-expanded="false">
                                     <span>How does cryptographic enforcement work?</span>
                                     <span class="faq-icon">+</span>
                                 </button>
@@ -892,6 +896,7 @@
                                 </button>
                                 <div class="faq-answer">
                                     <p>Governance forks allow users to choose different governance rulesets without affecting Bitcoin consensus. Users can export governance rulesets as versioned, signed packages and fork to a better governance model if they disagree with decisions. This provides an escape hatch: captured governance loses users to better-governed implementations. The threat of forking prevents capture while maintaining Bitcoin consensus immutability.</p>
+                                    <p><strong>Interactive Tools:</strong> Use the <a href="#fork-governance">"Fork Your Governance"</a> section on this website to browse existing forks, start from templates, customize your own ruleset, compare different governance models, and view the fork genealogy tree. The system includes a <strong>self-service fork registry</strong> where anyone can submit their governance fork via pull request—no approval needed, just automated validation.</p>
                                 </div>
                             </div>
                             
@@ -927,7 +932,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>Orange Paper complete, bllvm-consensus with nearly 200 formal proofs, bllvm-protocol, bllvm-node, and bllvm-sdk all implemented. All 6 tiers are functional, but not yet battle-tested in production.</p>
+                                    <p>All 8 layers are implemented: bllvm-spec (Orange Paper) complete, bllvm-consensus with nearly 200 formal proofs, bllvm-protocol, bllvm-node, bllvm (binary wrapper), and bllvm-sdk all functional. Recent work includes high availability features, build state tracking, fork verification, binary signing tools, and deterministic build verification. The system is not yet battle-tested in production.</p>
                                 </div>
                             </div>
                             
@@ -983,7 +988,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>All code is open source on GitHub under the <a href="https://github.com/BTCDecoded" target="_blank" rel="noopener">BTCDecoded organization</a>. Key repositories: BLLVM (bllvm-spec/Orange Paper, bllvm-consensus, bllvm-protocol, bllvm-node, bllvm-sdk) and Commons (governance, bllvm-commons).</p>
+                                    <p>All code is open source on GitHub under the <a href="https://github.com/BTCDecoded" target="_blank" rel="noopener">BTCDecoded organization</a>. Key repositories: BLLVM (bllvm-spec/Orange Paper, bllvm-consensus, bllvm-protocol, bllvm-node, bllvm, bllvm-sdk) and Commons (governance, bllvm-commons). The <a href="https://github.com/BTCDecoded/governance/blob/main/fork-registry.yml" target="_blank" rel="noopener">fork registry</a> is maintained in the governance repository.</p>
                                 </div>
                             </div>
                             
