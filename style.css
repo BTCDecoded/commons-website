@@ -1788,6 +1788,18 @@ button.btn {
     gap: 1.5rem;
 }
 
+.genealogy-children-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    gap: 1.5rem;
+    overflow-x: auto;
+}
+
 .genealogy-children::before {
     content: '';
     position: absolute;

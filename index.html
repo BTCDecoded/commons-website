@@ -348,38 +348,38 @@
                             
                             <div class="parameter-group">
                                 <h4>Repository Selection</h4>
-                                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Select which repository to fork. Only one repository can be selected.</p>
+                                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Select which repositories to fork. Multiple repositories can be selected.</p>
                                 <div class="repo-selection">
                                     <label class="repo-checkbox-label">
-                                        <input type="radio" name="fork-repo" value="governance" class="repo-checkbox" checked>
+                                        <input type="checkbox" name="fork-repo" value="governance" class="repo-checkbox" checked>
                                         <span class="repo-checkbox-text">
                                             <strong>governance</strong>
                                             <span class="repo-desc">Governance configuration and rules</span>
                                         </span>
                                     </label>
                                     <label class="repo-checkbox-label">
-                                        <input type="radio" name="fork-repo" value="bllvm-commons" class="repo-checkbox">
+                                        <input type="checkbox" name="fork-repo" value="bllvm-commons" class="repo-checkbox" checked>
                                         <span class="repo-checkbox-text">
                                             <strong>bllvm-commons</strong>
                                             <span class="repo-desc">Cryptographic enforcement GitHub App</span>
                                         </span>
                                     </label>
                                     <label class="repo-checkbox-label">
-                                        <input type="radio" name="fork-repo" value="bllvm-sdk" class="repo-checkbox">
+                                        <input type="checkbox" name="fork-repo" value="bllvm-sdk" class="repo-checkbox" checked>
                                         <span class="repo-checkbox-text">
                                             <strong>bllvm-sdk</strong>
                                             <span class="repo-desc">Developer toolkit and governance primitives</span>
                                         </span>
                                     </label>
                                     <label class="repo-checkbox-label">
-                                        <input type="radio" name="fork-repo" value="bllvm-node" class="repo-checkbox">
+                                        <input type="checkbox" name="fork-repo" value="bllvm-node" class="repo-checkbox" checked>
                                         <span class="repo-checkbox-text">
                                             <strong>bllvm-node</strong>
                                             <span class="repo-desc">Full Bitcoin node library</span>
                                         </span>
                                     </label>
                                     <label class="repo-checkbox-label">
-                                        <input type="radio" name="fork-repo" value="bllvm" class="repo-checkbox">
+                                        <input type="checkbox" name="fork-repo" value="bllvm" class="repo-checkbox" checked>
                                         <span class="repo-checkbox-text">
                                             <strong>bllvm</strong>
                                             <span class="repo-desc">Binary wrapper for bllvm-node</span>
@@ -387,8 +387,10 @@
                                     </label>
                                 </div>
                             </div>
-                            
-                            <div class="parameter-group">
+                        </div>
+                        
+                        <div class="fork-preview">
+                            <div class="parameter-group" style="margin-bottom: 2rem;">
                                 <h4>Ruleset Metadata</h4>
                                 <div class="parameter-control">
                                     <label>Ruleset Name</label>
@@ -403,9 +405,7 @@
                                     <textarea id="ruleset-description" class="param-textarea" rows="3" placeholder="Custom governance ruleset for..."></textarea>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="fork-preview">
+                            
                             <h4>Ruleset Preview</h4>
                             <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.25rem; line-height: 1.6;">Your custom governance ruleset will appear below. Adjust the parameters on the left to see changes in real-time.</p>
                             <div class="preview-content">
@@ -1268,15 +1268,14 @@
                 });
             });
             
-            // Handle repository selection radio buttons
-            document.querySelectorAll('input[name="fork-repo"]').forEach(radio => {
-                radio.addEventListener('change', function() {
+            // Handle repository selection checkboxes
+            document.querySelectorAll('input[name="fork-repo"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
                     // Update checked class for styling (fallback for browsers without :has())
-                    document.querySelectorAll('.repo-checkbox-label').forEach(label => {
-                        label.classList.remove('checked');
-                    });
                     if (this.checked) {
                         this.closest('.repo-checkbox-label').classList.add('checked');
+                    } else {
+                        this.closest('.repo-checkbox-label').classList.remove('checked');
                     }
                     updateRulesetPreview();
                 });
@@ -1284,8 +1283,8 @@
             
             // Initialize checked state on page load
             document.addEventListener('DOMContentLoaded', function() {
-                document.querySelectorAll('input[name="fork-repo"]:checked').forEach(radio => {
-                    radio.closest('.repo-checkbox-label')?.classList.add('checked');
+                document.querySelectorAll('input[name="fork-repo"]:checked').forEach(checkbox => {
+                    checkbox.closest('.repo-checkbox-label')?.classList.add('checked');
                 });
             });
             
@@ -2237,7 +2236,15 @@
                             </div>
                     `;
                     
-                    if (children.length > 0) {
+                    if (children.length > 0 && isRoot) {
+                        // For root node, render all children in a single row
+                        html += '<div class="genealogy-children genealogy-children-row">';
+                        children.forEach(child => {
+                            html += renderForkNode(child, level + 1);
+                        });
+                        html += '</div>';
+                    } else if (children.length > 0) {
+                        // For non-root nodes, render children normally
                         html += '<div class="genealogy-children">';
                         children.forEach(child => {
                             html += renderForkNode(child, level + 1);
