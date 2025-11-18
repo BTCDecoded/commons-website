@@ -1462,14 +1462,12 @@ button.btn {
     color: var(--text-primary);
 }
 
-/* Style diff cells with actual differences */
-.compare-table-content .diff-cell:has-text('+'),
-.compare-table-content .diff-cell:has-text('-') {
+/* Style diff cells with actual differences - JavaScript will add 'has-diff' class */
+.compare-table-content .diff-cell.has-diff {
     color: var(--bitcoin-orange);
 }
 
-.compare-table-content .diff-cell:has-text('Different') {
-    color: var(--bitcoin-orange);
+.compare-table-content .diff-cell.has-diff.different-text {
     font-style: italic;
 }
 
