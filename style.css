@@ -1448,12 +1448,29 @@ button.btn {
 
 .compare-table-content th:first-child,
 .compare-table-content td:first-child {
-    width: 30%;
+    width: 25%;
 }
 
 .compare-table-content th:not(:first-child),
 .compare-table-content td:not(:first-child) {
-    width: 35%;
+    width: 25%;
+}
+
+.compare-table-content .diff-cell {
+    font-weight: 600;
+    text-align: center;
+    color: var(--text-primary);
+}
+
+/* Style diff cells with actual differences */
+.compare-table-content .diff-cell:has-text('+'),
+.compare-table-content .diff-cell:has-text('-') {
+    color: var(--bitcoin-orange);
+}
+
+.compare-table-content .diff-cell:has-text('Different') {
+    color: var(--bitcoin-orange);
+    font-style: italic;
 }
 
 .compare-table-content td {
