@@ -36,7 +36,9 @@
                 <p class="subtagline">Applying proven commons management principles to Bitcoin's development layer</p>
                 
                 <div class="cta-buttons">
-                    <a href="/whitepaper.html" class="btn btn-primary">Read White Paper</a>
+                    <a href="#fork-governance" class="btn btn-primary">Fork Your Governance</a>
+                    <a href="/whitepaper.html" class="btn btn-secondary">Read White Paper</a>
+                    <a href="https://docs.thebitcoincommons.org" class="btn btn-secondary" target="_blank" rel="noopener">Documentation</a>
                     <a href="/assets/bitcoin-commons-whitepaper.pdf" class="btn btn-secondary" download>Download PDF</a>
                     <a href="/assets/bitcoin-commons-whitepaper.epub" class="btn btn-secondary" download>Download EPUB</a>
                 </div>
@@ -92,6 +94,298 @@
                         <h3>Your Implementation</h3>
                         <p>Build your own Bitcoin implementation using the Bitcoin Commons governance framework. Fork the governance model and customize for your organization.</p>
                         <a href="https://github.com/BTCDecoded/governance" target="_blank" rel="noopener" class="btn btn-secondary">Learn How to Adopt</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="fork-governance" class="fork-governance-section">
+            <div class="container">
+                <h2>Fork Your Governance</h2>
+                <p class="section-intro">Code is a commons. Forking should be as natural as breathing. Browse existing forks, start from a template, or create your own—all in one click.</p>
+                
+                <!-- Fork Marketplace Tabs -->
+                <div class="fork-tabs">
+                    <button class="fork-tab active" data-tab="marketplace">Browse Forks</button>
+                    <button class="fork-tab" data-tab="templates">Start from Template</button>
+                    <button class="fork-tab" data-tab="custom">Custom Fork</button>
+                    <button class="fork-tab" data-tab="genealogy">Fork Genealogy</button>
+                    <button class="fork-tab" data-tab="compare">Compare Forks</button>
+                </div>
+                
+                <!-- Fork Marketplace -->
+                <div id="marketplace-tab" class="fork-tab-content active">
+                    <div class="marketplace-header">
+                        <h3>Governance Fork Marketplace</h3>
+                        <p>Discover forks created by the community. See adoption stats, compare features, and fork with one click.</p>
+                    </div>
+                    
+                    <div class="marketplace-filters">
+                        <input type="text" id="fork-search" placeholder="Search forks..." class="search-input">
+                        <select id="fork-sort" class="sort-select">
+                            <option value="popular">Most Popular</option>
+                            <option value="recent">Recently Created</option>
+                            <option value="adoption">Highest Adoption</option>
+                            <option value="conservative">Most Conservative</option>
+                            <option value="progressive">Most Progressive</option>
+                        </select>
+                    </div>
+                    
+                    <div class="fork-cards-grid" id="fork-cards">
+                        <!-- Fork cards will be populated by JavaScript from registry -->
+                        <div class="fork-loading" style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-secondary);">
+                            Loading forks from registry...
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Templates Tab -->
+                <div id="templates-tab" class="fork-tab-content">
+                    <div class="templates-header">
+                        <h3>Start from a Template</h3>
+                        <p>Choose a pre-configured governance model. One click to fork, customize later if needed.</p>
+                    </div>
+                    
+                    <div class="template-grid">
+                        <div class="template-card" data-template="conservative">
+                            <div class="template-icon">🛡️</div>
+                            <h4>Conservative</h4>
+                            <p>Maximum security with higher thresholds</p>
+                            <ul class="template-features">
+                                <li>Tier 1: 4-of-5 signatures, 14 days</li>
+                                <li>Tier 2: 5-of-5 signatures, 60 days</li>
+                                <li>Tier 3: 6-of-7 signatures, 180 days</li>
+                                <li>Economic veto: 25% threshold</li>
+                            </ul>
+                            <button class="btn btn-primary template-fork-btn">Fork This Template</button>
+                        </div>
+                        
+                        <div class="template-card" data-template="balanced">
+                            <div class="template-icon">⚖️</div>
+                            <h4>Balanced (Default)</h4>
+                            <p>Standard Bitcoin Commons model</p>
+                            <ul class="template-features">
+                                <li>Tier 1: 3-of-5 signatures, 7 days</li>
+                                <li>Tier 2: 4-of-5 signatures, 30 days</li>
+                                <li>Tier 3: 5-of-5 signatures, 90 days</li>
+                                <li>Economic veto: 30% threshold</li>
+                            </ul>
+                            <button class="btn btn-primary template-fork-btn">Fork This Template</button>
+                        </div>
+                        
+                        <div class="template-card" data-template="agile">
+                            <div class="template-icon">⚡</div>
+                            <h4>Agile</h4>
+                            <p>Faster iteration for experimentation</p>
+                            <ul class="template-features">
+                                <li>Tier 1: 2-of-3 signatures, 3 days</li>
+                                <li>Tier 2: 3-of-5 signatures, 14 days</li>
+                                <li>Tier 3: 4-of-5 signatures, 60 days</li>
+                                <li>Economic veto: 35% threshold</li>
+                            </ul>
+                            <button class="btn btn-primary template-fork-btn">Fork This Template</button>
+                        </div>
+                        
+                        <div class="template-card" data-template="community">
+                            <div class="template-icon">👥</div>
+                            <h4>Community-Driven</h4>
+                            <p>Lower veto threshold, more network power</p>
+                            <ul class="template-features">
+                                <li>Tier 1: 3-of-5 signatures, 7 days</li>
+                                <li>Tier 2: 4-of-5 signatures, 30 days</li>
+                                <li>Tier 3: 5-of-5 signatures, 90 days</li>
+                                <li>Economic veto: 20% threshold</li>
+                            </ul>
+                            <button class="btn btn-primary template-fork-btn">Fork This Template</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Custom Fork Tab (existing) -->
+                <div id="custom-tab" class="fork-tab-content">
+                <div class="fork-tool-container">
+                    <div class="fork-tool-header">
+                        <h3>Customize Governance Ruleset</h3>
+                        <p>Adjust parameters below to create your custom governance model. All changes maintain Bitcoin consensus compatibility.</p>
+                    </div>
+                    
+                    <div class="fork-tool-content">
+                        <div class="fork-parameters">
+                            <div class="parameter-group">
+                                <h4>Tier 1: Routine Maintenance</h4>
+                                <div class="parameter-control">
+                                    <label>Signature Threshold</label>
+                                    <select id="tier1-signatures" class="param-select">
+                                        <option value="3-of-5" selected>3-of-5 (Default)</option>
+                                        <option value="4-of-5">4-of-5</option>
+                                        <option value="5-of-5">5-of-5</option>
+                                    </select>
+                                </div>
+                                <div class="parameter-control">
+                                    <label>Review Period (days)</label>
+                                    <input type="number" id="tier1-review" class="param-input" value="7" min="1" max="30">
+                                </div>
+                            </div>
+                            
+                            <div class="parameter-group">
+                                <h4>Tier 2: Feature Changes</h4>
+                                <div class="parameter-control">
+                                    <label>Signature Threshold</label>
+                                    <select id="tier2-signatures" class="param-select">
+                                        <option value="3-of-5">3-of-5</option>
+                                        <option value="4-of-5" selected>4-of-5 (Default)</option>
+                                        <option value="5-of-5">5-of-5</option>
+                                    </select>
+                                </div>
+                                <div class="parameter-control">
+                                    <label>Review Period (days)</label>
+                                    <input type="number" id="tier2-review" class="param-input" value="30" min="7" max="90">
+                                </div>
+                            </div>
+                            
+                            <div class="parameter-group">
+                                <h4>Tier 3: Consensus-Adjacent</h4>
+                                <div class="parameter-control">
+                                    <label>Signature Threshold</label>
+                                    <select id="tier3-signatures" class="param-select">
+                                        <option value="4-of-5">4-of-5</option>
+                                        <option value="5-of-5" selected>5-of-5 (Default)</option>
+                                    </select>
+                                </div>
+                                <div class="parameter-control">
+                                    <label>Review Period (days)</label>
+                                    <input type="number" id="tier3-review" class="param-input" value="90" min="30" max="180">
+                                </div>
+                                <div class="parameter-control">
+                                    <label>Economic Node Veto Threshold (%)</label>
+                                    <input type="number" id="tier3-veto" class="param-input" value="30" min="20" max="50" step="5">
+                                </div>
+                            </div>
+                            
+                            <div class="parameter-group">
+                                <h4>Ruleset Metadata</h4>
+                                <div class="parameter-control">
+                                    <label>Ruleset Name</label>
+                                    <input type="text" id="ruleset-name" class="param-input" placeholder="my-custom-governance" value="custom-governance-v1">
+                                </div>
+                                <div class="parameter-control">
+                                    <label>Version</label>
+                                    <input type="text" id="ruleset-version" class="param-input" placeholder="1.0.0" value="1.0.0" pattern="\d+\.\d+\.\d+">
+                                </div>
+                                <div class="parameter-control">
+                                    <label>Description</label>
+                                    <textarea id="ruleset-description" class="param-textarea" rows="3" placeholder="Custom governance ruleset for..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="fork-preview">
+                            <h4>Ruleset Preview</h4>
+                            <div class="preview-content">
+                                <pre id="ruleset-preview" class="ruleset-preview-code"></pre>
+                            </div>
+                            <div class="fork-actions">
+                                <button id="export-yaml" class="btn btn-primary">Export as YAML</button>
+                                <button id="export-json" class="btn btn-secondary">Export as JSON</button>
+                                <button id="download-ruleset" class="btn btn-outline">Download Ruleset</button>
+                                <button id="share-fork" class="btn btn-primary" style="margin-top: 0.5rem; width: 100%;">Share This Fork to the Commons</button>
+                            </div>
+                            <div class="fork-info">
+                                <p><strong>What happens next?</strong></p>
+                                <ol>
+                                    <li>Download your custom ruleset file</li>
+                                    <li>Configure your Bitcoin node with <code>--governance-ruleset=custom</code></li>
+                                    <li>Point to your ruleset file</li>
+                                    <li>Your node will validate Bitcoin consensus while using your governance rules</li>
+                                </ol>
+                                <p class="fork-note">💡 <strong>Remember:</strong> Governance forks don't affect Bitcoin consensus. All nodes validate the same blockchain, but use different governance rules for development decisions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                
+                <!-- Fork Genealogy Tab -->
+                <div id="genealogy-tab" class="fork-tab-content">
+                    <div class="genealogy-header">
+                        <h3>Fork Genealogy Tree</h3>
+                        <p>Visualize how governance forks relate to each other. See the evolution of the commons.</p>
+                    </div>
+                    
+                    <div class="genealogy-controls">
+                        <button id="genealogy-refresh" class="btn btn-outline">Refresh from Registry</button>
+                        <span class="genealogy-status" id="genealogy-status">Loading forks from registry...</span>
+                    </div>
+                    
+                    <div class="genealogy-container" id="genealogy-tree">
+                        <!-- Genealogy tree will be rendered here by JavaScript -->
+                        <div class="genealogy-loading">Loading fork genealogy...</div>
+                    </div>
+                    
+                    <div class="genealogy-legend">
+                        <h4>Legend</h4>
+                        <div class="legend-items">
+                            <div class="legend-item">
+                                <span class="legend-color default"></span>
+                                <span>Default/Root Fork</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color template"></span>
+                                <span>Template Fork</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color community"></span>
+                                <span>Community Fork</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color verified"></span>
+                                <span>Verified Fork</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Compare Forks Tab -->
+                <div id="compare-tab" class="fork-tab-content">
+                    <div class="compare-header">
+                        <h3>Compare Governance Forks</h3>
+                        <p>Side-by-side comparison of different governance models. See differences at a glance.</p>
+                    </div>
+                    
+                    <div class="compare-selectors">
+                        <select id="compare-fork1" class="compare-select">
+                            <option value="">Loading forks...</option>
+                        </select>
+                        <span class="compare-vs">vs</span>
+                        <select id="compare-fork2" class="compare-select">
+                            <option value="">Loading forks...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="compare-table" id="compare-results">
+                        <!-- Comparison table will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="fork-explanation">
+                    <h3>How Governance Forking Works</h3>
+                    <div class="explanation-grid">
+                        <div class="explanation-item">
+                            <h4>1. Export Current Ruleset</h4>
+                            <p>Download the current governance configuration as a versioned, signed package. This includes all tiers, maintainers, and economic node settings.</p>
+                        </div>
+                        <div class="explanation-item">
+                            <h4>2. Customize Parameters</h4>
+                            <p>Modify signature thresholds, review periods, or economic node veto requirements to match your organization's needs. Bitcoin consensus remains unchanged.</p>
+                        </div>
+                        <div class="explanation-item">
+                            <h4>3. Deploy Your Fork</h4>
+                            <p>Configure your Bitcoin node to use your custom ruleset. Your node validates the same Bitcoin blockchain but uses your governance rules for development decisions.</p>
+                        </div>
+                        <div class="explanation-item">
+                            <h4>4. Maintain Compatibility</h4>
+                            <p>All governance forks maintain Bitcoin consensus compatibility. Users can switch between rulesets without re-syncing the blockchain. Multiple governance models can coexist.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -261,7 +555,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>Bitcoin Commons uses a 5-tier constitutional governance model with graduated signature thresholds (3-of-5 for routine maintenance, up to 6-of-7 for consensus changes) and review periods (7 days to 365 days). All governance actions are cryptographically signed and transparently auditable. Users can fork governance rules if they disagree, creating exit competition.</p>
+                                    <p>Bitcoin Commons uses a 5-tier constitutional governance model with graduated signature thresholds (3-of-5 for routine maintenance, up to 6-of-7 for consensus changes) and review periods (7 days to 365 days). The system combines <strong>Layers</strong> (which repository) and <strong>Tiers</strong> (what type of change), using "most restrictive wins" for maximum security. All governance actions are cryptographically signed and transparently auditable. <strong>Economic nodes</strong> (mining pools, exchanges, custodians) can veto consensus-adjacent changes. Users can <strong>fork governance rulesets</strong> if they disagree, creating exit competition. A <strong>three-tiered emergency system</strong> provides proportional response to critical issues.</p>
                                 </div>
                             </div>
                             
@@ -399,7 +693,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>All governance actions require cryptographic signatures from maintainers. The governance-app (GitHub App) verifies signatures, enforces thresholds (e.g., 6-of-7), and blocks merges until requirements are met. This makes power visible and accountable: you can see who signed what, when.</p>
+                                    <p>All governance actions require cryptographic signatures from maintainers. The bllvm-commons (GitHub App) verifies signatures, enforces thresholds (e.g., 6-of-7), and blocks merges until requirements are met. This makes power visible and accountable: you can see who signed what, when.</p>
                                 </div>
                             </div>
                             
@@ -432,6 +726,46 @@
                                     <p>Merge mining allows miners to mine multiple blockchains simultaneously using the same proof-of-work. Bitcoin Commons implementations can merge-mine with Bitcoin, providing economic sustainability without changing Bitcoin's consensus. 1% of merged chain rewards fund development.</p>
                                 </div>
                             </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-question" aria-expanded="false">
+                                    <span>What are economic nodes?</span>
+                                    <span class="faq-icon">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Economic nodes represent Bitcoin's economic stakeholders (mining pools, exchanges, custodians) and provide veto power over consensus-adjacent changes. They ensure governance decisions align with economic incentives. For Tier 3+ changes, economic nodes can veto if 30%+ hashpower or 40%+ economic activity signals opposition. This protects users by ensuring major changes consider economic impact.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-question" aria-expanded="false">
+                                    <span>How does governance forking work?</span>
+                                    <span class="faq-icon">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Governance forks allow users to choose different governance rulesets without affecting Bitcoin consensus. Users can export governance rulesets as versioned, signed packages and fork to a better governance model if they disagree with decisions. This provides an escape hatch: captured governance loses users to better-governed implementations. The threat of forking prevents capture while maintaining Bitcoin consensus immutability.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-question" aria-expanded="false">
+                                    <span>How do layers and tiers combine in governance?</span>
+                                    <span class="faq-icon">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Bitcoin Commons uses a dual-dimensional system: <strong>Layers</strong> (which repository) and <strong>Tiers</strong> (what type of change). When both apply, the system uses "most restrictive wins" - taking the highest signature threshold and longest review period. For example, a bug fix in the Protocol Engine (Layer 3) requires 4-of-5 signatures and 90 days, even though Tier 1 (routine maintenance) normally requires only 3-of-5 and 7 days. This ensures maximum security for sensitive repositories.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-question" aria-expanded="false">
+                                    <span>How does the emergency tier system work?</span>
+                                    <span class="faq-icon">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Bitcoin Commons uses a three-tiered emergency response system for proportional handling of critical issues: <strong>Tier 1: Critical Emergency</strong> (network-threatening, 0 days, 4-of-7 maintainers, 7 day max), <strong>Tier 2: Urgent Security</strong> (security issues, 7 days, 5-of-7 maintainers, 30 day max), <strong>Tier 3: Elevated Priority</strong> (important but not critical, 30 days, 6-of-7 maintainers, 90 day max). This ensures rapid response to critical threats while maintaining appropriate review for less urgent issues.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -455,7 +789,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>Governance rules defined, governance-app implemented, cryptographic primitives ready. However, governance is not yet activated (test keys only) and keyholders are not yet onboarded.</p>
+                                    <p>All core governance infrastructure is implemented: bllvm-commons (GitHub integration, signature verification, status checks), economic node system (veto power for consensus-adjacent changes), governance fork capability (ruleset export and forking), emergency tier system (three-tiered response), and layer+tier combination model. However, governance is not yet activated (test keys only) and keyholders are not yet onboarded. Phase 2 activation will proceed when a suitable cohort of keyholders has been found.</p>
                                 </div>
                             </div>
                             
@@ -501,7 +835,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>All code is open source on GitHub under the <a href="https://github.com/BTCDecoded" target="_blank" rel="noopener">BTCDecoded organization</a>. Key repositories: BLLVM (bllvm-spec/Orange Paper, bllvm-consensus, bllvm-protocol, bllvm-node, bllvm-sdk) and Commons (governance, governance-app).</p>
+                                    <p>All code is open source on GitHub under the <a href="https://github.com/BTCDecoded" target="_blank" rel="noopener">BTCDecoded organization</a>. Key repositories: BLLVM (bllvm-spec/Orange Paper, bllvm-consensus, bllvm-protocol, bllvm-node, bllvm-sdk) and Commons (governance, bllvm-commons).</p>
                                 </div>
                             </div>
                             
@@ -511,7 +845,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p><a href="/whitepaper.html">White Paper</a> for complete technical and governance overview, <a href="https://github.com/BTCDecoded" target="_blank" rel="noopener">GitHub Documentation</a> for technical implementation details, and <a href="https://github.com/BTCDecoded/governance" target="_blank" rel="noopener">Governance Docs</a> for governance rules and processes.</p>
+                                    <p><a href="/whitepaper.html">White Paper</a> for complete technical and governance overview, <a href="https://docs.thebitcoincommons.org" target="_blank" rel="noopener">Documentation</a> for unified technical documentation, and <a href="https://github.com/BTCDecoded/governance" target="_blank" rel="noopener">Governance Docs</a> for governance rules and processes.</p>
                                 </div>
                             </div>
                         </div>
@@ -589,7 +923,9 @@
         <div class="container">
             <div class="footer-links">
                 <a href="https://btcdecoded.org" target="_blank" rel="noopener">BTCDecoded.org</a>
+                <a href="https://docs.thebitcoincommons.org" target="_blank" rel="noopener">Documentation</a>
                 <a href="/whitepaper.html">White Paper</a>
+                <a href="#fork-governance">Fork Governance</a>
                 <a href="#faq">FAQ</a>
             </div>
             
@@ -744,6 +1080,983 @@
                     }
                 });
             }
+            
+            // Fork Governance Tool
+            function updateRulesetPreview() {
+                const ruleset = {
+                    version: "1.0",
+                    ruleset_id: document.getElementById('ruleset-name').value || 'custom-governance-v1',
+                    ruleset_version: document.getElementById('ruleset-version').value || '1.0.0',
+                    created_at: new Date().toISOString(),
+                    description: document.getElementById('ruleset-description').value || '',
+                    action_tiers: {
+                        tier_1_routine: {
+                            name: "Routine Maintenance",
+                            signature_threshold: document.getElementById('tier1-signatures').value,
+                            review_period_days: parseInt(document.getElementById('tier1-review').value)
+                        },
+                        tier_2_features: {
+                            name: "Feature Changes",
+                            signature_threshold: document.getElementById('tier2-signatures').value,
+                            review_period_days: parseInt(document.getElementById('tier2-review').value)
+                        },
+                        tier_3_consensus_adjacent: {
+                            name: "Consensus-Adjacent",
+                            signature_threshold: document.getElementById('tier3-signatures').value,
+                            review_period_days: parseInt(document.getElementById('tier3-review').value),
+                            economic_node_veto: {
+                                mining_threshold: parseFloat(document.getElementById('tier3-veto').value)
+                            }
+                        }
+                    },
+                    metadata: {
+                        exported_by: "thebitcoincommons.org",
+                        source_repository: "BTCDecoded/governance",
+                        export_tool_version: "1.0.0"
+                    }
+                };
+                
+                document.getElementById('ruleset-preview').textContent = JSON.stringify(ruleset, null, 2);
+                return ruleset;
+            }
+            
+            // Update preview on any change
+            const forkInputs = document.querySelectorAll('#fork-governance input, #fork-governance select, #fork-governance textarea');
+            forkInputs.forEach(input => {
+                input.addEventListener('input', updateRulesetPreview);
+                input.addEventListener('change', updateRulesetPreview);
+            });
+            
+            // Initial preview
+            updateRulesetPreview();
+            
+            // Export functions
+            document.getElementById('export-yaml').addEventListener('click', function() {
+                const ruleset = updateRulesetPreview();
+                // Simple YAML conversion (basic implementation)
+                let yaml = `# Governance Ruleset Export\n`;
+                yaml += `# Generated by thebitcoincommons.org\n`;
+                yaml += `# ${new Date().toISOString()}\n\n`;
+                yaml += `version: "${ruleset.version}"\n`;
+                yaml += `ruleset_id: "${ruleset.ruleset_id}"\n`;
+                yaml += `ruleset_version: "${ruleset.ruleset_version}"\n`;
+                yaml += `created_at: "${ruleset.created_at}"\n`;
+                if (ruleset.description) {
+                    yaml += `description: "${ruleset.description}"\n`;
+                }
+                yaml += `\naction_tiers:\n`;
+                yaml += `  tier_1_routine:\n`;
+                yaml += `    name: "${ruleset.action_tiers.tier_1_routine.name}"\n`;
+                yaml += `    signature_threshold: "${ruleset.action_tiers.tier_1_routine.signature_threshold}"\n`;
+                yaml += `    review_period_days: ${ruleset.action_tiers.tier_1_routine.review_period_days}\n`;
+                yaml += `  tier_2_features:\n`;
+                yaml += `    name: "${ruleset.action_tiers.tier_2_features.name}"\n`;
+                yaml += `    signature_threshold: "${ruleset.action_tiers.tier_2_features.signature_threshold}"\n`;
+                yaml += `    review_period_days: ${ruleset.action_tiers.tier_2_features.review_period_days}\n`;
+                yaml += `  tier_3_consensus_adjacent:\n`;
+                yaml += `    name: "${ruleset.action_tiers.tier_3_consensus_adjacent.name}"\n`;
+                yaml += `    signature_threshold: "${ruleset.action_tiers.tier_3_consensus_adjacent.signature_threshold}"\n`;
+                yaml += `    review_period_days: ${ruleset.action_tiers.tier_3_consensus_adjacent.review_period_days}\n`;
+                yaml += `    economic_node_veto:\n`;
+                yaml += `      mining_threshold: ${ruleset.action_tiers.tier_3_consensus_adjacent.economic_node_veto.mining_threshold}\n`;
+                
+                const blob = new Blob([yaml], { type: 'text/yaml' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${ruleset.ruleset_id}-${ruleset.ruleset_version}.yml`;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+            
+            document.getElementById('export-json').addEventListener('click', function() {
+                const ruleset = updateRulesetPreview();
+                const json = JSON.stringify(ruleset, null, 2);
+                const blob = new Blob([json], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${ruleset.ruleset_id}-${ruleset.ruleset_version}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+            
+            document.getElementById('download-ruleset').addEventListener('click', function() {
+                document.getElementById('export-json').click();
+            });
+            
+            // Fork Templates Data
+            const forkTemplates = {
+                conservative: {
+                    name: "Conservative Governance",
+                    tier1: { signatures: "4-of-5", review: 14 },
+                    tier2: { signatures: "5-of-5", review: 60 },
+                    tier3: { signatures: "6-of-7", review: 180, veto: 25 }
+                },
+                balanced: {
+                    name: "Balanced (Default)",
+                    tier1: { signatures: "3-of-5", review: 7 },
+                    tier2: { signatures: "4-of-5", review: 30 },
+                    tier3: { signatures: "5-of-5", review: 90, veto: 30 }
+                },
+                agile: {
+                    name: "Agile Governance",
+                    tier1: { signatures: "2-of-3", review: 3 },
+                    tier2: { signatures: "3-of-5", review: 14 },
+                    tier3: { signatures: "4-of-5", review: 60, veto: 35 }
+                },
+                community: {
+                    name: "Community-Driven",
+                    tier1: { signatures: "3-of-5", review: 7 },
+                    tier2: { signatures: "4-of-5", review: 30 },
+                    tier3: { signatures: "5-of-5", review: 90, veto: 20 }
+                },
+                default: {
+                    name: "BTCDecoded Default",
+                    tier1: { signatures: "3-of-5", review: 7 },
+                    tier2: { signatures: "4-of-5", review: 30 },
+                    tier3: { signatures: "5-of-5", review: 90, veto: 30 }
+                }
+            };
+            
+            // Tab Switching
+            document.querySelectorAll('.fork-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    
+                    // Update tab buttons
+                    document.querySelectorAll('.fork-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update tab content
+                    document.querySelectorAll('.fork-tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(targetTab + '-tab').classList.add('active');
+                });
+            });
+            
+            // Template Fork Buttons - One-Click Fork
+            document.querySelectorAll('.template-fork-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const template = this.closest('.template-card').getAttribute('data-template');
+                    // One-click fork: load template, update preview, and auto-download
+                    loadTemplate(template);
+                    updateRulesetPreview();
+                    // Auto-download after a brief delay to ensure preview is updated
+                    setTimeout(() => {
+                        document.getElementById('export-json').click();
+                        showDeploymentModal(template);
+                    }, 100);
+                });
+            });
+            
+            // Deployment Instructions Modal
+            function showDeploymentModal(forkType) {
+                const template = forkTemplates[forkType] || forkTemplates.balanced;
+                const rulesetName = forkType + '-governance-v1';
+                
+                const modal = document.createElement('div');
+                modal.className = 'deployment-modal';
+                modal.style.cssText = 'position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;';
+                
+                modal.innerHTML = `
+                    <div class="deployment-modal-content" style="background-color: var(--bg-primary); margin: 2rem; padding: 2rem; border-radius: 8px; max-width: 600px; max-height: 90vh; overflow-y: auto; position: relative;">
+                        <button class="deployment-modal-close" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary);">&times;</button>
+                        <h3 style="margin-top: 0;">✅ Fork Created: ${template.name}</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Your ruleset file has been downloaded. Here's how to deploy it:</p>
+                        
+                        <div class="deployment-steps">
+                            <div class="deployment-step">
+                                <h4>1. Copy your ruleset file</h4>
+                                <p>The file <code>${rulesetName}-1.0.0.json</code> has been downloaded to your computer.</p>
+                            </div>
+                            
+                            <div class="deployment-step">
+                                <h4>2. Move it to your node directory</h4>
+                                <div class="code-block">
+                                    <code>mv ${rulesetName}-1.0.0.json ~/.bllvm-node/governance-rulesets/</code>
+                                    <button class="copy-btn" data-copy="mv ${rulesetName}-1.0.0.json ~/.bllvm-node/governance-rulesets/">Copy</button>
+                                </div>
+                            </div>
+                            
+                            <div class="deployment-step">
+                                <h4>3. Start your node with the ruleset</h4>
+                                <div class="code-block">
+                                    <code>bllvm-node --governance-ruleset=${rulesetName}</code>
+                                    <button class="copy-btn" data-copy="bllvm-node --governance-ruleset=${rulesetName}">Copy</button>
+                                </div>
+                            </div>
+                            
+                            <div class="deployment-step">
+                                <h4>4. Verify it's working</h4>
+                                <div class="code-block">
+                                    <code>bllvm-node --governance-status</code>
+                                    <button class="copy-btn" data-copy="bllvm-node --governance-status">Copy</button>
+                                </div>
+                                <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.9rem;">You should see your ruleset name and version.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="deployment-note" style="margin-top: 1.5rem; padding: 1rem; background-color: var(--bg-secondary); border-radius: 6px; border-left: 3px solid var(--bitcoin-orange);">
+                            <p style="margin: 0;"><strong>💡 Remember:</strong> Governance forks don't affect Bitcoin consensus. Your node validates the same blockchain as everyone else, but uses your governance rules for development decisions.</p>
+                        </div>
+                        
+                        <div class="deployment-actions" style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                            <button class="btn btn-primary" onclick="this.closest('.deployment-modal').remove()">Got it!</button>
+                            <a href="https://github.com/BTCDecoded/governance/blob/main/architecture/GOVERNANCE_FORK.md" target="_blank" class="btn btn-outline">Read Full Guide</a>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                // Close button
+                modal.querySelector('.deployment-modal-close').addEventListener('click', () => modal.remove());
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) modal.remove();
+                });
+                
+                // Copy buttons
+                modal.querySelectorAll('.copy-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const code = this.getAttribute('data-copy');
+                        navigator.clipboard.writeText(code).then(() => {
+                            const originalText = this.textContent;
+                            this.textContent = 'Copied!';
+                            setTimeout(() => {
+                                this.textContent = originalText;
+                            }, 2000);
+                        });
+                    });
+                });
+            }
+            
+            // Load Template Function
+            function loadTemplate(templateName) {
+                const template = forkTemplates[templateName];
+                if (!template) return;
+                
+                // Set form values
+                document.getElementById('tier1-signatures').value = template.tier1.signatures;
+                document.getElementById('tier1-review').value = template.tier1.review;
+                document.getElementById('tier2-signatures').value = template.tier2.signatures;
+                document.getElementById('tier2-review').value = template.tier2.review;
+                document.getElementById('tier3-signatures').value = template.tier3.signatures;
+                document.getElementById('tier3-review').value = template.tier3.review;
+                document.getElementById('tier3-veto').value = template.tier3.veto;
+                document.getElementById('ruleset-name').value = templateName + '-governance-v1';
+                document.getElementById('ruleset-description').value = `Forked from ${template.name} template`;
+                
+                // Update preview
+                updateRulesetPreview();
+            }
+            
+            // Comparison Function (updated to use registry)
+            function updateComparison() {
+                if (forkRegistry && forkRegistry.length > 0) {
+                    updateComparisonFromRegistry(forkRegistry);
+                } else {
+                    // Fallback to templates
+                    const fork1 = document.getElementById('compare-fork1').value;
+                    const fork2 = document.getElementById('compare-fork2').value;
+                    
+                    if (fork1 === fork2) {
+                        document.getElementById('compare-results').innerHTML = '<p class="compare-error">Please select two different forks to compare.</p>';
+                        return;
+                    }
+                    
+                    const t1 = forkTemplates[fork1];
+                    const t2 = forkTemplates[fork2];
+                    
+                    if (!t1 || !t2) return;
+                    
+                    const comparison = `
+                        <table class="compare-table-content">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>${t1.name}</th>
+                                    <th>${t2.name}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Tier 1: Signature Threshold</strong></td>
+                                    <td>${t1.tier1.signatures}</td>
+                                    <td>${t2.tier1.signatures}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tier 1: Review Period</strong></td>
+                                    <td>${t1.tier1.review} days</td>
+                                    <td>${t2.tier1.review} days</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tier 2: Signature Threshold</strong></td>
+                                    <td>${t1.tier2.signatures}</td>
+                                    <td>${t2.tier2.signatures}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tier 2: Review Period</strong></td>
+                                    <td>${t1.tier2.review} days</td>
+                                    <td>${t2.tier2.review} days</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tier 3: Signature Threshold</strong></td>
+                                    <td>${t1.tier3.signatures}</td>
+                                    <td>${t2.tier3.signatures}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tier 3: Review Period</strong></td>
+                                    <td>${t1.tier3.review} days</td>
+                                    <td>${t2.tier3.review} days</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Economic Node Veto Threshold</strong></td>
+                                    <td>${t1.tier3.veto}%</td>
+                                    <td>${t2.tier3.veto}%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    `;
+                    
+                    document.getElementById('compare-results').innerHTML = comparison;
+                }
+            }
+            
+            // Comparison selectors
+            document.getElementById('compare-fork1').addEventListener('change', updateComparison);
+            document.getElementById('compare-fork2').addEventListener('change', updateComparison);
+            
+            // Load registry on page load for marketplace and compare
+            let registryLoaded = false;
+            async function initializeRegistry() {
+                if (registryLoaded) return;
+                try {
+                    const forks = await loadForkRegistry();
+                    forkRegistry = forks;
+                    renderMarketplaceCards(forks);
+                    populateCompareDropdowns(forks);
+                    registryLoaded = true;
+                } catch (error) {
+                    console.error('Failed to initialize registry:', error);
+                }
+            }
+            
+            // Fork Registry - Load from GitHub
+            const FORK_REGISTRY_URL = 'https://raw.githubusercontent.com/BTCDecoded/governance/main/fork-registry.yml';
+            let forkRegistry = null;
+            
+            // Initialize on page load
+            initializeRegistry();
+            
+            // YAML parser (simple implementation for basic YAML)
+            function parseYAML(yamlText) {
+                // Simple YAML parser for our specific format
+                const forks = [];
+                const lines = yamlText.split('\n');
+                let currentFork = null;
+                let inForks = false;
+                
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (line === 'forks:') {
+                        inForks = true;
+                        continue;
+                    }
+                    if (!inForks) continue;
+                    if (line.startsWith('- id:')) {
+                        if (currentFork) forks.push(currentFork);
+                        currentFork = { id: line.split(':')[1].trim() };
+                    } else if (line.startsWith('name:')) {
+                        if (currentFork) currentFork.name = line.split(':').slice(1).join(':').trim().replace(/^["']|["']$/g, '');
+                    } else if (line.startsWith('description:')) {
+                        if (currentFork) currentFork.description = line.split(':').slice(1).join(':').trim().replace(/^["']|["']$/g, '');
+                    } else if (line.startsWith('forked_from:')) {
+                        if (currentFork) {
+                            const value = line.split(':').slice(1).join(':').trim();
+                            currentFork.forked_from = value === 'null' ? null : value.replace(/^["']|["']$/g, '');
+                        }
+                    } else if (line.startsWith('created_by:')) {
+                        if (currentFork) currentFork.created_by = line.split(':').slice(1).join(':').trim().replace(/^["']|["']$/g, '');
+                    } else if (line.startsWith('github:')) {
+                        if (currentFork) currentFork.github = line.split(':').slice(1).join(':').trim().replace(/^["']|["']$/g, '');
+                    } else if (line.startsWith('tier1:')) {
+                        if (currentFork) currentFork.tier1 = line.split(':').slice(1).join(':').trim().replace(/^["']|["']$/g, '');
+                    } else if (line.startsWith('tier1_review:')) {
+                        if (currentFork) currentFork.tier1_review = parseInt(line.split(':')[1].trim());
+                    } else if (line.startsWith('tier2:')) {
+                        if (currentFork) currentFork.tier2 = line.split(':').slice(1).join(':').trim().replace(/^["']|["']$/g, '');
+                    } else if (line.startsWith('tier2_review:')) {
+                        if (currentFork) currentFork.tier2_review = parseInt(line.split(':')[1].trim());
+                    } else if (line.startsWith('tier3:')) {
+                        if (currentFork) currentFork.tier3 = line.split(':').slice(1).join(':').trim().replace(/^["']|["']$/g, '');
+                    } else if (line.startsWith('tier3_review:')) {
+                        if (currentFork) currentFork.tier3_review = parseInt(line.split(':')[1].trim());
+                    } else if (line.startsWith('tier3_veto:')) {
+                        if (currentFork) currentFork.tier3_veto = parseInt(line.split(':')[1].trim());
+                    } else if (line.startsWith('verified:')) {
+                        if (currentFork) currentFork.verified = line.split(':')[1].trim() === 'true';
+                    } else if (line.startsWith('created_at:')) {
+                        if (currentFork) currentFork.created_at = line.split(':').slice(1).join(':').trim().replace(/^["']|["']$/g, '');
+                    }
+                }
+                if (currentFork) forks.push(currentFork);
+                return forks;
+            }
+            
+            // Load fork registry with error handling
+            async function loadForkRegistry() {
+                try {
+                    // Add timeout for fetch
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+                    
+                    const response = await fetch(FORK_REGISTRY_URL, {
+                        signal: controller.signal,
+                        headers: {
+                            'Accept': 'text/yaml, text/plain, */*'
+                        }
+                    });
+                    clearTimeout(timeoutId);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    const yamlText = await response.text();
+                    if (!yamlText || yamlText.trim().length === 0) {
+                        throw new Error('Registry file is empty');
+                    }
+                    
+                    forkRegistry = parseYAML(yamlText);
+                    
+                    // Validate parsed data
+                    if (!Array.isArray(forkRegistry) || forkRegistry.length === 0) {
+                        throw new Error('No forks found in registry');
+                    }
+                    
+                    // Validate each fork has required fields
+                    forkRegistry = forkRegistry.filter(fork => {
+                        if (!fork.id || !fork.name) {
+                            console.warn('Skipping fork with missing id or name:', fork);
+                            return false;
+                        }
+                        return true;
+                    });
+                    
+                    return forkRegistry;
+                } catch (error) {
+                    console.error('Error loading fork registry:', error);
+                    // Fallback to templates
+                    return Object.keys(forkTemplates).map(id => ({
+                        id,
+                        name: forkTemplates[id].name,
+                        forked_from: id === 'default' ? null : 'default',
+                        verified: id === 'default',
+                        created_by: 'BTCDecoded',
+                        tier1: forkTemplates[id].tier1.signatures,
+                        tier1_review: forkTemplates[id].tier1.review,
+                        tier2: forkTemplates[id].tier2.signatures,
+                        tier2_review: forkTemplates[id].tier2.review,
+                        tier3: forkTemplates[id].tier3.signatures,
+                        tier3_review: forkTemplates[id].tier3.review,
+                        tier3_veto: forkTemplates[id].tier3.veto,
+                        description: forkTemplates[id].name
+                    }));
+                }
+            }
+            
+            // Render marketplace cards from registry
+            function renderMarketplaceCards(forks) {
+                const container = document.getElementById('fork-cards');
+                if (!forks || forks.length === 0) {
+                    container.innerHTML = '<div class="fork-error" style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-secondary);">No forks found in registry.</div>';
+                    return;
+                }
+                
+                let html = '';
+                forks.forEach(fork => {
+                    const isDefault = fork.id === 'default';
+                    const isTemplate = fork.created_by === 'BTCDecoded' && !isDefault;
+                    const cardClass = isDefault ? 'featured' : (isTemplate ? 'template' : 'community');
+                    const badgeClass = isDefault ? 'default' : (isTemplate ? 'template' : 'community');
+                    const badgeText = isDefault ? 'Default' : (isTemplate ? 'Template' : 'Community');
+                    
+                    html += `
+                        <div class="fork-card ${cardClass}" data-fork-id="${fork.id}">
+                            <div class="fork-card-header">
+                                <h4>${fork.name || fork.id}</h4>
+                                <span class="fork-badge ${badgeClass}">${badgeText}</span>
+                                ${fork.verified ? '<span class="fork-badge verified">✓ Verified</span>' : ''}
+                            </div>
+                            <p class="fork-description">${fork.description || 'No description available'}</p>
+                            <div class="fork-stats">
+                                <div class="stat">
+                                    <span class="stat-label">Adoption</span>
+                                    <span class="stat-value">${isDefault ? '100%' : '0%'}</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Nodes</span>
+                                    <span class="stat-value">${isDefault ? 'All' : '0'}</span>
+                                </div>
+                            </div>
+                            <div class="fork-features">
+                                ${fork.tier1 ? `<span class="feature-tag">Tier 1: ${fork.tier1}</span>` : ''}
+                                ${fork.tier2 ? `<span class="feature-tag">Tier 2: ${fork.tier2}</span>` : ''}
+                                ${fork.tier3 ? `<span class="feature-tag">Tier 3: ${fork.tier3}</span>` : ''}
+                                ${fork.tier3_veto ? `<span class="feature-tag">Veto: ${fork.tier3_veto}%</span>` : ''}
+                            </div>
+                            <button class="btn ${isDefault ? 'btn-outline' : 'btn-primary'} fork-btn" data-fork="${fork.id}">${isDefault ? 'View Details' : 'Fork This'}</button>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = html;
+                
+                // Re-attach event listeners for fork buttons
+                document.querySelectorAll('.fork-btn[data-fork]').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const forkId = this.getAttribute('data-fork');
+                        if (forkId === 'default') {
+                            // Show details or switch to compare
+                            return;
+                        }
+                        // Load fork from registry and fork it
+                        const fork = forks.find(f => f.id === forkId);
+                        if (fork) {
+                            loadForkFromRegistry(fork);
+                            updateRulesetPreview();
+                            setTimeout(() => {
+                                document.getElementById('export-json').click();
+                                showDeploymentModal(forkId);
+                            }, 100);
+                        }
+                    });
+                });
+                
+                // Re-attach search/filter
+                const searchInput = document.getElementById('fork-search');
+                const sortSelect = document.getElementById('fork-sort');
+                if (searchInput && sortSelect) {
+                    searchInput.addEventListener('input', () => filterAndSortForks(forks));
+                    sortSelect.addEventListener('change', () => filterAndSortForks(forks));
+                }
+            }
+            
+            // Populate compare dropdowns from registry
+            function populateCompareDropdowns(forks) {
+                const select1 = document.getElementById('compare-fork1');
+                const select2 = document.getElementById('compare-fork2');
+                
+                if (!select1 || !select2 || !forks || forks.length === 0) return;
+                
+                // Clear existing options
+                select1.innerHTML = '';
+                select2.innerHTML = '';
+                
+                // Add options
+                forks.forEach(fork => {
+                    const option1 = document.createElement('option');
+                    option1.value = fork.id;
+                    option1.textContent = fork.name || fork.id;
+                    select1.appendChild(option1);
+                    
+                    const option2 = document.createElement('option');
+                    option2.value = fork.id;
+                    option2.textContent = fork.name || fork.id;
+                    select2.appendChild(option2);
+                });
+                
+                // Set defaults
+                if (forks.length > 0) {
+                    select1.value = forks[0].id;
+                    if (forks.length > 1) {
+                        select2.value = forks[1].id;
+                    } else {
+                        select2.value = forks[0].id;
+                    }
+                }
+                
+                // Update comparison
+                updateComparisonFromRegistry(forks);
+            }
+            
+            // Load fork data into form from registry
+            function loadForkFromRegistry(fork) {
+                if (!fork) return;
+                
+                // Parse signature thresholds
+                const parseSignatures = (sig) => {
+                    if (!sig) return '3-of-5';
+                    return sig;
+                };
+                
+                document.getElementById('tier1-signatures').value = parseSignatures(fork.tier1);
+                document.getElementById('tier1-review').value = fork.tier1_review || 7;
+                document.getElementById('tier2-signatures').value = parseSignatures(fork.tier2);
+                document.getElementById('tier2-review').value = fork.tier2_review || 30;
+                document.getElementById('tier3-signatures').value = parseSignatures(fork.tier3);
+                document.getElementById('tier3-review').value = fork.tier3_review || 90;
+                document.getElementById('tier3-veto').value = fork.tier3_veto || 30;
+                document.getElementById('ruleset-name').value = fork.id + '-governance-v1';
+                document.getElementById('ruleset-description').value = fork.description || `Forked from ${fork.name || fork.id}`;
+            }
+            
+            // Update comparison using registry data
+            function updateComparisonFromRegistry(forks) {
+                const fork1Id = document.getElementById('compare-fork1').value;
+                const fork2Id = document.getElementById('compare-fork2').value;
+                
+                if (!fork1Id || !fork2Id) return;
+                
+                if (fork1Id === fork2Id) {
+                    document.getElementById('compare-results').innerHTML = '<p class="compare-error">Please select two different forks to compare.</p>';
+                    return;
+                }
+                
+                const fork1 = forks.find(f => f.id === fork1Id);
+                const fork2 = forks.find(f => f.id === fork2Id);
+                
+                if (!fork1 || !fork2) return;
+                
+                const comparison = `
+                    <table class="compare-table-content">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>${fork1.name || fork1.id}</th>
+                                <th>${fork2.name || fork2.id}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Tier 1: Signature Threshold</strong></td>
+                                <td>${fork1.tier1 || 'N/A'}</td>
+                                <td>${fork2.tier1 || 'N/A'}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tier 1: Review Period</strong></td>
+                                <td>${fork1.tier1_review || 'N/A'} days</td>
+                                <td>${fork2.tier1_review || 'N/A'} days</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tier 2: Signature Threshold</strong></td>
+                                <td>${fork1.tier2 || 'N/A'}</td>
+                                <td>${fork2.tier2 || 'N/A'}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tier 2: Review Period</strong></td>
+                                <td>${fork1.tier2_review || 'N/A'} days</td>
+                                <td>${fork2.tier2_review || 'N/A'} days</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tier 3: Signature Threshold</strong></td>
+                                <td>${fork1.tier3 || 'N/A'}</td>
+                                <td>${fork2.tier3 || 'N/A'}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tier 3: Review Period</strong></td>
+                                <td>${fork1.tier3_review || 'N/A'} days</td>
+                                <td>${fork2.tier3_review || 'N/A'} days</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Economic Node Veto Threshold</strong></td>
+                                <td>${fork1.tier3_veto || 'N/A'}%</td>
+                                <td>${fork2.tier3_veto || 'N/A'}%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+                
+                document.getElementById('compare-results').innerHTML = comparison;
+            }
+            
+            // Enhanced search and filter for registry data
+            function filterAndSortForks(forks) {
+                if (!forks) return;
+                
+                const searchTerm = document.getElementById('fork-search')?.value.toLowerCase() || '';
+                const sortBy = document.getElementById('fork-sort')?.value || 'popular';
+                const cards = document.querySelectorAll('.fork-card[data-fork-id]');
+                
+                let visibleCards = Array.from(cards).filter(card => {
+                    const forkId = card.getAttribute('data-fork-id');
+                    const fork = forks.find(f => f.id === forkId);
+                    if (!fork) return false;
+                    
+                    const title = (fork.name || fork.id).toLowerCase();
+                    const description = (fork.description || '').toLowerCase();
+                    return title.includes(searchTerm) || description.includes(searchTerm);
+                });
+                
+                // Sort cards
+                if (sortBy === 'popular') {
+                    // Default order (default first, then by verified, then by name)
+                    visibleCards.sort((a, b) => {
+                        const aId = a.getAttribute('data-fork-id');
+                        const bId = b.getAttribute('data-fork-id');
+                        const aFork = forks.find(f => f.id === aId);
+                        const bFork = forks.find(f => f.id === bId);
+                        
+                        if (aId === 'default') return -1;
+                        if (bId === 'default') return 1;
+                        if (aFork?.verified && !bFork?.verified) return -1;
+                        if (!aFork?.verified && bFork?.verified) return 1;
+                        return (aFork?.name || aId).localeCompare(bFork?.name || bId);
+                    });
+                } else if (sortBy === 'recent') {
+                    visibleCards.sort((a, b) => {
+                        const aId = a.getAttribute('data-fork-id');
+                        const bId = b.getAttribute('data-fork-id');
+                        const aFork = forks.find(f => f.id === aId);
+                        const bFork = forks.find(f => f.id === bId);
+                        const aDate = aFork?.created_at || '';
+                        const bDate = bFork?.created_at || '';
+                        return bDate.localeCompare(aDate);
+                    });
+                } else if (sortBy === 'conservative') {
+                    visibleCards.sort((a, b) => {
+                        const aId = a.getAttribute('data-fork-id');
+                        const bId = b.getAttribute('data-fork-id');
+                        const aFork = forks.find(f => f.id === aId);
+                        const bFork = forks.find(f => f.id === bId);
+                        // Higher tier3 review = more conservative
+                        return (bFork?.tier3_review || 0) - (aFork?.tier3_review || 0);
+                    });
+                }
+                
+                // Hide all, then show filtered
+                cards.forEach(card => {
+                    card.style.display = 'none';
+                });
+                visibleCards.forEach(card => {
+                    card.style.display = 'block';
+                });
+            }
+            
+            // Render Genealogy Tree
+            function renderGenealogyTree(forks) {
+                const container = document.getElementById('genealogy-tree');
+                if (!forks || forks.length === 0) {
+                    container.innerHTML = '<p class="genealogy-error">No forks found in registry.</p>';
+                    return;
+                }
+                
+                // Build tree structure
+                const forkMap = new Map();
+                const rootForks = [];
+                
+                forks.forEach(fork => {
+                    forkMap.set(fork.id, fork);
+                });
+                
+                forks.forEach(fork => {
+                    if (!fork.forked_from || !forkMap.has(fork.forked_from)) {
+                        if (!fork.forked_from) rootForks.push(fork);
+                    }
+                });
+                
+                // If no root, use first fork
+                if (rootForks.length === 0 && forks.length > 0) {
+                    rootForks.push(forks.find(f => f.id === 'default') || forks[0]);
+                }
+                
+                function renderForkNode(fork, level = 0) {
+                    const isRoot = level === 0;
+                    const children = forks.filter(f => f.forked_from === fork.id);
+                    const forkType = fork.verified ? 'verified' : (fork.id === 'default' ? 'default' : (fork.created_by === 'BTCDecoded' ? 'template' : 'community'));
+                    
+                    let html = `
+                        <div class="genealogy-node ${forkType}" data-level="${level}">
+                            <div class="genealogy-node-content">
+                                <div class="genealogy-node-header">
+                                    <h4>${fork.name || fork.id}</h4>
+                                    ${fork.verified ? '<span class="genealogy-badge verified">✓ Verified</span>' : ''}
+                                    ${fork.id === 'default' ? '<span class="genealogy-badge default">Root</span>' : ''}
+                                </div>
+                                <p class="genealogy-node-desc">${fork.description || 'No description'}</p>
+                                <div class="genealogy-node-details">
+                                    <span class="genealogy-detail">T1: ${fork.tier1 || 'N/A'}</span>
+                                    <span class="genealogy-detail">T2: ${fork.tier2 || 'N/A'}</span>
+                                    <span class="genealogy-detail">T3: ${fork.tier3 || 'N/A'}</span>
+                                    ${fork.created_by ? `<span class="genealogy-detail">By: ${fork.created_by}</span>` : ''}
+                                </div>
+                                ${fork.github ? `<a href="${fork.github}" target="_blank" class="genealogy-link">View on GitHub →</a>` : ''}
+                            </div>
+                    `;
+                    
+                    if (children.length > 0) {
+                        html += '<div class="genealogy-children">';
+                        children.forEach(child => {
+                            html += renderForkNode(child, level + 1);
+                        });
+                        html += '</div>';
+                    }
+                    
+                    html += '</div>';
+                    return html;
+                }
+                
+                let treeHTML = '<div class="genealogy-tree-root">';
+                rootForks.forEach(root => {
+                    treeHTML += renderForkNode(root, 0);
+                });
+                treeHTML += '</div>';
+                
+                container.innerHTML = treeHTML;
+            }
+            
+            // Load and render genealogy on tab switch
+            let genealogyLoaded = false;
+            document.querySelectorAll('.fork-tab').forEach(tab => {
+                tab.addEventListener('click', async function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    if (targetTab === 'genealogy' && !genealogyLoaded) {
+                        document.getElementById('genealogy-status').textContent = 'Loading forks from registry...';
+                        const forks = await loadForkRegistry();
+                        renderGenealogyTree(forks);
+                        genealogyLoaded = true;
+                        document.getElementById('genealogy-status').textContent = `Loaded ${forks.length} fork(s) from registry`;
+                    }
+                });
+            });
+            
+            // Refresh button
+            document.getElementById('genealogy-refresh').addEventListener('click', async function() {
+                genealogyLoaded = false;
+                document.getElementById('genealogy-status').textContent = 'Refreshing...';
+                const forks = await loadForkRegistry();
+                renderGenealogyTree(forks);
+                document.getElementById('genealogy-status').textContent = `Loaded ${forks.length} fork(s) from registry`;
+            });
+            
+            // Share Your Fork functionality
+            document.getElementById('share-fork').addEventListener('click', function() {
+                const ruleset = updateRulesetPreview();
+                const rulesetName = document.getElementById('ruleset-name').value || 'my-custom-governance';
+                const rulesetVersion = document.getElementById('ruleset-version').value || '1.0.0';
+                const rulesetDescription = document.getElementById('ruleset-description').value || 'Custom governance ruleset';
+                
+                // Determine parent fork (if forked from a template)
+                let parentFork = null;
+                const currentTier1 = document.getElementById('tier1-signatures').value;
+                const currentTier2 = document.getElementById('tier2-signatures').value;
+                const currentTier3 = document.getElementById('tier3-signatures').value;
+                
+                // Check which template matches
+                for (const [id, template] of Object.entries(forkTemplates)) {
+                    if (template.tier1.signatures === currentTier1 && 
+                        template.tier2.signatures === currentTier2 && 
+                        template.tier3.signatures === currentTier3) {
+                        parentFork = id;
+                        break;
+                    }
+                }
+                if (!parentFork) parentFork = 'default';
+                
+                // Generate YAML entry
+                const forkId = rulesetName.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+                const today = new Date().toISOString().split('T')[0];
+                
+                const yamlEntry = `  - id: ${forkId}
+    name: ${rulesetName}
+    description: ${rulesetDescription}
+    forked_from: ${parentFork}
+    created_by: YOUR_GITHUB_USERNAME
+    github: https://github.com/YOUR_USERNAME/YOUR_REPO
+    ruleset_url: https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/governance-ruleset.json
+    tier1: "${currentTier1}"
+    tier1_review: ${document.getElementById('tier1-review').value}
+    tier2: "${currentTier2}"
+    tier2_review: ${document.getElementById('tier2-review').value}
+    tier3: "${currentTier3}"
+    tier3_review: ${document.getElementById('tier3-review').value}
+    tier3_veto: ${document.getElementById('tier3-veto').value}
+    verified: false
+    created_at: "${today}"`;
+                
+                // Show share modal
+                const modal = document.createElement('div');
+                modal.className = 'deployment-modal';
+                modal.style.cssText = 'position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;';
+                
+                modal.innerHTML = `
+                    <div class="deployment-modal-content" style="background-color: var(--bg-primary); margin: 2rem; padding: 2rem; border-radius: 8px; max-width: 700px; max-height: 90vh; overflow-y: auto; position: relative;">
+                        <button class="deployment-modal-close" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary);">&times;</button>
+                        <h3 style="margin-top: 0;">🌳 Share Your Fork to the Commons</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Add your fork to the public registry so others can discover and use it. Follow these steps:</p>
+                        
+                        <div class="deployment-steps">
+                            <div class="deployment-step">
+                                <h4>1. Fork the governance repository</h4>
+                                <div class="code-block">
+                                    <code>gh repo fork BTCDecoded/governance</code>
+                                    <button class="copy-btn" data-copy="gh repo fork BTCDecoded/governance">Copy</button>
+                                </div>
+                                <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.9rem;">Or use the GitHub web interface to fork <a href="https://github.com/BTCDecoded/governance" target="_blank">BTCDecoded/governance</a></p>
+                            </div>
+                            
+                            <div class="deployment-step">
+                                <h4>2. Edit fork-registry.yml</h4>
+                                <p>Add this entry to <code>governance/fork-registry.yml</code>:</p>
+                                <div class="code-block" style="position: relative;">
+                                    <pre style="margin: 0; padding: 1rem; background: var(--bg-secondary); border-radius: 4px; overflow-x: auto; font-size: 0.85rem;"><code>${yamlEntry}</code></pre>
+                                    <button class="copy-btn" style="position: absolute; top: 0.5rem; right: 0.5rem;" data-copy="${yamlEntry.replace(/`/g, '\\`')}">Copy</button>
+                                </div>
+                                <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.9rem;"><strong>Important:</strong> Replace <code>YOUR_GITHUB_USERNAME</code>, <code>YOUR_USERNAME</code>, and <code>YOUR_REPO</code> with your actual values.</p>
+                            </div>
+                            
+                            <div class="deployment-step">
+                                <h4>3. Commit and push</h4>
+                                <div class="code-block">
+                                    <code>git add governance/fork-registry.yml
+git commit -m "Add my fork: ${rulesetName}"
+git push origin main</code>
+                                    <button class="copy-btn" data-copy="git add governance/fork-registry.yml\ngit commit -m \"Add my fork: ${rulesetName}\"\ngit push origin main">Copy</button>
+                                </div>
+                            </div>
+                            
+                            <div class="deployment-step">
+                                <h4>4. Create a pull request</h4>
+                                <p>Go to <a href="https://github.com/BTCDecoded/governance/compare" target="_blank">GitHub's compare page</a> and create a PR from your fork.</p>
+                                <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.9rem;">Automated validation will check your entry. If it passes, your PR will be merged automatically!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="deployment-note" style="margin-top: 1.5rem; padding: 1rem; background-color: var(--bg-secondary); border-radius: 6px; border-left: 3px solid var(--bitcoin-orange);">
+                            <p style="margin: 0;"><strong>💡 Remember:</strong> This is a permissionless, self-service registry. No approval needed—just follow the format and automated validation will handle the rest.</p>
+                        </div>
+                        
+                        <div class="deployment-actions" style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                            <button class="btn btn-primary" onclick="this.closest('.deployment-modal').remove()">Got it!</button>
+                            <a href="https://github.com/BTCDecoded/governance/blob/main/fork-registry.yml" target="_blank" class="btn btn-outline">View Registry</a>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                // Close button
+                modal.querySelector('.deployment-modal-close').addEventListener('click', () => modal.remove());
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) modal.remove();
+                });
+                
+                // Copy buttons
+                modal.querySelectorAll('.copy-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const code = this.getAttribute('data-copy');
+                        navigator.clipboard.writeText(code).then(() => {
+                            const originalText = this.textContent;
+                            this.textContent = 'Copied!';
+                            setTimeout(() => {
+                                this.textContent = originalText;
+                            }, 2000);
+                        });
+                    });
+                });
+            });
         });
     </script>
 </body>
