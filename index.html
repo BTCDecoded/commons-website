@@ -2060,6 +2060,19 @@
                 `;
                 
                 document.getElementById('compare-results').innerHTML = comparison;
+                
+                // Add styling classes to diff cells after rendering
+                setTimeout(() => {
+                    document.querySelectorAll('.diff-cell').forEach(cell => {
+                        const text = cell.textContent.trim();
+                        if (text !== '—' && text !== 'N/A' && text !== '') {
+                            cell.classList.add('has-diff');
+                            if (text === 'Different') {
+                                cell.classList.add('different-text');
+                            }
+                        }
+                    });
+                }, 0);
             }
             
             // Enhanced search and filter for registry data
