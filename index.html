@@ -345,6 +345,48 @@
                             </div>
                             
                             <div class="parameter-group">
+                                <h4>Repository Selection</h4>
+                                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Select which repository to fork. Only one repository can be selected.</p>
+                                <div class="repo-selection">
+                                    <label class="repo-checkbox-label">
+                                        <input type="radio" name="fork-repo" value="governance" class="repo-checkbox" checked>
+                                        <span class="repo-checkbox-text">
+                                            <strong>governance</strong>
+                                            <span class="repo-desc">Governance configuration and rules</span>
+                                        </span>
+                                    </label>
+                                    <label class="repo-checkbox-label">
+                                        <input type="radio" name="fork-repo" value="bllvm-commons" class="repo-checkbox">
+                                        <span class="repo-checkbox-text">
+                                            <strong>bllvm-commons</strong>
+                                            <span class="repo-desc">Cryptographic enforcement GitHub App</span>
+                                        </span>
+                                    </label>
+                                    <label class="repo-checkbox-label">
+                                        <input type="radio" name="fork-repo" value="bllvm-sdk" class="repo-checkbox">
+                                        <span class="repo-checkbox-text">
+                                            <strong>bllvm-sdk</strong>
+                                            <span class="repo-desc">Developer toolkit and governance primitives</span>
+                                        </span>
+                                    </label>
+                                    <label class="repo-checkbox-label">
+                                        <input type="radio" name="fork-repo" value="bllvm-node" class="repo-checkbox">
+                                        <span class="repo-checkbox-text">
+                                            <strong>bllvm-node</strong>
+                                            <span class="repo-desc">Full Bitcoin node library</span>
+                                        </span>
+                                    </label>
+                                    <label class="repo-checkbox-label">
+                                        <input type="radio" name="fork-repo" value="bllvm" class="repo-checkbox">
+                                        <span class="repo-checkbox-text">
+                                            <strong>bllvm</strong>
+                                            <span class="repo-desc">Binary wrapper for bllvm-node</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="parameter-group">
                                 <h4>Ruleset Metadata</h4>
                                 <div class="parameter-control">
                                     <label>Ruleset Name</label>
@@ -1339,18 +1381,19 @@
                 });
             });
             
-            // Template Fork Buttons - One-Click Fork
+            // Template Fork Buttons - Switch to Custom Tab and Load Template
             document.querySelectorAll('.template-fork-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const template = this.closest('.template-card').getAttribute('data-template');
-                    // One-click fork: load template, update preview, and auto-download
+                    // Switch to custom tab
+                    document.querySelectorAll('.fork-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelector('.fork-tab[data-tab="custom"]').classList.add('active');
+                    document.querySelectorAll('.fork-tab-content').forEach(c => c.classList.remove('active'));
+                    document.getElementById('custom-tab').classList.add('active');
+                    
+                    // Load template values into form
                     loadTemplate(template);
                     updateRulesetPreview();
-                    // Auto-download after a brief delay to ensure preview is updated
-                    setTimeout(() => {
-                        document.getElementById('export-json').click();
-                        showDeploymentModal(template);
-                    }, 100);
                 });
             });
             
@@ -1440,16 +1483,39 @@
                 const template = forkTemplates[templateName];
                 if (!template) return;
                 
-                // Set form values
-                document.getElementById('tier1-signatures').value = template.tier1.signatures;
-                document.getElementById('tier1-review').value = template.tier1.review;
-                document.getElementById('tier2-signatures').value = template.tier2.signatures;
-                document.getElementById('tier2-review').value = template.tier2.review;
-                document.getElementById('tier3-signatures').value = template.tier3.signatures;
-                document.getElementById('tier3-review').value = template.tier3.review;
-                document.getElementById('tier3-veto').value = template.tier3.veto;
+                // Set form values with proper event dispatching
+                const tier1Select = document.getElementById('tier1-signatures');
+                tier1Select.value = template.tier1.signatures;
+                tier1Select.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                const tier1Review = document.getElementById('tier1-review');
+                tier1Review.value = template.tier1.review;
+                tier1Review.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                const tier2Select = document.getElementById('tier2-signatures');
+                tier2Select.value = template.tier2.signatures;
+                tier2Select.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                const tier2Review = document.getElementById('tier2-review');
+                tier2Review.value = template.tier2.review;
+                tier2Review.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                const tier3Select = document.getElementById('tier3-signatures');
+                tier3Select.value = template.tier3.signatures;
+                tier3Select.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                const tier3Review = document.getElementById('tier3-review');
+                tier3Review.value = template.tier3.review;
+                tier3Review.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                const tier3Veto = document.getElementById('tier3-veto');
+                tier3Veto.value = template.tier3.veto;
+                tier3Veto.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                // Set metadata
                 document.getElementById('ruleset-name').value = templateName + '-governance-v1';
-                document.getElementById('ruleset-description').value = `Forked from ${template.name} template`;
+                document.getElementById('ruleset-version').value = '1.0.0';
+                document.getElementById('ruleset-description').value = `Custom governance ruleset based on ${template.name} template.`;
                 
                 // Update preview
                 updateRulesetPreview();
@@ -1767,25 +1833,15 @@
                         const fork = forks.find(f => f.id === forkId);
                         if (!fork) return;
                         
-                        if (forkId === 'default') {
-                            // Switch to custom tab and load the default fork
-                            document.querySelectorAll('.fork-tab').forEach(t => t.classList.remove('active'));
-                            document.querySelector('.fork-tab[data-tab="custom"]').classList.add('active');
-                            document.querySelectorAll('.fork-tab-content').forEach(c => c.classList.remove('active'));
-                            document.getElementById('custom-tab').classList.add('active');
-                            
-                            // Load default fork into custom form
-                            loadForkFromRegistry(fork);
-                            updateRulesetPreview();
-                            return;
-                        }
-                        // Load fork from registry and fork it
+                        // Switch to custom tab for all forks
+                        document.querySelectorAll('.fork-tab').forEach(t => t.classList.remove('active'));
+                        document.querySelector('.fork-tab[data-tab="custom"]').classList.add('active');
+                        document.querySelectorAll('.fork-tab-content').forEach(c => c.classList.remove('active'));
+                        document.getElementById('custom-tab').classList.add('active');
+                        
+                        // Load fork into custom form
                         loadForkFromRegistry(fork);
                         updateRulesetPreview();
-                        setTimeout(() => {
-                            document.getElementById('export-json').click();
-                            showDeploymentModal(forkId);
-                        }, 100);
                     });
                 });
                 
@@ -1846,13 +1902,36 @@
                     return sig;
                 };
                 
-                document.getElementById('tier1-signatures').value = parseSignatures(fork.tier1);
-                document.getElementById('tier1-review').value = fork.tier1_review || 7;
-                document.getElementById('tier2-signatures').value = parseSignatures(fork.tier2);
-                document.getElementById('tier2-review').value = fork.tier2_review || 30;
-                document.getElementById('tier3-signatures').value = parseSignatures(fork.tier3);
-                document.getElementById('tier3-review').value = fork.tier3_review || 90;
-                document.getElementById('tier3-veto').value = fork.tier3_veto || 30;
+                // Set tier values with event dispatching
+                const tier1Select = document.getElementById('tier1-signatures');
+                tier1Select.value = parseSignatures(fork.tier1);
+                tier1Select.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                const tier1Review = document.getElementById('tier1-review');
+                tier1Review.value = fork.tier1_review || 7;
+                tier1Review.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                const tier2Select = document.getElementById('tier2-signatures');
+                tier2Select.value = parseSignatures(fork.tier2);
+                tier2Select.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                const tier2Review = document.getElementById('tier2-review');
+                tier2Review.value = fork.tier2_review || 30;
+                tier2Review.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                const tier3Select = document.getElementById('tier3-signatures');
+                tier3Select.value = parseSignatures(fork.tier3);
+                tier3Select.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                const tier3Review = document.getElementById('tier3-review');
+                tier3Review.value = fork.tier3_review || 90;
+                tier3Review.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                const tier3Veto = document.getElementById('tier3-veto');
+                tier3Veto.value = fork.tier3_veto || 30;
+                tier3Veto.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                // Set metadata
                 document.getElementById('ruleset-name').value = fork.id + '-governance-v1';
                 document.getElementById('ruleset-description').value = fork.description || `Forked from ${fork.name || fork.id}`;
             }
