@@ -94,14 +94,58 @@
         }
         .fork-tool-content {
             display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
-            gap: 2rem !important;
+            grid-template-columns: 1.4fr 1fr !important; /* 58/42 split - more space for parameters */
+            gap: 2.5rem !important;
+        }
+        @media (max-width: 968px) {
+            .fork-tool-content {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        .fork-preview {
+            position: sticky !important;
+            top: 2rem !important;
+            align-self: start !important;
+            max-height: calc(100vh - 4rem) !important;
+            overflow-y: auto !important;
         }
         .parameter-group {
             padding: 1.5rem !important;
             background-color: var(--bg-secondary) !important;
             border-radius: 6px !important;
             border: 1px solid var(--border-color) !important;
+            margin-bottom: 1rem !important;
+        }
+        .parameter-section {
+            margin-bottom: 1.5rem !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 8px !important;
+            background-color: var(--bg-primary) !important;
+        }
+        .section-header {
+            padding: 1rem 1.5rem !important;
+            background-color: var(--bg-secondary) !important;
+            border-bottom: 1px solid var(--border-color) !important;
+            cursor: pointer !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            font-weight: 600 !important;
+            user-select: none !important;
+        }
+        .section-header:hover {
+            background-color: var(--bg-tertiary, rgba(255, 140, 0, 0.05)) !important;
+        }
+        .section-toggle {
+            font-size: 0.9rem !important;
+            color: var(--text-secondary) !important;
+            transition: transform 0.2s !important;
+        }
+        .section-content {
+            padding: 1.5rem !important;
+        }
+        .section-content.collapsed {
+            display: none !important;
         }
     </style>
 </head>
@@ -288,123 +332,315 @@
                     <div class="fork-tool-header">
                         <h3>Customize Governance Ruleset</h3>
                         <p>Adjust parameters below to create your custom governance model. All changes maintain Bitcoin consensus compatibility.</p>
+                        <div style="margin-top: 1rem; display: flex; gap: 1rem; align-items: center; justify-content: center;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.95rem;">
+                                <input type="checkbox" id="quick-start-mode" style="cursor: pointer;">
+                                <span>Quick Start Mode</span>
+                            </label>
+                            <small style="color: var(--text-secondary); font-size: 0.85rem;">(Show only essential parameters)</small>
+                        </div>
                     </div>
                     
                     <div class="fork-tool-content">
-                        <div class="fork-parameters">
-                            <div class="parameter-group">
-                                <h4>Tier 1: Routine Maintenance</h4>
-                                <div class="parameter-control">
-                                    <label>Signature Threshold</label>
-                                    <select id="tier1-signatures" class="param-select">
-                                        <option value="2-of-3">2-of-3</option>
-                                        <option value="3-of-5" selected>3-of-5 (Default)</option>
-                                        <option value="4-of-5">4-of-5</option>
-                                        <option value="5-of-5">5-of-5</option>
-                                    </select>
-                                </div>
-                                <div class="parameter-control">
-                                    <label>Review Period (days)</label>
-                                    <input type="number" id="tier1-review" class="param-input" value="7" min="1" max="30">
+                        <div class="fork-parameters" style="max-height: 80vh; overflow-y: auto; padding-right: 1rem;">
+                            <!-- Action Tiers Section -->
+                            <div class="parameter-section" data-section="action-tiers">
+                                <h3 class="section-header" onclick="toggleSection('action-tiers')">
+                                    <span>📋 Action Tiers</span>
+                                    <span class="section-toggle">▼</span>
+                                </h3>
+                                <div class="section-content" id="action-tiers-content">
+                                    <div class="parameter-group">
+                                        <h4>Tier 1: Routine Maintenance</h4>
+                                        <div class="parameter-control">
+                                            <label>Signature Threshold</label>
+                                            <select id="tier1-signatures" class="param-select">
+                                                <option value="2-of-3">2-of-3</option>
+                                                <option value="3-of-5" selected>3-of-5 (Default)</option>
+                                                <option value="4-of-5">4-of-5</option>
+                                                <option value="5-of-5">5-of-5</option>
+                                            </select>
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Review Period (days)</label>
+                                            <input type="number" id="tier1-review" class="param-input" value="7" min="1" max="30">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="parameter-group">
+                                        <h4>Tier 2: Feature Changes</h4>
+                                        <div class="parameter-control">
+                                            <label>Signature Threshold</label>
+                                            <select id="tier2-signatures" class="param-select">
+                                                <option value="3-of-5">3-of-5</option>
+                                                <option value="4-of-5" selected>4-of-5 (Default)</option>
+                                                <option value="5-of-5">5-of-5</option>
+                                            </select>
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Review Period (days)</label>
+                                            <input type="number" id="tier2-review" class="param-input" value="30" min="7" max="90">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="parameter-group">
+                                        <h4>Tier 3: Consensus-Adjacent</h4>
+                                        <div class="parameter-control">
+                                            <label>Signature Threshold</label>
+                                            <select id="tier3-signatures" class="param-select">
+                                                <option value="4-of-5">4-of-5</option>
+                                                <option value="5-of-5" selected>5-of-5 (Default)</option>
+                                                <option value="6-of-7">6-of-7</option>
+                                            </select>
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Review Period (days)</label>
+                                            <input type="number" id="tier3-review" class="param-input" value="90" min="30" max="180">
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Economic Node Veto Threshold (%)</label>
+                                            <input type="number" id="tier3-veto" class="param-input" value="30" min="20" max="50" step="5">
+                                        </div>
+                                    </div>
+
+                                    <div class="parameter-group">
+                                        <h4>Tier 4: Emergency Actions</h4>
+                                        <div class="parameter-control">
+                                            <label>Signature Threshold</label>
+                                            <select id="tier4-signatures" class="param-select">
+                                                <option value="3-of-5">3-of-5</option>
+                                                <option value="4-of-5" selected>4-of-5 (Default)</option>
+                                                <option value="5-of-5">5-of-5</option>
+                                            </select>
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Review Period (days)</label>
+                                            <input type="number" id="tier4-review" class="param-input" value="0" min="0" max="7">
+                                        </div>
+                                    </div>
+
+                                    <div class="parameter-group">
+                                        <h4>Tier 5: Governance Changes</h4>
+                                        <div class="parameter-control">
+                                            <label>Signature Threshold</label>
+                                            <select id="tier5-signatures" class="param-select">
+                                                <option value="5-of-5" selected>5-of-5 (Default)</option>
+                                                <option value="6-of-7">6-of-7</option>
+                                                <option value="7-of-7">7-of-7</option>
+                                            </select>
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Review Period (days)</label>
+                                            <input type="number" id="tier5-review" class="param-input" value="180" min="90" max="365">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            
-                            <div class="parameter-group">
-                                <h4>Tier 2: Feature Changes</h4>
-                                <div class="parameter-control">
-                                    <label>Signature Threshold</label>
-                                    <select id="tier2-signatures" class="param-select">
-                                        <option value="3-of-5">3-of-5</option>
-                                        <option value="4-of-5" selected>4-of-5 (Default)</option>
-                                        <option value="5-of-5">5-of-5</option>
-                                    </select>
-                                </div>
-                                <div class="parameter-control">
-                                    <label>Review Period (days)</label>
-                                    <input type="number" id="tier2-review" class="param-input" value="30" min="7" max="90">
+
+                            <!-- Economic Nodes Section -->
+                            <div class="parameter-section" data-section="economic-nodes">
+                                <h3 class="section-header" onclick="toggleSection('economic-nodes')">
+                                    <span>💰 Economic Nodes</span>
+                                    <span class="section-toggle">▼</span>
+                                </h3>
+                                <div class="section-content" id="economic-nodes-content" style="display: none;">
+                                    <div class="parameter-group">
+                                        <h4>Veto Mechanism</h4>
+                                        <div class="parameter-control">
+                                            <label>Require Both Conditions (AND logic)</label>
+                                            <input type="checkbox" id="veto-require-both" checked>
+                                            <small>Both mining AND economic thresholds must be met</small>
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Mining Veto Threshold (%)</label>
+                                            <input type="number" id="veto-mining-percent" class="param-input" value="30" min="20" max="50" step="5">
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Economic Veto Threshold (%)</label>
+                                            <input type="number" id="veto-economic-percent" class="param-input" value="40" min="30" max="60" step="5">
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Grace Period (days)</label>
+                                            <input type="number" id="veto-grace-period" class="param-input" value="30" min="7" max="90">
+                                        </div>
+                                    </div>
+
+                                    <div class="parameter-group">
+                                        <h4>Commons Contributor Thresholds</h4>
+                                        <div class="parameter-control">
+                                            <label>Merge Mining Minimum (BTC)</label>
+                                            <input type="number" id="commons-merge-mining" class="param-input" value="0.01" min="0.001" max="1" step="0.001">
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Fee Forwarding Minimum (BTC)</label>
+                                            <input type="number" id="commons-fee-forwarding" class="param-input" value="0.1" min="0.01" max="10" step="0.01">
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Zap Contributions Minimum (BTC)</label>
+                                            <input type="number" id="commons-zaps" class="param-input" value="0.01" min="0.001" max="1" step="0.001">
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Marketplace Sales Minimum (BTC)</label>
+                                            <input type="number" id="commons-marketplace" class="param-input" value="0.01" min="0.001" max="1" step="0.001">
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Measurement Period (days)</label>
+                                            <input type="number" id="commons-measurement-period" class="param-input" value="90" min="30" max="365">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            
-                            <div class="parameter-group">
-                                <h4>Tier 3: Consensus-Adjacent</h4>
-                                <div class="parameter-control">
-                                    <label>Signature Threshold</label>
-                                    <select id="tier3-signatures" class="param-select">
-                                        <option value="4-of-5">4-of-5</option>
-                                        <option value="5-of-5" selected>5-of-5 (Default)</option>
-                                        <option value="6-of-7">6-of-7</option>
-                                    </select>
-                                </div>
-                                <div class="parameter-control">
-                                    <label>Review Period (days)</label>
-                                    <input type="number" id="tier3-review" class="param-input" value="90" min="30" max="180">
-                                </div>
-                                <div class="parameter-control">
-                                    <label>Economic Node Veto Threshold (%)</label>
-                                    <input type="number" id="tier3-veto" class="param-input" value="30" min="20" max="50" step="5">
+
+                            <!-- Nested Multisig Teams Section -->
+                            <div class="parameter-section" data-section="teams">
+                                <h3 class="section-header" onclick="toggleSection('teams')">
+                                    <span>👥 Nested Multisig Teams</span>
+                                    <span class="section-toggle">▼</span>
+                                </h3>
+                                <div class="section-content" id="teams-content" style="display: none;">
+                                    <div class="parameter-group">
+                                        <h4>Team Consensus</h4>
+                                        <div class="parameter-control">
+                                            <label>Threshold Per Team</label>
+                                            <input type="number" id="team-threshold" class="param-input" value="6" min="4" max="7">
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Total Per Team</label>
+                                            <input type="number" id="team-total" class="param-input" value="7" min="5" max="10">
+                                        </div>
+                                    </div>
+                                    <div class="parameter-group">
+                                        <h4>Inter-Team Consensus</h4>
+                                        <div class="parameter-control">
+                                            <label>Threshold Teams</label>
+                                            <input type="number" id="inter-team-threshold" class="param-input" value="6" min="4" max="7">
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Total Teams</label>
+                                            <input type="number" id="inter-team-total" class="param-input" value="7" min="5" max="10">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            
-                            <div class="parameter-group">
-                                <h4>Repository Selection</h4>
-                                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Select which repositories to fork. Multiple repositories can be selected.</p>
-                                <div class="repo-selection">
-                                    <label class="repo-checkbox-label">
-                                        <input type="checkbox" name="fork-repo" value="bllvm-spec" class="repo-checkbox" checked>
-                                        <span class="repo-checkbox-text">
-                                            <strong>bllvm-spec</strong>
-                                            <span class="repo-desc">Orange Paper - mathematical foundation and specification</span>
-                                        </span>
-                                    </label>
-                                    <label class="repo-checkbox-label">
-                                        <input type="checkbox" name="fork-repo" value="bllvm-consensus" class="repo-checkbox" checked>
-                                        <span class="repo-checkbox-text">
-                                            <strong>bllvm-consensus</strong>
-                                            <span class="repo-desc">Pure mathematical implementation of consensus rules</span>
-                                        </span>
-                                    </label>
-                                    <label class="repo-checkbox-label">
-                                        <input type="checkbox" name="fork-repo" value="bllvm-protocol" class="repo-checkbox" checked>
-                                        <span class="repo-checkbox-text">
-                                            <strong>bllvm-protocol</strong>
-                                            <span class="repo-desc">Protocol abstraction layer for Bitcoin variants</span>
-                                        </span>
-                                    </label>
-                                    <label class="repo-checkbox-label">
-                                        <input type="checkbox" name="fork-repo" value="bllvm-node" class="repo-checkbox" checked>
-                                        <span class="repo-checkbox-text">
-                                            <strong>bllvm-node</strong>
-                                            <span class="repo-desc">Full Bitcoin node library</span>
-                                        </span>
-                                    </label>
-                                    <label class="repo-checkbox-label">
-                                        <input type="checkbox" name="fork-repo" value="bllvm" class="repo-checkbox" checked>
-                                        <span class="repo-checkbox-text">
-                                            <strong>bllvm</strong>
-                                            <span class="repo-desc">Binary wrapper for bllvm-node</span>
-                                        </span>
-                                    </label>
-                                    <label class="repo-checkbox-label">
-                                        <input type="checkbox" name="fork-repo" value="bllvm-sdk" class="repo-checkbox" checked>
-                                        <span class="repo-checkbox-text">
-                                            <strong>bllvm-sdk</strong>
-                                            <span class="repo-desc">Developer toolkit and governance primitives</span>
-                                        </span>
-                                    </label>
-                                    <label class="repo-checkbox-label">
-                                        <input type="checkbox" name="fork-repo" value="governance" class="repo-checkbox" checked>
-                                        <span class="repo-checkbox-text">
-                                            <strong>governance</strong>
-                                            <span class="repo-desc">Governance configuration and rules</span>
-                                        </span>
-                                    </label>
-                                    <label class="repo-checkbox-label">
-                                        <input type="checkbox" name="fork-repo" value="bllvm-commons" class="repo-checkbox" checked>
-                                        <span class="repo-checkbox-text">
-                                            <strong>bllvm-commons</strong>
-                                            <span class="repo-desc">Cryptographic enforcement GitHub App</span>
-                                        </span>
-                                    </label>
+
+                            <!-- Governance Review Policy Section -->
+                            <div class="parameter-section" data-section="governance-review">
+                                <h3 class="section-header" onclick="toggleSection('governance-review')">
+                                    <span>⚖️ Governance Review Policy</span>
+                                    <span class="section-toggle">▼</span>
+                                </h3>
+                                <div class="section-content" id="governance-review-content" style="display: none;">
+                                    <div class="parameter-group">
+                                        <h4>Sanction Thresholds</h4>
+                                        <div class="parameter-control">
+                                            <label>Private Warning Threshold</label>
+                                            <select id="review-private-warning" class="param-select">
+                                                <option value="4-of-7" selected>4-of-7 (Default)</option>
+                                                <option value="3-of-7">3-of-7</option>
+                                                <option value="5-of-7">5-of-7</option>
+                                            </select>
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Public Warning Threshold</label>
+                                            <select id="review-public-warning" class="param-select">
+                                                <option value="5-of-7" selected>5-of-7 (Default)</option>
+                                                <option value="4-of-7">4-of-7</option>
+                                                <option value="6-of-7">6-of-7</option>
+                                            </select>
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Removal Threshold</label>
+                                            <select id="review-removal" class="param-select">
+                                                <option value="6-of-7" selected>6-of-7 (Default)</option>
+                                                <option value="5-of-7">5-of-7</option>
+                                                <option value="7-of-7">7-of-7</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="parameter-group">
+                                        <h4>Time Limits</h4>
+                                        <div class="parameter-control">
+                                            <label>Response Deadline (days)</label>
+                                            <input type="number" id="review-response-deadline" class="param-input" value="30" min="7" max="90">
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Resolution Deadline (days)</label>
+                                            <input type="number" id="review-resolution-deadline" class="param-input" value="180" min="90" max="365">
+                                        </div>
+                                        <div class="parameter-control">
+                                            <label>Appeal Deadline (days)</label>
+                                            <input type="number" id="review-appeal-deadline" class="param-input" value="60" min="30" max="180">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Repository Selection (keep existing) -->
+                            <div class="parameter-section" data-section="repositories">
+                                <h3 class="section-header" onclick="toggleSection('repositories')">
+                                    <span>📦 Repository Selection</span>
+                                    <span class="section-toggle">▼</span>
+                                </h3>
+                                <div class="section-content" id="repositories-content">
+                                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Select which repositories to fork. Multiple repositories can be selected.</p>
+                                    <div class="repo-selection">
+                                        <label class="repo-checkbox-label">
+                                            <input type="checkbox" name="fork-repo" value="bllvm-spec" class="repo-checkbox" checked>
+                                            <span class="repo-checkbox-text">
+                                                <strong>bllvm-spec</strong>
+                                                <span class="repo-desc">Orange Paper - mathematical foundation and specification</span>
+                                            </span>
+                                        </label>
+                                        <label class="repo-checkbox-label">
+                                            <input type="checkbox" name="fork-repo" value="bllvm-consensus" class="repo-checkbox" checked>
+                                            <span class="repo-checkbox-text">
+                                                <strong>bllvm-consensus</strong>
+                                                <span class="repo-desc">Pure mathematical implementation of consensus rules</span>
+                                            </span>
+                                        </label>
+                                        <label class="repo-checkbox-label">
+                                            <input type="checkbox" name="fork-repo" value="bllvm-protocol" class="repo-checkbox" checked>
+                                            <span class="repo-checkbox-text">
+                                                <strong>bllvm-protocol</strong>
+                                                <span class="repo-desc">Protocol abstraction layer for Bitcoin variants</span>
+                                            </span>
+                                        </label>
+                                        <label class="repo-checkbox-label">
+                                            <input type="checkbox" name="fork-repo" value="bllvm-node" class="repo-checkbox" checked>
+                                            <span class="repo-checkbox-text">
+                                                <strong>bllvm-node</strong>
+                                                <span class="repo-desc">Full Bitcoin node library</span>
+                                            </span>
+                                        </label>
+                                        <label class="repo-checkbox-label">
+                                            <input type="checkbox" name="fork-repo" value="bllvm" class="repo-checkbox" checked>
+                                            <span class="repo-checkbox-text">
+                                                <strong>bllvm</strong>
+                                                <span class="repo-desc">Binary wrapper for bllvm-node</span>
+                                            </span>
+                                        </label>
+                                        <label class="repo-checkbox-label">
+                                            <input type="checkbox" name="fork-repo" value="bllvm-sdk" class="repo-checkbox" checked>
+                                            <span class="repo-checkbox-text">
+                                                <strong>bllvm-sdk</strong>
+                                                <span class="repo-desc">Developer toolkit and governance primitives</span>
+                                            </span>
+                                        </label>
+                                        <label class="repo-checkbox-label">
+                                            <input type="checkbox" name="fork-repo" value="governance" class="repo-checkbox" checked>
+                                            <span class="repo-checkbox-text">
+                                                <strong>governance</strong>
+                                                <span class="repo-desc">Governance configuration and rules</span>
+                                            </span>
+                                        </label>
+                                        <label class="repo-checkbox-label">
+                                            <input type="checkbox" name="fork-repo" value="bllvm-commons" class="repo-checkbox" checked>
+                                            <span class="repo-checkbox-text">
+                                                <strong>bllvm-commons</strong>
+                                                <span class="repo-desc">Cryptographic enforcement GitHub App</span>
+                                            </span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1245,38 +1481,128 @@
                 });
             }
             
-            // Fork Governance Tool
+            // Fork Governance Tool - Updated to Version 2.0 with all dimensions
             function updateRulesetPreview() {
                 const ruleset = {
-                    version: "1.0",
+                    version: "2.0",
                     ruleset_id: document.getElementById('ruleset-name').value || 'custom-governance-v1',
                     ruleset_version: document.getElementById('ruleset-version').value || '1.0.0',
                     created_at: new Date().toISOString(),
                     description: document.getElementById('ruleset-description').value || '',
+                    
+                    // Dimension 1: Action Tiers
                     action_tiers: {
                         tier_1_routine: {
                             name: "Routine Maintenance",
-                            signature_threshold: document.getElementById('tier1-signatures').value,
-                            review_period_days: parseInt(document.getElementById('tier1-review').value)
+                            signatures: {
+                                required: parseInt(document.getElementById('tier1-signatures').value.split('-')[0]),
+                                total: parseInt(document.getElementById('tier1-signatures').value.split('-')[2])
+                            },
+                            review_period_days: parseInt(document.getElementById('tier1-review').value),
+                            economic_veto: false
                         },
                         tier_2_features: {
                             name: "Feature Changes",
-                            signature_threshold: document.getElementById('tier2-signatures').value,
-                            review_period_days: parseInt(document.getElementById('tier2-review').value)
+                            signatures: {
+                                required: parseInt(document.getElementById('tier2-signatures').value.split('-')[0]),
+                                total: parseInt(document.getElementById('tier2-signatures').value.split('-')[2])
+                            },
+                            review_period_days: parseInt(document.getElementById('tier2-review').value),
+                            economic_veto: false
                         },
                         tier_3_consensus_adjacent: {
                             name: "Consensus-Adjacent",
-                            signature_threshold: document.getElementById('tier3-signatures').value,
+                            signatures: {
+                                required: parseInt(document.getElementById('tier3-signatures').value.split('-')[0]),
+                                total: parseInt(document.getElementById('tier3-signatures').value.split('-')[2])
+                            },
                             review_period_days: parseInt(document.getElementById('tier3-review').value),
-                            economic_node_veto: {
-                                mining_threshold: parseFloat(document.getElementById('tier3-veto').value)
-                            }
+                            economic_veto: true
+                        },
+                        tier_4_emergency: {
+                            name: "Emergency Actions",
+                            signatures: {
+                                required: parseInt(document.getElementById('tier4-signatures')?.value.split('-')[0] || '4'),
+                                total: parseInt(document.getElementById('tier4-signatures')?.value.split('-')[2] || '5')
+                            },
+                            review_period_days: parseInt(document.getElementById('tier4-review')?.value || '0'),
+                            economic_veto: false,
+                            emergency_override: true
+                        },
+                        tier_5_governance: {
+                            name: "Governance Changes",
+                            signatures: {
+                                required: parseInt(document.getElementById('tier5-signatures')?.value.split('-')[0] || '5'),
+                                total: parseInt(document.getElementById('tier5-signatures')?.value.split('-')[2] || '5')
+                            },
+                            review_period_days: parseInt(document.getElementById('tier5-review')?.value || '180'),
+                            economic_veto: true
                         }
                     },
+                    
+                    // Dimension 2: Economic Nodes
+                    economic_nodes: {
+                        veto_mechanism: {
+                            require_both_conditions: document.getElementById('veto-require-both')?.checked ?? true,
+                            mining_veto_percent: parseFloat(document.getElementById('veto-mining-percent')?.value || '30'),
+                            economic_veto_percent: parseFloat(document.getElementById('veto-economic-percent')?.value || '40'),
+                            grace_period_days: parseInt(document.getElementById('veto-grace-period')?.value || '30')
+                        },
+                        commons_contributors: {
+                            thresholds: {
+                                merge_mining: {
+                                    minimum_contribution_btc: parseFloat(document.getElementById('commons-merge-mining')?.value || '0.01')
+                                },
+                                fee_forwarding: {
+                                    minimum_contribution_btc: parseFloat(document.getElementById('commons-fee-forwarding')?.value || '0.1')
+                                },
+                                zaps: {
+                                    minimum_contribution_btc: parseFloat(document.getElementById('commons-zaps')?.value || '0.01')
+                                },
+                                marketplace: {
+                                    minimum_sales_btc: parseFloat(document.getElementById('commons-marketplace')?.value || '0.01')
+                                }
+                            },
+                            measurement_period_days: parseInt(document.getElementById('commons-measurement-period')?.value || '90')
+                        }
+                    },
+                    
+                    // Dimension 3: Nested Multisig Teams
+                    nested_multisig_teams: {
+                        team_consensus: {
+                            threshold_per_team: parseInt(document.getElementById('team-threshold')?.value || '6'),
+                            total_per_team: parseInt(document.getElementById('team-total')?.value || '7')
+                        },
+                        inter_team_consensus: {
+                            threshold_teams: parseInt(document.getElementById('inter-team-threshold')?.value || '6'),
+                            total_teams: parseInt(document.getElementById('inter-team-total')?.value || '7')
+                        }
+                    },
+                    
+                    // Dimension 4: Governance Review Policy
+                    governance_review_policy: {
+                        sanctions: {
+                            private_warning: {
+                                threshold: document.getElementById('review-private-warning')?.value || '4-of-7'
+                            },
+                            public_warning: {
+                                threshold: document.getElementById('review-public-warning')?.value || '5-of-7'
+                            },
+                            removal: {
+                                threshold: document.getElementById('review-removal')?.value || '6-of-7'
+                            }
+                        },
+                        time_limits: {
+                            response_deadline_days: parseInt(document.getElementById('review-response-deadline')?.value || '30'),
+                            resolution_deadline_days: parseInt(document.getElementById('review-resolution-deadline')?.value || '180'),
+                            appeal_deadline_days: parseInt(document.getElementById('review-appeal-deadline')?.value || '60')
+                        }
+                    },
+                    
                     metadata: {
                         exported_by: "thebitcoincommons.org",
                         source_repository: "BTCDecoded/governance",
-                        export_tool_version: "1.0.0"
+                        export_tool_version: "2.0.0"
                     }
                 };
                 
@@ -1305,6 +1631,29 @@
                 });
             });
             
+            // Quick Start Mode toggle
+            const quickStartToggle = document.getElementById('quick-start-mode');
+            if (quickStartToggle) {
+                quickStartToggle.addEventListener('change', function() {
+                    const advancedSections = ['economic-nodes', 'teams', 'governance-review'];
+                    const isQuickStart = this.checked;
+                    
+                    advancedSections.forEach(sectionId => {
+                        const section = document.querySelector(`[data-section="${sectionId}"]`);
+                        if (section) {
+                            if (isQuickStart) {
+                                section.style.display = 'none';
+                            } else {
+                                section.style.display = 'block';
+                            }
+                        }
+                    });
+                    
+                    // Update preview
+                    updateRulesetPreview();
+                });
+            }
+
             // Handle repository selection checkboxes
             document.querySelectorAll('input[name="fork-repo"]').forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
@@ -1334,11 +1683,11 @@
                 setTimeout(updateRulesetPreview, 100);
             }
             
-            // Export functions
+            // Export functions - Updated for Version 2.0
             document.getElementById('export-yaml').addEventListener('click', function() {
                 const ruleset = updateRulesetPreview();
-                // Simple YAML conversion (basic implementation)
-                let yaml = `# Governance Ruleset Export\n`;
+                // YAML conversion with all dimensions
+                let yaml = `# Governance Ruleset Export (Version 2.0)\n`;
                 yaml += `# Generated by thebitcoincommons.org\n`;
                 yaml += `# ${new Date().toISOString()}\n\n`;
                 yaml += `version: "${ruleset.version}"\n`;
@@ -1348,21 +1697,102 @@
                 if (ruleset.description) {
                     yaml += `description: "${ruleset.description}"\n`;
                 }
+                
+                // Action Tiers
                 yaml += `\naction_tiers:\n`;
-                yaml += `  tier_1_routine:\n`;
-                yaml += `    name: "${ruleset.action_tiers.tier_1_routine.name}"\n`;
-                yaml += `    signature_threshold: "${ruleset.action_tiers.tier_1_routine.signature_threshold}"\n`;
-                yaml += `    review_period_days: ${ruleset.action_tiers.tier_1_routine.review_period_days}\n`;
-                yaml += `  tier_2_features:\n`;
-                yaml += `    name: "${ruleset.action_tiers.tier_2_features.name}"\n`;
-                yaml += `    signature_threshold: "${ruleset.action_tiers.tier_2_features.signature_threshold}"\n`;
-                yaml += `    review_period_days: ${ruleset.action_tiers.tier_2_features.review_period_days}\n`;
-                yaml += `  tier_3_consensus_adjacent:\n`;
-                yaml += `    name: "${ruleset.action_tiers.tier_3_consensus_adjacent.name}"\n`;
-                yaml += `    signature_threshold: "${ruleset.action_tiers.tier_3_consensus_adjacent.signature_threshold}"\n`;
-                yaml += `    review_period_days: ${ruleset.action_tiers.tier_3_consensus_adjacent.review_period_days}\n`;
-                yaml += `    economic_node_veto:\n`;
-                yaml += `      mining_threshold: ${ruleset.action_tiers.tier_3_consensus_adjacent.economic_node_veto.mining_threshold}\n`;
+                ['tier_1_routine', 'tier_2_features', 'tier_3_consensus_adjacent', 'tier_4_emergency', 'tier_5_governance'].forEach(tier => {
+                    if (ruleset.action_tiers[tier]) {
+                        const t = ruleset.action_tiers[tier];
+                        yaml += `  ${tier}:\n`;
+                        yaml += `    name: "${t.name}"\n`;
+                        yaml += `    signatures:\n`;
+                        yaml += `      required: ${t.signatures.required}\n`;
+                        yaml += `      total: ${t.signatures.total}\n`;
+                        yaml += `    review_period_days: ${t.review_period_days}\n`;
+                        if (t.economic_veto !== undefined) yaml += `    economic_veto: ${t.economic_veto}\n`;
+                        if (t.emergency_override !== undefined) yaml += `    emergency_override: ${t.emergency_override}\n`;
+                    }
+                });
+                
+                // Economic Nodes
+                if (ruleset.economic_nodes) {
+                    yaml += `\neconomic_nodes:\n`;
+                    if (ruleset.economic_nodes.veto_mechanism) {
+                        yaml += `  veto_mechanism:\n`;
+                        yaml += `    require_both_conditions: ${ruleset.economic_nodes.veto_mechanism.require_both_conditions}\n`;
+                        yaml += `    mining_veto_percent: ${ruleset.economic_nodes.veto_mechanism.mining_veto_percent}\n`;
+                        yaml += `    economic_veto_percent: ${ruleset.economic_nodes.veto_mechanism.economic_veto_percent}\n`;
+                        yaml += `    grace_period_days: ${ruleset.economic_nodes.veto_mechanism.grace_period_days}\n`;
+                    }
+                    if (ruleset.economic_nodes.commons_contributors) {
+                        yaml += `  commons_contributors:\n`;
+                        yaml += `    thresholds:\n`;
+                        if (ruleset.economic_nodes.commons_contributors.thresholds.merge_mining) {
+                            yaml += `      merge_mining:\n`;
+                            yaml += `        minimum_contribution_btc: ${ruleset.economic_nodes.commons_contributors.thresholds.merge_mining.minimum_contribution_btc}\n`;
+                        }
+                        if (ruleset.economic_nodes.commons_contributors.thresholds.fee_forwarding) {
+                            yaml += `      fee_forwarding:\n`;
+                            yaml += `        minimum_contribution_btc: ${ruleset.economic_nodes.commons_contributors.thresholds.fee_forwarding.minimum_contribution_btc}\n`;
+                        }
+                        if (ruleset.economic_nodes.commons_contributors.thresholds.zaps) {
+                            yaml += `      zaps:\n`;
+                            yaml += `        minimum_contribution_btc: ${ruleset.economic_nodes.commons_contributors.thresholds.zaps.minimum_contribution_btc}\n`;
+                        }
+                        if (ruleset.economic_nodes.commons_contributors.thresholds.marketplace) {
+                            yaml += `      marketplace:\n`;
+                            yaml += `        minimum_sales_btc: ${ruleset.economic_nodes.commons_contributors.thresholds.marketplace.minimum_sales_btc}\n`;
+                        }
+                        yaml += `    measurement_period_days: ${ruleset.economic_nodes.commons_contributors.measurement_period_days}\n`;
+                    }
+                }
+                
+                // Nested Multisig Teams
+                if (ruleset.nested_multisig_teams) {
+                    yaml += `\nnested_multisig_teams:\n`;
+                    if (ruleset.nested_multisig_teams.team_consensus) {
+                        yaml += `  team_consensus:\n`;
+                        yaml += `    threshold_per_team: ${ruleset.nested_multisig_teams.team_consensus.threshold_per_team}\n`;
+                        yaml += `    total_per_team: ${ruleset.nested_multisig_teams.team_consensus.total_per_team}\n`;
+                    }
+                    if (ruleset.nested_multisig_teams.inter_team_consensus) {
+                        yaml += `  inter_team_consensus:\n`;
+                        yaml += `    threshold_teams: ${ruleset.nested_multisig_teams.inter_team_consensus.threshold_teams}\n`;
+                        yaml += `    total_teams: ${ruleset.nested_multisig_teams.inter_team_consensus.total_teams}\n`;
+                    }
+                }
+                
+                // Governance Review Policy
+                if (ruleset.governance_review_policy) {
+                    yaml += `\ngovernance_review_policy:\n`;
+                    if (ruleset.governance_review_policy.sanctions) {
+                        yaml += `  sanctions:\n`;
+                        if (ruleset.governance_review_policy.sanctions.private_warning) {
+                            yaml += `    private_warning:\n`;
+                            yaml += `      threshold: "${ruleset.governance_review_policy.sanctions.private_warning.threshold}"\n`;
+                        }
+                        if (ruleset.governance_review_policy.sanctions.public_warning) {
+                            yaml += `    public_warning:\n`;
+                            yaml += `      threshold: "${ruleset.governance_review_policy.sanctions.public_warning.threshold}"\n`;
+                        }
+                        if (ruleset.governance_review_policy.sanctions.removal) {
+                            yaml += `    removal:\n`;
+                            yaml += `      threshold: "${ruleset.governance_review_policy.sanctions.removal.threshold}"\n`;
+                        }
+                    }
+                    if (ruleset.governance_review_policy.time_limits) {
+                        yaml += `  time_limits:\n`;
+                        yaml += `    response_deadline_days: ${ruleset.governance_review_policy.time_limits.response_deadline_days}\n`;
+                        yaml += `    resolution_deadline_days: ${ruleset.governance_review_policy.time_limits.resolution_deadline_days}\n`;
+                        yaml += `    appeal_deadline_days: ${ruleset.governance_review_policy.time_limits.appeal_deadline_days}\n`;
+                    }
+                }
+                
+                // Metadata
+                yaml += `\nmetadata:\n`;
+                yaml += `  exported_by: "${ruleset.metadata.exported_by}"\n`;
+                yaml += `  source_repository: "${ruleset.metadata.source_repository}"\n`;
+                yaml += `  export_tool_version: "${ruleset.metadata.export_tool_version}"\n`;
                 
                 const blob = new Blob([yaml], { type: 'text/yaml' });
                 const url = URL.createObjectURL(blob);
