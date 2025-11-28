@@ -232,6 +232,7 @@ When forking, you must maintain compatibility with dependencies:
 
 ### Currently Implemented ✅
 - **Governance Forks** (Layer 6): Complete with registry, genealogy, sharing
+- **All 10 Governance Dimensions Forkable**: Action tiers, economic nodes, nested multisig teams, governance review policy, repository layers, tier classification, emergency procedures, cross-layer rules, commons contributor thresholds, validation requirements
 
 ### Should Be Added 🔄
 
