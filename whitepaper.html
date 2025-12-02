@@ -44,7 +44,7 @@
         <article class="whitepaper-content">
 <h2 id="abstract">Abstract</h2>
 <p>Bitcoin faces a critical governance asymmetry: while its technical consensus layer is cryptographically bulletproof, its development governance relies on informal social coordination. At Bitcoin's multi-trillion dollar scale, this represents an existential vulnerability.</p>
-<p>This whitepaper presents two innovations that enable each other: <strong>BLLVM</strong> provides mathematical rigor (proofs locked to code, formal verification, consensus matching); <strong>Bitcoin Commons</strong> provides governance coordination without civil war (Ostrom's principles through cryptographic enforcement). Together they solve Bitcoin's governance asymmetry.</p>
+<p>This whitepaper presents two innovations that enable each other: <strong>BLVM</strong> provides mathematical rigor (proofs locked to code, formal verification, consensus matching); <strong>Bitcoin Commons</strong> provides governance coordination without civil war (Ostrom's principles through cryptographic enforcement). Together they solve Bitcoin's governance asymmetry.</p>
 <p>The system is being developed across public repositories (see Section 9), with work ongoing on mathematical specifications, governance infrastructure, and economic sustainability. This is a living document: the foundation exists, but its future depends on community contribution. For the complete narrative treatment, see <em>Bitcoin Commons: Decentralizing the Decentralizers</em>.</p>
 <h2 id="1-introduction">1. Introduction</h2>
 <p>Bitcoin solved Byzantine consensus between strangers (Nakamoto, 2008) but ignored consensus between developers. The network's substantial market capitalization demands institutional maturity matching its technical excellence.</p>
@@ -245,14 +245,14 @@
 <img src="/assets/images/proof-maintenance-cost.png" alt="Proof Maintenance Cost" style="width: 100%; display: block; margin: 0 auto;">
 <figcaption>Figure: Proof maintenance cost by area, highlighting refactor hotspots. Commons aims for lower proof churn than Core.</figcaption>
 </figure>
-<p><strong>Status:</strong> Complete specification available at <a href="https://github.com/BTCDecoded/bllvm-spec">https://github.com/BTCDecoded/bllvm-spec</a>. The specification is actively maintained and verified against network behavior through automated testing.</p>
-<h3>4.4 BLLVM Architecture</h3>
+<p><strong>Status:</strong> Complete specification available at <a href="https://github.com/BTCDecoded/blvm-spec">https://github.com/BTCDecoded/blvm-spec</a>. The specification is actively maintained and verified against network behavior through automated testing.</p>
+<h3>4.4 BLVM Architecture</h3>
 <figure>
-<img src="/assets/images/stack.png" alt="BLLVM Stack Architecture" style="">
-<figcaption>Figure: BLLVM architecture showing bllvm-spec (Orange Paper) as the foundation, bllvm-consensus as the core implementation with verification paths (Kani proofs, spec drift detection, hash verification), and dependent components (bllvm-protocol, bllvm-node, bllvm-sdk) building on the verified consensus layer.</figcaption>
+<img src="/assets/images/stack.png" alt="BLVM Stack Architecture" style="">
+<figcaption>Figure: BLVM architecture showing blvm-spec (Orange Paper) as the foundation, blvm-consensus as the core implementation with verification paths (Kani proofs, spec drift detection, hash verification), and dependent components (blvm-protocol, blvm-node, blvm-sdk) building on the verified consensus layer.</figcaption>
 </figure>
-<p>BLLVM (Bitcoin LLVM) applies compiler-like infrastructure to Bitcoin implementations. The Orange Paper serves as an intermediate representation (IR), enabling reusable optimizations and multiple implementations.</p>
-<p><strong>Single Source of Truth:</strong> All consensus logic resides in <code>bllvm-consensus</code>. Upper tiers (<code>bllvm-protocol</code>, <code>bllvm-node</code>) delegate validation calls with no duplicate implementations. Path dependencies ensure changes propagate immediately through Rust's type system.</p>
+<p>BLVM (Bitcoin LLVM) applies compiler-like infrastructure to Bitcoin implementations. The Orange Paper serves as an intermediate representation (IR), enabling reusable optimizations and multiple implementations.</p>
+<p><strong>Single Source of Truth:</strong> All consensus logic resides in <code>blvm-consensus</code>. Upper tiers (<code>blvm-protocol</code>, <code>blvm-node</code>) delegate validation calls with no duplicate implementations. Path dependencies ensure changes propagate immediately through Rust's type system.</p>
 <p><strong>Optimization Pipeline:</strong> Multiple passes apply: formal verification (Kani model checking), property testing (proptest edge case discovery), LLVM compiler optimizations (opt-level 3, fat LTO, SIMD), and differential testing against network behavior. Scalable cloud infrastructure reduces proof execution time from hours to minutes at minimal cost.</p>
 <figure>
 <img src="/assets/images/verification-methods.png" alt="Verification Methods Comparison" style="width: 100%; display: block; margin: 0 auto;">
@@ -262,9 +262,9 @@
 <img src="/assets/images/Consensus-Coverage-Comparison.png" alt="Consensus Coverage Comparison" style="width: 100%; display: block; margin: 0 auto;">
 <figcaption>Figure: Consensus coverage comparison: Bitcoin Core achieves coverage through testing alone. Bitcoin Commons achieves formal verification coverage (Kani proofs) plus comprehensive test coverage. Commons uses consensus-focused test files with extensive test functions compared to Core's total files. The mathematical specification enables both formal verification and comprehensive testing.</figcaption>
 </figure>
-<p>Formal verification in <code>bllvm-consensus</code> applies to all tiers because all consensus decisions flow through verified functions. The dependency chain prevents bypassing verification.</p>
+<p>Formal verification in <code>blvm-consensus</code> applies to all tiers because all consensus decisions flow through verified functions. The dependency chain prevents bypassing verification.</p>
 <h2 id="5-architectural-solution-modular-governance">5. Architectural Solution: Modular Governance</h2>
-<p>Two innovations work together: <strong>BLLVM</strong> provides the mathematical foundation and compiler-like architecture (Orange Paper as IR, formal verification passes); <strong>Commons</strong> provides the governance framework (coordination without civil war). The modular architecture is where both innovations meet. BLLVM ensures correctness through architectural enforcement; Commons ensures coordination.</p>
+<p>Two innovations work together: <strong>BLVM</strong> provides the mathematical foundation and compiler-like architecture (Orange Paper as IR, formal verification passes); <strong>Commons</strong> provides the governance framework (coordination without civil war). The modular architecture is where both innovations meet. BLVM ensures correctness through architectural enforcement; Commons ensures coordination.</p>
 <h3>Three-Layer Stack</h3>
 <p>The modular architecture consists of three layers that transform governance conflicts from political battles into architectural choices:</p>
 <h4 class="subheading">Layer 1: Mandatory Consensus (Base Node)</h4>
@@ -314,11 +314,11 @@
 <h3>Architecture Diagrams</h3>
 <figure>
 <img src="/assets/images/tier-architecture.png" alt="Tiered Architecture" style="width: 100%; display: block; margin: 0 auto;">
-<figcaption>Figure: Tiered architecture: Tier 1 = Orange Paper + Consensus Proof (mathematical foundation); Tier 2 = Protocol Engine (protocol abstraction); Tier 3 = BLLVM Node (complete implementation); Tier 4 = Developer SDK + Governance (developer toolkit + governance enforcement).</figcaption>
+<figcaption>Figure: Tiered architecture: Tier 1 = Orange Paper + Consensus Proof (mathematical foundation); Tier 2 = Protocol Engine (protocol abstraction); Tier 3 = BLVM Node (complete implementation); Tier 4 = Developer SDK + Governance (developer toolkit + governance enforcement).</figcaption>
 </figure>
 <figure>
 <img src="/assets/images/how-the-stack-works-in-practice.png" alt="How the Stack Works" style="width: 100%; display: block; margin: 0 auto;">
-<figcaption>Figure: End-to-end data flow through BLLVM Node, Consensus Proof, Protocol Engine, modules, and governance. Each tier depends only on layers below; modules cannot affect consensus.</figcaption>
+<figcaption>Figure: End-to-end data flow through BLVM Node, Consensus Proof, Protocol Engine, modules, and governance. Each tier depends only on layers below; modules cannot affect consensus.</figcaption>
 </figure>
 <figure>
 <img src="/assets/images/module-quality-control-process.png" alt="Module Quality Control Process" style="width: 100%; display: block; margin: 0 auto;">
@@ -545,17 +545,17 @@
 <p>All repositories are public and active at <a href="https://github.com/BTCDecoded">https://github.com/BTCDecoded</a>:</p>
 <ol>
 <li><strong>Orange Paper</strong>: Mathematical specification of Bitcoin consensus</li>
-<li><strong>Protocol Engine</strong> (bllvm-protocol): Core protocol logic and state management</li>
-<li><strong>Consensus Proof</strong> (bllvm-consensus): Formal verification of consensus rules</li>
-<li><strong>BLLVM Node</strong> (bllvm-node): Complete Bitcoin implementation</li>
-<li><strong>Developer SDK</strong> (bllvm-sdk): Toolkit for building alternative Bitcoin implementations. Provides module composition framework for declaratively assembling custom Bitcoin nodes, plus governance cryptographic primitives.</li>
+<li><strong>Protocol Engine</strong> (blvm-protocol): Core protocol logic and state management</li>
+<li><strong>Consensus Proof</strong> (blvm-consensus): Formal verification of consensus rules</li>
+<li><strong>BLVM Node</strong> (blvm-node): Complete Bitcoin implementation</li>
+<li><strong>Developer SDK</strong> (blvm-sdk): Toolkit for building alternative Bitcoin implementations. Provides module composition framework for declaratively assembling custom Bitcoin nodes, plus governance cryptographic primitives.</li>
 <li><strong>Governance</strong>: Configuration repository for governance rules</li>
 <li><strong>Governance App</strong>: GitHub App that enforces governance rules</li>
 </ol>
 <h3>Current State</h3>
 <p>Phase 1 infrastructure provides substantial code implementing core capabilities. The system includes mathematical foundation and clean architecture. Governance infrastructure enables cryptographic enforcement.</p>
 <h3>Recent Technical Implementations</h3>
-<p>The BLLVM Node implementation includes extensive Bitcoin protocol support:</p>
+<p>The BLVM Node implementation includes extensive Bitcoin protocol support:</p>
 <p><strong>BIP Implementations:</strong> Block filtering (BIP157/158), compact block relay (BIP152), hardware wallet support via PSBT (BIP174), Bech32m address encoding (BIP350/351), hierarchical deterministic wallets (BIP32/39/44), Bitcoin URI scheme with OS-level registration (BIP21), duplicate transaction prevention (BIP30), block version enforcement (BIP34), strict DER encoding (BIP66), NULLDUMMY checks (BIP147), and BIP90 validation.</p>
 <p><strong>Consistent Networking:</strong> Transport abstraction layer supporting both TCP and Iroh QUIC transports, with unified message routing across transport types. This enables nodes to choose transport based on network conditions while maintaining protocol compatibility.</p>
 <p><strong>Network Optimizations:</strong> Integrated coordination between compact blocks and block filtering for bandwidth efficiency. UTXO commitments support optional inclusion of block filters in responses. Transport-aware feature negotiation optimizes protocol usage based on available transports.</p>
@@ -586,7 +586,7 @@
 <li>No critical issues outstanding from Phase 1 review</li>
 </ul>
 <h4 class="subheading">Phase 2 Milestones:</h4>
-<p><strong>Working Base Node:</strong> Complete BLLVM Node implementation with full network compatibility (mainnet, testnet, regtest). Milestone: At least one major miner committed to merge mining model</p>
+<p><strong>Working Base Node:</strong> Complete BLVM Node implementation with full network compatibility (mainnet, testnet, regtest). Milestone: At least one major miner committed to merge mining model</p>
 <p><strong>Module System Architecture:</strong> Module API, loading system, and infrastructure. Milestone: Lightning module integration and module marketplace operational</p>
 <p><strong>Cryptographic Governance:</strong> Multisig infrastructure, distributed keyholder system, transparent processes, Governance App deployment. Milestone: Governance system is operational with full three-layer verification</p>
 <p><strong>Lightning Integration Module:</strong> Build Lightning Network module demonstrating architecture-based conflict resolution. Milestone: Lightning module is working and adopted</p>
@@ -627,7 +627,7 @@
 <p>These metrics measure the health of the ecosystem, not just the success of Commons itself. For detailed risk analysis and mitigation strategies, see Section 8 (Failure Modes & Mitigations).</p>
 <hr>
 <h2 id="10-conclusion">10. Conclusion</h2>
-<p>Bitcoin's governance vacuum represents its greatest vulnerability at multi-trillion dollar scale. The technical architecture is bulletproof, but the social architecture runs on gentleman's agreements. BLLVM and Commons provide concrete, implementable solutions: BLLVM ensures mathematical rigor; Commons applies Ostrom's principles, Hayek's competitive discovery, and Bitcoin's cryptographic enforcement to governance.</p>
+<p>Bitcoin's governance vacuum represents its greatest vulnerability at multi-trillion dollar scale. The technical architecture is bulletproof, but the social architecture runs on gentleman's agreements. BLVM and Commons provide concrete, implementable solutions: BLVM ensures mathematical rigor; Commons applies Ostrom's principles, Hayek's competitive discovery, and Bitcoin's cryptographic enforcement to governance.</p>
 <p>This isn't speculation. It's applying battle-tested principles from economics, social science, and cryptography to governance. Each framework addresses weaknesses in the others: cryptography makes Ostrom enforceable at scale, infrastructure enables Hayek's competition, and modularity plus fork-ability creates competitive discovery.</p>
 <p>The foundation exists in public repositories, but implementation remains ongoing. The architecture is designed and the path is clear: the project's future depends on community participation.</p>
 <p>The choice: decentralize the builders, or watch them become kings.</p>
@@ -663,13 +663,13 @@
 </ul>
 <h3>Repository Links</h3>
 <ul>
-<li><a href="https://github.com/BTCDecoded/bllvm-spec">https://github.com/BTCDecoded/bllvm-spec</a></li>
-<li><a href="https://github.com/BTCDecoded/bllvm-protocol">https://github.com/BTCDecoded/bllvm-protocol</a></li>
-<li><a href="https://github.com/BTCDecoded/bllvm-consensus">https://github.com/BTCDecoded/bllvm-consensus</a></li>
-<li><a href="https://github.com/BTCDecoded/bllvm-node">https://github.com/BTCDecoded/bllvm-node</a></li>
-<li><a href="https://github.com/BTCDecoded/bllvm-sdk">https://github.com/BTCDecoded/bllvm-sdk</a></li>
+<li><a href="https://github.com/BTCDecoded/blvm-spec">https://github.com/BTCDecoded/blvm-spec</a></li>
+<li><a href="https://github.com/BTCDecoded/blvm-protocol">https://github.com/BTCDecoded/blvm-protocol</a></li>
+<li><a href="https://github.com/BTCDecoded/blvm-consensus">https://github.com/BTCDecoded/blvm-consensus</a></li>
+<li><a href="https://github.com/BTCDecoded/blvm-node">https://github.com/BTCDecoded/blvm-node</a></li>
+<li><a href="https://github.com/BTCDecoded/blvm-sdk">https://github.com/BTCDecoded/blvm-sdk</a></li>
 <li><a href="https://github.com/BTCDecoded/governance">https://github.com/BTCDecoded/governance</a></li>
-<li><a href="https://github.com/BTCDecoded/bllvm-commons">https://github.com/BTCDecoded/bllvm-commons</a></li>
+<li><a href="https://github.com/BTCDecoded/blvm-commons">https://github.com/BTCDecoded/blvm-commons</a></li>
 </ul>
 <p><strong>System Status:</strong> For verified implementation status, see <a href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md">SYSTEM_STATUS.md</a> in the BTCDecoded organization repository.</p>
         </article>
