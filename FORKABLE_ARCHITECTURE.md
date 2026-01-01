@@ -26,7 +26,7 @@ Bitcoin Commons uses a **6-tier layered architecture** where each tier builds on
 └─────────────────────────────────────────────────────────┘
                         ↓
 ┌─────────────────────────────────────────────────────────┐
-│ Layer 2: bllvm-consensus (Pure Math Implementation)    │
+│ Layer 2: blvm-consensus (Pure Math Implementation)    │
 │ - Purpose: Direct implementation of Orange Paper       │
 │ - Type: Rust library (pure functions, no side effects)  │
 │ - Governance: Constitutional (6-of-7, 180 days)          │
@@ -35,7 +35,7 @@ Bitcoin Commons uses a **6-tier layered architecture** where each tier builds on
 └─────────────────────────────────────────────────────────┘
                         ↓
 ┌─────────────────────────────────────────────────────────┐
-│ Layer 3: bllvm-protocol (Protocol Abstraction)          │
+│ Layer 3: blvm-protocol (Protocol Abstraction)          │
 │ - Purpose: Bitcoin variant abstraction (mainnet/testnet)│
 │ - Type: Rust library                                    │
 │ - Governance: Implementation (4-of-5, 90 days)            │
@@ -44,7 +44,7 @@ Bitcoin Commons uses a **6-tier layered architecture** where each tier builds on
 └─────────────────────────────────────────────────────────┘
                         ↓
 ┌─────────────────────────────────────────────────────────┐
-│ Layer 4: bllvm-node (Full Bitcoin Node)                 │
+│ Layer 4: blvm-node (Full Bitcoin Node)                 │
 │ - Purpose: Complete Bitcoin implementation              │
 │ - Type: Rust binaries (full node)                       │
 │ - Governance: Application (3-of-5, 60 days)             │
@@ -54,7 +54,7 @@ Bitcoin Commons uses a **6-tier layered architecture** where each tier builds on
 └─────────────────────────────────────────────────────────┘
                         ↓
 ┌─────────────────────────────────────────────────────────┐
-│ Layer 5: bllvm-sdk (Developer Toolkit)                  │
+│ Layer 5: blvm-sdk (Developer Toolkit)                  │
 │ - Purpose: Governance crypto + module composition       │
 │ - Type: Rust library and CLI tools                      │
 │ - Governance: Extension (2-of-3, 14 days)                │
@@ -63,7 +63,7 @@ Bitcoin Commons uses a **6-tier layered architecture** where each tier builds on
 └─────────────────────────────────────────────────────────┘
                         ↓
 ┌─────────────────────────────────────────────────────────┐
-│ Layer 6: governance + bllvm-commons (Enforcement)      │
+│ Layer 6: governance + blvm-commons (Enforcement)      │
 │ - Purpose: Cryptographic governance enforcement         │
 │ - Type: Configuration + GitHub App                      │
 │ - Governance: Extension (2-of-3, 14 days)                │
@@ -83,7 +83,7 @@ Bitcoin Commons uses a **6-tier layered architecture** where each tier builds on
 - **Example**: Alternative mathematical formulation of consensus rules
 - **Governance**: 6-of-7 maintainers, 180 days (365 for consensus changes)
 
-### Layer 2: bllvm-consensus (Implementation Fork)
+### Layer 2: blvm-consensus (Implementation Fork)
 - **What**: Pure mathematical implementation of consensus rules
 - **Fork Type**: Code fork (Rust library)
 - **Impact**: Different implementation of same mathematical functions
@@ -91,24 +91,24 @@ Bitcoin Commons uses a **6-tier layered architecture** where each tier builds on
 - **Governance**: 6-of-7 maintainers, 180 days (365 for consensus changes)
 - **Note**: Must maintain mathematical equivalence to Orange Paper
 
-### Layer 3: bllvm-protocol (Protocol Fork)
+### Layer 3: blvm-protocol (Protocol Fork)
 - **What**: Protocol abstraction layer
 - **Fork Type**: Code fork (Rust library)
 - **Impact**: Different protocol variants, network parameters
 - **Example**: New Bitcoin variant (e.g., Bitcoin V2), different testnet parameters
 - **Governance**: 4-of-5 maintainers, 90 days
-- **Note**: Uses bllvm-consensus, cannot change consensus rules
+- **Note**: Uses blvm-consensus, cannot change consensus rules
 
-### Layer 4: bllvm-node (Node Fork)
+### Layer 4: blvm-node (Node Fork)
 - **What**: Full Bitcoin node implementation
 - **Fork Type**: Code fork (Rust binaries)
 - **Impact**: Different node features, storage, networking
 - **Example**: Alternative storage backend, different RPC API, custom P2P protocol
 - **Governance**: 3-of-5 maintainers, 60 days
-- **Note**: Uses bllvm-protocol + bllvm-consensus, cannot change consensus
+- **Note**: Uses blvm-protocol + blvm-consensus, cannot change consensus
 - **Special**: Includes module system (see Modules section below)
 
-### Layer 5: bllvm-sdk (SDK Fork)
+### Layer 5: blvm-sdk (SDK Fork)
 - **What**: Developer toolkit and governance primitives
 - **Fork Type**: Code fork (Rust library + CLI tools)
 - **Impact**: Different developer APIs, governance tools
@@ -116,7 +116,7 @@ Bitcoin Commons uses a **6-tier layered architecture** where each tier builds on
 - **Governance**: 2-of-3 maintainers, 14 days
 - **Note**: Standalone, no consensus dependencies
 
-### Layer 6: governance + bllvm-commons (Governance Fork)
+### Layer 6: governance + blvm-commons (Governance Fork)
 - **What**: Governance rulesets and enforcement
 - **Fork Type**: Configuration fork (what we just built!)
 - **Impact**: Different governance rules (signature thresholds, review periods)
@@ -130,7 +130,7 @@ Bitcoin Commons uses a **6-tier layered architecture** where each tier builds on
 
 ### What Are Modules?
 
-Modules are **optional, process-isolated features** that extend bllvm-node (Layer 4) without affecting consensus:
+Modules are **optional, process-isolated features** that extend blvm-node (Layer 4) without affecting consensus:
 
 - **Lightning Network**: Layer 2 payment channels
 - **Merge Mining**: Auxiliary proof-of-work
@@ -140,7 +140,7 @@ Modules are **optional, process-isolated features** that extend bllvm-node (Laye
 ### Module Architecture
 
 ```
-bllvm-node (Layer 4)
+blvm-node (Layer 4)
 ├── Core Node (consensus validation, storage, P2P)
 └── Module System
     ├── Module 1: Lightning Network
@@ -187,10 +187,10 @@ bllvm-node (Layer 4)
 | Level | Component | Fork Type | Governance | Impact | Website Support |
 |-------|-----------|-----------|------------|--------|-----------------|
 | **Layer 1** | Orange Paper | Specification | 6-of-7, 180d | Consensus definition | ❌ Not yet |
-| **Layer 2** | bllvm-consensus | Code | 6-of-7, 180d | Implementation | ❌ Not yet |
-| **Layer 3** | bllvm-protocol | Code | 4-of-5, 90d | Protocol variant | ❌ Not yet |
-| **Layer 4** | bllvm-node | Code | 3-of-5, 60d | Node features | ❌ Not yet |
-| **Layer 5** | bllvm-sdk | Code | 2-of-3, 14d | Developer tools | ❌ Not yet |
+| **Layer 2** | blvm-consensus | Code | 6-of-7, 180d | Implementation | ❌ Not yet |
+| **Layer 3** | blvm-protocol | Code | 4-of-5, 90d | Protocol variant | ❌ Not yet |
+| **Layer 4** | blvm-node | Code | 3-of-5, 60d | Node features | ❌ Not yet |
+| **Layer 5** | blvm-sdk | Code | 2-of-3, 14d | Developer tools | ❌ Not yet |
 | **Layer 6** | governance | Configuration | 2-of-3, 14d | Governance rules | ✅ **Implemented!** |
 | **Modules** | Lightning, etc. | Code/Config | Varies | Optional features | ❌ Not yet |
 
@@ -203,7 +203,7 @@ bllvm-node (Layer 4)
 Each level can be forked **independently**:
 
 - You can fork governance (Layer 6) without forking code (Layers 1-5)
-- You can fork bllvm-node (Layer 4) while using standard governance
+- You can fork blvm-node (Layer 4) while using standard governance
 - You can fork modules while using standard node
 
 ### Dependency Rules
