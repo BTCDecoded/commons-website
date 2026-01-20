@@ -280,8 +280,12 @@
                                 <li>Tier 1: 4-of-5 signatures, 14 days</li>
                                 <li>Tier 2: 5-of-5 signatures, 60 days</li>
                                 <li>Tier 3: 6-of-7 signatures, 180 days</li>
-                                <li>Economic veto: 25% threshold</li>
+                                <li>Tier 4: 4-of-7 emergency, 0 days</li>
+                                <li>Tier 5: 7-of-7 governance, 365 days</li>
                             </ul>
+                            <div class="template-summary">
+                                <strong>7 maintainers</strong>
+                            </div>
                             <button class="btn btn-primary template-fork-btn">Fork This Template</button>
                         </div>
                         
@@ -293,8 +297,12 @@
                                 <li>Tier 1: 3-of-5 signatures, 7 days</li>
                                 <li>Tier 2: 4-of-5 signatures, 30 days</li>
                                 <li>Tier 3: 5-of-5 signatures, 90 days</li>
-                                <li>Economic veto: 30% threshold</li>
+                                <li>Tier 4: 4-of-5 emergency, 0 days</li>
+                                <li>Tier 5: 5-of-5 governance, 180 days</li>
                             </ul>
+                            <div class="template-summary">
+                                <strong>5 maintainers</strong>
+                            </div>
                             <button class="btn btn-primary template-fork-btn">Fork This Template</button>
                         </div>
                         
@@ -306,21 +314,29 @@
                                 <li>Tier 1: 2-of-3 signatures, 3 days</li>
                                 <li>Tier 2: 3-of-5 signatures, 14 days</li>
                                 <li>Tier 3: 4-of-5 signatures, 60 days</li>
-                                <li>Economic veto: 35% threshold</li>
+                                <li>Tier 4: 3-of-5 emergency, 0 days</li>
+                                <li>Tier 5: 5-of-5 governance, 90 days</li>
                             </ul>
+                            <div class="template-summary">
+                                <strong>5 maintainers</strong>
+                            </div>
                             <button class="btn btn-primary template-fork-btn">Fork This Template</button>
                         </div>
                         
                         <div class="template-card" data-template="community">
                             <div class="template-icon">👥</div>
                             <h4>Community-Driven</h4>
-                            <p>Lower veto threshold, more network power</p>
+                            <p>Community-focused governance model</p>
                             <ul class="template-features">
                                 <li>Tier 1: 3-of-5 signatures, 7 days</li>
                                 <li>Tier 2: 4-of-5 signatures, 30 days</li>
                                 <li>Tier 3: 5-of-5 signatures, 90 days</li>
-                                <li>Economic veto: 20% threshold</li>
+                                <li>Tier 4: 4-of-5 emergency, 0 days</li>
+                                <li>Tier 5: 5-of-5 governance, 180 days</li>
                             </ul>
+                            <div class="template-summary">
+                                <strong>5 maintainers</strong>
+                            </div>
                             <button class="btn btn-primary template-fork-btn">Fork This Template</button>
                         </div>
                     </div>
@@ -397,10 +413,6 @@
                                             <label>Review Period (days)</label>
                                             <input type="number" id="tier3-review" class="param-input" value="90" min="30" max="180">
                                         </div>
-                                        <div class="parameter-control">
-                                            <label>Economic Node Veto Threshold (%)</label>
-                                            <input type="number" id="tier3-veto" class="param-input" value="30" min="20" max="50" step="5">
-                                        </div>
                                     </div>
 
                                     <div class="parameter-group">
@@ -410,6 +422,7 @@
                                             <select id="tier4-signatures" class="param-select">
                                                 <option value="3-of-5">3-of-5</option>
                                                 <option value="4-of-5" selected>4-of-5 (Default)</option>
+                                                <option value="4-of-7">4-of-7</option>
                                                 <option value="5-of-5">5-of-5</option>
                                             </select>
                                         </div>
@@ -444,27 +457,6 @@
                                     <span class="section-toggle">▼</span>
                                 </h3>
                                 <div class="section-content" id="economic-nodes-content" style="display: none;">
-                                    <div class="parameter-group">
-                                        <h4>Veto Mechanism</h4>
-                                        <div class="parameter-control">
-                                            <label>Require Both Conditions (AND logic)</label>
-                                            <input type="checkbox" id="veto-require-both" checked>
-                                            <small>Both mining AND economic thresholds must be met</small>
-                                        </div>
-                                        <div class="parameter-control">
-                                            <label>Mining Veto Threshold (%)</label>
-                                            <input type="number" id="veto-mining-percent" class="param-input" value="30" min="20" max="50" step="5">
-                                        </div>
-                                        <div class="parameter-control">
-                                            <label>Economic Veto Threshold (%)</label>
-                                            <input type="number" id="veto-economic-percent" class="param-input" value="40" min="30" max="60" step="5">
-                                        </div>
-                                        <div class="parameter-control">
-                                            <label>Grace Period (days)</label>
-                                            <input type="number" id="veto-grace-period" class="param-input" value="30" min="7" max="90">
-                                        </div>
-                                    </div>
-
                                     <div class="parameter-group">
                                         <h4>Commons Contributor Thresholds</h4>
                                         <div class="parameter-control">
@@ -755,11 +747,11 @@
                     <div class="explanation-grid">
                         <div class="explanation-item">
                             <h4>1. Export Current Ruleset</h4>
-                            <p>Download the current governance configuration as a versioned, signed package. This includes all tiers, maintainers, and economic node settings.</p>
+                            <p>Download the current governance configuration as a versioned, signed package. This includes all tiers and maintainer settings.</p>
                         </div>
                         <div class="explanation-item">
                             <h4>2. Customize Parameters</h4>
-                            <p>Modify signature thresholds, review periods, or economic node veto requirements to match your organization's needs. Bitcoin consensus remains unchanged.</p>
+                            <p>Modify signature thresholds and review periods to match your organization's needs. Bitcoin consensus remains unchanged.</p>
                         </div>
                         <div class="explanation-item">
                             <h4>3. Deploy Your Fork</h4>
@@ -924,21 +916,21 @@
                         <div class="faq-accordion">
                             <div class="faq-item">
                                 <button class="faq-question" aria-expanded="false">
-                                    <span>What is Bitcoin Commons (the governance framework)?</span>
+                                    <span>What is Bitcoin Commons and why does it exist?</span>
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>Bitcoin Commons is a forkable governance framework that applies Elinor Ostrom's proven commons management principles through cryptographic enforcement. It solves Bitcoin's governance asymmetry by making development governance as robust as technical consensus. It provides coordination without civil war through forkable rules, cryptographic signatures, and transparent audit trails.</p>
+                                    <p>Bitcoin Commons is a forkable governance framework that solves Bitcoin's fundamental governance asymmetry. While Bitcoin's technical consensus is bulletproof (proof-of-work, cryptographic signatures), its development governance has remained fragile—controlled by a handful of maintainers with no systematic process. Bitcoin Commons applies Elinor Ostrom's Nobel Prize-winning commons management principles through cryptographic enforcement, making development governance as robust as technical consensus. It enables coordination without authority, allowing multiple implementations to compete while maintaining Bitcoin consensus compatibility. The framework provides an architectural solution: if you disagree with governance decisions, you can fork the governance rules (not just the code) and create a better-governed implementation.</p>
                                 </div>
                             </div>
                             
                             <div class="faq-item">
                                 <button class="faq-question" aria-expanded="false">
-                                    <span>How does Bitcoin Commons governance work?</span>
+                                    <span>How does the Bitcoin Commons governance system work technically?</span>
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>Bitcoin Commons uses a 5-tier constitutional governance model with graduated signature thresholds (3-of-5 for routine maintenance, up to 6-of-7 for consensus changes) and review periods (7 days to 365 days). The system combines <strong>Layers</strong> (which repository) and <strong>Tiers</strong> (what type of change), using "most restrictive wins" for maximum security. All governance actions are cryptographically signed and transparently auditable. <strong>Economic nodes</strong> (mining pools, exchanges, custodians) can veto consensus-adjacent changes. Users can <strong>fork governance rulesets</strong> if they disagree, creating exit competition. A <strong>three-tiered emergency system</strong> provides proportional response to critical issues.</p>
+                                    <p>The system uses a <strong>5-tier constitutional model</strong> with graduated signature thresholds and review periods: Tier 1 (routine maintenance) requires 3-of-5 signatures and 7 days; Tier 3 (consensus-adjacent changes) requires 5-of-5 signatures and 90 days; Tier 5 (governance changes) requires 5-of-5 signatures and 180 days. The system combines two dimensions: <strong>Layers</strong> (which repository—Protocol Engine, Consensus, etc.) and <strong>Tiers</strong> (what type of change), using "most restrictive wins" for maximum security. All governance actions are cryptographically signed by maintainers and transparently auditable. A <strong>three-tiered emergency system</strong> provides proportional response (0-90 day review periods) for critical issues. Users can export governance rulesets as versioned, signed packages and fork to different governance models if they disagree with decisions, creating exit competition that prevents capture.</p>
                                 </div>
                             </div>
                             
@@ -1126,7 +1118,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>Economic nodes represent Bitcoin's economic stakeholders (mining pools, exchanges, custodians) and provide veto power over consensus-adjacent changes. They ensure governance decisions align with economic incentives. For Tier 3+ changes, economic nodes can veto if 30%+ hashpower or 40%+ economic activity signals opposition. This protects users by ensuring major changes consider economic impact.</p>
+                                    <p>Bitcoin Commons uses maintainer-only multisig governance. All governance decisions are made by maintainers through cryptographic signatures. This ensures transparent, auditable governance while maintaining Bitcoin consensus compatibility.</p>
                                 </div>
                             </div>
                             
@@ -1498,8 +1490,7 @@
                                 required: parseInt(document.getElementById('tier1-signatures').value.split('-')[0]),
                                 total: parseInt(document.getElementById('tier1-signatures').value.split('-')[2])
                             },
-                            review_period_days: parseInt(document.getElementById('tier1-review').value),
-                            economic_veto: false
+                            review_period_days: parseInt(document.getElementById('tier1-review').value)
                         },
                         tier_2_features: {
                             name: "Feature Changes",
@@ -1507,8 +1498,7 @@
                                 required: parseInt(document.getElementById('tier2-signatures').value.split('-')[0]),
                                 total: parseInt(document.getElementById('tier2-signatures').value.split('-')[2])
                             },
-                            review_period_days: parseInt(document.getElementById('tier2-review').value),
-                            economic_veto: false
+                            review_period_days: parseInt(document.getElementById('tier2-review').value)
                         },
                         tier_3_consensus_adjacent: {
                             name: "Consensus-Adjacent",
@@ -1516,8 +1506,7 @@
                                 required: parseInt(document.getElementById('tier3-signatures').value.split('-')[0]),
                                 total: parseInt(document.getElementById('tier3-signatures').value.split('-')[2])
                             },
-                            review_period_days: parseInt(document.getElementById('tier3-review').value),
-                            economic_veto: true
+                            review_period_days: parseInt(document.getElementById('tier3-review').value)
                         },
                         tier_4_emergency: {
                             name: "Emergency Actions",
@@ -1526,7 +1515,6 @@
                                 total: parseInt(document.getElementById('tier4-signatures')?.value.split('-')[2] || '5')
                             },
                             review_period_days: parseInt(document.getElementById('tier4-review')?.value || '0'),
-                            economic_veto: false,
                             emergency_override: true
                         },
                         tier_5_governance: {
@@ -1535,19 +1523,12 @@
                                 required: parseInt(document.getElementById('tier5-signatures')?.value.split('-')[0] || '5'),
                                 total: parseInt(document.getElementById('tier5-signatures')?.value.split('-')[2] || '5')
                             },
-                            review_period_days: parseInt(document.getElementById('tier5-review')?.value || '180'),
-                            economic_veto: true
+                            review_period_days: parseInt(document.getElementById('tier5-review')?.value || '180')
                         }
                     },
                     
                     // Dimension 2: Economic Nodes
                     economic_nodes: {
-                        veto_mechanism: {
-                            require_both_conditions: document.getElementById('veto-require-both')?.checked ?? true,
-                            mining_veto_percent: parseFloat(document.getElementById('veto-mining-percent')?.value || '30'),
-                            economic_veto_percent: parseFloat(document.getElementById('veto-economic-percent')?.value || '40'),
-                            grace_period_days: parseInt(document.getElementById('veto-grace-period')?.value || '30')
-                        },
                         commons_contributors: {
                             thresholds: {
                                 merge_mining: {
@@ -1709,7 +1690,6 @@
                         yaml += `      required: ${t.signatures.required}\n`;
                         yaml += `      total: ${t.signatures.total}\n`;
                         yaml += `    review_period_days: ${t.review_period_days}\n`;
-                        if (t.economic_veto !== undefined) yaml += `    economic_veto: ${t.economic_veto}\n`;
                         if (t.emergency_override !== undefined) yaml += `    emergency_override: ${t.emergency_override}\n`;
                     }
                 });
@@ -1717,13 +1697,6 @@
                 // Economic Nodes
                 if (ruleset.economic_nodes) {
                     yaml += `\neconomic_nodes:\n`;
-                    if (ruleset.economic_nodes.veto_mechanism) {
-                        yaml += `  veto_mechanism:\n`;
-                        yaml += `    require_both_conditions: ${ruleset.economic_nodes.veto_mechanism.require_both_conditions}\n`;
-                        yaml += `    mining_veto_percent: ${ruleset.economic_nodes.veto_mechanism.mining_veto_percent}\n`;
-                        yaml += `    economic_veto_percent: ${ruleset.economic_nodes.veto_mechanism.economic_veto_percent}\n`;
-                        yaml += `    grace_period_days: ${ruleset.economic_nodes.veto_mechanism.grace_period_days}\n`;
-                    }
                     if (ruleset.economic_nodes.commons_contributors) {
                         yaml += `  commons_contributors:\n`;
                         yaml += `    thresholds:\n`;
@@ -1825,31 +1798,46 @@
                     name: "Conservative",
                     tier1: { signatures: "4-of-5", review: 14 },
                     tier2: { signatures: "5-of-5", review: 60 },
-                    tier3: { signatures: "6-of-7", review: 180, veto: 25 }
+                    tier3: { signatures: "6-of-7", review: 180 },
+                    tier4: { signatures: "4-of-7", review: 0 },
+                    tier5: { signatures: "7-of-7", review: 365 },
+                    maintainers: 7
                 },
                 balanced: {
                     name: "Balanced (Default)",
                     tier1: { signatures: "3-of-5", review: 7 },
                     tier2: { signatures: "4-of-5", review: 30 },
-                    tier3: { signatures: "5-of-5", review: 90, veto: 30 }
+                    tier3: { signatures: "5-of-5", review: 90 },
+                    tier4: { signatures: "4-of-5", review: 0 },
+                    tier5: { signatures: "5-of-5", review: 180 },
+                    maintainers: 5
                 },
                 agile: {
                     name: "Agile",
                     tier1: { signatures: "2-of-3", review: 3 },
                     tier2: { signatures: "3-of-5", review: 14 },
-                    tier3: { signatures: "4-of-5", review: 60, veto: 35 }
+                    tier3: { signatures: "4-of-5", review: 60 },
+                    tier4: { signatures: "3-of-5", review: 0 },
+                    tier5: { signatures: "5-of-5", review: 90 },
+                    maintainers: 5
                 },
                 community: {
                     name: "Community-Driven",
                     tier1: { signatures: "3-of-5", review: 7 },
                     tier2: { signatures: "4-of-5", review: 30 },
-                    tier3: { signatures: "5-of-5", review: 90, veto: 20 }
+                    tier3: { signatures: "5-of-5", review: 90 },
+                    tier4: { signatures: "4-of-5", review: 0 },
+                    tier5: { signatures: "5-of-5", review: 180 },
+                    maintainers: 5
                 },
                 default: {
                     name: "BTCDecoded",
                     tier1: { signatures: "3-of-5", review: 7 },
                     tier2: { signatures: "4-of-5", review: 30 },
-                    tier3: { signatures: "5-of-5", review: 90, veto: 30 }
+                    tier3: { signatures: "5-of-5", review: 90 },
+                    tier4: { signatures: "4-of-5", review: 0 },
+                    tier5: { signatures: "5-of-5", review: 180 },
+                    maintainers: 5
                 }
             };
             
@@ -1997,9 +1985,47 @@
                 tier3Review.value = template.tier3.review;
                 tier3Review.dispatchEvent(new Event('change', { bubbles: true }));
                 
-                const tier3Veto = document.getElementById('tier3-veto');
-                tier3Veto.value = template.tier3.veto;
-                tier3Veto.dispatchEvent(new Event('change', { bubbles: true }));
+                if (template.tier4) {
+                    const tier4Select = document.getElementById('tier4-signatures');
+                    if (tier4Select) {
+                        // Add option if it doesn't exist (for conservative template's 4-of-7)
+                        if (!Array.from(tier4Select.options).some(opt => opt.value === template.tier4.signatures)) {
+                            const option = document.createElement('option');
+                            option.value = template.tier4.signatures;
+                            option.textContent = template.tier4.signatures;
+                            tier4Select.appendChild(option);
+                        }
+                        tier4Select.value = template.tier4.signatures;
+                        tier4Select.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                    
+                    const tier4Review = document.getElementById('tier4-review');
+                    if (tier4Review) {
+                        tier4Review.value = template.tier4.review;
+                        tier4Review.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                }
+                
+                if (template.tier5) {
+                    const tier5Select = document.getElementById('tier5-signatures');
+                    if (tier5Select) {
+                        // Add option if it doesn't exist (for conservative template's 7-of-7)
+                        if (!Array.from(tier5Select.options).some(opt => opt.value === template.tier5.signatures)) {
+                            const option = document.createElement('option');
+                            option.value = template.tier5.signatures;
+                            option.textContent = template.tier5.signatures;
+                            tier5Select.appendChild(option);
+                        }
+                        tier5Select.value = template.tier5.signatures;
+                        tier5Select.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                    
+                    const tier5Review = document.getElementById('tier5-review');
+                    if (tier5Review) {
+                        tier5Review.value = template.tier5.review;
+                        tier5Review.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                }
                 
                 // Set metadata
                 document.getElementById('ruleset-name').value = templateName + '-governance-v1';
@@ -2153,8 +2179,6 @@
                         if (currentFork) currentFork.tier3 = line.split(':').slice(1).join(':').trim().replace(/^["']|["']$/g, '');
                     } else if (line.startsWith('tier3_review:')) {
                         if (currentFork) currentFork.tier3_review = parseInt(line.split(':')[1].trim());
-                    } else if (line.startsWith('tier3_veto:')) {
-                        if (currentFork) currentFork.tier3_veto = parseInt(line.split(':')[1].trim());
                     } else if (line.startsWith('verified:')) {
                         if (currentFork) currentFork.verified = line.split(':')[1].trim() === 'true';
                     } else if (line.startsWith('created_at:')) {
@@ -2255,7 +2279,6 @@
                     tier2_review: forkTemplates[id].tier2.review,
                     tier3: forkTemplates[id].tier3.signatures,
                     tier3_review: forkTemplates[id].tier3.review,
-                    tier3_veto: forkTemplates[id].tier3.veto,
                     description: forkTemplates[id].name
                 }));
             }
@@ -2306,7 +2329,6 @@
                                 ${fork.tier1 ? `<span class="feature-tag">Tier 1: ${fork.tier1}</span>` : ''}
                                 ${fork.tier2 ? `<span class="feature-tag">Tier 2: ${fork.tier2}</span>` : ''}
                                 ${fork.tier3 ? `<span class="feature-tag">Tier 3: ${fork.tier3}</span>` : ''}
-                                ${fork.tier3_veto ? `<span class="feature-tag">Veto: ${fork.tier3_veto}%</span>` : ''}
                             </div>
                             <button class="btn ${isDefault ? 'btn-outline' : 'btn-primary'} fork-btn" data-fork="${fork.id}">${isDefault ? 'View Details' : 'Fork This'}</button>
                         </div>
@@ -2415,10 +2437,6 @@
                 const tier3Review = document.getElementById('tier3-review');
                 tier3Review.value = fork.tier3_review || 90;
                 tier3Review.dispatchEvent(new Event('change', { bubbles: true }));
-                
-                const tier3Veto = document.getElementById('tier3-veto');
-                tier3Veto.value = fork.tier3_veto || 30;
-                tier3Veto.dispatchEvent(new Event('change', { bubbles: true }));
                 
                 // Set metadata
                 document.getElementById('ruleset-name').value = fork.id + '-governance-v1';
@@ -2556,12 +2574,6 @@
                                 <td>${fork1.tier3_review || 'N/A'} days</td>
                                 <td>${fork2.tier3_review || 'N/A'} days</td>
                                 <td class="diff-cell">${calculateDiff(fork1.tier3_review || 'N/A', fork2.tier3_review || 'N/A', 'number')} ${fork1.tier3_review && fork2.tier3_review && fork1.tier3_review !== fork2.tier3_review ? 'days' : ''}</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Economic Node Veto Threshold</strong></td>
-                                <td>${fork1.tier3_veto || 'N/A'}%</td>
-                                <td>${fork2.tier3_veto || 'N/A'}%</td>
-                                <td class="diff-cell">${calculateDiff(fork1.tier3_veto || 'N/A', fork2.tier3_veto || 'N/A', 'number')}${fork1.tier3_veto && fork2.tier3_veto && fork1.tier3_veto !== fork2.tier3_veto ? '%' : ''}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -2800,7 +2812,6 @@
     tier2_review: ${document.getElementById('tier2-review').value}
     tier3: "${currentTier3}"
     tier3_review: ${document.getElementById('tier3-review').value}
-    tier3_veto: ${document.getElementById('tier3-veto').value}
     verified: false
     created_at: "${today}"`;
                 
