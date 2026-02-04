@@ -182,7 +182,7 @@
                     </div>
                     <div class="column">
                         <h3>Economic Sustainability</h3>
-                        <p>Self-funding through merge mining revenue, creating economic alignment between miners and development priorities without external dependencies.</p>
+                        <p>Self-funding through transparent governance and module ecosystem, creating sustainable development without external dependencies.</p>
                     </div>
                     <div class="column">
                         <h3>Proven Governance Principles</h3>
@@ -445,39 +445,6 @@
                                         <div class="parameter-control">
                                             <label>Review Period (days)</label>
                                             <input type="number" id="tier5-review" class="param-input" value="180" min="90" max="365">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Economic Nodes Section -->
-                            <div class="parameter-section" data-section="economic-nodes">
-                                <h3 class="section-header" onclick="toggleSection('economic-nodes')">
-                                    <span>💰 Economic Nodes</span>
-                                    <span class="section-toggle">▼</span>
-                                </h3>
-                                <div class="section-content" id="economic-nodes-content" style="display: none;">
-                                    <div class="parameter-group">
-                                        <h4>Commons Contributor Thresholds</h4>
-                                        <div class="parameter-control">
-                                            <label>Merge Mining Minimum (BTC)</label>
-                                            <input type="number" id="commons-merge-mining" class="param-input" value="0.01" min="0.001" max="1" step="0.001">
-                                        </div>
-                                        <div class="parameter-control">
-                                            <label>Fee Forwarding Minimum (BTC)</label>
-                                            <input type="number" id="commons-fee-forwarding" class="param-input" value="0.1" min="0.01" max="10" step="0.01">
-                                        </div>
-                                        <div class="parameter-control">
-                                            <label>Zap Contributions Minimum (BTC)</label>
-                                            <input type="number" id="commons-zaps" class="param-input" value="0.01" min="0.001" max="1" step="0.001">
-                                        </div>
-                                        <div class="parameter-control">
-                                            <label>Marketplace Sales Minimum (BTC)</label>
-                                            <input type="number" id="commons-marketplace" class="param-input" value="0.01" min="0.001" max="1" step="0.001">
-                                        </div>
-                                        <div class="parameter-control">
-                                            <label>Measurement Period (days)</label>
-                                            <input type="number" id="commons-measurement-period" class="param-input" value="90" min="30" max="365">
                                         </div>
                                     </div>
                                 </div>
@@ -947,7 +914,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>Multiple mechanisms: (1) Forkable governance rules allow users to exit if governance is captured, (2) Multiple implementations compete, preventing monopoly, (3) Cryptographic enforcement makes power visible and accountable, (4) Economic alignment through merge mining, (5) Graduated thresholds prevent rapid changes, (6) Transparent audit trails.</p>
+                                    <p>Multiple mechanisms: (1) Forkable governance rules allow users to exit if governance is captured, (2) Multiple implementations compete, preventing monopoly, (3) Cryptographic enforcement makes power visible and accountable, (4) Graduated thresholds prevent rapid changes, (5) Transparent audit trails.</p>
                                 </div>
                             </div>
                             
@@ -994,7 +961,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>Three layers: (1) Mandatory Consensus (BLVM ensures correctness), (2) Optional Modules (Commons enables competition), (3) Economic Coordination (merge mining funds both).</p>
+                                    <p>Three layers: (1) Mandatory Consensus (BLVM ensures correctness), (2) Optional Modules (Commons enables competition), (3) Governance Infrastructure (coordination and enforcement).</p>
                                 </div>
                             </div>
                             
@@ -1100,35 +1067,6 @@
                                 </div>
                             </div>
                             
-                            <div class="faq-item">
-                                <button class="faq-question" aria-expanded="false">
-                                    <span>How does economic alignment work?</span>
-                                    <span class="faq-icon">+</span>
-                                </button>
-                                <div class="faq-answer">
-                                    <p>Through merge mining revenue. Secondary chains merge-mine with Bitcoin, providing revenue that flows to development priorities through governance decisions. Miners have economic incentives to support well-governed implementations because they benefit from network health.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="faq-item">
-                                <button class="faq-question" aria-expanded="false">
-                                    <span>What is merge mining?</span>
-                                    <span class="faq-icon">+</span>
-                                </button>
-                                <div class="faq-answer">
-                                    <p>Merge mining allows miners to mine multiple blockchains simultaneously using the same proof-of-work. Bitcoin Commons implementations can merge-mine with Bitcoin, providing economic sustainability without changing Bitcoin's consensus. 1% of merged chain rewards fund development.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="faq-item">
-                                <button class="faq-question" aria-expanded="false">
-                                    <span>What are economic nodes?</span>
-                                    <span class="faq-icon">+</span>
-                                </button>
-                                <div class="faq-answer">
-                                    <p>Bitcoin Commons uses maintainer-only multisig governance. All governance decisions are made by maintainers through cryptographic signatures. This ensures transparent, auditable governance while maintaining Bitcoin consensus compatibility.</p>
-                                </div>
-                            </div>
                             
                             <div class="faq-item">
                                 <button class="faq-question" aria-expanded="false">
@@ -1183,7 +1121,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>All core governance infrastructure is implemented: blvm-commons, economic node system, governance fork capability, emergency tier system. Governance is not yet activated (test keys only).</p>
+                                    <p>All core governance infrastructure is implemented: blvm-commons, governance fork capability, emergency tier system. Governance is not yet activated (test keys only).</p>
                                 </div>
                             </div>
                             
@@ -1535,28 +1473,7 @@
                         }
                     },
                     
-                    // Dimension 2: Economic Nodes
-                    economic_nodes: {
-                        commons_contributors: {
-                            thresholds: {
-                                merge_mining: {
-                                    minimum_contribution_btc: parseFloat(document.getElementById('commons-merge-mining')?.value || '0.01')
-                                },
-                                fee_forwarding: {
-                                    minimum_contribution_btc: parseFloat(document.getElementById('commons-fee-forwarding')?.value || '0.1')
-                                },
-                                zaps: {
-                                    minimum_contribution_btc: parseFloat(document.getElementById('commons-zaps')?.value || '0.01')
-                                },
-                                marketplace: {
-                                    minimum_sales_btc: parseFloat(document.getElementById('commons-marketplace')?.value || '0.01')
-                                }
-                            },
-                            measurement_period_days: parseInt(document.getElementById('commons-measurement-period')?.value || '90')
-                        }
-                    },
-                    
-                    // Dimension 3: Nested Multisig Teams
+                    // Dimension 2: Nested Multisig Teams
                     nested_multisig_teams: {
                         team_consensus: {
                             threshold_per_team: parseInt(document.getElementById('team-threshold')?.value || '6'),
@@ -1624,7 +1541,7 @@
             const quickStartToggle = document.getElementById('quick-start-mode');
             if (quickStartToggle) {
                 quickStartToggle.addEventListener('change', function() {
-                    const advancedSections = ['economic-nodes', 'teams', 'governance-review'];
+                    const advancedSections = ['teams', 'governance-review'];
                     const isQuickStart = this.checked;
                     
                     advancedSections.forEach(sectionId => {
@@ -1701,32 +1618,6 @@
                         if (t.emergency_override !== undefined) yaml += `    emergency_override: ${t.emergency_override}\n`;
                     }
                 });
-                
-                // Economic Nodes
-                if (ruleset.economic_nodes) {
-                    yaml += `\neconomic_nodes:\n`;
-                    if (ruleset.economic_nodes.commons_contributors) {
-                        yaml += `  commons_contributors:\n`;
-                        yaml += `    thresholds:\n`;
-                        if (ruleset.economic_nodes.commons_contributors.thresholds.merge_mining) {
-                            yaml += `      merge_mining:\n`;
-                            yaml += `        minimum_contribution_btc: ${ruleset.economic_nodes.commons_contributors.thresholds.merge_mining.minimum_contribution_btc}\n`;
-                        }
-                        if (ruleset.economic_nodes.commons_contributors.thresholds.fee_forwarding) {
-                            yaml += `      fee_forwarding:\n`;
-                            yaml += `        minimum_contribution_btc: ${ruleset.economic_nodes.commons_contributors.thresholds.fee_forwarding.minimum_contribution_btc}\n`;
-                        }
-                        if (ruleset.economic_nodes.commons_contributors.thresholds.zaps) {
-                            yaml += `      zaps:\n`;
-                            yaml += `        minimum_contribution_btc: ${ruleset.economic_nodes.commons_contributors.thresholds.zaps.minimum_contribution_btc}\n`;
-                        }
-                        if (ruleset.economic_nodes.commons_contributors.thresholds.marketplace) {
-                            yaml += `      marketplace:\n`;
-                            yaml += `        minimum_sales_btc: ${ruleset.economic_nodes.commons_contributors.thresholds.marketplace.minimum_sales_btc}\n`;
-                        }
-                        yaml += `    measurement_period_days: ${ruleset.economic_nodes.commons_contributors.measurement_period_days}\n`;
-                    }
-                }
                 
                 // Nested Multisig Teams
                 if (ruleset.nested_multisig_teams) {
@@ -2102,11 +1993,6 @@
                                     <td><strong>Tier 3: Review Period</strong></td>
                                     <td>${t1.tier3.review} days</td>
                                     <td>${t2.tier3.review} days</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Economic Node Veto Threshold</strong></td>
-                                    <td>${t1.tier3.veto}%</td>
-                                    <td>${t2.tier3.veto}%</td>
                                 </tr>
                             </tbody>
                         </table>

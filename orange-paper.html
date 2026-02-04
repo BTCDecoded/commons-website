@@ -46,7 +46,25 @@
             theme: 'dark',
             securityLevel: 'loose',
             flowchart: { useMaxWidth: true, htmlLabels: true },
-            sequence: { useMaxWidth: true }
+            sequence: { useMaxWidth: true },
+            themeVariables: {
+                primaryColor: '#f7931a',
+                primaryTextColor: '#ffffff',
+                primaryBorderColor: '#e6820a',
+                lineColor: '#666666',
+                secondaryColor: 'rgba(247, 147, 26, 0.2)',
+                tertiaryColor: 'rgba(247, 147, 26, 0.1)',
+                background: '#1a1a1a',
+                mainBkgColor: '#1a1a1a',
+                secondBkgColor: '#2a2a2a',
+                textColor: '#ffffff',
+                border1: '#444444',
+                border2: '#666666',
+                errorBkgColor: 'rgba(244, 67, 54, 0.5)',
+                errorTextColor: '#ffffff',
+                successBkgColor: 'rgba(76, 175, 80, 0.5)',
+                successTextColor: '#ffffff'
+            }
         });
     </script>
     
@@ -91,6 +109,23 @@
             font-size: 1.1rem;
         }
         
+        /* Links - use same styling as main site */
+        .orange-paper-content a {
+            color: var(--bitcoin-orange, #f7931a);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .orange-paper-content a:hover,
+        .orange-paper-content a:focus {
+            color: var(--bitcoin-orange-hover, #e6820a);
+            text-decoration: underline;
+        }
+        
+        .orange-paper-content a:visited {
+            color: var(--bitcoin-orange, #f7931a);
+        }
+        
         /* Math rendering */
         .orange-paper-content .MathJax {
             font-size: 1.1em;
@@ -104,6 +139,43 @@
             padding: 1.5rem;
             border-radius: 8px;
             overflow-x: auto;
+        }
+        
+        /* Override Mermaid colors for better dark theme visibility */
+        .orange-paper-content .mermaid .node rect,
+        .orange-paper-content .mermaid .node circle,
+        .orange-paper-content .mermaid .node ellipse,
+        .orange-paper-content .mermaid .node polygon {
+            fill: rgba(247, 147, 26, 0.2) !important;
+            stroke: rgba(247, 147, 26, 0.6) !important;
+        }
+        
+        .orange-paper-content .mermaid .nodeLabel {
+            color: #ffffff !important;
+        }
+        
+        /* Override specific color fills for dark theme - use opacity via CSS */
+        .orange-paper-content .mermaid .node[fill="#c62828"],
+        .orange-paper-content .mermaid .node[fill="#ffcdd2"] {
+            fill: rgba(244, 67, 54, 0.5) !important;
+            opacity: 0.7;
+        }
+        
+        .orange-paper-content .mermaid .node[fill="#388e3c"],
+        .orange-paper-content .mermaid .node[fill="#c8e6c9"] {
+            fill: rgba(76, 175, 80, 0.5) !important;
+            opacity: 0.7;
+        }
+        
+        /* Text colors for better contrast */
+        .orange-paper-content .mermaid .nodeLabel[fill="#c62828"],
+        .orange-paper-content .mermaid text[fill="#c62828"] {
+            fill: rgba(244, 67, 54, 0.9) !important;
+        }
+        
+        .orange-paper-content .mermaid .nodeLabel[fill="#388e3c"],
+        .orange-paper-content .mermaid text[fill="#388e3c"] {
+            fill: rgba(76, 175, 80, 0.9) !important;
         }
         
         /* Code blocks */
@@ -300,7 +372,56 @@
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 
-                const markdown = await response.text();
+                let markdown = await response.text();
+                
+                // Process mermaid code blocks BEFORE parsing - extract and replace with placeholders
+                const mermaidDiagrams = [];
+                let mermaidIndex = 0;
+                // Match mermaid code blocks, but validate content to ensure it's actually mermaid
+                markdown = markdown.replace(/```\s*mermaid\s*\n([\s\S]*?)```/g, (match, diagram) => {
+                    const trimmedDiagram = diagram.trim();
+                    
+                    // STRICT validation: reject if it contains common non-mermaid patterns (check anywhere in content)
+                    // These patterns indicate the content is NOT valid Mermaid syntax
+                    const invalidPatterns = [
+                        /Template includes:/i,  // Reject text containing "Template includes:"
+                        /Previous block has/i, // Reject text containing "Previous block has"
+                        /^\s*-\s+[A-Z][a-z]/m, // Reject lines starting with "- " followed by capital letter (markdown list)
+                        /includes:\s*$/m, // Reject lines ending with "includes:"
+                    ];
+                    
+                    // Check for invalid patterns FIRST - if found, reject immediately
+                    const hasInvalidPattern = invalidPatterns.some(pattern => pattern.test(trimmedDiagram));
+                    if (hasInvalidPattern) {
+                        // Definitely not valid mermaid, leave it as-is (will be rendered as code block)
+                        return match;
+                    }
+                    
+                    // Only process if it looks like actual mermaid syntax
+                    // Check for common mermaid diagram types at the start (must be first non-whitespace)
+                    const mermaidPatterns = /^(flowchart|graph|sequenceDiagram|classDiagram|stateDiagram|erDiagram|gantt|pie|gitgraph|journey|requirement|C4Context|C4Container|C4Component|C4Dynamic|C4Deployment|mindmap|timeline|quadrantChart|sankey)/m;
+                    
+                    if (!mermaidPatterns.test(trimmedDiagram)) {
+                        // Doesn't start with a valid diagram type
+                        return match;
+                    }
+                    
+                    // For sequenceDiagram, require it to have proper syntax (participant, note, etc.)
+                    if (trimmedDiagram.startsWith('sequenceDiagram')) {
+                        // Sequence diagrams must have at least one participant or proper sequence syntax
+                        // Check within first 10 lines to avoid false positives
+                        const firstLines = trimmedDiagram.split('\n').slice(0, 10).join('\n');
+                        if (!/participant|actor|note|activate|deactivate|loop|alt|opt|par|critical|break|rect/i.test(firstLines)) {
+                            // Doesn't look like a valid sequence diagram
+                            return match;
+                        }
+                    }
+                    
+                    const placeholder = `MERMAID_PLACEHOLDER_${mermaidIndex}`;
+                    mermaidDiagrams.push(trimmedDiagram);
+                    mermaidIndex++;
+                    return placeholder;
+                });
                 
                 // Configure marked
                 marked.setOptions({
@@ -313,8 +434,21 @@
                 // Convert markdown to HTML
                 let html = marked.parse(markdown);
                 
-                // Process mermaid code blocks - handle both ```mermaid and ``` mermaid formats
-                html = html.replace(/```\s*mermaid\s*\n([\s\S]*?)```/g, (match, diagram) => {
+                // Replace placeholders with mermaid divs
+                // Also replace light colors with darker hex colors for dark theme (Mermaid doesn't support rgba in style)
+                mermaidDiagrams.forEach((diagram, index) => {
+                    // Replace light red (#ffcdd2) with darker red hex (#c62828)
+                    let processedDiagram = diagram.replace(/fill:#ffcdd2/g, 'fill:#c62828');
+                    // Replace light green (#c8e6c9) with darker green hex (#388e3c)
+                    processedDiagram = processedDiagram.replace(/fill:#c8e6c9/g, 'fill:#388e3c');
+                    // Also handle style statements in Mermaid syntax
+                    processedDiagram = processedDiagram.replace(/style\s+(\w+)\s+fill:#ffcdd2/g, 'style $1 fill:#c62828');
+                    processedDiagram = processedDiagram.replace(/style\s+(\w+)\s+fill:#c8e6c9/g, 'style $1 fill:#388e3c');
+                    html = html.replace(`MERMAID_PLACEHOLDER_${index}`, `<div class="mermaid" data-diagram-index="${index}">${processedDiagram}</div>`);
+                });
+                
+                // Fallback: Also handle any <pre><code class="language-mermaid"> that might have been created
+                html = html.replace(/<pre><code class="language-mermaid">([\s\S]*?)<\/code><\/pre>/g, (match, diagram) => {
                     return `<div class="mermaid">${diagram.trim()}</div>`;
                 });
                 
@@ -329,11 +463,35 @@
                     setTimeout(() => {
                         const mermaidElements = document.querySelectorAll('.mermaid');
                         if (mermaidElements.length > 0) {
-                            // Mermaid 10 API: run() renders all elements matching the querySelector
-                            mermaid.run({
-                                querySelector: '.mermaid'
-                            }).catch(err => {
-                                console.error('Mermaid rendering error:', err);
+                            // Render each diagram individually to handle errors gracefully
+                            mermaidElements.forEach((element, index) => {
+                                const originalContent = element.textContent;
+                                
+                                // Additional client-side validation before attempting to parse
+                                const hasInvalidContent = /Template includes:|Previous block has|includes:\s*$/i.test(originalContent);
+                                if (hasInvalidContent) {
+                                    // Skip rendering, show as code block instead
+                                    element.outerHTML = `<pre><code class="language-text">${originalContent}</code></pre>`;
+                                    return;
+                                }
+                                
+                                // Try to parse first to catch syntax errors early
+                                mermaid.parse(originalContent).then(() => {
+                                    // If parse succeeds, render it
+                                    return mermaid.run({
+                                        nodes: [element]
+                                    });
+                                }).catch(err => {
+                                    console.warn(`Mermaid diagram ${index + 1} error:`, err);
+                                    // Show error message in the element instead of breaking
+                                    element.innerHTML = `<div style="padding: 1rem; background: #ffebee; border: 1px solid #f44336; border-radius: 4px; color: #c62828;">
+                                        <strong>Diagram error:</strong> ${err.message || err.str || 'Invalid Mermaid syntax'}
+                                        <details style="margin-top: 0.5rem;">
+                                            <summary style="cursor: pointer; font-size: 0.9em;">View diagram source</summary>
+                                            <pre style="margin-top: 0.5rem; font-size: 0.85em; overflow-x: auto; white-space: pre-wrap;">${originalContent}</pre>
+                                        </details>
+                                    </div>`;
+                                });
                             });
                         }
                     }, 500); // Increased timeout to ensure DOM is fully settled
