@@ -194,7 +194,7 @@
                     <div class="framework-visual-wrapper">
                         <img src="assets/images/centralized-vs-decentralized.png" alt="Centralized vs Decentralized Governance">
                     </div>
-                    <p class="diagram-caption">Bitcoin Commons moves governance from centralized control (few maintainers, single point of failure) to decentralized, forkable governance (distributed maintainers, multiple implementations, user choice). This architectural shift makes capture structurally difficult.</p>
+                    <p class="diagram-caption">Bitcoin Commons moves governance from centralized control to decentralized, forkable governance. This architectural shift makes capture structurally difficult.</p>
                 </div>
             </div>
         </section>
@@ -812,7 +812,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>The system is in Phase 1 (Infrastructure Complete). All core components of both BLVM and Bitcoin Commons are implemented, but governance is not yet activated. Phase 2 (Governance Activation) will proceed when a suitable cohort of keyholders has been found. The system is not yet battle-tested in production.</p>
+                                    <p>Phase 1: Infrastructure complete. All core components implemented, but governance not yet activated. System is not yet battle-tested in production.</p>
                                 </div>
                             </div>
                             
@@ -822,7 +822,8 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>BLVM provides the mathematical foundation and compiler-like architecture (Orange Paper as IR, formal verification passes). Bitcoin Commons provides the governance framework (coordination without civil war). The modular architecture is where both meet: BLVM ensures correctness through architectural enforcement; Commons ensures coordination through governance rules. You can't have safe alternative implementations without BLVM's mathematical rigor, and you can't have coordination without Commons' governance framework.</p>
+                                    <p>BLVM ensures correctness through mathematical rigor. Commons ensures coordination through governance rules.</p>
+                                    <p>You can't have safe alternatives without BLVM, and you can't have coordination without Commons.</p>
                                 </div>
                             </div>
                         </div>
@@ -838,7 +839,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p><strong>BLVM (Bitcoin Low-Level Virtual Machine)</strong>: Technical innovation providing mathematical rigor through the Orange Paper (mathematical specification), formal verification (Kani proofs), proofs locked to code, and a compiler-like architecture. This ensures correctness.</p>
+                                    <p><strong>BLVM (Bitcoin Low-Level Virtual Machine)</strong>: Technical innovation providing mathematical rigor through the Orange Paper (mathematical specification), formal verification (blvm-spec-lock with Z3), proofs locked to code, and a compiler-like architecture. This ensures correctness.</p>
                                     <p><strong>Bitcoin Commons (Cryptographic Commons)</strong>: Governance innovation providing forkable governance through Ostrom's principles, cryptographic enforcement, 5-tier governance model, and transparent audit trails. This ensures coordination.</p>
                                 </div>
                             </div>
@@ -865,7 +866,8 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>BLVM (Bitcoin Low-Level Virtual Machine) is the technical stack that provides mathematical rigor for Bitcoin implementations. It includes: (1) <strong>blvm-spec</strong> (Orange Paper) - complete mathematical specification of Bitcoin consensus, (2) <strong>blvm-consensus</strong> - pure mathematical implementation with formal verification, (3) <strong>blvm-protocol</strong> - Bitcoin abstraction layer, (4) <strong>blvm-node</strong> - full node implementation, (5) <strong>blvm</strong> - binary wrapper for blvm-node, (6) <strong>blvm-sdk</strong> - developer toolkit. Think of it as a compiler-like architecture where the Orange Paper is the IR (intermediate representation).</p>
+                                    <p>BLVM is the technical stack providing mathematical rigor: Orange Paper (spec) → blvm-consensus (verified implementation) → blvm-protocol → blvm-node → blvm-sdk.</p>
+                                    <p>Think of it as a compiler-like architecture where the Orange Paper is the IR.</p>
                                 </div>
                             </div>
                             
@@ -875,7 +877,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>The Orange Paper is a complete mathematical specification of Bitcoin's consensus protocol, extracted from Bitcoin Core using AI-assisted analysis. It serves as the "intermediate representation" (IR) in BLVM's compiler-like architecture. It enables safe alternative implementations by providing formal, verifiable consensus rules that can be mathematically proven correct.</p>
+                                    <p>Complete mathematical specification of Bitcoin consensus, extracted from Bitcoin Core. Serves as the IR in BLVM's compiler-like architecture, enabling safe alternative implementations.</p>
                                 </div>
                             </div>
                             
@@ -885,7 +887,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>BLVM uses Kani model checking to formally verify consensus-critical code. The Orange Paper provides the mathematical specification; blvm-consensus implements it with proofs locked to code. All consensus decisions flow through verified functions, and the dependency chain prevents bypassing verification. This provides mathematical proof of correctness, not just testing.</p>
+                                    <p>BLVM uses blvm-spec-lock with Z3 to formally verify consensus-critical code. The Orange Paper provides the mathematical specification; blvm-consensus implements it with proofs locked to code. All consensus decisions flow through verified functions, and the dependency chain prevents bypassing verification. This provides mathematical proof of correctness, not just testing.</p>
                                 </div>
                             </div>
                             
@@ -895,7 +897,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>Bitcoin Core embeds consensus rules in 350,000+ lines of C++ with no mathematical specification. BLVM provides: (1) Mathematical specification (Orange Paper), (2) Formal verification (Kani proofs), (3) Proofs locked to code, (4) Compiler-like architecture enabling safe alternative implementations. BLVM doesn't replace Bitcoin Core; it enables safe alternatives.</p>
+                                    <p>Bitcoin Core embeds consensus rules in 350,000+ lines of C++ with no mathematical specification. BLVM provides: (1) Mathematical specification (Orange Paper), (2) Formal verification (blvm-spec-lock with Z3), (3) Proofs locked to code, (4) Compiler-like architecture enabling safe alternative implementations. BLVM doesn't replace Bitcoin Core; it enables safe alternatives.</p>
                                 </div>
                             </div>
                             
@@ -905,7 +907,8 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>Like a compiler has source code → IR → machine code, BLVM has: Bitcoin Core code → Orange Paper (IR) → blvm-consensus → blvm-node. The Orange Paper serves as the intermediate representation that multiple implementations can target, just like multiple compilers can target the same IR. This enables implementation diversity while maintaining consensus correctness.</p>
+                                    <p>Like a compiler: source code → IR → machine code. BLVM: Bitcoin Core code → Orange Paper (IR) → blvm-consensus → blvm-node.</p>
+                                    <p>The Orange Paper is the IR that multiple implementations can target, enabling diversity while maintaining consensus correctness.</p>
                                 </div>
                             </div>
                         </div>
@@ -921,7 +924,8 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>Bitcoin Commons is a forkable governance framework that solves Bitcoin's fundamental governance asymmetry. While Bitcoin's technical consensus is bulletproof (proof-of-work, cryptographic signatures), its development governance has remained fragile—controlled by a handful of maintainers with no systematic process. Bitcoin Commons applies Elinor Ostrom's Nobel Prize-winning commons management principles through cryptographic enforcement, making development governance as robust as technical consensus. It enables coordination without authority, allowing multiple implementations to compete while maintaining Bitcoin consensus compatibility. The framework provides an architectural solution: if you disagree with governance decisions, you can fork the governance rules (not just the code) and create a better-governed implementation.</p>
+                                    <p>Forkable governance framework solving Bitcoin's governance asymmetry. Applies Ostrom's commons principles through cryptographic enforcement, enabling coordination without authority.</p>
+                                    <p>If you disagree with governance, fork the rules (not just the code) and create a better-governed implementation.</p>
                                 </div>
                             </div>
                             
@@ -931,7 +935,9 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>The system uses a <strong>5-tier constitutional model</strong> with graduated signature thresholds and review periods: Tier 1 (routine maintenance) requires 3-of-5 signatures and 7 days; Tier 3 (consensus-adjacent changes) requires 5-of-5 signatures and 90 days; Tier 5 (governance changes) requires 5-of-5 signatures and 180 days. The system combines two dimensions: <strong>Layers</strong> (which repository—Protocol Engine, Consensus, etc.) and <strong>Tiers</strong> (what type of change), using "most restrictive wins" for maximum security. All governance actions are cryptographically signed by maintainers and transparently auditable. A <strong>three-tiered emergency system</strong> provides proportional response (0-90 day review periods) for critical issues. Users can export governance rulesets as versioned, signed packages and fork to different governance models if they disagree with decisions, creating exit competition that prevents capture.</p>
+                                    <p>5-tier constitutional model with graduated thresholds: Tier 1 (3-of-5, 7 days) to Tier 5 (5-of-5, 180 days).</p>
+                                    <p>Combines Layers (repository) and Tiers (change type) using "most restrictive wins."</p>
+                                    <p>All actions are cryptographically signed and auditable. Users can fork governance rulesets to create exit competition.</p>
                                 </div>
                             </div>
                             
@@ -951,7 +957,8 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>Users can fork the governance rules (not just the code) if they disagree with decisions. This creates exit competition: if governance is captured, users can fork to a better governance model while maintaining Bitcoin consensus compatibility. The threat of forking prevents capture.</p>
+                                    <p>Users can fork governance rules (not just code) if they disagree with decisions.</p>
+                                    <p>This creates exit competition: if governance is captured, users fork to a better model while maintaining Bitcoin consensus compatibility.</p>
                                 </div>
                             </div>
                             
@@ -977,7 +984,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>BLVM solves the technical problem (mathematical rigor, safe alternative implementations). Bitcoin Commons solves the governance problem (coordination without civil war). You can't have safe alternatives without BLVM's mathematical foundation, and you can't have coordination without Commons' governance framework. They enable each other.</p>
+                                    <p>BLVM solves the technical problem (mathematical rigor, safe alternatives). Bitcoin Commons solves the governance problem (coordination without civil war). They enable each other.</p>
                                 </div>
                             </div>
                             
@@ -987,7 +994,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>The modular architecture has three layers: (1) Mandatory Consensus (BLVM ensures correctness), (2) Optional Modules (Commons enables competition), (3) Economic Coordination (merge mining funds both). BLVM ensures correctness through architectural enforcement; Commons ensures coordination through governance rules. The architecture is where both meet.</p>
+                                    <p>Three layers: (1) Mandatory Consensus (BLVM ensures correctness), (2) Optional Modules (Commons enables competition), (3) Economic Coordination (merge mining funds both).</p>
                                 </div>
                             </div>
                             
@@ -997,7 +1004,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>Technically yes: BLVM is a technical stack that can be used independently. However, without Bitcoin Commons governance, you'd still have the governance capture problem. The innovations are designed to work together: BLVM enables safe alternatives, Commons enables coordination between alternatives.</p>
+                                    <p>Technically yes: BLVM can be used independently. However, without Bitcoin Commons governance, you'd still have the governance capture problem. They're designed to work together.</p>
                                 </div>
                             </div>
                             
@@ -1023,7 +1030,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>BLVM uses Kani model checking to mathematically prove code correctness. The Orange Paper provides the specification; blvm-consensus implements it with proofs. All consensus decisions flow through verified functions. This provides mathematical proof, not just testing.</p>
+                                    <p>BLVM uses blvm-spec-lock with Z3 to mathematically prove code correctness. The Orange Paper provides the specification; blvm-consensus implements it with proofs. All consensus decisions flow through verified functions. This provides mathematical proof, not just testing.</p>
                                 </div>
                             </div>
                             
@@ -1166,7 +1173,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>All 8 layers are implemented: blvm-spec (Orange Paper) complete, blvm-consensus with nearly 200 formal proofs, blvm-protocol, blvm-node, blvm (binary wrapper), and blvm-sdk all functional. Recent work includes high availability features, build state tracking, fork verification, binary signing tools, and deterministic build verification. The system is not yet battle-tested in production.</p>
+                                    <p>All 6 tiers are implemented: blvm-spec (Orange Paper) complete, blvm-consensus with nearly 200 formal proofs, blvm-protocol, blvm-node, blvm-sdk, and governance infrastructure all functional. Recent work includes high availability features, build state tracking, fork verification, binary signing tools, and deterministic build verification. The system is not yet battle-tested in production.</p>
                                 </div>
                             </div>
                             
@@ -1176,7 +1183,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>All core governance infrastructure is implemented: blvm-commons (GitHub integration, signature verification, status checks), economic node system (veto power for consensus-adjacent changes), governance fork capability (ruleset export and forking), emergency tier system (three-tiered response), and layer+tier combination model. However, governance is not yet activated (test keys only) and keyholders are not yet onboarded. Phase 2 activation will proceed when a suitable cohort of keyholders has been found.</p>
+                                    <p>All core governance infrastructure is implemented: blvm-commons, economic node system, governance fork capability, emergency tier system. Governance is not yet activated (test keys only).</p>
                                 </div>
                             </div>
                             
@@ -1186,7 +1193,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>Phase 2 activation will proceed when a suitable cohort of keyholders has been found. This requires: (1) Security audits, (2) Keyholder onboarding, (3) Governance app deployment, (4) Community testing. Phase 3 (full operation) will follow after Phase 2 is stable.</p>
+                                    <p>Phase 2: Governance enforcement begins. Requires security audits, keyholder onboarding, governance app deployment, and community testing.</p>
                                 </div>
                             </div>
                         </div>
@@ -1928,7 +1935,7 @@
                         
                         <div class="deployment-actions" style="margin-top: 1.5rem; display: flex; gap: 1rem;">
                             <button class="btn btn-primary" onclick="this.closest('.deployment-modal').remove()">Got it!</button>
-                            <a href="https://github.com/BTCDecoded/governance/blob/main/architecture/GOVERNANCE_FORK.md" target="_blank" class="btn btn-outline">Read Full Guide</a>
+                            <a href="https://github.com/BTCDecoded/governance/blob/main/architecture/GOVERNANCE_FORK.md" target="_blank" rel="noopener" class="btn btn-outline">Read Full Guide</a>
                         </div>
                     </div>
                 `;
@@ -2715,7 +2722,7 @@
                                     <span class="genealogy-detail">T3: ${fork.tier3 || 'N/A'}</span>
                                     ${fork.created_by ? `<span class="genealogy-detail">By: ${fork.created_by}</span>` : ''}
                                 </div>
-                                ${fork.github ? `<a href="${fork.github}" target="_blank" class="genealogy-link">View on GitHub →</a>` : ''}
+                                ${fork.github ? `<a href="${fork.github}" target="_blank" rel="noopener" class="genealogy-link">View on GitHub →</a>` : ''}
                             </div>
                     `;
                     
@@ -2834,7 +2841,7 @@
                                     <code>gh repo fork BTCDecoded/governance</code>
                                     <button class="copy-btn" data-copy="gh repo fork BTCDecoded/governance">Copy</button>
                                 </div>
-                                <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.9rem;">Or use the GitHub web interface to fork <a href="https://github.com/BTCDecoded/governance" target="_blank">BTCDecoded/governance</a></p>
+                                <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.9rem;">Or use the GitHub web interface to fork <a href="https://github.com/BTCDecoded/governance" target="_blank" rel="noopener">BTCDecoded/governance</a></p>
                             </div>
                             
                             <div class="deployment-step">
@@ -2859,7 +2866,7 @@ git push origin main</code>
                             
                             <div class="deployment-step">
                                 <h4>4. Create a pull request</h4>
-                                <p>Go to <a href="https://github.com/BTCDecoded/governance/compare" target="_blank">GitHub's compare page</a> and create a PR from your fork.</p>
+                                <p>Go to <a href="https://github.com/BTCDecoded/governance/compare" target="_blank" rel="noopener">GitHub's compare page</a> and create a PR from your fork.</p>
                                 <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.9rem;">Automated validation will check your entry. If it passes, your PR will be merged automatically!</p>
                             </div>
                         </div>
