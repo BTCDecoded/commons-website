@@ -259,8 +259,8 @@
 <figcaption>Figure: Comparison of verification methods: Bitcoin Core relies primarily on unit/integration tests and fuzzing. Bitcoin Commons employs comprehensive formal verification, extensive test coverage, debug assertions, and property tests, providing multiple layers of verification beyond Core's approach.</figcaption>
 </figure>
 <figure>
-<img src="/assets/images/Consensus-Coverage-Comparison.png" alt="Consensus Coverage Comparison" style="width: 100%; display: block; margin: 0 auto;">
-<figcaption>Figure: Consensus coverage comparison: Bitcoin Core achieves coverage through testing alone. Bitcoin Commons achieves formal verification coverage (Kani proofs) plus comprehensive test coverage. Commons uses consensus-focused test files with extensive test functions compared to Core's total files. The mathematical specification enables both formal verification and comprehensive testing.</figcaption>
+<img src="https://thebitcoincommons.org/assets/images/Consensus-Coverage-Comparison.png" alt="Consensus Coverage Comparison" style="width: 100%; display: block; margin: 0 auto;">
+<figcaption>Figure: Consensus coverage comparison: Bitcoin Core achieves coverage through testing alone. Bitcoin Commons achieves formal verification coverage (Z3 proofs via BLVM Specification Lock) plus comprehensive test coverage. Commons uses consensus-focused test files with extensive test functions compared to Core's total files. The mathematical specification enables both formal verification and comprehensive testing.</figcaption>
 </figure>
 <p>Formal verification in <code>blvm-consensus</code> applies to all tiers because all consensus decisions flow through verified functions. The dependency chain prevents bypassing verification.</p>
 <h2 id="5-architectural-solution-modular-governance">5. Architectural Solution: Modular Governance</h2>
