@@ -35,8 +35,8 @@
                 <li><a href="#7-economic-sustainability">7. Economic Sustainability</a></li>
                 <li><a href="#8-failure-modes-mitigations">8. Failure Modes & Mitigations</a></li>
                 <li><a href="#9-implementation-status">9. Implementation Status</a></li>
-                <li><a href="#10-development-roadmap">10. Development Roadmap</a></li>
-                <li><a href="#11-conclusion">11. Conclusion</a></li>
+                <li><a href="#development-roadmap">Development Roadmap</a></li>
+                <li><a href="#10-conclusion">10. Conclusion</a></li>
                 <li><a href="#references">References</a></li>
             </ol>
         </nav>
@@ -45,7 +45,7 @@
 <h2 id="abstract">Abstract</h2>
 <p>Bitcoin faces a critical governance asymmetry: while its technical consensus layer is cryptographically bulletproof, its development governance relies on informal social coordination. At Bitcoin's multi-trillion dollar scale, this represents an existential vulnerability.</p>
 <p>This whitepaper presents two innovations that enable each other: <strong>BLVM</strong> provides mathematical rigor (proofs locked to code, formal verification, consensus matching); <strong>Bitcoin Commons</strong> provides governance coordination without civil war (Ostrom's principles through cryptographic enforcement). Together they solve Bitcoin's governance asymmetry.</p>
-<p>The system is being developed across <a href="#9-repository-structure">six public repositories</a>, with work ongoing on mathematical specifications, governance infrastructure, and economic sustainability. This is a living document: the foundation exists, but its future depends on community contribution. For the complete narrative treatment, see <em>Bitcoin Commons: Decentralizing the Decentralizers</em>.</p>
+<p>The system is being developed across public repositories (see Section 9), with work ongoing on mathematical specifications, governance infrastructure, and economic sustainability. This is a living document: the foundation exists, but its future depends on community contribution. For the complete narrative treatment, see <em>Bitcoin Commons: Decentralizing the Decentralizers</em>.</p>
 <h2 id="1-introduction">1. Introduction</h2>
 <p>Bitcoin solved Byzantine consensus between strangers (Nakamoto, 2008) but ignored consensus between developers. The network's substantial market capitalization demands institutional maturity matching its technical excellence.</p>
 <p>The original cypherpunk developers focused on eliminating trusted third parties in transactions but inadvertently created trusted parties in development. Bitcoin Commons addresses Bitcoin's most critical vulnerability: governance asymmetry between technical consensus and development coordination.</p>
@@ -93,7 +93,7 @@
 <h3>Technical Reality</h3>
 <p>Bitcoin's consensus rules are embedded in 350,000+ lines of C++ code with no mathematical specification. Bitcoin Core maintains 99.5% market share among implementations, creating effective monopoly control over Bitcoin's evolution. The lack of formal specification makes it impossible to build safe alternative implementations or verify consensus correctness.</p>
 <h3>Governance Reality</h3>
-<p>Bitcoin's development governance relies entirely on informal social coordination. No systematic consequences exist for bad actors, no formal dispute resolution mechanisms exist, and power is invisible and unaccountable. The system is vulnerable to capture through relationships rather than rules. Quantitative analysis of Bitcoin Core's development patterns reveals significant power concentration: the top 3 maintainers control 81.1% of merges, self-merge rates reach 26.5%, and review quality varies substantially with zero-review merges historically at 30.2% (bitcoin-governance-research, 2026). Network analysis reveals structural misalignments between technical development and social infrastructure, creating coordination gaps that prevent effective governance (Hough, 2025). These patterns reflect the paradox of embeddedness in network structures, where relationships can inhibit coordination and reinforce existing power dynamics (Uzzi, 1997). Funding may not flow to projects with strong grassroots activity, and "rich-get-richer" dynamics reinforce existing patterns rather than enabling competition. Commons addresses these issues through <a href="#5-architectural-solution-modular-governance">cryptographic enforcement of multisig thresholds, mandatory review periods, and transparent accountability mechanisms</a>.</p>
+<p>Bitcoin's development governance relies entirely on informal social coordination. No systematic consequences exist for bad actors, no formal dispute resolution mechanisms exist, and power is invisible and unaccountable. The system is vulnerable to capture through relationships rather than rules. Network analysis reveals structural misalignments between technical development and social infrastructure, creating coordination gaps that prevent effective governance (Hough, 2025). These patterns reflect the paradox of embeddedness in network structures, where relationships can inhibit coordination and reinforce existing power dynamics (Uzzi, 1997). Funding may not flow to projects with strong grassroots activity, and "rich-get-richer" dynamics reinforce existing patterns rather than enabling competition.</p>
 <h3>Historical Context</h3>
 <p>Early developers recognized this problem. Gavin Andresen (2014) raised governance concerns but was marginalized during blocksize wars. Mike Hearn attempted governance solutions but proposed hierarchical models inappropriate for Bitcoin's decentralized ethos. Academic researchers (De Filippi & Loveluck, 2016) documented these power structures but provided no actionable solutions.</p>
 <h3>Scale Considerations</h3>
@@ -102,50 +102,46 @@
 <p>Bitcoin Commons synthesizes three distinct theoretical frameworks, each addressing weaknesses in the others to create governance architecture stronger than any single approach alone.</p>
 <h3>Framework 1: Elinor Ostrom - Commons Governance</h3>
 <p>Elinor Ostrom won the 2009 Nobel Prize in Economics for proving that shared resources don't inevitably collapse into chaos or capture (Ostrom, 1990). Her research documented principles for governing commons without central authority across centuries of real-world examples.</p>
-<h4 class="subheading">Ostrom's (1990) Seven Principles.</h4>
+<h4 class="subheading">Ostrom's (1990) Seven Principles:</h4>
 <ol>
-<li><strong>Clear boundaries on who decides what.</strong> Defined decision-making authority.</li>
-<li><strong>Consequences for violations.</strong> Systematic enforcement mechanisms.</li>
-<li><strong>Local dispute resolution.</strong> Formal conflict resolution processes.</li>
-<li><strong>Protection from external interference.</strong> Resistance to outside pressure.</li>
-<li><strong>Collective choice arrangements.</strong> Meaningful participation in rule-making.</li>
-<li><strong>Graduated sanctions.</strong> Proportional consequences for violations.</li>
-<li><strong>Monitoring and accountability.</strong> Transparent oversight mechanisms.</li>
+<li><strong>Clear boundaries on who decides what</strong> - Defined decision-making authority</li>
+<li><strong>Consequences for violations</strong> - Systematic enforcement mechanisms</li>
+<li><strong>Local dispute resolution</strong> - Formal conflict resolution processes</li>
+<li><strong>Protection from external interference</strong> - Resistance to outside pressure</li>
+<li><strong>Collective choice arrangements</strong> - Meaningful participation in rule-making</li>
+<li><strong>Graduated sanctions</strong> - Proportional consequences for violations</li>
+<li><strong>Monitoring and accountability</strong> - Transparent oversight mechanisms</li>
 </ol>
-<p><strong>What This Provides.</strong> Proven institutional design for shared resources, evidence decentralized governance works, and coordination without hierarchy.</p>
+<p><strong>What This Provides:</strong> Proven institutional design for shared resources; evidence decentralized governance works; coordination without hierarchy.</p>
 <h3>Framework 2: F.A. Hayek - Spontaneous Order</h3>
 <p>Friedrich Hayek's Austrian economics provides the competitive discovery mechanism that enables governance evolution rather than rigid design.</p>
-<h4 class="subheading">Hayek's Core Insights.</h4>
+<h4 class="subheading">Hayek's Core Insights:</h4>
 <ul>
-<li><strong>Dispersed Knowledge Problem.</strong> No central planner can know what's needed because knowledge is distributed across many actors.</li>
-<li><strong>Competition as Discovery.</strong> Competition reveals information that couldn't be known in advance.</li>
-<li><strong>Spontaneous Order.</strong> Best institutions emerge through evolution, not top-down design.</li>
-<li><strong>Markets Need Infrastructure.</strong> Competition requires actual alternatives to compete.</li>
+<li><strong>Dispersed Knowledge Problem</strong> - No central planner can know what's needed because knowledge is distributed across many actors</li>
+<li><strong>Competition as Discovery</strong> - Competition reveals information that couldn't be known in advance</li>
+<li><strong>Spontaneous Order</strong> - Best institutions emerge through evolution, not top-down design</li>
+<li><strong>Markets Need Infrastructure</strong> - Competition requires actual alternatives to compete</li>
 </ul>
-<p><strong>What This Provides.</strong> Justification for avoiding central planning, competitive governance discovery, and institutions that evolve through market signals.</p>
+<p><strong>What This Provides:</strong> Justification for avoiding central planning; competitive governance discovery; institutions evolve through market signals.</p>
 <h3>Framework 3: Bitcoin - Cryptographic Enforcement</h3>
 <p>Bitcoin's innovation provides the enforcement tools that make decentralized governance work at scale without trusted parties.</p>
-<h4 class="subheading">Bitcoin's Core Principles.</h4>
+<h4 class="subheading">Bitcoin's Core Principles:</h4>
 <ul>
-<li><strong>Don't Trust, Verify.</strong> Cryptographic enforcement replaces social trust.</li>
-<li><strong>Permissionless Innovation.</strong> Anyone can build without asking permission.</li>
-<li><strong>Exit Rights.</strong> Fork option provides ultimate check on power.</li>
-<li><strong>Decentralized Control.</strong> No single point of authority.</li>
+<li><strong>Don't Trust, Verify</strong> - Cryptographic enforcement replaces social trust</li>
+<li><strong>Permissionless Innovation</strong> - Anyone can build without asking permission</li>
+<li><strong>Exit Rights</strong> - Fork option provides ultimate check on power</li>
+<li><strong>Decentralized Control</strong> - No single point of authority</li>
 </ul>
-<p><strong>What This Provides.</strong> Tools for enforcing rules without trust, proof decentralized systems work at scale, and a model for implementing Hayek's principles digitally.</p>
+<p><strong>What This Provides:</strong> Tools for enforcing rules without trust; proof decentralized systems work at scale; model for implementing Hayek's principles digitally.</p>
 <h3>The Triple Synthesis</h3>
 <p>The three frameworks address each other's weaknesses:</p>
-<p><strong>Ostrom's Challenge.</strong> Commons governance historically relied on social pressure, vulnerable to capture at scale.</p>
-<p><strong>Bitcoin's Solution.</strong> Cryptographic enforcement replaces social pressure with mathematical proof.</p>
-<p><strong>Hayek's Challenge.</strong> Competition discovers optimal solutions but requires actual alternatives to compete.</p>
-<p><strong>Ostrom's Solution.</strong> Provides institutional framework for multiple governance models to coexist.</p>
-<p><strong>Bitcoin's Challenge.</strong> Solved technical consensus but not social governance.</p>
-<p><strong>Hayek + Ostrom Solution.</strong> Competitive discovery of governance models using proven institutional principles.</p>
-<p><strong>The Result.</strong> Governance that is proven (Ostrom's research), evolving (Hayek's competition), and enforceable (Bitcoin's cryptography).</p>
-<h3>Cryptographic Polycentrism: The Governance Model</h3>
-<p>Bitcoin Commons implements <strong>Cryptographic Polycentrism</strong>, a governance model that creates multiple centers of power with clear boundaries, enforced through cryptography rather than social pressure. This approach applies Ostrom's proven principles using Bitcoin's cryptographic enforcement tools, enabling competitive discovery through Hayekian market mechanisms while maintaining Ostrom's institutional structure.</p>
-<p>Cryptographic Polycentrism differs from traditional polycentrism (multiple decision centers) by using cryptographic enforcement to make boundaries mathematically verifiable rather than socially negotiated. Where traditional governance relies on trust and reputation, Cryptographic Polycentrism uses multisig thresholds, mandatory review periods, and <a href="#6-cryptographic-governance-enforcement">three-layer verification providing real-time transparency and immutable proof</a> to create enforceable boundaries that cannot be bypassed even by repository administrators.</p>
-<p>This model enables multiple implementations to compete (Hayek's discovery mechanism) while maintaining clear institutional boundaries (Ostrom's principles) through cryptographic proof (Bitcoin's innovation). The result is governance that is both competitive and accountable, proven and evolving, decentralized and enforceable.</p>
+<p><strong>Ostrom's Challenge:</strong> Commons governance historically relied on social pressure, vulnerable to capture at scale</p>
+<p><strong>Bitcoin's Solution:</strong> Cryptographic enforcement replaces social pressure with mathematical proof</p>
+<p><strong>Hayek's Challenge:</strong> Competition discovers optimal solutions but requires actual alternatives to compete</p>
+<p><strong>Ostrom's Solution:</strong> Provides institutional framework for multiple governance models to coexist</p>
+<p><strong>Bitcoin's Challenge:</strong> Solved technical consensus but not social governance</p>
+<p><strong>Hayek + Ostrom Solution:</strong> Competitive discovery of governance models using proven institutional principles</p>
+<p><strong>The Result:</strong> Governance that is proven (Ostrom's research), evolving (Hayek's competition), and enforceable (Bitcoin's cryptography).</p>
 <h3>Bitcoin Core's Current State</h3>
 <p>Bitcoin Core has informal implementations of some Ostrom (1990) principles but lacks systematic enforcement.</p>
 <h3>Mapping The Principles to Implementation</h3>
@@ -154,64 +150,64 @@
 <img src="/assets/images/principles_matrix_complete.png" alt="Principles of Bitcoin Commons" style="">
 <figcaption>Figure: Integration of four key philosophies: Hayek (spontaneous order), Bitcoin (cryptographic enforcement), Cypherpunk (privacy through technology), and Ostrom (commons governance).</figcaption>
 </figure>
-<h4 class="subheading">Principle 1. Clear Boundaries.</h4>
+<h4 class="subheading">Principle 1: Clear Boundaries</h4>
 <ul>
-<li><strong>Layers.</strong> Base (network consensus), Module (user choice).</li>
-<li><strong>Implementation.</strong> Architecture enforces boundaries. Modules cannot modify consensus code paths.</li>
+<li><strong>Layers</strong>: Base (network consensus), Module (user choice), Economic (miner coordination)</li>
+<li><strong>Implementation</strong>: Architecture enforces boundaries: modules cannot modify consensus code paths</li>
 </ul>
-<h4 class="subheading">Principle 2. Consequences for Violations.</h4>
+<h4 class="subheading">Principle 2: Consequences for Violations</h4>
 <ul>
-<li><strong>Technical/Reputational.</strong> Module quality standards, transparent adoption metrics, cryptographic enforcement.</li>
-<li><strong>Implementation.</strong> Cryptographic enforcement makes consequences automatic, not social.</li>
+<li><strong>Economic/Technical/Reputational</strong>: Merge mining leverage, module quality standards, transparent adoption metrics</li>
+<li><strong>Implementation</strong>: Cryptographic enforcement makes consequences automatic, not social</li>
 </ul>
-<h4 class="subheading">Principle 3. Local Dispute Resolution.</h4>
+<h4 class="subheading">Principle 3: Local Dispute Resolution</h4>
 <ul>
-<li><strong>Architecture-based.</strong> Competing modules resolve disputes. User choice determines winners. Module conflicts don't threaten consensus.</li>
-<li><strong>Implementation.</strong> No central arbiter needed. Architecture provides resolution through user configuration.</li>
+<li><strong>Architecture-based</strong>: Competing modules resolve disputes; user choice determines winners; module conflicts don't threaten consensus</li>
+<li><strong>Implementation</strong>: No central arbiter needed: architecture provides resolution through user configuration</li>
 </ul>
-<h4 class="subheading">Principle 4. Protection from External Interference.</h4>
+<h4 class="subheading">Principle 4: Protection from External Interference</h4>
 <ul>
-<li><strong>Self-Funding/Multi-jurisdictional/Fork-Ready.</strong> Operational revenue modules, distributed keyholders, governance fork capability.</li>
-<li><strong>Implementation.</strong> Cryptographic multisig ensures no single jurisdiction can compel action.</li>
+<li><strong>Self-Funding/Multi-jurisdictional/Fork-Ready</strong>: Merge mining revenue, distributed keyholders, governance fork capability</li>
+<li><strong>Implementation</strong>: Cryptographic multisig ensures no single jurisdiction can compel action</li>
 </ul>
 <figure>
 <img src="/assets/images/keyholder-diversity-radar.png" alt="Keyholder Diversity" style="">
 <figcaption>Figure: Keyholder diversity across jurisdictions and organizations prevents single-point coercion.</figcaption>
 </figure>
-<h4 class="subheading">Principle 5. Collective Choice Arrangements.</h4>
+<h4 class="subheading">Principle 5: Collective Choice Arrangements</h4>
 <ul>
-<li><strong>User sovereignty via configuration.</strong> Users compose stacks. Adoption metrics function as voting. Participation through choices, not committees.</li>
-<li><strong>Implementation.</strong> GUI-based module selection enables collective choice through user preferences.</li>
+<li><strong>User sovereignty via configuration</strong>: Users compose stacks; adoption metrics function as voting; participation through choices, not committees</li>
+<li><strong>Implementation</strong>: GUI-based module selection enables collective choice through user preferences</li>
 </ul>
-<h4 class="subheading">Principle 6. Graduated Sanctions.</h4>
+<h4 class="subheading">Principle 6: Graduated Sanctions</h4>
 <ul>
-<li><strong>Proportional escalation.</strong> Moderate fork to major deprecation to governance fork. Graduated signature requirements (2-of-3 to 6-of-7). Sanctions at module layer, no consensus changes required.</li>
-<li><strong>Implementation.</strong> Multisig thresholds vary by change category (2-of-3 extension to 6-of-7 constitutional).</li>
+<li><strong>Proportional escalation</strong>: Moderate fork → major deprecation → governance fork; graduated economic pressure through merge mining; sanctions at module/economic layer, no consensus changes required</li>
+<li><strong>Implementation</strong>: Multisig thresholds vary by change category (2-of-3 extension to 6-of-7 constitutional)</li>
 </ul>
-<h4 class="subheading">Principle 7. Monitoring and Accountability.</h4>
+<h4 class="subheading">Principle 7: Monitoring and Accountability</h4>
 <ul>
-<li><strong>Cryptographic transparency.</strong> All governance actions signed and verifiable. Module adoption, revenue flows, decision provenance auditable. <a href="#6-cryptographic-governance-enforcement">Three-layer verification</a> ensures complete audit trails.</li>
-<li><strong>Implementation.</strong> Automated monitoring through cryptographic verification, not social trust.</li>
+<li><strong>Cryptographic transparency</strong>: All governance actions signed and verifiable; module adoption, revenue flows, decision provenance auditable; three-layer verification (GitHub/Nostr/OpenTimestamps)</li>
+<li><strong>Implementation</strong>: Automated monitoring through cryptographic verification, not social trust</li>
 </ul>
 <figure>
 <img src="/assets/images/audit-trail-completeness.png" alt="Audit Trail Completeness" style="">
 <figcaption>Figure: Audit-trail completeness across governance layers: all decisions evidenced and verifiable.</figcaption>
 </figure>
-<h4 class="subheading">Comparison with Bitcoin Core.</h4>
-<p>Bitcoin Core has informal implementations of some Ostrom principles but lacks systematic enforcement. <a href="#2-problem-statement">Quantitative analysis reveals power concentration where top maintainers control 81.1% of merges, self-merge rates reach 26.5%, and review quality varies substantially</a>. The system has informal boundaries (Core maintainers, BIP editors) but no formal process for selection, removal, or authority limits. Social pressure and reputation damage provide consequences, but there's no systematic enforcement mechanism. Most critically, there's no infrastructure for competitive discovery. <a href="#2-problem-statement">Bitcoin Core's 99.5% market share</a> prevents Hayekian competition from working. Below is a detailed comparison:</p>
+<h4 class="subheading">Comparison with Bitcoin Core:</h4>
+<p>Bitcoin Core has informal implementations of some Ostrom principles but lacks systematic enforcement. The system has informal boundaries (Core maintainers, BIP editors) but no formal process for selection, removal, or authority limits. Social pressure and reputation damage provide consequences, but there's no systematic enforcement mechanism. Most critically, there's no infrastructure for competitive discovery. Bitcoin Core's market dominance (see Section 2.1) prevents Hayekian competition from working. Below is a detailed comparison:</p>
 <ul>
-<li>Clear Boundaries. Informal (maintainers, BIP editors), no formal selection/removal process. <strong>Commons Solution.</strong> <a href="#6-cryptographic-governance-enforcement">Cryptographic multisig thresholds</a> define authority limits. Maintainer selection/removal requires constitutional-level approval (6-of-7 signatures).</li>
-<li>Consequences. Social pressure only, no systematic enforcement. <strong>Commons Solution.</strong> <a href="#6-cryptographic-governance-enforcement">Cryptographic enforcement</a> prevents merges without required signatures. Violations are mathematically impossible, not socially discouraged.</li>
-<li>Dispute Resolution. BIP process advisory only, no binding mechanism. <strong>Commons Solution.</strong> <a href="#6-cryptographic-governance-enforcement">Three-layer verification</a> provides cryptographic proof for dispute resolution. Governance actions are cryptographically verifiable and timestamped.</li>
-<li>External Protection. No systematic protection, individuals can be pressured. <strong>Commons Solution.</strong> <a href="#6-cryptographic-governance-enforcement">Push-only architecture with VPN isolation</a>. No incoming HTTP endpoints. Cryptographic requirements cannot be bypassed even by repository admins.</li>
-<li>Collective Choice. BIP process exists but no formal consensus mechanism. <strong>Commons Solution.</strong> <a href="#6-cryptographic-governance-enforcement">Tiered multisig thresholds (2-of-3 to 6-of-7) with mandatory review periods</a>. Governance actions require explicit cryptographic approval from multiple maintainers.</li>
-<li>Graduated Sanctions. Informal social pressure, no systematic escalation. <strong>Commons Solution.</strong> <a href="#6-cryptographic-governance-enforcement">Tiered signature requirements</a> escalate with risk level. Emergency situations require higher thresholds (4-of-5, 5-of-5) with automatic expiration.</li>
-<li>Monitoring. Public GitHub/mailing lists, no formal accountability system. <strong>Commons Solution.</strong> <a href="#6-cryptographic-governance-enforcement">Three-layer verification</a> provides real-time transparency, immutable proof, and merge control. All governance actions are cryptographically signed and verifiable.</li>
+<li>Clear Boundaries: Informal (maintainers, BIP editors), no formal selection/removal process</li>
+<li>Consequences: Social pressure only, no systematic enforcement</li>
+<li>Dispute Resolution: BIP process advisory only, no binding mechanism</li>
+<li>External Protection: No systematic protection, individuals can be pressured</li>
+<li>Collective Choice: BIP process exists but no formal consensus mechanism</li>
+<li>Graduated Sanctions: Informal social pressure, no systematic escalation</li>
+<li>Monitoring: Public GitHub/mailing lists, no formal accountability system</li>
 </ul>
-<p>The pattern: Bitcoin Core has informal implementations that worked at billion-scale but become vulnerable at multi-trillion scale. Commons implements <a href="#3-theoretical-framework-the-triple-foundation">all seven Ostrom principles through Cryptographic Polycentrism</a>, directly addressing the <a href="#2-problem-statement">power concentration and accountability gaps</a> identified in quantitative analysis (bitcoin-governance-research, 2026).</p>
+<p>The pattern: Bitcoin Core has informal implementations that worked at billion-scale but become vulnerable at multi-trillion scale. Commons implements all seven principles through technical architecture and cryptographic enforcement.</p>
 <h2 id="4-technical-solution-the-orange-paper">4. Technical Solution: The Orange Paper</h2>
 <h3>Problem</h3>
-<p>Bitcoin's consensus rules lack mathematical specification (<a href="#2-problem-statement">embedded in 350,000+ lines of C++ code with no formal specification</a>). This makes them impossible to verify, understand, or implement independently. The 2018 inflation bug (CVE-2018-17144) existed in Bitcoin Core for years before discovery. This is exactly the class of error formal verification eliminates.</p>
+<p>Bitcoin's consensus rules lack mathematical specification (see Section 2.1). This makes them impossible to verify, understand, or implement independently. The 2018 inflation bug (CVE-2018-17144) existed in Bitcoin Core for years before discovery. This is exactly the class of error formal verification eliminates.</p>
 <h3>Solution</h3>
 <p>The Orange Paper provides a formal mathematical specification of Bitcoin's consensus protocol through AI-assisted extraction from Bitcoin Core's codebase. The specification includes:</p>
 <ul>
@@ -230,7 +226,7 @@
 <h3>AI-Assisted Extraction Methodology</h3>
 <p>The Orange Paper uses AI-assisted extraction from Bitcoin Core's codebase to formalize consensus rules. This approach:</p>
 <ul>
-<li>Analyzes <a href="#2-problem-statement">Bitcoin Core's codebase</a> to identify consensus-critical code paths</li>
+<li>Analyzes Bitcoin Core's codebase (see Section 2.1) to identify consensus-critical code paths</li>
 <li>Extracts mathematical relationships from implementation details</li>
 <li>Creates formal specifications that are independent of specific code structure</li>
 <li>Enables verification that specification matches actual network behavior</li>
@@ -253,25 +249,24 @@
 <h3>4.4 BLVM Architecture</h3>
 <figure>
 <img src="/assets/images/stack.png" alt="BLVM Stack Architecture" style="">
-<figcaption>Figure: BLVM architecture showing blvm-spec (Orange Paper) as the foundation, blvm-consensus as the core implementation with verification paths (Kani proofs, spec drift detection, hash verification), and dependent components (blvm-protocol, blvm-node, blvm-sdk) building on the verified consensus layer.</figcaption>
+<figcaption>Figure: BLVM architecture showing blvm-spec (Orange Paper) as the foundation, blvm-consensus as the core implementation with verification paths (specification locking, spec drift detection, hash verification), and dependent components (blvm-protocol, blvm-node, blvm-sdk) building on the verified consensus layer.</figcaption>
 </figure>
 <p>BLVM (Bitcoin LLVM) applies compiler-like infrastructure to Bitcoin implementations. The Orange Paper serves as an intermediate representation (IR), enabling reusable optimizations and multiple implementations.</p>
-<p><strong>Single Source of Truth.</strong> All consensus logic resides in <code>blvm-consensus</code>. Upper tiers (<code>blvm-protocol</code>, <code>blvm-node</code>) delegate validation calls with no duplicate implementations. Path dependencies ensure changes propagate immediately through Rust's type system.</p>
-<p><strong>Optimization Pipeline.</strong> Multiple passes apply. Formal verification (Kani model checking), property testing (proptest edge case discovery), LLVM compiler optimizations (opt-level 3, fat LTO, SIMD), and differential testing against network behavior. Scalable cloud infrastructure reduces proof execution time from hours to minutes at minimal cost.</p>
+<p><strong>Single Source of Truth:</strong> All consensus logic resides in <code>blvm-consensus</code>. Upper tiers (<code>blvm-protocol</code>, <code>blvm-node</code>) delegate validation calls with no duplicate implementations. Path dependencies ensure changes propagate immediately through Rust's type system.</p>
+<p><strong>Optimization Pipeline:</strong> Multiple passes apply: formal verification (specification locking), property testing (proptest edge case discovery), LLVM compiler optimizations (opt-level 3, fat LTO, SIMD), and differential testing against network behavior. Scalable cloud infrastructure reduces proof execution time from hours to minutes at minimal cost.</p>
 <figure>
 <img src="/assets/images/verification-methods.png" alt="Verification Methods Comparison" style="width: 100%; display: block; margin: 0 auto;">
 <figcaption>Figure: Comparison of verification methods: Bitcoin Core relies primarily on unit/integration tests and fuzzing. Bitcoin Commons employs comprehensive formal verification, extensive test coverage, debug assertions, and property tests, providing multiple layers of verification beyond Core's approach.</figcaption>
 </figure>
 <figure>
 <img src="/assets/images/Consensus-Coverage-Comparison.png" alt="Consensus Coverage Comparison" style="width: 100%; display: block; margin: 0 auto;">
-<figcaption>Figure: Consensus coverage comparison: Bitcoin Core achieves coverage through testing alone. Bitcoin Commons achieves formal verification coverage (Kani proofs) plus comprehensive test coverage. Commons uses consensus-focused test files with extensive test functions compared to Core's total files. The mathematical specification enables both formal verification and comprehensive testing.</figcaption>
+<figcaption>Figure: Consensus coverage comparison: Bitcoin Core achieves coverage through testing alone. Bitcoin Commons achieves formal verification coverage (specification locking) plus comprehensive test coverage. Commons uses consensus-focused test files with extensive test functions compared to Core's total files. The mathematical specification enables both formal verification and comprehensive testing.</figcaption>
 </figure>
 <p>Formal verification in <code>blvm-consensus</code> applies to all tiers because all consensus decisions flow through verified functions. The dependency chain prevents bypassing verification.</p>
 <h2 id="5-architectural-solution-modular-governance">5. Architectural Solution: Modular Governance</h2>
-<p>Two innovations work together: <strong>BLVM</strong> provides the mathematical foundation and compiler-like architecture (Orange Paper as IR, formal verification passes); <strong>Commons</strong> provides the governance framework (coordination without civil war). The modular architecture is where both innovations meet. BLVM ensures correctness through architectural enforcement; Commons ensures coordination through Cryptographic Polycentrism.</p>
-<p>The governance architecture directly addresses <a href="#2-problem-statement">power concentration problems</a> identified in Bitcoin Core's development patterns (bitcoin-governance-research, 2026). Commons enforces distributed authority through cryptographic multisig requirements and mandatory review periods, preventing single points of control. This <a href="#3-theoretical-framework-the-triple-foundation">Cryptographic Polycentrism model</a> creates multiple decision centers (repository layers, action tiers, emergency tiers) with mathematically enforced boundaries.</p>
-<h3>Two-Layer Architecture</h3>
-<p>The modular architecture consists of two layers that transform governance conflicts from political battles into architectural choices:</p>
+<p>Two innovations work together: <strong>BLVM</strong> provides the mathematical foundation and compiler-like architecture (Orange Paper as IR, formal verification passes); <strong>Commons</strong> provides the governance framework (coordination without civil war). The modular architecture is where both innovations meet. BLVM ensures correctness through architectural enforcement; Commons ensures coordination.</p>
+<h3>Three-Layer Stack</h3>
+<p>The modular architecture consists of three layers that transform governance conflicts from political battles into architectural choices:</p>
 <h4 class="subheading">Layer 1: Mandatory Consensus (Base Node)</h4>
 <ul>
 <li>Bitcoin's consensus rules, unchangeable without network agreement</li>
@@ -284,12 +279,11 @@
 <li>Communities can fork/modify/compete, user choice determines winners</li>
 <li>Examples: Lightning Network, merge mining, Taproot Assets, privacy enhancements</li>
 </ul>
-<h4 class="subheading">Revenue Model</h4>
+<h4 class="subheading">Layer 3: Economic Coordination (Revenue Model)</h4>
 <ul>
-<li>Self-sustaining development through operational modules</li>
-<li>Marketplace module, governance announcement zaps, and optional merge mining module provide revenue streams</li>
-<li>Reduces reliance on grants, donations, or external funding</li>
-<li>Aligns incentives with usage and adoption, reducing capture risk</li>
+<li>Self-sustaining development through merge mining revenue</li>
+<li>1% fee on merged chain rewards, scales with adoption</li>
+<li>Revenue allocation (60% core, 25% modules, 10% audits, 5% ops) — see Section 7.2 for details</li>
 </ul>
 <h3>Module Isolation</h3>
 <p>Modules run in separate processes with strict boundaries:</p>
@@ -336,10 +330,10 @@
 <figcaption>Figure: Fragmentation analysis showing that governance forks don't split the network. All implementations validate same Bitcoin consensus while enabling governance competition.</figcaption>
 </figure>
 <p>Governance forks preserve the consensus layer while allowing governance changes. Users can fork governance rules while keeping the same Bitcoin consensus. This is the ultimate accountability mechanism. Knots adoption (25% in five months) proved multiple implementations coexist without fragmentation.</p>
-<p><strong>Forking Process:</strong> Governance rulesets can be exported as versioned, signed packages containing action tiers, maintainers, cryptographic proofs, and semantic versioning. This enables users to fork governance while maintaining compatibility and verification.</p>
-<p><strong>Implementation Registry.</strong> A self-service registry provides permissionless listing of implementations via automated PR validation. If validation passes, merges occur automatically, demonstrating the framework's decentralized, cypherpunk-aligned nature.</p>
+<p><strong>Forking Process:</strong> Governance rulesets can be exported as versioned, signed packages containing action tiers, maintainer registry, cryptographic proofs, and semantic versioning. This enables users to fork governance while maintaining compatibility and verification.</p>
+<p><strong>Implementation Registry:</strong> A self-service registry provides permissionless listing of implementations via automated PR validation. If validation passes, merges occur automatically—demonstrating the framework's decentralized, cypherpunk-aligned nature.</p>
 <h2 id="6-cryptographic-governance-enforcement">6. Cryptographic Governance Enforcement</h2>
-<p>Commons implements <a href="#3-theoretical-framework-the-triple-foundation">Cryptographic Polycentrism</a> through three complementary verification layers (distinct from repository layers) that ensure both real-time transparency and immutable historical proof. These verification layers create multiple independent centers of accountability, each enforcing governance boundaries through cryptographic proof:</p>
+<p>Commons implements cryptographic governance through three complementary verification layers that ensure both real-time transparency and immutable historical proof:</p>
 <figure>
 <img src="/assets/images/three-layer-verification-arch0.png" alt="Three-Layer Verification Overview" style="width: 100%; display: block; margin: 0 auto;">
 <figcaption>Figure: Three-layer verification approach: GitHub, Nostr, and OpenTimestamps.</figcaption>
@@ -354,7 +348,6 @@
 <li>Self-hosted runner behind WireGuard VPN validates signatures using secp256k1</li>
 <li>Even repository admins cannot bypass cryptographic requirements</li>
 <li>Signature validation happens before merge approval</li>
-<li>Addresses <a href="#2-problem-statement">Bitcoin Core's self-merge and zero-review patterns</a> (bitcoin-governance-research, 2026) by requiring explicit cryptographic approval from multiple maintainers before any merge</li>
 </ul>
 <h4 class="subheading">Layer 2: Real-Time Transparency (Nostr)</h4>
 <ul>
@@ -363,7 +356,6 @@
 <li>Cryptographically signed by server's unique NPUB (Nostr public key)</li>
 <li>Anyone can subscribe and verify server integrity in real-time</li>
 <li>Missing updates trigger community alerts within 2 hours</li>
-<li>Provides transparent monitoring that Bitcoin Core lacks, making governance patterns visible in real-time rather than requiring <a href="#2-problem-statement">retrospective analysis</a> (bitcoin-governance-research, 2026)</li>
 </ul>
 <h4 class="subheading">Layer 3: Immutable Proof (OpenTimestamps)</h4>
 <ul>
@@ -376,30 +368,9 @@
 <h4 class="subheading">Cross-Layer Verification:</h4>
 <p>Three independent layers verify governance actions and each other. Risk at one layer does not compromise the others. This defense-in-depth approach ensures governance integrity even if one verification method is compromised.</p>
 <h3>Repository Hierarchy</h3>
+<p>Different signature thresholds based on risk level (see Section 6.5 for explicit thresholds and details).</p>
 <h3>Emergency Response</h3>
-<p>Commons implements a three-tier emergency system that activates when critical security issues require rapid response. Emergency tiers operate separately from action tiers and provide time-limited elevated authority with automatic expiration to prevent permanent emergency powers:</p>
-<p><strong>Critical Emergency</strong> (Network-threatening vulnerabilities):</p>
-<ul>
-<li>Activation: 5-of-7 signatures required</li>
-<li>Review period: 0 days (immediate response)</li>
-<li>Maximum duration: 7 days (no extensions)</li>
-<li>Examples: Inflation bugs, consensus fork risks, P2P network DoS vulnerabilities, remote code execution</li>
-</ul>
-<p><strong>Urgent Security Issue</strong> (Serious security issues):</p>
-<ul>
-<li>Activation: 5-of-7 signatures required</li>
-<li>Review period: 7 days</li>
-<li>Maximum duration: 30 days (1 extension allowed)</li>
-<li>Examples: Memory corruption vulnerabilities, privacy leaks, crash exploits, privilege escalation</li>
-</ul>
-<p><strong>Elevated Priority</strong> (Important but not critical):</p>
-<ul>
-<li>Activation: 5-of-7 signatures required</li>
-<li>Review period: 30 days</li>
-<li>Maximum duration: 90 days (2 extensions allowed)</li>
-<li>Examples: Competitive response needs, important bug fixes, performance degradation, ecosystem compatibility issues</li>
-</ul>
-<p>The emergency system escalates requirements proportionally to severity while maintaining governance integrity through time limits and automatic expiration. All emergency actions require post-mortem documentation and are subject to review after expiration.</p>
+<p>Emergency situations require higher signature thresholds (4-of-5, 5-of-5) and extended time windows based on risk level, with automatic expiration to prevent permanent emergency powers. The tiered system escalates requirements proportionally to the severity of the situation while maintaining governance integrity.</p>
 <h3>Security Architecture: Push-Only Design</h3>
 <h4 class="subheading">Security Architecture Details:</h4>
 <ul>
@@ -415,29 +386,7 @@
 <figcaption>Figure: Risk interception points across three independent verification layers.</figcaption>
 </figure>
 <h3>Multisig Threshold Details</h3>
-<p>Commons implements a <strong>5-tier constitutional governance system</strong> that combines two dimensions: <strong>repository layers</strong> (where the change is made) and <strong>action tiers</strong> (what type of change is being made). When both apply, the <strong>most restrictive requirement wins</strong> (highest signature threshold and longest review period).</p>
-<h4 class="subheading">Repository Layers (Where):</h4>
-<ul>
-<li><strong>Layer 1-2 (Constitutional)</strong>: Orange Paper and Consensus Proof - 6-of-7 signatures, 180-day review (365 days for consensus changes)</li>
-<li><strong>Layer 3 (Implementation)</strong>: Protocol Engine - 4-of-5 signatures, 90-day review</li>
-<li><strong>Layer 4 (Application)</strong>: BLVM Node - 3-of-5 signatures, 60-day review</li>
-<li><strong>Layer 5 (Extension)</strong>: SDK and modules - 2-of-3 signatures, 14-day review</li>
-</ul>
-<h4 class="subheading">Action Tiers (What):</h4>
-<ul>
-<li><strong>Tier 1 (Routine Maintenance)</strong>: Bug fixes, documentation, optimizations - 3-of-5 signatures, 7-day review</li>
-<li><strong>Tier 2 (Feature Changes)</strong>: New RPC methods, P2P changes, wallet features - 4-of-5 signatures, 30-day review</li>
-<li><strong>Tier 3 (Consensus-Adjacent)</strong>: Changes affecting consensus validation code - 5-of-5 signatures, 90-day review</li>
-<li><strong>Tier 4 (Emergency Actions)</strong>: Critical security patches, network-threatening bugs - 4-of-5 signatures, 0-day review (with post-mortem required)</li>
-<li><strong>Tier 5 (Governance Changes)</strong>: Changes to governance rules themselves - 5-of-5 signatures, 180-day review</li>
-</ul>
-<h4 class="subheading">Most Restrictive Wins Rule:</h4>
-<p>When both layer and tier apply, the system takes the highest signature requirement and longest review period. For example:</p>
-<ul>
-<li>A routine bug fix (Tier 1) in the Protocol Engine (Layer 3) requires 4-of-5 signatures and 90-day review (Layer 3 wins)</li>
-<li>A new feature (Tier 2) in the SDK (Layer 5) requires 4-of-5 signatures and 30-day review (Tier 2 wins)</li>
-<li>A consensus change (Tier 3) in Orange Paper (Layer 1) requires 6-of-7 signatures and 180-day review (Layer 1 wins)</li>
-</ul>
+<p>The following thresholds define signature requirements for governance actions (referenced in Section 6.2):</p>
 <figure>
 <img src="/assets/images/governance-signature-thresholds.png" alt="Signature Thresholds" style="width: 100%; display: block; margin: 0 auto;">
 <figcaption>Figure: Governance signature thresholds by change category (constitutional, implementation, application, extension).</figcaption>
@@ -446,8 +395,15 @@
 <img src="/assets/images/multisig-threshold-sensitivity.png" alt="Multisig Threshold Sensitivity" style="width: 100%; display: block; margin: 0 auto;">
 <figcaption>Figure: Multisig threshold sensitivity: false negative and false positive risk vs threshold. Commons balances safety and throughput through carefully calibrated thresholds.</figcaption>
 </figure>
+<h4 class="subheading">Explicit Thresholds by Layer:</h4>
+<ul>
+<li><strong>Constitutional (Orange Paper)</strong>: 6-of-7 maintainer signatures, 180-day review period</li>
+<li><strong>Consensus Changes</strong>: 5-of-5 signatures, 365-day review period (longest review)</li>
+<li><strong>Implementation</strong>: 4-of-5 signatures, 90-day review</li>
+<li><strong>Application</strong>: 3-of-5 signatures, 30-day review</li>
+<li><strong>Extension</strong>: 2-of-3 signatures, 7-day review</li>
+</ul>
 <p>All signatures verified using secp256k1 (same curve as Bitcoin). GitHub App validates signatures before allowing merges. Even repository admins cannot bypass cryptographic requirements.</p>
-<p>These thresholds directly address <a href="#2-problem-statement">Bitcoin Core's power concentration problem</a> (bitcoin-governance-research, 2026). Commons requires distributed approval: even the highest-risk changes (constitutional) require 6-of-7 signatures, ensuring no single maintainer or small group can control critical decisions. Mandatory review periods prevent rushed merges and ensure adequate community scrutiny, addressing the review quality issues identified in Bitcoin Core's development patterns. The dual-dimensional system (layers + tiers) provides additional safety: even routine changes in critical repositories require higher approval thresholds, preventing accidental or malicious changes to sensitive code.</p>
 <h3>Governance Process and Latency</h3>
 <figure>
 <img src="/assets/images/governance-process-latency.png" alt="Governance Process Latency" style="width: 100%; display: block; margin: 0 auto;">
@@ -459,7 +415,7 @@
 </figure>
 <figure>
 <img src="/assets/images/decision-provenance-completeness.png" alt="Decision Provenance Completeness" style="width: 100%; display: block; margin: 0 auto;">
-<figcaption>Figure: Decision provenance: share of fully evidenced decisions across layers. Three-layer verification ensures complete audit trails. This addresses Bitcoin Core's accountability gaps where governance actions lack formal evidence trails (bitcoin-governance-research, 2026).</figcaption>
+<figcaption>Figure: Decision provenance: share of fully evidenced decisions across layers. Three-layer verification ensures complete audit trails.</figcaption>
 </figure>
 <figure>
 <img src="/assets/images/release-pipeline-gate-strength.png" alt="Release Pipeline Gate Strength" style="width: 100%; display: block; margin: 0 auto;">
@@ -471,22 +427,101 @@
 </figure>
 <h2 id="7-economic-sustainability">7. Economic Sustainability</h2>
 <h3>The Funding Gap</h3>
-<p>Only $8.4 million from 13 organizations supported Bitcoin Core development in 2023, while the network reached a $2 trillion market cap (Hough, 2025). This 0.42% funding-to-market-cap ratio creates systemic vulnerabilities and limits Bitcoin's ability to scale safely.</p>
-<h3>Self-Sustaining Revenue Models</h3>
-<p>Bitcoin Commons operates modules to generate revenue for funding operations, reducing reliance on grants, donations, or external funding:</p>
-<p><strong>Marketplace Module:</strong> Enables distribution and monetization of modules.</p>
-<p><strong>Governance Announcement Zaps:</strong> Lightning Network zaps attached to governance announcements provide direct funding for governance operations.</p>
-<p><strong>Merge Mining Module:</strong> Coordinates merge mining for secondary chains, providing optional revenue when enabled.</p>
-<p>These self-sustaining models align incentives with usage and adoption, making the system less vulnerable to capture than grant-dependent funding models.</p>
-<h3>Infrastructure Costs</h3>
+<p>Only $8.4 million from 13 organizations supported Bitcoin Core development in 2023, while the network reached a $2 trillion market cap (Hough, 2025). This 0.00042% funding-to-market-cap ratio creates systemic vulnerabilities and limits Bitcoin's ability to scale safely.</p>
+<h3>Merge Mining Model</h3>
+<p>Merge mining is available as a separate paid plugin module (`blvm-merge-mining`) that allows miners to mine multiple chains simultaneously. When mining Bitcoin, they can also mine secondary chains (RSK, DATUM, Namecoin) without additional computational work. However, merge mining is not a Commons funding model - revenue goes to the module developer, not to Commons infrastructure.</p>
+<h3>Revenue Allocation</h3>
+<ul>
+<li><strong>60% Core Development</strong>: Base node and critical modules</li>
+<li><strong>25% Module Developer Grants</strong>: Incentivizes quality modules</li>
+<li><strong>10% Security Audits</strong>: Ensures quality and safety</li>
+<li><strong>5% Operations</strong>: Infrastructure and maintenance</li>
+</ul>
+<h3>Self-Sustaining Benefits</h3>
+<ul>
+<li>No reliance on donations, grants, or VC funding</li>
+<li>Revenue scales with actual usage and miner adoption</li>
+<li>Economic leverage enables rule enforcement without consensus changes</li>
+<li>Miner alignment creates supporting constituency</li>
+</ul>
+<h3>Stratum V2 Merge Mining Coordination</h3>
+<p>Merge mining coordination uses Stratum V2, a modern protocol that aligns with Commons governance principles:</p>
+<ul>
+<li><strong>Miners Control Transaction Selection</strong>: Job negotiation decentralizes power</li>
+<li><strong>Encrypted Communication</strong>: Reduces risk of hashrate hijacking</li>
+<li><strong>Efficient Binary Protocol</strong>: Reduces bandwidth by roughly 50-66 percent</li>
+<li><strong>Multiplexed Channels</strong>: Enable merge mining coordination naturally</li>
+</ul>
+<h3>Revenue Scaling Examples</h3>
+<h4 class="subheading">Calculations:</h4>
+<ul>
+<li>If merge-minable chains generate 100 BTC/year in rewards, 1% fee yields ~1 BTC/year for development</li>
+<li>At 10 merged coins: ~10 BTC/year revenue</li>
+<li>At 100 coins: ~100 BTC/year revenue</li>
+<li>Revenue scales with adoption without requiring user payments</li>
+</ul>
+<h4 class="subheading">Infrastructure Costs:</h4>
 <ul>
 <li>Server costs: $75-200/month for servers, VPN, and tooling</li>
 <li>Annual costs: under ~$30K including security audits</li>
 <li>Model aims to protect substantial Bitcoin value at low overhead</li>
 </ul>
+<h3>Economic Model Charts</h3>
+<figure>
+<img src="/assets/images/revenue-allocation-2.png" alt="Revenue Allocation" style="width: 100%; display: block; margin: 0 auto;">
+<figcaption>Figure: How funds are allocated across core development (60%), modules (25%), audits (10%), and operations (5%).</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/the-economic-reality.png" alt="The Economic Reality" style="width: 100%; display: block; margin: 0 auto;">
+<figcaption>Figure: Why incentives align for miners, developers, and users. Merge mining revenue creates supporting constituency.</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/economic-alignment.png" alt="Economic Alignment" style="width: 100%; display: block; margin: 0 auto;">
+<figcaption>Figure: Economic alignment showing incentives for miners, developers, and users via merge mining revenue and grants.</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/funding-trans.png" alt="Funding Model Comparison" style="width: 100%; display: block; margin: 0 auto;">
+<figcaption>Figure: Funding model comparison: Core's donation-dependent model vs Commons' self-sustaining merge mining revenue that scales with usage.</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/economic-scaling-trajectory.png" alt="Economic Scaling Trajectory" style="width: 100%; display: block; margin: 0 auto;">
+<figcaption>Figure: Economic scaling across development phases. Revenue scales with adoption and miner participation.</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/revenue-model-sensitivity-analysis.png" alt="Revenue Model Sensitivity" style="width: 100%; display: block; margin: 0 auto;">
+<figcaption>Figure: Revenue model sensitivity analysis showing how revenue scales with chains adopting Commons and Commons adoption (network effects).</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/secondary-chain-value-prop.png" alt="Secondary Chain Value Proposition" style="width: 100%; display: block; margin: 0 auto;">
+<figcaption>Figure: Secondary chain value proposition comparison. Commons offers reduced integration cost, access to Bitcoin's hash power, governance transparency, and lower fees (1% vs building infrastructure).</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/miner-economic-sensitivity.png" alt="Miner Economic Sensitivity" style="width: 100%; display: block; margin: 0 auto;">
+<figcaption>Figure: Miner sensitivity to merge-mined yields. Support persists across ranges due to direct economic incentives.</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/sustainability-over-time-monolith-vs-modular.png" alt="Sustainability Over Time" style="width: 100%; display: block; margin: 0 auto;">
+<figcaption>Figure: Sustainability over time: modular governance aims to sustain change while reducing capture risks compared to monolithic approaches.</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/economic-veto-threshold.png" alt="Economic Veto Threshold" style="width: 100%; display: block; margin: 0 auto;">
+<figcaption>Figure: Economic veto thresholds and aligned incentives. Revenue allocation enables graduated sanctions without consensus changes.</figcaption>
+</figure>
+<h3>Why Secondary Chains Choose Commons</h3>
+<p>Secondary chains need merge mining infrastructure. Commons value proposition:</p>
+<ul>
+<li><strong>Reduced Integration Cost</strong>: 1% fee cheaper than building infrastructure</li>
+<li><strong>Access to Bitcoin's Hash Power</strong>: Leverage Bitcoin network effects</li>
+<li><strong>Governance Transparency</strong>: Cryptographic audit trails</li>
+<li><strong>Proven Infrastructure</strong>: Lower risk than building from scratch</li>
+</ul>
+<h4 class="subheading">Target Adoption Strategy:</h4>
+<p>Target existing merge-mined chains (RSK, Namecoin, DATUM) with migration tools. Demonstrate economic benefits: reduced costs, improved governance, better security.</p>
+<h4 class="subheading">Fallback if Secondary Chains Don't Adopt:</h4>
+<p>Phase 1 can proceed without full revenue. Alternatives include module fees, grants, donations. Long-term network effects accelerate adoption.</p>
 <h3>Success Metrics</h3>
 <ul>
-<li><strong>Level 1 (Sustainability)</strong>: 1000+ nodes, revenue-positive operation</li>
+<li><strong>Level 1 (Sustainability)</strong>: 1000+ nodes, 20+ miners, revenue-positive operation</li>
 <li><strong>Level 2 (Ecosystem Health)</strong>: 3+ implementations with >15% combined node share</li>
 </ul>
 <p>Success Level 1 proves sustainability. Success Level 2 proves the mission: implementation diversity becomes normal. We succeed when others copy the approach, not when we dominate the market.</p>
@@ -499,21 +534,23 @@
 <p><strong>Mitigation:</strong> Distributed keyholders across jurisdictions (no single jurisdiction can compel 3-of-5 threshold), visible capture attempts, modular containment</p>
 <h3>Technical Risks</h3>
 <p><strong>Risk:</strong> Module consensus bugs, complexity explosion</p>
-<p><strong>Mitigation:</strong> <a href="#5-architectural-solution-modular-governance">Module isolation</a>, <a href="#4-technical-solution-the-orange-paper">formal verification</a>, security audits</p>
+<p><strong>Mitigation:</strong> Module isolation (failures cannot affect consensus), formal verification, security audits</p>
 <h3>Social Risks</h3>
 <p><strong>Risk:</strong> Community rejection, fork wars, reputation attacks</p>
 <p><strong>Mitigation:</strong> Focus on substance, build alternatives, let market decide; not asking permission, let code speak, coalition provides proof</p>
 <h3>Ultimate Protection</h3>
+<p>Governance forks provide the ultimate accountability mechanism (see Section 5 for details).</p>
 <h2 id="9-implementation-status">9. Implementation Status</h2>
-<h3>Six Repositories</h3>
+<h3>Seven Repositories</h3>
 <p>All repositories are public and active at <a href="https://github.com/BTCDecoded">https://github.com/BTCDecoded</a>:</p>
 <ol>
-<li><strong>Orange Paper</strong> (blvm-spec): Mathematical specification of Bitcoin consensus</li>
-<li><strong>Consensus Proof</strong> (blvm-consensus): Formal verification of consensus rules</li>
+<li><strong>Orange Paper</strong>: Mathematical specification of Bitcoin consensus</li>
 <li><strong>Protocol Engine</strong> (blvm-protocol): Core protocol logic and state management</li>
+<li><strong>Consensus Proof</strong> (blvm-consensus): Formal verification of consensus rules</li>
 <li><strong>BLVM Node</strong> (blvm-node): Complete Bitcoin implementation</li>
 <li><strong>Developer SDK</strong> (blvm-sdk): Toolkit for building alternative Bitcoin implementations. Provides module composition framework for declaratively assembling custom Bitcoin nodes, plus governance cryptographic primitives.</li>
-<li><strong>Governance</strong> (governance + blvm-commons): Configuration repository for governance rules and the GitHub App that enforces them</li>
+<li><strong>Governance</strong>: Configuration repository for governance rules</li>
+<li><strong>Governance App</strong>: GitHub App that enforces governance rules</li>
 </ol>
 <h3>Current State</h3>
 <p>Phase 1 infrastructure provides substantial code implementing core capabilities. The system includes mathematical foundation and clean architecture. Governance infrastructure enables cryptographic enforcement.</p>
@@ -523,9 +560,9 @@
 <p><strong>Consistent Networking:</strong> Transport abstraction layer supporting both TCP and Iroh QUIC transports, with unified message routing across transport types. This enables nodes to choose transport based on network conditions while maintaining protocol compatibility.</p>
 <p><strong>Network Optimizations:</strong> Integrated coordination between compact blocks and block filtering for bandwidth efficiency. UTXO commitments support optional inclusion of block filters in responses. Transport-aware feature negotiation optimizes protocol usage based on available transports.</p>
 <p><strong>Advanced Networking:</strong> FIBRE (Fast Internet Bitcoin Relay Engine) implementation with Forward Error Correction (FEC) using Reed-Solomon encoding enables fast block propagation over UDP with resilience to packet loss. Package relay (BIP331) and privacy-preserving transaction relay options provide additional network efficiency and privacy capabilities.</p>
-<p><strong>Module System Architecture:</strong> <a href="#5-architectural-solution-modular-governance">Process-isolated module system</a> with IPC communication, sandboxing, security validation, and module registry. Enables optional features (Lightning, merge mining, privacy enhancements) without affecting consensus or base node stability.</p>
+<p><strong>Module System Architecture:</strong> Process-isolated module system with IPC communication, sandboxing, security validation, and module registry. Enables optional features (Lightning, merge mining, privacy enhancements) without affecting consensus or base node stability.</p>
 <p><strong>Stratum V2 + Merge Mining:</strong> Stratum V2 implementation with merge mining coordination for secondary chains (RSK, Namecoin, etc.). Multiplexed QUIC channels enable simultaneous mining of Bitcoin and secondary chains.</p>
-<h2 id="10-development-roadmap">10. Development Roadmap</h2>
+<h2 id="development-roadmap">Development Roadmap</h2>
 <figure>
 <img src="/assets/images/development-trajectory.png" alt="Development Trajectory" style="width: 100%; display: block; margin: 0 auto;">
 <figcaption>Figure: Development trajectory across phases showing progression from foundation to maturity.</figcaption>
@@ -536,7 +573,7 @@
 </figure>
 <p>Phase 1 complete. Phase 2 activation requires meeting prerequisites below. Success metrics: Level 1 (sustainability) and Level 2 (ecosystem health through implementation diversity). Goal: create foundation for competing implementations, not replace Bitcoin Core.</p>
 <h3>Phase 1: Foundation</h3>
-<p>Phase 1 (Foundation) - Complete. <a href="#9-implementation-status">Current capabilities and repositories</a> are detailed in the implementation status section.</p>
+<p>Phase 1 (Foundation) - Complete. See Section 9 for current capabilities and repositories.</p>
 <h3>Phase 2: Governance Activation</h3>
 <h4 class="subheading">Prerequisites (Must be met before activation):</h4>
 <ul>
@@ -553,9 +590,9 @@
 <p><strong>Module System Architecture:</strong> Module API, loading system, and infrastructure. Milestone: Lightning module integration and module marketplace operational</p>
 <p><strong>Cryptographic Governance:</strong> Multisig infrastructure, distributed keyholder system, transparent processes, Governance App deployment. Milestone: Governance system is operational with full three-layer verification</p>
 <p><strong>Lightning Integration Module:</strong> Build Lightning Network module demonstrating architecture-based conflict resolution. Milestone: Lightning module is working and adopted</p>
-<p><strong>Merge Mining Support:</strong> Stratum V2 infrastructure and merge mining coordination. Milestone: Merge mining module operational (optional revenue source)</p>
+<p><strong>Merge Mining Support:</strong> Stratum V2 infrastructure and merge mining coordination. Milestone: First revenue collection from merge mining fees (requires miner adoption)</p>
 <p><strong>Module Marketplace:</strong> Build distribution infrastructure with quality control, security audits, and adoption metrics. Milestone: Module marketplace is operational</p>
-<p><strong>Revenue-Positive Operation:</strong> Achieve sustainable funding through operational modules, demonstrate economic model viability. Milestone: 1000+ node operators, revenue-positive operation (Level 1 success)</p>
+<p><strong>Revenue-Positive Operation:</strong> Achieve sustainable funding through the module marketplace, demonstrate economic model viability. Milestone: 1000+ node operators, revenue-positive operation (Level 1 success)</p>
 <figure>
 <img src="/assets/images/sustainability-ecosystem-health.png" alt="Sustainability Ecosystem Health" style="width: 100%; display: block; margin: 0 auto;">
 <figcaption>Figure: Sustainability and ecosystem health indicators across phases. Tracks node adoption, miner participation, and revenue generation.</figcaption>
@@ -569,7 +606,7 @@
 <li>Commons as infrastructure layer enabling other projects</li>
 </ul>
 <p><strong>Self-Sustaining Development:</strong> Achieve complete independence from external funding; demonstrate sustainable economic model; show governance system can operate without founder. Milestone: Self-sustaining without external funding</p>
-<p><strong>Operational Sustainability:</strong> Demonstrate sustainable operations through marketplace and governance modules; prove governance system effectiveness and economic viability</p>
+<p><strong>Economic Leverage:</strong> Demonstrate economic leverage over contained ecosystems and secondary chains; show how rules can be enforced through economic pressure; prove governance system effectiveness</p>
 <p><strong>Production Deployment:</strong> Full mainnet governance infrastructure; first multisig merge, OpenTimestamps anchor, public monitoring operational; key rotation completed. Milestone: 10,000+ node operators, recognized as viable alternative</p>
 <p><strong>Recognition as Viable Alternative:</strong> Gain recognition from Bitcoin community; demonstrate technical superiority and governance advantages. Milestone: Accepted as legitimate Bitcoin implementation</p>
 <h3>Phase 4: Ecosystem Normalization</h3>
@@ -579,7 +616,7 @@
 <h3>Strategic Positioning</h3>
 <p>Commons positions as infrastructure for multiple implementations, not a Core replacement. Success measured by ecosystem health and implementation diversity (Level 2 success), not market share. BitMEX validated Type 3 software forks; Commons adds specification, governance, and economics. Success when others build on the foundation, measured by ecosystem adoption.</p>
 <h3>Key Metrics</h3>
-<p>Key metrics align with <a href="#7-economic-sustainability">Success Levels 1 and 2</a>. Categories include:</p>
+<p>Key metrics align with Success Levels 1 and 2 (see Section 7.5). Categories include:</p>
 <p><strong>Technical Metrics:</strong> Network compatibility, module adoption, revenue generation, user adoption</p>
 <p><strong>Governance Metrics:</strong> Decision transparency, economic alignment, anti-capture measures, sustainability</p>
 <p><strong>Ecosystem Metrics:</strong> Diverse implementations, module marketplace growth, developer adoption, community recognition</p>
@@ -589,7 +626,7 @@
 </figure>
 <p>These metrics measure the health of the ecosystem, not just the success of Commons itself. For detailed risk analysis and mitigation strategies, see Section 8 (Failure Modes & Mitigations).</p>
 <hr>
-<h2 id="11-conclusion">11. Conclusion</h2>
+<h2 id="10-conclusion">10. Conclusion</h2>
 <p>Bitcoin's governance vacuum represents its greatest vulnerability at multi-trillion dollar scale. The technical architecture is bulletproof, but the social architecture runs on gentleman's agreements. BLVM and Commons provide concrete, implementable solutions: BLVM ensures mathematical rigor; Commons applies Ostrom's principles, Hayek's competitive discovery, and Bitcoin's cryptographic enforcement to governance.</p>
 <p>This isn't speculation. It's applying battle-tested principles from economics, social science, and cryptography to governance. Each framework addresses weaknesses in the others: cryptography makes Ostrom enforceable at scale, infrastructure enables Hayek's competition, and modularity plus fork-ability creates competitive discovery.</p>
 <p>The foundation exists in public repositories, but implementation remains ongoing. The architecture is designed and the path is clear: the project's future depends on community participation.</p>
@@ -608,7 +645,6 @@
 <li>Hough, E. (2025). "Funding the Peer-to-Peer Ethos: A Network Analysis Proposal of Bitcoin's Technical & Social Collectives." Unpublished research proposal, INFO 4360: Communication Networks and Social Capital, Cornell University.</li>
 <li>Hough, E. (2022). "Evaluating The Diffusion & Adoption of Bitcoin: Through Network Effects, Public Sentiment & Self-Fulfilling Expectations Equilibrium." INFO 2040: Networks, Cornell University. <a href="https://blogs.cornell.edu/info2040/2022/11/11/evaluating-the-diffusion-adoption-of-bitcoin-through-network-effects-public-sentiment-self-fulfilling-expectations-equil/">Cornell Blogs</a> - https://blogs.cornell.edu/info2040/2022/11/11/evaluating-the-diffusion-adoption-of-bitcoin-through-network-effects-public-sentiment-self-fulfilling-expectations-equil/</li>
 <li>Uzzi, B. (1997). Social Structure and Competition in Interfirm Networks: The Paradox of Embeddedness. <em>Administrative Science Quarterly</em>, 42(1), 35-67. https://doi.org/10.2307/2393808</li>
-<li>bitcoin-governance-research (2026). Comprehensive Quantitative Analysis of Bitcoin Core Development Governance. <a href="https://github.com/secsovereign/bitcoin-governance-research">https://github.com/secsovereign/bitcoin-governance-research</a></li>
 </ul>
 <h3>Historical Sources</h3>
 <ul>
@@ -632,8 +668,8 @@
 <li><a href="https://github.com/BTCDecoded/blvm-consensus">https://github.com/BTCDecoded/blvm-consensus</a></li>
 <li><a href="https://github.com/BTCDecoded/blvm-node">https://github.com/BTCDecoded/blvm-node</a></li>
 <li><a href="https://github.com/BTCDecoded/blvm-sdk">https://github.com/BTCDecoded/blvm-sdk</a></li>
-<li><a href="https://github.com/BTCDecoded/governance">https://github.com/BTCDecoded/governance</a> (governance configuration)</li>
-<li><a href="https://github.com/BTCDecoded/blvm-commons">https://github.com/BTCDecoded/blvm-commons</a> (GitHub App that enforces governance)</li>
+<li><a href="https://github.com/BTCDecoded/governance">https://github.com/BTCDecoded/governance</a></li>
+<li><a href="https://github.com/BTCDecoded/blvm-commons">https://github.com/BTCDecoded/blvm-commons</a></li>
 </ul>
 <p><strong>System Status:</strong> For verified implementation status, see <a href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md">SYSTEM_STATUS.md</a> in the BTCDecoded organization repository.</p>
         </article>
