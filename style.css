@@ -2172,8 +2172,9 @@ footer .copyright {
   height: auto;
   display: block;
   margin: 2rem auto;
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   transition: filter 0.3s ease;
 }
 
