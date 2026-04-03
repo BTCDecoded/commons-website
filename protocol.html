@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' data: https:;">
-    <title>The Orange Paper: Bitcoin Protocol Specification - Bitcoin Commons</title>
-    <meta name="description" content="Complete mathematical specification of the Bitcoin consensus protocol. The definitive reference for Bitcoin's consensus rules, state transitions, and economic model.">
+    <title>PROTOCOL.md — Bitcoin consensus rules (Orange Paper) - Bitcoin Commons</title>
+    <meta name="description" content="Consensus rules, invariants, and predicates for Bitcoin — implementation-agnostic protocol specification (blvm-spec).">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="The Orange Paper: Bitcoin Protocol Specification">
-    <meta property="og:description" content="Complete mathematical specification of the Bitcoin consensus protocol">
+    <meta property="og:title" content="PROTOCOL.md — Bitcoin consensus specification">
+    <meta property="og:description" content="Consensus rules, invariants, and predicates — what must hold.">
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://thebitcoincommons.org/orange-paper.html">
+    <meta property="og:url" content="https://thebitcoincommons.org/protocol.html">
     <meta property="og:image" content="https://thebitcoincommons.org/assets/og-image.png">
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="The Orange Paper: Bitcoin Protocol Specification">
-    <meta name="twitter:description" content="Complete mathematical specification of the Bitcoin consensus protocol">
+    <meta name="twitter:title" content="PROTOCOL.md — Bitcoin consensus specification">
+    <meta name="twitter:description" content="Consensus rules, invariants, and predicates — what must hold.">
     <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
     
     <link rel="stylesheet" href="style.css?v=3">
@@ -332,38 +332,36 @@
     <div class="orange-paper-nav">
         <div class="container">
             <a href="index.html">← Home</a>
-            <a href="protocol.html">PROTOCOL.md</a>
+            <a href="orange-paper.html">Orange Paper</a>
             <a href="architecture.html">ARCHITECTURE.md</a>
             <a href="#top">Top</a>
-            <a href="https://github.com/BTCDecoded/blvm-spec" target="_blank" rel="noopener">View on GitHub</a>
+            <a href="https://github.com/BTCDecoded/blvm-spec/blob/main/PROTOCOL.md" target="_blank" rel="noopener">Source on GitHub</a>
         </div>
     </div>
     
     <div class="orange-paper-container" id="top">
         <div class="orange-paper-header">
-            <h1>The Orange Paper</h1>
-            <h2>Bitcoin Protocol Specification</h2>
+            <h1>PROTOCOL.md</h1>
+            <h2>Consensus rules &amp; invariants (Orange Paper split)</h2>
             <div class="orange-paper-meta">
-                <p><strong>Version 1.0</strong></p>
-                <p>Based on Bitcoin Core Implementation Analysis</p>
-                <p>Authors: BTCDecoded.org, MyBitcoinFuture.com, @secsovereign</p>
-                <p><a href="https://github.com/BTCDecoded/blvm-spec" target="_blank" rel="noopener">View source on GitHub</a></p>
+                <p>Live from <a href="https://github.com/BTCDecoded/blvm-spec/blob/main/PROTOCOL.md" target="_blank" rel="noopener"><code>BTCDecoded/blvm-spec</code> · <code>main</code></a></p>
+                <p><a href="orange-paper.html">Overview (THE_ORANGE_PAPER.md)</a> · <a href="architecture.html">ARCHITECTURE.md</a></p>
             </div>
         </div>
         
         <div id="loading" class="loading">
-            Loading Orange Paper...
+            Loading PROTOCOL.md…
         </div>
         
         <div id="error" class="error" style="display: none;">
-            Error loading Orange Paper. Please try again later.
+            Error loading PROTOCOL.md. Please try again later.
         </div>
         
         <div id="content" class="orange-paper-content" style="display: none;"></div>
     </div>
     
     <script>
-        window.BTCC_SPEC_VIEWER = { fileName: 'THE_ORANGE_PAPER.md' };
+        window.BTCC_SPEC_VIEWER = { fileName: 'PROTOCOL.md' };
     </script>
     <script src="spec-markdown-viewer.js?v=1"></script>
 </body>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page not found — Bitcoin Commons</title>
+    <link rel="stylesheet" href="style.css?v=3">
+    <script>
+        (function () {
+            var path = (location.pathname || '/').replace(/\/+$/, '');
+            var base = path.split('/').pop() || '';
+            var lower = base.toLowerCase();
+            if (lower === 'protocol.md') {
+                location.replace('/protocol.html');
+                return;
+            }
+            if (lower === 'architecture.md') {
+                location.replace('/architecture.html');
+                return;
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div class="container" style="max-width: 640px; margin: 4rem auto; padding: 1.5rem;">
+        <h1>Page not found</h1>
+        <p>The page you requested is not on this site.</p>
+        <p>Looking for the Orange Paper split?</p>
+        <ul>
+            <li><a href="/protocol.html">PROTOCOL.md</a> (rendered viewer)</li>
+            <li><a href="/architecture.html">ARCHITECTURE.md</a> (rendered viewer)</li>
+            <li><a href="/orange-paper.html">THE_ORANGE_PAPER.md</a> (overview)</li>
+        </ul>
+        <p><a href="/index.html">← Home</a></p>
+    </div>
+</body>
+</html>
