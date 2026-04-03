@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page not found — Bitcoin Commons</title>
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="style.css?v=4">
     <script>
         (function () {
             var path = (location.pathname || '/').replace(/\/+$/, '');
@@ -16,6 +16,10 @@
             }
             if (lower === 'architecture.md') {
                 location.replace('/architecture.html');
+                return;
+            }
+            if (lower === 'compact.md') {
+                location.replace('/compact.html');
                 return;
             }
         })();
@@ -30,6 +34,7 @@
             <li><a href="/protocol.html">PROTOCOL.md</a> (rendered viewer)</li>
             <li><a href="/architecture.html">ARCHITECTURE.md</a> (rendered viewer)</li>
             <li><a href="/orange-paper.html">THE_ORANGE_PAPER.md</a> (overview)</li>
+            <li><a href="/compact.html">COMPACT.md</a> (governance compact)</li>
         </ul>
         <p><a href="/index.html">← Home</a></p>
     </div>

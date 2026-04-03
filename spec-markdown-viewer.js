@@ -1,6 +1,7 @@
 /**
- * Shared loader for blvm-spec markdown served on thebitcoincommons.org.
+ * Shared markdown viewer for thebitcoincommons.org.
  * Each page sets window.BTCC_SPEC_VIEWER before including this script.
+ * Default source: BTCDecoded/blvm-spec main. Optional cfg.rawBase for other repos (e.g. governance).
  */
 (function () {
     'use strict';
@@ -12,8 +13,24 @@
         return;
     }
 
-    const RAW_BASE = 'https://raw.githubusercontent.com/BTCDecoded/blvm-spec/main/';
-    const SPEC_URL = RAW_BASE + fileName;
+    var DEFAULT_RAW_BASE = 'https://raw.githubusercontent.com/BTCDecoded/blvm-spec/main/';
+
+    function normalizeRawBase(base) {
+        var b = base || DEFAULT_RAW_BASE;
+        return b.replace(/\/?$/, '/');
+    }
+
+    function blobBaseFromRawBase(rawBase) {
+        var m = rawBase.match(/^https:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/([^/]+)\//);
+        if (m) {
+            return 'https://github.com/' + m[1] + '/' + m[2] + '/blob/' + m[3] + '/';
+        }
+        return 'https://github.com/BTCDecoded/blvm-spec/blob/main/';
+    }
+
+    var rawBase = normalizeRawBase(cfg.rawBase);
+    var BLOB_BASE = cfg.blobBase || blobBaseFromRawBase(rawBase);
+    var SPEC_URL = rawBase + fileName;
 
     function rewriteSpecLinks(root) {
         root.querySelectorAll('a[href]').forEach(function (a) {
@@ -61,8 +78,15 @@
             }
 
             if (path.startsWith('../')) {
-                var inSpec = path.replace(/^\.\.\/+/, '');
-                a.setAttribute('href', 'https://github.com/BTCDecoded/blvm-spec/blob/main/' + inSpec + hash);
+                var inRepo = path.replace(/^\.\.\/+/, '');
+                a.setAttribute('href', BLOB_BASE + inRepo + hash);
+                a.setAttribute('target', '_blank');
+                a.setAttribute('rel', 'noopener noreferrer');
+                return;
+            }
+
+            if (/^[A-Za-z0-9._-]+\.md$/i.test(path)) {
+                a.setAttribute('href', BLOB_BASE + path + hash);
                 a.setAttribute('target', '_blank');
                 a.setAttribute('rel', 'noopener noreferrer');
             }
@@ -141,6 +165,10 @@
             contentEl.innerHTML = html;
             contentEl.style.display = 'block';
             rewriteSpecLinks(contentEl);
+
+            if (cfg.skipHeavyRender) {
+                return;
+            }
 
             if (typeof mermaid !== 'undefined') {
                 setTimeout(function () {
