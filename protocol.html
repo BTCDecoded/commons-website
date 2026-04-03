@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' data: https:;">
+    <title>PROTOCOL.md — Bitcoin consensus rules (Orange Paper) - Bitcoin Commons</title>
+    <meta name="description" content="Consensus rules, invariants, and predicates for Bitcoin — implementation-agnostic protocol specification (blvm-spec).">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="PROTOCOL.md — Bitcoin consensus specification">
+    <meta property="og:description" content="Consensus rules, invariants, and predicates — what must hold.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://thebitcoincommons.org/protocol.html">
+    <meta property="og:image" content="https://thebitcoincommons.org/assets/og-image.png">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PROTOCOL.md — Bitcoin consensus specification">
+    <meta name="twitter:description" content="Consensus rules, invariants, and predicates — what must hold.">
+    <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
+    
+    <link rel="stylesheet" href="style.css?v=3">
+    
+    <!-- MathJax for LaTeX rendering -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    
+    <!-- Mermaid for diagram rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: false, // We'll call run() manually after content loads
+            theme: 'dark',
+            securityLevel: 'loose',
+            flowchart: { useMaxWidth: true, htmlLabels: true },
+            sequence: { useMaxWidth: true },
+            themeVariables: {
+                primaryColor: '#f7931a',
+                primaryTextColor: '#ffffff',
+                primaryBorderColor: '#e6820a',
+                lineColor: '#666666',
+                secondaryColor: 'rgba(247, 147, 26, 0.2)',
+                tertiaryColor: 'rgba(247, 147, 26, 0.1)',
+                background: '#1a1a1a',
+                mainBkgColor: '#1a1a1a',
+                secondBkgColor: '#2a2a2a',
+                textColor: '#ffffff',
+                border1: '#444444',
+                border2: '#666666',
+                errorBkgColor: 'rgba(244, 67, 54, 0.5)',
+                errorTextColor: '#ffffff',
+                successBkgColor: 'rgba(76, 175, 80, 0.5)',
+                successTextColor: '#ffffff'
+            }
+        });
+    </script>
+    
+    <!-- Marked.js for markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@11/marked.min.js"></script>
+    
+    <style>
+        /* Orange Paper specific styles */
+        .orange-paper-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.8;
+        }
+        
+        .orange-paper-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color, #333);
+        }
+        
+        .orange-paper-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color, #f7931a);
+        }
+        
+        .orange-paper-header h2 {
+            font-size: 1.5rem;
+            color: var(--text-secondary, #aaa);
+            font-weight: normal;
+        }
+        
+        .orange-paper-meta {
+            margin-top: 1rem;
+            color: var(--text-secondary, #aaa);
+            font-size: 0.9rem;
+        }
+        
+        .orange-paper-content {
+            font-size: 1.1rem;
+        }
+        
+        /* Links - use same styling as main site */
+        .orange-paper-content a {
+            color: var(--bitcoin-orange, #f7931a);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .orange-paper-content a:hover,
+        .orange-paper-content a:focus {
+            color: var(--bitcoin-orange-hover, #e6820a);
+            text-decoration: underline;
+        }
+        
+        .orange-paper-content a:visited {
+            color: var(--bitcoin-orange, #f7931a);
+        }
+        
+        /* Math rendering */
+        .orange-paper-content .MathJax {
+            font-size: 1.1em;
+        }
+        
+        /* Mermaid diagrams */
+        .orange-paper-content .mermaid {
+            margin: 2rem auto;
+            text-align: center;
+            background: var(--bg-secondary, #1a1a1a);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        
+        /* Override Mermaid colors for better dark theme visibility */
+        .orange-paper-content .mermaid .node rect,
+        .orange-paper-content .mermaid .node circle,
+        .orange-paper-content .mermaid .node ellipse,
+        .orange-paper-content .mermaid .node polygon {
+            fill: rgba(247, 147, 26, 0.2) !important;
+            stroke: rgba(247, 147, 26, 0.6) !important;
+        }
+        
+        .orange-paper-content .mermaid .nodeLabel {
+            color: #ffffff !important;
+        }
+        
+        /* Override specific color fills for dark theme - use opacity via CSS */
+        .orange-paper-content .mermaid .node[fill="#c62828"],
+        .orange-paper-content .mermaid .node[fill="#ffcdd2"] {
+            fill: rgba(244, 67, 54, 0.5) !important;
+            opacity: 0.7;
+        }
+        
+        .orange-paper-content .mermaid .node[fill="#388e3c"],
+        .orange-paper-content .mermaid .node[fill="#c8e6c9"] {
+            fill: rgba(76, 175, 80, 0.5) !important;
+            opacity: 0.7;
+        }
+        
+        /* Text colors for better contrast */
+        .orange-paper-content .mermaid .nodeLabel[fill="#c62828"],
+        .orange-paper-content .mermaid text[fill="#c62828"] {
+            fill: rgba(244, 67, 54, 0.9) !important;
+        }
+        
+        .orange-paper-content .mermaid .nodeLabel[fill="#388e3c"],
+        .orange-paper-content .mermaid text[fill="#388e3c"] {
+            fill: rgba(76, 175, 80, 0.9) !important;
+        }
+        
+        /* Code blocks */
+        .orange-paper-content pre {
+            background: var(--bg-secondary, #1a1a1a);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid var(--border-color, #333);
+        }
+        
+        .orange-paper-content code {
+            background: var(--bg-secondary, #1a1a1a);
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .orange-paper-content pre code {
+            background: transparent;
+            padding: 0;
+        }
+        
+        /* Headings */
+        .orange-paper-content h1,
+        .orange-paper-content h2,
+        .orange-paper-content h3,
+        .orange-paper-content h4 {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color, #f7931a);
+        }
+        
+        .orange-paper-content h1 {
+            font-size: 2rem;
+            border-bottom: 2px solid var(--border-color, #333);
+            padding-bottom: 0.5rem;
+        }
+        
+        .orange-paper-content h2 {
+            font-size: 1.75rem;
+        }
+        
+        .orange-paper-content h3 {
+            font-size: 1.5rem;
+        }
+        
+        .orange-paper-content h4 {
+            font-size: 1.25rem;
+        }
+        
+        /* Tables */
+        .orange-paper-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .orange-paper-content table th,
+        .orange-paper-content table td {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color, #333);
+            text-align: left;
+        }
+        
+        .orange-paper-content table th {
+            background: var(--bg-secondary, #1a1a1a);
+            font-weight: bold;
+        }
+        
+        /* Links */
+        .orange-paper-content a {
+            color: var(--primary-color, #f7931a);
+            text-decoration: none;
+        }
+        
+        .orange-paper-content a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Lists */
+        .orange-paper-content ul,
+        .orange-paper-content ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        
+        .orange-paper-content li {
+            margin: 0.5rem 0;
+        }
+        
+        /* Blockquotes */
+        .orange-paper-content blockquote {
+            border-left: 4px solid var(--primary-color, #f7931a);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            color: var(--text-secondary, #aaa);
+            font-style: italic;
+        }
+        
+        /* Loading state */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary, #aaa);
+        }
+        
+        /* Error state */
+        .error {
+            text-align: center;
+            padding: 3rem;
+            color: #ff4444;
+        }
+        
+        /* Navigation */
+        .orange-paper-nav {
+            position: sticky;
+            top: 0;
+            background: var(--bg-primary, #000);
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color, #333);
+            z-index: 100;
+            margin-bottom: 2rem;
+        }
+        
+        .orange-paper-nav a {
+            color: var(--primary-color, #f7931a);
+            text-decoration: none;
+            margin-right: 1.5rem;
+        }
+        
+        .orange-paper-nav a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .orange-paper-container {
+                padding: 1rem;
+            }
+            
+            .orange-paper-header h1 {
+                font-size: 2rem;
+            }
+            
+            .orange-paper-content {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="orange-paper-nav">
+        <div class="container">
+            <a href="index.html">← Home</a>
+            <a href="orange-paper.html">Orange Paper</a>
+            <a href="architecture.html">ARCHITECTURE.md</a>
+            <a href="#top">Top</a>
+            <a href="https://github.com/BTCDecoded/blvm-spec/blob/main/PROTOCOL.md" target="_blank" rel="noopener">Source on GitHub</a>
+        </div>
+    </div>
+    
+    <div class="orange-paper-container" id="top">
+        <div class="orange-paper-header">
+            <h1>PROTOCOL.md</h1>
+            <h2>Consensus rules &amp; invariants (Orange Paper split)</h2>
+            <div class="orange-paper-meta">
+                <p>Live from <a href="https://github.com/BTCDecoded/blvm-spec/blob/main/PROTOCOL.md" target="_blank" rel="noopener"><code>BTCDecoded/blvm-spec</code> · <code>main</code></a></p>
+                <p><a href="orange-paper.html">Overview (THE_ORANGE_PAPER.md)</a> · <a href="architecture.html">ARCHITECTURE.md</a></p>
+            </div>
+        </div>
+        
+        <div id="loading" class="loading">
+            Loading PROTOCOL.md…
+        </div>
+        
+        <div id="error" class="error" style="display: none;">
+            Error loading PROTOCOL.md. Please try again later.
+        </div>
+        
+        <div id="content" class="orange-paper-content" style="display: none;"></div>
+    </div>
+    
+    <script>
+        window.BTCC_SPEC_VIEWER = { fileName: 'PROTOCOL.md' };
+    </script>
+    <script src="spec-markdown-viewer.js?v=1"></script>
+</body>
+</html>
