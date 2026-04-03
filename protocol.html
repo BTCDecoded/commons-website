@@ -20,7 +20,7 @@
     <meta name="twitter:description" content="Consensus rules, invariants, and predicates — what must hold.">
     <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
     
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="style.css?v=4">
     
     <!-- MathJax for LaTeX rendering -->
     <script>
@@ -107,23 +107,6 @@
         
         .orange-paper-content {
             font-size: 1.1rem;
-        }
-        
-        /* Links - use same styling as main site */
-        .orange-paper-content a {
-            color: var(--bitcoin-orange, #f7931a);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-        
-        .orange-paper-content a:hover,
-        .orange-paper-content a:focus {
-            color: var(--bitcoin-orange-hover, #e6820a);
-            text-decoration: underline;
-        }
-        
-        .orange-paper-content a:visited {
-            color: var(--bitcoin-orange, #f7931a);
         }
         
         /* Math rendering */
@@ -247,16 +230,6 @@
             font-weight: bold;
         }
         
-        /* Links */
-        .orange-paper-content a {
-            color: var(--primary-color, #f7931a);
-            text-decoration: none;
-        }
-        
-        .orange-paper-content a:hover {
-            text-decoration: underline;
-        }
-        
         /* Lists */
         .orange-paper-content ul,
         .orange-paper-content ol {
@@ -302,16 +275,6 @@
             margin-bottom: 2rem;
         }
         
-        .orange-paper-nav a {
-            color: var(--primary-color, #f7931a);
-            text-decoration: none;
-            margin-right: 1.5rem;
-        }
-        
-        .orange-paper-nav a:hover {
-            text-decoration: underline;
-        }
-        
         /* Responsive */
         @media (max-width: 768px) {
             .orange-paper-container {
@@ -334,6 +297,7 @@
             <a href="index.html">← Home</a>
             <a href="orange-paper.html">Orange Paper</a>
             <a href="architecture.html">ARCHITECTURE.md</a>
+            <a href="compact.html">Compact</a>
             <a href="#top">Top</a>
             <a href="https://github.com/BTCDecoded/blvm-spec/blob/main/PROTOCOL.md" target="_blank" rel="noopener">Source on GitHub</a>
         </div>
@@ -363,6 +327,6 @@
     <script>
         window.BTCC_SPEC_VIEWER = { fileName: 'PROTOCOL.md' };
     </script>
-    <script src="spec-markdown-viewer.js?v=1"></script>
+    <script src="spec-markdown-viewer.js?v=2"></script>
 </body>
 </html>

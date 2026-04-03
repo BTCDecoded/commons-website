@@ -7,6 +7,7 @@
 
 :root {
   --bitcoin-orange: #f7931a;
+  --primary-color: var(--bitcoin-orange);
   --text-primary: #1a1a1a;
   --text-secondary: #4a4a4a;
   --bg-primary: #ffffff;
@@ -2054,6 +2055,39 @@ footer .copyright {
   margin-top: 0.5rem;
   font-size: 0.85rem;
   color: var(--text-secondary);
+}
+
+/* Markdown spec viewers (orange-paper, protocol, architecture, compact): accent links on gray/dark backgrounds */
+.orange-paper-nav a {
+  margin-right: 1.5rem;
+}
+
+.orange-paper-nav a,
+.orange-paper-header a,
+.orange-paper-meta a,
+.orange-paper-content a {
+  color: var(--bitcoin-orange);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.orange-paper-nav a:hover,
+.orange-paper-nav a:focus,
+.orange-paper-header a:hover,
+.orange-paper-header a:focus,
+.orange-paper-meta a:hover,
+.orange-paper-meta a:focus,
+.orange-paper-content a:hover,
+.orange-paper-content a:focus {
+  color: #e6820a;
+  text-decoration: underline;
+}
+
+.orange-paper-nav a:visited,
+.orange-paper-header a:visited,
+.orange-paper-meta a:visited,
+.orange-paper-content a:visited {
+  color: var(--bitcoin-orange);
 }
 
 /* Whitepaper Styles */

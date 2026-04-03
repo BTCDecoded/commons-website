@@ -3,70 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' data: https:;">
-    <title>The Orange Paper: Bitcoin Protocol Specification - Bitcoin Commons</title>
-    <meta name="description" content="Complete mathematical specification of the Bitcoin consensus protocol. The definitive reference for Bitcoin's consensus rules, state transitions, and economic model.">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: https:;">
+    <title>Bitcoin Commons Compact - Bitcoin Commons</title>
+    <meta name="description" content="Purpose, legitimacy, and principles for Bitcoin Commons governance. Live from the governance repository.">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="The Orange Paper: Bitcoin Protocol Specification">
-    <meta property="og:description" content="Complete mathematical specification of the Bitcoin consensus protocol">
+    <meta property="og:title" content="Bitcoin Commons Compact">
+    <meta property="og:description" content="Purpose, legitimacy, and principles for Bitcoin Commons governance.">
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://thebitcoincommons.org/orange-paper.html">
+    <meta property="og:url" content="https://thebitcoincommons.org/compact.html">
     <meta property="og:image" content="https://thebitcoincommons.org/assets/og-image.png">
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="The Orange Paper: Bitcoin Protocol Specification">
-    <meta name="twitter:description" content="Complete mathematical specification of the Bitcoin consensus protocol">
+    <meta name="twitter:title" content="Bitcoin Commons Compact">
+    <meta name="twitter:description" content="Purpose, legitimacy, and principles for Bitcoin Commons governance.">
     <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
     
     <link rel="stylesheet" href="style.css?v=4">
-    
-    <!-- MathJax for LaTeX rendering -->
-    <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']],
-                processEscapes: true,
-                processEnvironments: true
-            },
-            options: {
-                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-            }
-        };
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
-    
-    <!-- Mermaid for diagram rendering -->
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-    <script>
-        mermaid.initialize({ 
-            startOnLoad: false, // We'll call run() manually after content loads
-            theme: 'dark',
-            securityLevel: 'loose',
-            flowchart: { useMaxWidth: true, htmlLabels: true },
-            sequence: { useMaxWidth: true },
-            themeVariables: {
-                primaryColor: '#f7931a',
-                primaryTextColor: '#ffffff',
-                primaryBorderColor: '#e6820a',
-                lineColor: '#666666',
-                secondaryColor: 'rgba(247, 147, 26, 0.2)',
-                tertiaryColor: 'rgba(247, 147, 26, 0.1)',
-                background: '#1a1a1a',
-                mainBkgColor: '#1a1a1a',
-                secondBkgColor: '#2a2a2a',
-                textColor: '#ffffff',
-                border1: '#444444',
-                border2: '#666666',
-                errorBkgColor: 'rgba(244, 67, 54, 0.5)',
-                errorTextColor: '#ffffff',
-                successBkgColor: 'rgba(76, 175, 80, 0.5)',
-                successTextColor: '#ffffff'
-            }
-        });
-    </script>
     
     <!-- Marked.js for markdown parsing -->
     <script src="https://cdn.jsdelivr.net/npm/marked@11/marked.min.js"></script>
@@ -295,39 +249,41 @@
     <div class="orange-paper-nav">
         <div class="container">
             <a href="index.html">← Home</a>
+            <a href="whitepaper.html">White Paper</a>
+            <a href="orange-paper.html">Orange Paper</a>
             <a href="protocol.html">PROTOCOL.md</a>
-            <a href="architecture.html">ARCHITECTURE.md</a>
-            <a href="compact.html">Compact</a>
             <a href="#top">Top</a>
-            <a href="https://github.com/BTCDecoded/blvm-spec" target="_blank" rel="noopener">View on GitHub</a>
+            <a href="https://github.com/BTCDecoded/governance/blob/main/COMPACT.md" target="_blank" rel="noopener">Source on GitHub</a>
         </div>
     </div>
     
     <div class="orange-paper-container" id="top">
         <div class="orange-paper-header">
-            <h1>The Orange Paper</h1>
-            <h2>Bitcoin Protocol Specification</h2>
+            <h1>Bitcoin Commons Compact</h1>
+            <h2>Purpose, legitimacy, and operating principles</h2>
             <div class="orange-paper-meta">
-                <p><strong>Version 1.0</strong></p>
-                <p>Based on Bitcoin Core Implementation Analysis</p>
-                <p>Authors: BTCDecoded.org, MyBitcoinFuture.com, @secsovereign</p>
-                <p><a href="https://github.com/BTCDecoded/blvm-spec" target="_blank" rel="noopener">View source on GitHub</a></p>
+                <p>Live from <a href="https://github.com/BTCDecoded/governance/blob/main/COMPACT.md" target="_blank" rel="noopener"><code>BTCDecoded/governance</code> · <code>main</code></a></p>
+                <p><a href="https://github.com/BTCDecoded/governance" target="_blank" rel="noopener">Governance repository</a></p>
             </div>
         </div>
         
         <div id="loading" class="loading">
-            Loading Orange Paper...
+            Loading Compact…
         </div>
         
         <div id="error" class="error" style="display: none;">
-            Error loading Orange Paper. Please try again later.
+            Error loading Compact. Please try again later.
         </div>
         
         <div id="content" class="orange-paper-content" style="display: none;"></div>
     </div>
     
     <script>
-        window.BTCC_SPEC_VIEWER = { fileName: 'THE_ORANGE_PAPER.md' };
+        window.BTCC_SPEC_VIEWER = {
+            fileName: 'COMPACT.md',
+            rawBase: 'https://raw.githubusercontent.com/BTCDecoded/governance/main/',
+            skipHeavyRender: true
+        };
     </script>
     <script src="spec-markdown-viewer.js?v=2"></script>
 </body>
