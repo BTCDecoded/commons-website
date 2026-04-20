@@ -687,18 +687,18 @@
                     </div>
                   </div>
 
-                  <!-- Economic Nodes Section -->
-                  <div class="parameter-section" data-section="economic-nodes">
+                  <!-- Commons contributor thresholds -->
+                  <div class="parameter-section" data-section="commons-contributors">
                     <h3
                       class="section-header"
-                      onclick="toggleSection('economic-nodes')"
+                      onclick="toggleSection('commons-contributors')"
                     >
-                      <span>💰 Economic Nodes</span>
+                      <span>Commons contributor thresholds</span>
                       <span class="section-toggle">▼</span>
                     </h3>
                     <div
                       class="section-content"
-                      id="economic-nodes-content"
+                      id="commons-contributors-content"
                       style="display: none"
                     >
                       <div class="parameter-group">
@@ -1906,15 +1906,15 @@ Loading preview...</pre
 
                 <div class="faq-item">
                   <button class="faq-question" aria-expanded="false">
-                    <span>What are economic nodes?</span>
+                    <span>Who approves governance changes?</span>
                     <span class="faq-icon">+</span>
                   </button>
                   <div class="faq-answer">
                     <p>
-                      Bitcoin Commons uses maintainer-only multisig governance.
-                      All governance decisions are made by maintainers through
-                      cryptographic signatures. This ensures transparent,
-                      auditable governance while maintaining Bitcoin consensus
+                      Bitcoin Commons uses maintainer multisig governance.
+                      Maintainer keyholders approve changes through
+                      cryptographic signatures. This keeps decisions transparent
+                      and auditable while preserving Bitcoin consensus
                       compatibility.
                     </p>
                   </div>
@@ -2029,10 +2029,9 @@ Loading preview...</pre
                     <p>
                       All core governance infrastructure is implemented:
                       blvm-commons (GitHub integration, signature verification,
-                      status checks), economic node system (veto power for
-                      consensus-adjacent changes), governance fork capability
-                      (ruleset export and forking), emergency tier system
-                      (three-tiered response), and layer+tier combination model.
+                      status checks), governance fork capability (ruleset export
+                      and forking), emergency tier system (three-tiered
+                      response), and layer+tier combination model.
                       However, governance is not yet activated (test keys only)
                       and keyholders are not yet onboarded. Phase 2 activation
                       will proceed when a suitable cohort of keyholders has been
@@ -2613,37 +2612,33 @@ Loading preview...</pre
               },
             },
 
-            // Dimension 2: Economic Nodes
-            economic_nodes: {
-              commons_contributors: {
-                thresholds: {
-                  merge_mining: {
-                    minimum_contribution_btc: parseFloat(
-                      document.getElementById("commons-merge-mining")?.value ||
-                        "0.01",
-                    ),
-                  },
-                  fee_forwarding: {
-                    minimum_contribution_btc: parseFloat(
-                      document.getElementById("commons-fee-forwarding")
-                        ?.value || "0.1",
-                    ),
-                  },
-                  zaps: {
-                    minimum_contribution_btc: parseFloat(
-                      document.getElementById("commons-zaps")?.value || "0.01",
-                    ),
-                  },
-                  marketplace: {
-                    minimum_sales_btc: parseFloat(
-                      document.getElementById("commons-marketplace")?.value ||
-                        "0.01",
-                    ),
-                  },
-                },
-                measurement_period_days: parseInt(
-                  document.getElementById("commons-measurement-period")
-                    ?.value || "90",
+            // Dimension 2: Commons contributor thresholds
+            commons_contributor_thresholds: {
+              measurement_period_days: parseInt(
+                document.getElementById("commons-measurement-period")?.value ||
+                  "90",
+              ),
+              merge_mining: {
+                minimum_contribution_btc: parseFloat(
+                  document.getElementById("commons-merge-mining")?.value ||
+                    "0.01",
+                ),
+              },
+              fee_forwarding: {
+                minimum_contribution_btc: parseFloat(
+                  document.getElementById("commons-fee-forwarding")?.value ||
+                    "0.1",
+                ),
+              },
+              zaps: {
+                minimum_contribution_btc: parseFloat(
+                  document.getElementById("commons-zaps")?.value || "0.01",
+                ),
+              },
+              marketplace: {
+                minimum_contribution_btc: parseFloat(
+                  document.getElementById("commons-marketplace")?.value ||
+                    "0.01",
                 ),
               },
             },
@@ -2745,7 +2740,7 @@ Loading preview...</pre
         if (quickStartToggle) {
           quickStartToggle.addEventListener("change", function () {
             const advancedSections = [
-              "economic-nodes",
+              "commons-contributors",
               "teams",
               "governance-review",
             ];
@@ -2845,41 +2840,19 @@ Loading preview...</pre
               }
             });
 
-            // Economic Nodes
-            if (ruleset.economic_nodes) {
-              yaml += `\neconomic_nodes:\n`;
-              if (ruleset.economic_nodes.commons_contributors) {
-                yaml += `  commons_contributors:\n`;
-                yaml += `    thresholds:\n`;
-                if (
-                  ruleset.economic_nodes.commons_contributors.thresholds
-                    .merge_mining
-                ) {
-                  yaml += `      merge_mining:\n`;
-                  yaml += `        minimum_contribution_btc: ${ruleset.economic_nodes.commons_contributors.thresholds.merge_mining.minimum_contribution_btc}\n`;
-                }
-                if (
-                  ruleset.economic_nodes.commons_contributors.thresholds
-                    .fee_forwarding
-                ) {
-                  yaml += `      fee_forwarding:\n`;
-                  yaml += `        minimum_contribution_btc: ${ruleset.economic_nodes.commons_contributors.thresholds.fee_forwarding.minimum_contribution_btc}\n`;
-                }
-                if (
-                  ruleset.economic_nodes.commons_contributors.thresholds.zaps
-                ) {
-                  yaml += `      zaps:\n`;
-                  yaml += `        minimum_contribution_btc: ${ruleset.economic_nodes.commons_contributors.thresholds.zaps.minimum_contribution_btc}\n`;
-                }
-                if (
-                  ruleset.economic_nodes.commons_contributors.thresholds
-                    .marketplace
-                ) {
-                  yaml += `      marketplace:\n`;
-                  yaml += `        minimum_sales_btc: ${ruleset.economic_nodes.commons_contributors.thresholds.marketplace.minimum_sales_btc}\n`;
-                }
-                yaml += `    measurement_period_days: ${ruleset.economic_nodes.commons_contributors.measurement_period_days}\n`;
-              }
+            // Commons contributor thresholds
+            if (ruleset.commons_contributor_thresholds) {
+              const c = ruleset.commons_contributor_thresholds;
+              yaml += `\ncommons_contributor_thresholds:\n`;
+              yaml += `  measurement_period_days: ${c.measurement_period_days}\n`;
+              yaml += `  merge_mining:\n`;
+              yaml += `    minimum_contribution_btc: ${c.merge_mining.minimum_contribution_btc}\n`;
+              yaml += `  fee_forwarding:\n`;
+              yaml += `    minimum_contribution_btc: ${c.fee_forwarding.minimum_contribution_btc}\n`;
+              yaml += `  zaps:\n`;
+              yaml += `    minimum_contribution_btc: ${c.zaps.minimum_contribution_btc}\n`;
+              yaml += `  marketplace:\n`;
+              yaml += `    minimum_contribution_btc: ${c.marketplace.minimum_contribution_btc}\n`;
             }
 
             // Nested Multisig Teams
@@ -3287,11 +3260,6 @@ Loading preview...</pre
                                     <td><strong>Tier 3: Review Period</strong></td>
                                     <td>${t1.tier3.review} days</td>
                                     <td>${t2.tier3.review} days</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Economic Node Veto Threshold</strong></td>
-                                    <td>${t1.tier3.veto}%</td>
-                                    <td>${t2.tier3.veto}%</td>
                                 </tr>
                             </tbody>
                         </table>
