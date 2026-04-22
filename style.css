@@ -2057,6 +2057,13 @@ footer .copyright {
   color: var(--text-secondary);
 }
 
+/* Display $$ … $$ blocks must live inside an element or MathJax often skips them */
+.spec-display-math {
+  margin: 1.25rem 0;
+  overflow-x: auto;
+  text-align: center;
+}
+
 /* Markdown spec viewers (orange-paper, protocol, architecture, compact): accent links on gray/dark backgrounds */
 .orange-paper-nav a {
   margin-right: 1.5rem;
