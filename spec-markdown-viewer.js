@@ -32,6 +32,138 @@
     var BLOB_BASE = cfg.blobBase || blobBaseFromRawBase(rawBase);
     var SPEC_URL = rawBase + fileName;
 
+    /** Marked v8+ removed headerIds; without IDs, #anchor TOC links do nothing. */
+    var gfmHeadingApplied = false;
+    var gfmHeadingWarned = false;
+    function ensureGfmHeadingIds() {
+        if (gfmHeadingApplied) {
+            return;
+        }
+        if (typeof marked === 'undefined') {
+            return;
+        }
+        if (typeof markedGfmHeadingId !== 'undefined' && markedGfmHeadingId.gfmHeadingId) {
+            marked.use(markedGfmHeadingId.gfmHeadingId());
+            gfmHeadingApplied = true;
+        } else if (!gfmHeadingWarned) {
+            gfmHeadingWarned = true;
+            console.warn(
+                'marked-gfm-heading-id not loaded (include it after marked.min.js); heading anchors will not work.'
+            );
+        }
+    }
+
+    function scrollToHash() {
+        var hash = window.location.hash;
+        if (!hash || hash === '#') {
+            return;
+        }
+        var id = decodeURIComponent(hash.slice(1));
+        if (!id) {
+            return;
+        }
+        var el = document.getElementById(id);
+        if (el) {
+            el.scrollIntoView({ behavior: 'auto', block: 'start' });
+        }
+    }
+
+    /**
+     * Marked/GFM parses _ as emphasis. TeX subscripts like \\mathbb{N}_{8} become
+     * \\mathbb{N}<em>{8}, which breaks MathJax. Protect $...$ and $$...$$ outside
+     * fenced code blocks, then restore after marked.parse.
+     */
+    function maskTexMath(src) {
+        var chunks = [];
+        var i = 0;
+        var out = '';
+        var inFence = false;
+
+        function lineStartsWithCodeFence(pos) {
+            var j = pos;
+            while (j < src.length && (src[j] === ' ' || src[j] === '\t')) {
+                j++;
+            }
+            return j + 2 < src.length && src.slice(j, j + 3) === '```';
+        }
+
+        while (i < src.length) {
+            var atLineStart = i === 0 || src[i - 1] === '\n' || src[i - 1] === '\r';
+            if (atLineStart && lineStartsWithCodeFence(i)) {
+                inFence = !inFence;
+                while (i < src.length && src[i] !== '\n' && src[i] !== '\r') {
+                    out += src[i++];
+                }
+                if (i < src.length) {
+                    if (src[i] === '\r') {
+                        out += '\r';
+                        i++;
+                    }
+                    if (i < src.length && src[i] === '\n') {
+                        out += '\n';
+                        i++;
+                    }
+                }
+                continue;
+            }
+
+            if (inFence) {
+                out += src[i++];
+                continue;
+            }
+
+            if (src[i] === '\\' && src[i + 1] === '$') {
+                out += '\\$';
+                i += 2;
+                continue;
+            }
+
+            if (src[i] === '$' && src[i + 1] === '$') {
+                var endBlock = src.indexOf('$$', i + 2);
+                if (endBlock === -1) {
+                    out += src.slice(i);
+                    break;
+                }
+                chunks.push(src.slice(i, endBlock + 2));
+                out += '<!--BTCC-TEX-' + (chunks.length - 1) + '-->';
+                i = endBlock + 2;
+                continue;
+            }
+
+            if (src[i] === '$') {
+                var endIn = src.indexOf('$', i + 1);
+                while (endIn !== -1 && src[endIn - 1] === '\\') {
+                    endIn = src.indexOf('$', endIn + 1);
+                }
+                if (endIn === -1) {
+                    out += src[i];
+                    i++;
+                    continue;
+                }
+                chunks.push(src.slice(i, endIn + 1));
+                out += '<!--BTCC-TEX-' + (chunks.length - 1) + '-->';
+                i = endIn + 1;
+                continue;
+            }
+
+            out += src[i];
+            i++;
+        }
+        return { masked: out, chunks: chunks };
+    }
+
+    function unmaskTexMath(htmlStr, chunks) {
+        chunks.forEach(function (chunk, idx) {
+            var replacement = chunk;
+            var trimmed = chunk.trim();
+            if (/^\$\$[\s\S]*\$\$/.test(trimmed)) {
+                replacement = '<div class="spec-display-math">' + trimmed + '</div>';
+            }
+            htmlStr = htmlStr.split('<!--BTCC-TEX-' + idx + '-->').join(replacement);
+        });
+        return htmlStr;
+    }
+
     function rewriteSpecLinks(root) {
         root.querySelectorAll('a[href]').forEach(function (a) {
             var href = a.getAttribute('href') || '';
@@ -93,8 +225,17 @@
         });
     }
 
+    if (!window.__BTCC_SPEC_HASH_LISTENER__) {
+        window.__BTCC_SPEC_HASH_LISTENER__ = true;
+        window.addEventListener('hashchange', function () {
+            scrollToHash();
+        });
+    }
+
     async function loadSpecMarkdown() {
         try {
+            ensureGfmHeadingIds();
+
             var response = await fetch(SPEC_URL);
 
             if (!response.ok) {
@@ -139,14 +280,17 @@
                 return placeholder;
             });
 
+            var texMasked = maskTexMath(markdown);
+            markdown = texMasked.masked;
+            var texChunks = texMasked.chunks;
+
             marked.setOptions({
                 breaks: true,
-                gfm: true,
-                headerIds: true,
-                mangle: false
+                gfm: true
             });
 
             var html = marked.parse(markdown);
+            html = unmaskTexMath(html, texChunks);
 
             mermaidDiagrams.forEach(function (diagram, index) {
                 var processedDiagram = diagram.replace(/fill:#ffcdd2/g, 'fill:#c62828');
@@ -165,6 +309,9 @@
             contentEl.innerHTML = html;
             contentEl.style.display = 'block';
             rewriteSpecLinks(contentEl);
+            requestAnimationFrame(function () {
+                requestAnimationFrame(scrollToHash);
+            });
 
             if (cfg.skipHeavyRender) {
                 return;
@@ -202,6 +349,8 @@
             if (window.MathJax) {
                 MathJax.startup.promise.then(function () {
                     return MathJax.typesetPromise();
+                }).then(function () {
+                    scrollToHash();
                 }).catch(function (err) {
                     console.error('MathJax rendering error:', err);
                 });
@@ -211,6 +360,8 @@
                         clearInterval(checkMathJax);
                         MathJax.startup.promise.then(function () {
                             return MathJax.typesetPromise();
+                        }).then(function () {
+                            scrollToHash();
                         }).catch(function (err) {
                             console.error('MathJax rendering error:', err);
                         });
