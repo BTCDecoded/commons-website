@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTCDecoded Implementation Stack</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .chart-container {
+            height: 600px;
+            margin: 30px 0;
+        }
+        
+        .stack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stack-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            background: #fafafa;
+            transition: transform 0.2s;
+        }
+        
+        .stack-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .stack-card.layer1 { border-color: #e74c3c; background: linear-gradient(135deg, #ffeaea 0%, #ffd6d6 100%); }
+        .stack-card.layer2 { border-color: #f39c12; background: linear-gradient(135deg, #fff3e0 0%, #ffe0b3 100%); }
+        .stack-card.layer3 { border-color: #f1c40f; background: linear-gradient(135deg, #fffde7 0%, #fff9c4 100%); }
+        .stack-card.layer4 { border-color: #27ae60; background: linear-gradient(135deg, #eafaf1 0%, #d5f4e6 100%); }
+        .stack-card.layer5 { border-color: #3498db; background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); }
+        .stack-card.governance { border-color: #9b59b6; background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); }
+        .stack-card.app { border-color: #34495e; background: linear-gradient(135deg, #eceff1 0%, #cfd8dc 100%); }
+        
+        .card-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .card-description {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .card-features {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .card-features li {
+            background: rgba(255,255,255,0.7);
+            margin: 5px 0;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 0.85em;
+        }
+        
+        .summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .summary h3 {
+            margin-top: 0;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Commons Implementation Stack</h1>
+        <p class="subtitle">Seven-Repository Architecture for Decentralized Bitcoin Governance</p>
+        
+        <div class="chart-container">
+            <div id="stackChart"></div>
+        </div>
+        
+        <div class="stack-grid">
+            <div class="stack-card layer1">
+                <div class="card-title">1. Orange Paper</div>
+                <div class="card-description">Mathematical specification of Bitcoin consensus rules</div>
+                <ul class="card-features">
+                    <li>Formal mathematical definition</li>
+                    <li>Enables alternative implementations</li>
+                    <li>Eliminates consensus bugs</li>
+                    <li>Constitutional layer</li>
+                </ul>
+            </div>
+            
+            <div class="stack-card layer2">
+                <div class="card-title">2. Consensus Proof</div>
+                <div class="card-description">Cryptographic proof of consensus rule compliance</div>
+                <ul class="card-features">
+                    <li>Formal verification</li>
+                    <li>Mathematical proof of correctness</li>
+                    <li>Constitutional layer</li>
+                    <li>6-of-7 signatures required</li>
+                </ul>
+            </div>
+            
+            <div class="stack-card layer3">
+                <div class="card-title">3. Protocol Engine</div>
+                <div class="card-description">Clean implementation of consensus rules</div>
+                <ul class="card-features">
+                    <li>Modular architecture</li>
+                    <li>Rust implementation</li>
+                    <li>Implementation layer</li>
+                    <li>4-of-5 signatures required</li>
+                </ul>
+            </div>
+            
+            <div class="stack-card layer4">
+                <div class="card-title">4. Reference Node</div>
+                <div class="card-description">Full Bitcoin node implementation</div>
+                <ul class="card-features">
+                    <li>Production-ready node</li>
+                    <li>Application layer</li>
+                    <li>3-of-5 signatures required</li>
+                    <li>User-facing interface</li>
+                </ul>
+            </div>
+            
+            <div class="stack-card layer5">
+                <div class="card-title">5. Developer SDK</div>
+                <div class="card-description">Tools and libraries for developers</div>
+                <ul class="card-features">
+                    <li>Extension layer</li>
+                    <li>2-of-3 signatures required</li>
+                    <li>Developer tools</li>
+                    <li>Module marketplace</li>
+                </ul>
+            </div>
+            
+            <div class="stack-card governance">
+                <div class="card-title">6. Governance</div>
+                <div class="card-description">Cryptographic governance system</div>
+                <ul class="card-features">
+                    <li>Layer + Tier model</li>
+                    <li>Cryptographic enforcement</li>
+                    <li>Economic veto system</li>
+                    <li>Transparent decision making</li>
+                </ul>
+            </div>
+            
+            <div class="stack-card app">
+                <div class="card-title">7. Governance App</div>
+                <div class="card-description">User interface for governance decisions</div>
+                <ul class="card-features">
+                    <li>PR classification</li>
+                    <li>Signature collection</li>
+                    <li>Economic node oversight</li>
+                    <li>Emergency response system</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="summary">
+            <h3>Stack Architecture Benefits</h3>
+            <ul>
+                <li><strong>Modular Design:</strong> Each layer has specific responsibilities and signature requirements</li>
+                <li><strong>Constitutional Foundation:</strong> Orange Paper and Consensus Proof provide mathematical foundation</li>
+                <li><strong>Clean Implementation:</strong> Protocol Engine separates consensus from application logic</li>
+                <li><strong>Economic Sustainability:</strong> Merge mining provides funding for all layers</li>
+                <li><strong>Governance Integration:</strong> Built-in governance system with cryptographic enforcement</li>
+                <li><strong>Developer Ecosystem:</strong> SDK enables third-party module development</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chart = echarts.init(document.getElementById('stackChart'));
+        
+        const option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: function(params) {
+                    return `${params.name}<br/>Layer ${params.data.layer}: ${params.data.description}`;
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                top: '15%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: ['Orange Paper', 'Consensus Proof', 'Protocol Engine', 'Reference Node', 'Developer SDK', 'Governance', 'Governance App']
+            },
+            yAxis: {
+                type: 'value',
+                name: 'Layer Priority',
+                max: 5,
+                min: 0
+            },
+            series: [{
+                name: 'BTCDecoded Stack',
+                type: 'bar',
+                data: [
+                    {value: 1, layer: 1, description: 'Constitutional Layer'},
+                    {value: 2, layer: 2, description: 'Constitutional Layer'},
+                    {value: 3, layer: 3, description: 'Implementation Layer'},
+                    {value: 4, layer: 4, description: 'Application Layer'},
+                    {value: 5, layer: 5, description: 'Extension Layer'},
+                    {value: 1, layer: 1, description: 'Governance System'},
+                    {value: 1, layer: 1, description: 'User Interface'}
+                ],
+                itemStyle: {
+                    color: function(params) {
+                        const colors = ['#e74c3c', '#f39c12', '#f1c40f', '#27ae60', '#3498db'];
+                        return colors[params.data.layer - 1];
+                    }
+                }
+            }]
+        };
+        
+        chart.setOption(option);
+        
+        // Responsive
+        window.addEventListener('resize', function () {
+            chart.resize();
+        });
+        });
+    </script>
+</body>
+</html>

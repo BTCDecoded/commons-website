@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" class="bllvm-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <title>BLVM Dependency Architecture</title>
+  <link rel="stylesheet" href="shared-visuals.css">
+  <style>
+    html.bllvm-dark {
+      --bllvm-bg: #0a0a0b;
+      --bllvm-panel: #121214;
+      --bllvm-text: #e8eaef;
+      --bllvm-muted: #94a3b8;
+      --bllvm-border: #2a2f3a;
+      --bllvm-chart-bg: #0f1114;
+      --bllvm-chart-edge: #2a3140;
+    }
+    html.bllvm-dark body {
+      background: var(--bllvm-bg);
+      color: var(--bllvm-text);
+    }
+    html.bllvm-dark .container {
+      max-width: 960px;
+      margin: 16px auto;
+      background: var(--bllvm-panel);
+      border: 1px solid var(--bllvm-border);
+      border-radius: 12px;
+      padding: 20px 20px 24px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    }
+    html.bllvm-dark h1 {
+      color: var(--bllvm-text);
+    }
+    html.bllvm-dark .subtitle {
+      color: var(--bllvm-muted);
+    }
+    .chart-viewport {
+      position: relative;
+      width: 100%;
+      max-width: 850px;
+      min-height: 120px;
+      margin: 12px auto 0;
+      overflow: hidden;
+    }
+    /* Outer wrapper scales; #chart stays design px so layout matches node-comparison */
+    .chart-scale-wrap {
+      width: 850px;
+      height: 800px;
+      transform-origin: top left;
+    }
+    .chart {
+      position: relative;
+      width: 850px;
+      height: 800px;
+      margin: 0;
+      background: var(--bllvm-chart-bg, #0f1114);
+      border: 1px solid var(--bllvm-chart-edge, #2a3140);
+      border-radius: 10px;
+      box-sizing: border-box;
+    }
+    .node {
+      position: absolute;
+      background: rgba(30, 34, 42, 0.95);
+      border: 2px solid #475569;
+      border-radius: 8px;
+      padding: 16px 20px;
+      min-width: 180px;
+      text-align: center;
+      z-index: 2;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    }
+    .node.spec {
+      border-color: #f7931a;
+      background: rgba(247, 147, 26, 0.12);
+    }
+    .node.consensus {
+      border-color: #f87171;
+      background: rgba(248, 113, 113, 0.1);
+      min-width: 200px;
+    }
+    .node.dependent {
+      border-color: #60a5fa;
+      background: rgba(96, 165, 250, 0.12);
+    }
+    .node .title {
+      font-weight: 700;
+      color: #f1f5f9;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    .node .subtitle {
+      font-size: 12px;
+      color: #94a3b8;
+      font-style: italic;
+    }
+    .verification-badge {
+      position: absolute;
+      background: rgba(22, 26, 34, 0.96);
+      border: 1.5px solid #34d399;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #a7f3d0;
+      z-index: 3;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+    .verification-badge.spec-lock {
+      border-color: #60a5fa;
+      color: #bfdbfe;
+    }
+    .verification-badge.drift {
+      border-color: #fbbf24;
+      color: #fde68a;
+    }
+    .verification-badge.hash {
+      border-color: #a78bfa;
+      color: #ddd6fe;
+    }
+    .verification-badge.property {
+      border-color: #34d399;
+      color: #a7f3d0;
+    }
+    .verification-badge.equivalence {
+      border-color: #f87171;
+      color: #fecaca;
+    }
+    .verification-badge.differential {
+      border-color: #818cf8;
+      color: #c7d2fe;
+    }
+    .arrow-label {
+      position: absolute;
+      font-size: 11px;
+      color: #94a3b8;
+      font-weight: 600;
+      z-index: 3;
+    }
+    /* index2 iframe: chart only, tight height (see ?embed=1); no scrollbars */
+    /* height: 100% on body made the body fill the iframe while .container was
+       shorter, so body background showed as a false “margin” only under the chart */
+    html.bllvm-embed {
+      height: auto;
+      min-height: 0;
+      overflow: hidden;
+    }
+    html.bllvm-embed.bllvm-dark body {
+      margin: 0;
+      padding: 0;
+      height: auto;
+      min-height: 0;
+      overflow: hidden;
+    }
+    html.bllvm-embed .container {
+      margin: 0;
+      padding: 0;
+      max-width: none;
+      width: 100%;
+      box-shadow: none;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    html.bllvm-embed h1,
+    html.bllvm-embed .subtitle {
+      display: none;
+    }
+    html.bllvm-embed .chart-viewport {
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
+  <script>
+    (function () {
+      if (/[?&]embed=1(?:&|$)/.test(location.search)) {
+        document.documentElement.classList.add("bllvm-embed");
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="container" role="img" aria-label="BLVM dependency architecture showing blvm-spec locked to blvm-consensus through 6 verification mechanisms (Z3 proofs, spec drift detection, hash verification, property tests, equivalence proofs, differential testing), with blvm-protocol, blvm-node, and blvm-sdk depending on consensus.">
+    <h1>BLVM Dependency Architecture</h1>
+    <div class="subtitle">Orange Paper (IR) → 6 Verification Mechanisms (Z3 proofs, spec drift detection, hash verification, property tests, equivalence proofs, differential testing) → Consensus Proof (BLVM) → Upper tiers</div>
+
+    <div id="chart-viewport" class="chart-viewport">
+      <div id="chart-scale-wrap" class="chart-scale-wrap">
+        <div id="chart" class="chart"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    var svgNS = 'http://www.w3.org/2000/svg';
+    var chart = document.getElementById('chart');
+    var chartViewport = document.getElementById('chart-viewport');
+    var scaleWrap = document.getElementById('chart-scale-wrap');
+    var DESIGN_W = 850;
+    var DESIGN_H = 800;
+
+    function chartRectToDesign(elRect, chartRect) {
+      var k = DESIGN_W / chartRect.width;
+      if (!isFinite(k) || chartRect.width < 2) k = 1;
+      var sx = (elRect.left - chartRect.left) * k;
+      var sy = (elRect.top - chartRect.top) * k;
+      var sw = elRect.width * k;
+      var sh = elRect.height * k;
+      return {
+        left: sx,
+        top: sy,
+        right: sx + sw,
+        bottom: sy + sh,
+        centerX: sx + sw / 2,
+        centerY: sy + sh / 2,
+        width: sw,
+        height: sh
+      };
+    }
+
+    // Create SVG for arrows (design px; same coordinate space as node-comparison)
+    var svg = document.createElementNS(svgNS, 'svg');
+    function updateSVGSize() {
+      svg.setAttribute('width', String(DESIGN_W));
+      svg.setAttribute('height', String(DESIGN_H));
+    }
+    svg.style.position = 'absolute';
+    svg.style.left = '0';
+    svg.style.top = '0';
+    svg.style.pointerEvents = 'none';
+    svg.style.zIndex = '1';
+    chart.appendChild(svg);
+    updateSVGSize();
+
+    // Define arrowhead markers
+    var defs = document.createElementNS(svgNS, 'defs');
+    
+    // Single arrow marker (blue for dependencies)
+    var marker1 = document.createElementNS(svgNS, 'marker');
+    marker1.setAttribute('id', 'arrowhead');
+    marker1.setAttribute('markerWidth', '10');
+    marker1.setAttribute('markerHeight', '10');
+    marker1.setAttribute('refX', '9');
+    marker1.setAttribute('refY', '3');
+    marker1.setAttribute('orient', 'auto');
+    var polygon1 = document.createElementNS(svgNS, 'polygon');
+    polygon1.setAttribute('points', '0 0, 10 3, 0 6');
+    polygon1.setAttribute('fill', '#2c7be5');
+    marker1.appendChild(polygon1);
+    defs.appendChild(marker1);
+    
+    // Arrow markers for verification processes (will be colored dynamically)
+    
+    // Arrow markers for different verification types
+    ['spec-lock', 'drift', 'hash', 'property', 'equivalence', 'differential'].forEach(function(type){
+      var colors = { 
+        'spec-lock': '#3b82f6', 
+        drift: '#f59e0b', 
+        hash: '#8b5cf6',
+        property: '#10b981',
+        equivalence: '#ef4444',
+        differential: '#6366f1'
+      };
+      var marker = document.createElementNS(svgNS, 'marker');
+      marker.setAttribute('id', 'arrowhead-' + type);
+      marker.setAttribute('markerWidth', '10');
+      marker.setAttribute('markerHeight', '10');
+      marker.setAttribute('refX', '9');
+      marker.setAttribute('refY', '3');
+      marker.setAttribute('orient', 'auto');
+      var polygon = document.createElementNS(svgNS, 'polygon');
+      polygon.setAttribute('points', '0 0, 10 3, 0 6');
+      polygon.setAttribute('fill', colors[type]);
+      marker.appendChild(polygon);
+      defs.appendChild(marker);
+    });
+    
+    svg.insertBefore(defs, svg.firstChild);
+
+    // Node positions - better alignment with more space between spec and consensus
+    // Center everything on x=400, evenly space bottom nodes
+    var nodes = [
+      { id: 'spec', x: 400, y: 60, title: 'blvm-spec', subtitle: '(Orange Paper)', type: 'spec' },
+      { id: 'consensus', x: 400, y: 380, title: 'blvm-consensus', subtitle: '(BLVM Implementation)', type: 'consensus' },
+      { id: 'protocol', x: 200, y: 650, title: 'blvm-protocol', subtitle: '(Protocol Engine)', type: 'dependent' },
+      { id: 'node', x: 400, y: 650, title: 'blvm-node', subtitle: '(Reference Node)', type: 'dependent' },
+      { id: 'sdk', x: 600, y: 650, title: 'blvm-sdk', subtitle: '(Developer SDK)', type: 'dependent' }
+    ];
+    
+    // Verification badges around consensus node
+    var verificationBadges = [];
+
+    // Create nodes and store references
+    nodes.forEach(function(node){
+      var div = document.createElement('div');
+      div.className = 'node ' + node.type;
+      div.style.left = (node.x - 90) + 'px';
+      div.style.top = node.y + 'px';
+      
+      var title = document.createElement('div');
+      title.className = 'title';
+      title.textContent = node.title;
+      div.appendChild(title);
+      
+      var subtitle = document.createElement('div');
+      subtitle.className = 'subtitle';
+      subtitle.textContent = node.subtitle;
+      div.appendChild(subtitle);
+      
+      chart.appendChild(div);
+      node.div = div;
+    });
+    
+    // Create verification badges (will be positioned after layout)
+    // Based on actual locking mechanisms: Z3 proofs, Spec drift detection, Hash verification,
+    // Property tests, Equivalence proofs, Differential testing
+    // Arranged in two rows between spec and consensus, well-spaced to avoid arrow overlap
+    var consensusNode = nodes.find(n => n.id === 'consensus');
+    // Position badges in the middle space between spec (y=60, bottom ~100) and consensus (y=380, top ~380)
+    // Space is from ~100 to ~380, so middle is around y=240
+    // Top row at y=200, middle row at y=240 (Spec Drift and Equivalence - same Y, symmetric), bottom row at y=280
+    // Badge offsets are symmetric around center: left side negative, right side positive (same absolute value)
+    // Brought in slightly more towards center
+    var badges = [
+      { id: 'spec-lock', text: 'Z3 Proofs', class: 'spec-lock', offsetX: -250, offsetY: -180 },
+      { id: 'drift', text: 'Spec Drift Detection', class: 'drift', offsetX: -170, offsetY: -140 }, // Left of center, middle row - more space from outer badges
+      { id: 'hash', text: 'Hash Verification', class: 'hash', offsetX: 250, offsetY: -180 },
+      { id: 'property', text: 'Property Tests', class: 'property', offsetX: -250, offsetY: -100 },
+      { id: 'equivalence', text: 'Equivalence Proofs', class: 'equivalence', offsetX: 170, offsetY: -140 }, // Right of center, middle row - symmetric to drift
+      { id: 'differential', text: 'Differential Testing', class: 'differential', offsetX: 250, offsetY: -100 }
+    ];
+    
+    badges.forEach(function(badge) {
+      var badgeEl = document.createElement('div');
+      badgeEl.className = 'verification-badge ' + badge.class;
+      badgeEl.textContent = badge.text;
+      badgeEl.style.left = (consensusNode.x + badge.offsetX - 50) + 'px';
+      badgeEl.style.top = (consensusNode.y + badge.offsetY) + 'px';
+      chart.appendChild(badgeEl);
+      badge.el = badgeEl;
+      verificationBadges.push(badge);
+    });
+
+    // Store arrows and labels for cleanup
+    var arrows = [];
+    var labels = [];
+    
+    function getNodeBounds(node) {
+      return chartRectToDesign(
+        node.div.getBoundingClientRect(),
+        chart.getBoundingClientRect()
+      );
+    }
+    
+    function drawArrows() {
+      // Clear existing arrows and labels
+      arrows.forEach(function(arrow) {
+        if (arrow.parentNode) arrow.parentNode.removeChild(arrow);
+      });
+      labels.forEach(function(label) {
+        if (label.parentNode) label.parentNode.removeChild(label);
+      });
+      arrows = [];
+      labels = [];
+      
+      updateSVGSize();
+      
+      var specNode = nodes.find(n => n.id === 'spec');
+      var consensusNode = nodes.find(n => n.id === 'consensus');
+      
+      var specBounds = getNodeBounds(specNode);
+      var consensusBounds = getNodeBounds(consensusNode);
+      
+      // Update verification badge positions and get their actual bounds
+      // Position badges absolutely in the space between spec and consensus
+      // Spec bottom is around specBounds.bottom (~110), consensus top is consensusBounds.top (~380)
+      // Middle space: position top row at y=200, middle row at y=240, bottom row at y=280
+      var specBottom = specBounds.bottom;
+      var consensusTop = consensusBounds.top;
+      var middleSpace = consensusTop - specBottom; // ~270px
+      var topRowY = specBottom + (middleSpace * 0.35); // ~200
+      var middleRowY = specBottom + (middleSpace * 0.50); // ~240 (Spec Drift and Equivalence)
+      var bottomRowY = specBottom + (middleSpace * 0.65); // ~280
+      
+      verificationBadges.forEach(function(badge){
+        // Position badge center at consensusBounds.centerX + badge.offsetX
+        // We need to get the badge width first, then position left edge
+        // For now, position and then adjust - but we'll use getBadgeBounds which gets actual position
+        badge.el.style.left = (consensusBounds.centerX + badge.offsetX) + 'px';
+        badge.el.style.transform = 'translateX(-50%)'; // Center the badge on the offset point
+        // Position based on which row
+        if (badge.id === 'drift' || badge.id === 'equivalence') {
+          badge.el.style.top = middleRowY + 'px'; // Middle row - same Y position
+        } else if (badge.id === 'spec-lock' || badge.id === 'hash') {
+          badge.el.style.top = topRowY + 'px'; // Top row
+        } else {
+          badge.el.style.top = bottomRowY + 'px'; // Bottom row (property, differential)
+        }
+      });
+      
+      // Get actual badge bounds after positioning
+      function getBadgeBounds(badge) {
+        return chartRectToDesign(
+          badge.el.getBoundingClientRect(),
+          chart.getBoundingClientRect()
+        );
+      }
+      
+      // Calculate connection points for each badge
+      var specLockBadge = verificationBadges.find(b => b.id === 'spec-lock');
+      var specLockBounds = getBadgeBounds(specLockBadge);
+      var specLockTopX = specLockBounds.centerX;
+      var specLockTopY = specLockBounds.top;
+      var specLockBottomX = specLockBounds.centerX;
+      var specLockBottomY = specLockBounds.bottom;
+      
+      var driftBadge = verificationBadges.find(b => b.id === 'drift');
+      var driftBounds = getBadgeBounds(driftBadge);
+      var driftTopX = driftBounds.centerX;
+      var driftTopY = driftBounds.top;
+      var driftBottomX = driftBounds.centerX;
+      var driftBottomY = driftBounds.bottom;
+      
+      var hashBadge = verificationBadges.find(b => b.id === 'hash');
+      var hashBounds = getBadgeBounds(hashBadge);
+      var hashTopX = hashBounds.centerX;
+      var hashTopY = hashBounds.top;
+      var hashBottomX = hashBounds.centerX;
+      var hashBottomY = hashBounds.bottom;
+      
+      var propertyBadge = verificationBadges.find(b => b.id === 'property');
+      var propertyBounds = getBadgeBounds(propertyBadge);
+      var propertyTopX = propertyBounds.centerX;
+      var propertyTopY = propertyBounds.top;
+      var propertyBottomX = propertyBounds.centerX;
+      var propertyBottomY = propertyBounds.bottom;
+      
+      var equivalenceBadge = verificationBadges.find(b => b.id === 'equivalence');
+      var equivalenceBounds = getBadgeBounds(equivalenceBadge);
+      var equivalenceTopX = equivalenceBounds.centerX;
+      var equivalenceTopY = equivalenceBounds.top;
+      var equivalenceBottomX = equivalenceBounds.centerX;
+      var equivalenceBottomY = equivalenceBounds.bottom;
+      
+      var differentialBadge = verificationBadges.find(b => b.id === 'differential');
+      var differentialBounds = getBadgeBounds(differentialBadge);
+      var differentialTopX = differentialBounds.centerX;
+      var differentialTopY = differentialBounds.top;
+      var differentialBottomX = differentialBounds.centerX;
+      var differentialBottomY = differentialBounds.bottom;
+      
+      // Helper function to create arrows
+      function createArrow(x1, y1, x2, y2, color, type) {
+        var line = document.createElementNS(svgNS, 'line');
+        line.setAttribute('x1', x1);
+        line.setAttribute('y1', y1);
+        line.setAttribute('x2', x2);
+        line.setAttribute('y2', y2);
+        line.setAttribute('stroke', color);
+        line.setAttribute('stroke-width', '2');
+        line.setAttribute('stroke-dasharray', '4,4');
+        line.setAttribute('marker-end', 'url(#arrowhead-' + type + ')');
+        svg.appendChild(line);
+        arrows.push(line);
+        return line;
+      }
+      
+      // Arrows from spec to badges - calculate exit points based on badge positions, ordered left to right
+      // Order left-to-right: Z3 proofs (blue), Property (green), Spec Drift (orange), Equivalence (red), Hash (purple), Differential (purple)
+      // Collect all badge X positions and sort them to determine left-to-right order
+      var badgePositions = [
+        { x: specLockTopX, id: 'spec-lock', color: '#3b82f6', topX: specLockTopX, topY: specLockTopY, bottomX: specLockBottomX, bottomY: specLockBottomY },
+        { x: propertyTopX, id: 'property', color: '#10b981', topX: propertyTopX, topY: propertyTopY, bottomX: propertyBottomX, bottomY: propertyBottomY },
+        { x: driftTopX, id: 'drift', color: '#f59e0b', topX: driftTopX, topY: driftTopY, bottomX: driftBottomX, bottomY: driftBottomY },
+        { x: equivalenceTopX, id: 'equivalence', color: '#ef4444', topX: equivalenceTopX, topY: equivalenceTopY, bottomX: equivalenceBottomX, bottomY: equivalenceBottomY },
+        { x: hashTopX, id: 'hash', color: '#8b5cf6', topX: hashTopX, topY: hashTopY, bottomX: hashBottomX, bottomY: hashBottomY },
+        { x: differentialTopX, id: 'differential', color: '#6366f1', topX: differentialTopX, topY: differentialTopY, bottomX: differentialBottomX, bottomY: differentialBottomY }
+      ];
+      badgePositions.sort((a, b) => a.x - b.x); // Sort by X position left to right
+      
+      // Calculate spread-out exit points from spec (symmetric around center)
+      // Use same absolute distance from center on both sides for symmetry
+      var distance1 = specBounds.width * 0.35;
+      var distance2 = specBounds.width * 0.30;
+      var distance3 = specBounds.width * 0.15;
+      var specExitPoints = [
+        specBounds.centerX - distance1,  // 0: Z3 proofs (blue) - leftmost
+        specBounds.centerX - distance2,  // 1: Property (green)
+        specBounds.centerX - distance3,  // 2: Spec Drift (orange)
+        specBounds.centerX + distance3,  // 3: Equivalence (red) - symmetric to drift
+        specBounds.centerX + distance2,  // 4: Hash (purple) - symmetric to property
+        specBounds.centerX + distance1   // 5: Differential (purple) - symmetric to Z3 proofs
+      ];
+      
+      // Calculate spread-out entry points to consensus (symmetric, matching exit point order)
+      var consensusDistance1 = consensusBounds.width * 0.35;
+      var consensusDistance2 = consensusBounds.width * 0.30;
+      var consensusDistance3 = consensusBounds.width * 0.15;
+      var consensusEntryPoints = [
+        consensusBounds.centerX - consensusDistance1,  // 0: Z3 proofs (blue) - leftmost
+        consensusBounds.centerX - consensusDistance2,  // 1: Property (green)
+        consensusBounds.centerX - consensusDistance3,  // 2: Spec Drift (orange)
+        consensusBounds.centerX + consensusDistance3,  // 3: Equivalence (red) - symmetric to drift
+        consensusBounds.centerX + consensusDistance2,  // 4: Hash (purple) - symmetric to property
+        consensusBounds.centerX + consensusDistance1   // 5: Differential (purple) - symmetric to Z3 proofs
+      ];
+      
+      // Arrows from spec to badges - exit from spec at spread-out points, connect to badge top
+      var lineSpecLock1 = createArrow(specExitPoints[0], specBounds.bottom, badgePositions[0].topX, badgePositions[0].topY, badgePositions[0].color, badgePositions[0].id);
+      var lineProperty1 = createArrow(specExitPoints[1], specBounds.bottom, badgePositions[1].topX, badgePositions[1].topY, badgePositions[1].color, badgePositions[1].id);
+      var lineDrift1 = createArrow(specExitPoints[2], specBounds.bottom, badgePositions[2].topX, badgePositions[2].topY, badgePositions[2].color, badgePositions[2].id);
+      var lineEquivalence1 = createArrow(specExitPoints[3], specBounds.bottom, badgePositions[3].topX, badgePositions[3].topY, badgePositions[3].color, badgePositions[3].id);
+      var lineHash1 = createArrow(specExitPoints[4], specBounds.bottom, badgePositions[4].topX, badgePositions[4].topY, badgePositions[4].color, badgePositions[4].id);
+      var lineDifferential1 = createArrow(specExitPoints[5], specBounds.bottom, badgePositions[5].topX, badgePositions[5].topY, badgePositions[5].color, badgePositions[5].id);
+      
+      // Arrows from badges to consensus - exit from badge bottom, enter consensus at spread-out points
+      var lineSpecLock2 = createArrow(badgePositions[0].bottomX, badgePositions[0].bottomY, consensusEntryPoints[0], consensusBounds.top, '#3b82f6', 'spec-lock');
+      var lineProperty2 = createArrow(badgePositions[1].bottomX, badgePositions[1].bottomY, consensusEntryPoints[1], consensusBounds.top, '#10b981', 'property');
+      var lineDrift2 = createArrow(badgePositions[2].bottomX, badgePositions[2].bottomY, consensusEntryPoints[2], consensusBounds.top, '#f59e0b', 'drift');
+      var lineEquivalence2 = createArrow(badgePositions[3].bottomX, badgePositions[3].bottomY, consensusEntryPoints[3], consensusBounds.top, '#ef4444', 'equivalence');
+      var lineHash2 = createArrow(badgePositions[4].bottomX, badgePositions[4].bottomY, consensusEntryPoints[4], consensusBounds.top, '#8b5cf6', 'hash');
+      var lineDifferential2 = createArrow(badgePositions[5].bottomX, badgePositions[5].bottomY, consensusEntryPoints[5], consensusBounds.top, '#6366f1', 'differential');
+      
+      // Label showing the locking mechanism - centered between spec and consensus nodes
+      var lockLabel = document.createElement('div');
+      lockLabel.className = 'arrow-label';
+      lockLabel.textContent = 'verified & locked';
+      // Center horizontally between spec and consensus centers, then offset by half label width
+      var centerX = (specBounds.centerX + consensusBounds.centerX) / 2;
+      lockLabel.style.left = centerX + 'px';
+      lockLabel.style.transform = 'translateX(-50%)'; // Center the label on the center point
+      lockLabel.style.top = ((specBounds.bottom + consensusBounds.top) / 2 - 8) + 'px';
+      chart.appendChild(lockLabel);
+      labels.push(lockLabel);
+
+      // Arrows from dependent components to consensus (all depend on consensus)
+      // First, reposition the dependent nodes to be centered relative to consensus
+      var protocolNode = nodes.find(n => n.id === 'protocol');
+      var nodeNode = nodes.find(n => n.id === 'node');
+      var sdkNode = nodes.find(n => n.id === 'sdk');
+      
+      // Get consensus center and calculate symmetric positions
+      var spacing = 200; // Distance from consensus center to each side box
+      var protocolTargetX = consensusBounds.centerX - spacing;
+      var nodeTargetX = consensusBounds.centerX;
+      var sdkTargetX = consensusBounds.centerX + spacing;
+      
+      // Reposition nodes to be centered on target X positions
+      protocolNode.div.style.left = protocolTargetX + 'px';
+      protocolNode.div.style.transform = 'translateX(-50%)';
+      nodeNode.div.style.left = nodeTargetX + 'px';
+      nodeNode.div.style.transform = 'translateX(-50%)';
+      sdkNode.div.style.left = sdkTargetX + 'px';
+      sdkNode.div.style.transform = 'translateX(-50%)';
+      
+      // Get updated bounds after repositioning
+      var protocolBounds = getNodeBounds(protocolNode);
+      var nodeBounds = getNodeBounds(nodeNode);
+      var sdkBounds = getNodeBounds(sdkNode);
+      
+      // Use symmetric entry points on consensus
+      var entryOffset = consensusBounds.width * 0.25;
+      
+      // Protocol → Consensus
+      var lineProtocolConsensus = document.createElementNS(svgNS, 'line');
+      lineProtocolConsensus.setAttribute('x1', protocolBounds.centerX);
+      lineProtocolConsensus.setAttribute('y1', protocolBounds.top);
+      lineProtocolConsensus.setAttribute('x2', consensusBounds.centerX - entryOffset);
+      lineProtocolConsensus.setAttribute('y2', consensusBounds.bottom);
+      lineProtocolConsensus.setAttribute('stroke', '#2c7be5');
+      lineProtocolConsensus.setAttribute('stroke-width', '2');
+      lineProtocolConsensus.setAttribute('marker-end', 'url(#arrowhead)');
+      svg.appendChild(lineProtocolConsensus);
+      arrows.push(lineProtocolConsensus);
+      
+      // Add label for Protocol → Consensus
+      var labelProtocolConsensus = document.createElement('div');
+      labelProtocolConsensus.className = 'arrow-label';
+      labelProtocolConsensus.textContent = 'depends on';
+      var labelX1 = (protocolBounds.centerX + consensusBounds.centerX - entryOffset) / 2;
+      var labelY1 = (protocolBounds.top + consensusBounds.bottom) / 2;
+      labelProtocolConsensus.style.left = (labelX1 - 35) + 'px';
+      labelProtocolConsensus.style.top = (labelY1 - 8) + 'px';
+      chart.appendChild(labelProtocolConsensus);
+      labels.push(labelProtocolConsensus);
+      
+      // Node → Consensus
+      var lineNodeConsensus = document.createElementNS(svgNS, 'line');
+      lineNodeConsensus.setAttribute('x1', nodeBounds.centerX);
+      lineNodeConsensus.setAttribute('y1', nodeBounds.top);
+      lineNodeConsensus.setAttribute('x2', consensusBounds.centerX);
+      lineNodeConsensus.setAttribute('y2', consensusBounds.bottom);
+      lineNodeConsensus.setAttribute('stroke', '#2c7be5');
+      lineNodeConsensus.setAttribute('stroke-width', '2');
+      lineNodeConsensus.setAttribute('marker-end', 'url(#arrowhead)');
+      svg.appendChild(lineNodeConsensus);
+      arrows.push(lineNodeConsensus);
+      
+      // Add label for Node → Consensus
+      var labelNodeConsensus = document.createElement('div');
+      labelNodeConsensus.className = 'arrow-label';
+      labelNodeConsensus.textContent = 'depends on';
+      var labelX2 = (nodeBounds.centerX + consensusBounds.centerX) / 2;
+      var labelY2 = (nodeBounds.top + consensusBounds.bottom) / 2;
+      labelNodeConsensus.style.left = (labelX2 - 35) + 'px';
+      labelNodeConsensus.style.top = (labelY2 - 8) + 'px';
+      chart.appendChild(labelNodeConsensus);
+      labels.push(labelNodeConsensus);
+      
+      // SDK → Consensus
+      var lineSdkConsensus = document.createElementNS(svgNS, 'line');
+      lineSdkConsensus.setAttribute('x1', sdkBounds.centerX);
+      lineSdkConsensus.setAttribute('y1', sdkBounds.top);
+      lineSdkConsensus.setAttribute('x2', consensusBounds.centerX + entryOffset);
+      lineSdkConsensus.setAttribute('y2', consensusBounds.bottom);
+      lineSdkConsensus.setAttribute('stroke', '#2c7be5');
+      lineSdkConsensus.setAttribute('stroke-width', '2');
+      lineSdkConsensus.setAttribute('marker-end', 'url(#arrowhead)');
+      svg.appendChild(lineSdkConsensus);
+      arrows.push(lineSdkConsensus);
+      
+      // Add label for SDK → Consensus
+      var labelSdkConsensus = document.createElement('div');
+      labelSdkConsensus.className = 'arrow-label';
+      labelSdkConsensus.textContent = 'depends on';
+      var labelX3 = (sdkBounds.centerX + consensusBounds.centerX + entryOffset) / 2;
+      var labelY3 = (sdkBounds.top + consensusBounds.bottom) / 2;
+      labelSdkConsensus.style.left = (labelX3 - 35) + 'px';
+      labelSdkConsensus.style.top = (labelY3 - 8) + 'px';
+      chart.appendChild(labelSdkConsensus);
+      labels.push(labelSdkConsensus);
+      
+      // Node → Protocol (node depends on protocol)
+      var lineNodeProtocol = document.createElementNS(svgNS, 'line');
+      lineNodeProtocol.setAttribute('x1', nodeBounds.left);
+      lineNodeProtocol.setAttribute('y1', nodeBounds.centerY);
+      lineNodeProtocol.setAttribute('x2', protocolBounds.right);
+      lineNodeProtocol.setAttribute('y2', protocolBounds.centerY);
+      lineNodeProtocol.setAttribute('stroke', '#2c7be5');
+      lineNodeProtocol.setAttribute('stroke-width', '2');
+      lineNodeProtocol.setAttribute('marker-end', 'url(#arrowhead)');
+      svg.appendChild(lineNodeProtocol);
+      arrows.push(lineNodeProtocol);
+      
+      // SDK → Node (sdk depends on node)
+      var lineSdkNode = document.createElementNS(svgNS, 'line');
+      lineSdkNode.setAttribute('x1', sdkBounds.left);
+      lineSdkNode.setAttribute('y1', sdkBounds.centerY);
+      lineSdkNode.setAttribute('x2', nodeBounds.right);
+      lineSdkNode.setAttribute('y2', nodeBounds.centerY);
+      lineSdkNode.setAttribute('stroke', '#2c7be5');
+      lineSdkNode.setAttribute('stroke-width', '2');
+      lineSdkNode.setAttribute('marker-end', 'url(#arrowhead)');
+      svg.appendChild(lineSdkNode);
+      arrows.push(lineSdkNode);
+    }
+
+    function reportEmbedHeight() {
+      try {
+        if (window.parent === window) return;
+        var c = document.querySelector(".container");
+        if (!c) return;
+        /* Use border-box height only. Do NOT use document scrollHeight: the scaled
+           chart still lays out at full design height (800px), so scrollHeight is
+           ~800 while the visible chart is chart-viewport height (~800 * scale). */
+        var h = Math.ceil(c.getBoundingClientRect().height);
+        window.parent.postMessage({ type: "btcc-bllvm-embed-height", height: h }, "*");
+      } catch (err) {}
+    }
+
+    function syncChartScale() {
+      if (!chartViewport || !scaleWrap) {
+        updateSVGSize();
+        setTimeout(function () {
+          drawArrows();
+          reportEmbedHeight();
+        }, 20);
+        return;
+      }
+      var cw = chartViewport.getBoundingClientRect().width;
+      if (!cw || cw < 40) cw = DESIGN_W;
+      var s = Math.min(1, cw / DESIGN_W);
+      scaleWrap.style.width = DESIGN_W + 'px';
+      scaleWrap.style.height = DESIGN_H + 'px';
+      scaleWrap.style.transform = 'scale(' + s + ')';
+      scaleWrap.style.transformOrigin = 'top left';
+      var visW = DESIGN_W * s;
+      scaleWrap.style.marginLeft = Math.max(0, (cw - visW) / 2) + 'px';
+      chartViewport.style.height = Math.ceil(DESIGN_H * s) + 'px';
+      updateSVGSize();
+      setTimeout(function () {
+        drawArrows();
+        reportEmbedHeight();
+      }, 30);
+    }
+
+    // Wait for layout, then scale to viewport and draw arrows
+    setTimeout(function(){
+      syncChartScale();
+      if (window.ResizeObserver && chartViewport) {
+        var resizeObserver = new ResizeObserver(function() {
+          syncChartScale();
+        });
+        resizeObserver.observe(chartViewport);
+      }
+      window.addEventListener('resize', function() {
+        syncChartScale();
+      });
+    }, 10);
+  })();
+  </script>
+</body>
+</html>
+

@@ -4,7 +4,7 @@ Static GitHub Pages site for The Bitcoin Commons at [thebitcoincommons.org](http
 
 ## Structure
 
-- `index.html` - Homepage with hero section, value propositions, and download links
+- `index.html` - Homepage (hero, learning paths, Orange Paper embed, FAQ, footer); `index2.html` redirects to it
 - `whitepaper.html` - Full HTML version of the Bitcoin Commons whitepaper
 - `style.css` - Responsive stylesheet with academic aesthetic and dark mode support
 - `assets/` - PDF files, EPUB, logo, and whitepaper images

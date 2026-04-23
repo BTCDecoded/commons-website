@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" class="econ-decent-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <title>Economic Decentralization Index</title>
+  <style>
+    .econ-decent-dark {
+      --bg: #0a0a0b;
+      --panel: #121418;
+      --text: #e8eaef;
+      --muted: #94a3b8;
+      --border: #2a3140;
+      --stack-bg: #1e2430;
+    }
+    .econ-decent-dark body {
+      font-family: system-ui, "Segoe UI", sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 24px;
+      color: var(--text);
+    }
+    .econ-decent-dark .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    }
+    .econ-decent-dark h1 {
+      margin: 0 0 8px 0;
+      color: var(--text);
+      font-size: 22px;
+    }
+    .econ-decent-dark .subtitle {
+      color: var(--muted);
+      margin: 0 0 16px 0;
+      font-size: 14px;
+    }
+    .econ-decent-dark .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 16px;
+      align-items: center;
+      margin: 8px 0 16px 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .econ-decent-dark .swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      display: inline-block;
+      margin-right: 6px;
+    }
+    .econ-decent-dark .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px) {
+      .econ-decent-dark .grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    @media (max-width: 560px) {
+      .econ-decent-dark .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .econ-decent-dark .stack {
+      background: var(--stack-bg);
+      height: 220px;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .econ-decent-dark .impl-label {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text);
+      margin-top: 6px;
+      font-weight: 600;
+    }
+    html.econ-embed {
+      height: 100%;
+      overflow: hidden;
+    }
+    html.econ-embed body {
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    html.econ-embed .container {
+      margin: 0 auto;
+      padding: 12px 12px 14px;
+      max-width: 100%;
+      box-shadow: none;
+    }
+    html.econ-embed h1,
+    html.econ-embed .subtitle {
+      display: none;
+    }
+    html.econ-embed .legend {
+      margin-top: 0;
+    }
+  </style>
+  <script>
+    (function () {
+      if (/[?&]embed=1(?:&|$)/.test(location.search)) {
+        document.documentElement.classList.add("econ-embed");
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Economic Decentralization Index</h1>
+    <div class="subtitle">Phase 3 estimates. Funding mix (lower corporate dependence = higher decentralization).</div>
+    <div class="legend">
+      <span><span class="swatch" style="background:#c0392b"></span>Corporate</span>
+      <span><span class="swatch" style="background:#8e44ad"></span>Grants/Foundation</span>
+      <span><span class="swatch" style="background:#f39c12"></span>Donations</span>
+      <span><span class="swatch" style="background:#2ca02c"></span>Self‑Sustaining (Merge‑Mined/Fees)</span>
+    </div>
+    <div id="stacks" class="grid"></div>
+  </div>
+
+  <script>
+  (function(){
+    function create(tag, style){
+      var el = document.createElement(tag);
+      if (style) for (var k in style) el.style[k] = style[k];
+      return el;
+    }
+    var impls = [
+      { name:'Bitcoin Core', parts:[50, 25, 20, 5] },
+      { name:'Bitcoin Knots', parts:[45, 25, 25, 5] },
+      { name:'btcd', parts:[35, 20, 35, 10] },
+      { name:'Libbitcoin', parts:[30, 20, 40, 10] },
+      { name:'Bitcoin Commons', parts:[10, 15, 15, 60] }
+    ];
+    var colors = ['#c0392b','#8e44ad','#f39c12','#2ca02c'];
+    var root = document.getElementById('stacks');
+    impls.forEach(function(impl){
+      var col = create('div');
+      var stack = create('div');
+      stack.className = 'stack';
+      var acc = 0;
+      impl.parts.forEach(function(val, idx){
+        var h = Math.round((val/100)*220);
+        var seg = create('div', {position:'absolute', left:'0', right:'0', bottom:acc+'px', height:h+'px', background:colors[idx]});
+        stack.appendChild(seg);
+        acc += h;
+      });
+      var label = create('div');
+      label.className = 'impl-label';
+      label.textContent = impl.name;
+      col.appendChild(stack);
+      col.appendChild(label);
+      root.appendChild(col);
+    });
+
+    function reportEmbedHeight() {
+      try {
+        if (window.parent === window) return;
+        var c = document.querySelector(".container");
+        if (!c) return;
+        var h = Math.ceil(c.getBoundingClientRect().bottom) + 1;
+        window.parent.postMessage({ type: "btcc-econ-decent-height", height: h }, "*");
+      } catch (e) {}
+    }
+    window.addEventListener("load", function () { setTimeout(reportEmbedHeight, 60); });
+    window.addEventListener("resize", function () { setTimeout(reportEmbedHeight, 40); });
+  })();
+  </script>
+</body>
+</html>

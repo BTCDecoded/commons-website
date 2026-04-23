@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Architecture Comparison</title>
+    <script src="../assets/vendor/chart.umd.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .architecture-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            background: #fafafa;
+        }
+        
+        .architecture-card.btcdecoded {
+            border-color: #FF6B35;
+            background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%);
+        }
+        
+        .architecture-card.current {
+            border-color: #3498db;
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+        }
+        
+        .card-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 8px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 5px;
+        }
+        
+        .metric-label {
+            font-weight: 500;
+        }
+        
+        .metric-value {
+            font-weight: bold;
+        }
+        
+        .chart-container {
+            height: 400px;
+            margin: 30px 0;
+        }
+        
+        .summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .summary h3 {
+            margin-top: 0;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bitcoin Architecture Comparison</h1>
+        <p class="subtitle">Core Implementation vs Commons Architecture</p>
+        
+        <div class="comparison-grid">
+            <div class="architecture-card current">
+                <div class="card-title">Core (Core & Knots)</div>
+                <div class="metric">
+                    <span class="metric-label">Codebase Size:</span>
+                    <span class="metric-value">350,000+ LOC</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Maintainers:</span>
+                    <span class="metric-value">5-6 people</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Governance:</span>
+                    <span class="metric-value">Informal social</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Funding:</span>
+                    <span class="metric-value">Donations/Grants</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Consensus Bugs:</span>
+                    <span class="metric-value">Embedded throughout</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Verification:</span>
+                    <span class="metric-value">Limited testing</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Maintenance:</span>
+                    <span class="metric-value">No systematic model</span>
+                </div>
+            </div>
+            
+            <div class="architecture-card btcdecoded">
+                <div class="card-title">Commons Architecture</div>
+                <div class="metric">
+                    <span class="metric-label">Codebase Size:</span>
+                    <span class="metric-value">Modular, ~50K LOC</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Maintainers:</span>
+                    <span class="metric-value">Distributed teams</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Governance:</span>
+                    <span class="metric-value">Cryptographic enforcement</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Funding:</span>
+                    <span class="metric-value">Merge mining (1% fee)</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Consensus Bugs:</span>
+                    <span class="metric-value">Architecturally impossible</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Verification:</span>
+                    <span class="metric-value">Formal verification</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Maintenance:</span>
+                    <span class="metric-value">Economic incentives</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="architectureChart"></canvas>
+        </div>
+        
+        <div class="summary">
+            <h3>Key Architectural Improvements</h3>
+            <ul>
+                <li><strong>Modular Design:</strong> Clean separation of concerns vs monolithic codebase</li>
+                <li><strong>Mathematical Specification:</strong> Orange Paper enables alternative implementations</li>
+                <li><strong>Economic Sustainability:</strong> Self-funding through merge mining vs donation dependency</li>
+                <li><strong>Governance Enforcement:</strong> Cryptographic signatures vs social pressure</li>
+                <li><strong>Formal Verification:</strong> Mathematical proof of correctness vs "seems right"</li>
+                <li><strong>Distributed Maintenance:</strong> Economic incentives vs volunteer dependency</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('architectureChart').getContext('2d');
+        
+        const chart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: [
+                    'Code Maintainability',
+                    'Governance Clarity', 
+                    'Economic Sustainability',
+                    'Security Verification',
+                    'Distributed Control',
+                    'Consensus Safety',
+                    'Implementation Diversity',
+                    'Long-term Viability'
+                ],
+                datasets: [{
+                    label: 'Core',
+                    data: [20, 15, 10, 25, 20, 30, 5, 15],
+                    backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                    borderColor: 'rgba(52, 152, 219, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(52, 152, 219, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(52, 152, 219, 1)'
+                }, {
+                    label: 'Commons',
+                    data: [90, 95, 85, 95, 90, 95, 85, 90],
+                    backgroundColor: 'rgba(255, 107, 53, 0.2)',
+                    borderColor: 'rgba(255, 107, 53, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(255, 107, 53, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(255, 107, 53, 1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Architecture Quality Comparison (0-100 scale)',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 14
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            stepSize: 20
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
