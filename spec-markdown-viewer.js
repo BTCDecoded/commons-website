@@ -32,6 +32,101 @@
     var BLOB_BASE = cfg.blobBase || blobBaseFromRawBase(rawBase);
     var SPEC_URL = rawBase + fileName;
 
+    /**
+     * Session-scoped cache for spec markdown. raw.githubusercontent.com does not expose ETag to
+     * cross-origin fetch(), so for GitHub raw URLs we revalidate with a small GitHub API request
+     * (latest commit touching this file on the same ref) and skip the large raw download when
+     * that revision id is unchanged.
+     */
+    var CACHE_VERSION = 'BTCC_SPEC_SESSION_V3';
+    var cacheNamespace = CACHE_VERSION + '::' + SPEC_URL;
+
+    function parseGithubRawRef(rawBaseUrl) {
+        var m = rawBaseUrl.match(/^https:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/([^/]+)\/$/);
+        if (!m) {
+            return null;
+        }
+        return { owner: m[1], repo: m[2], ref: m[3] };
+    }
+
+    async function fetchGithubFileRevKey(owner, repo, ref, path) {
+        var url =
+            'https://api.github.com/repos/' +
+            encodeURIComponent(owner) +
+            '/' +
+            encodeURIComponent(repo) +
+            '/commits?sha=' +
+            encodeURIComponent(ref) +
+            '&path=' +
+            encodeURIComponent(path) +
+            '&per_page=1';
+        var res = await fetch(url, {
+            credentials: 'omit',
+            headers: { Accept: 'application/vnd.github+json' }
+        });
+        if (!res.ok) {
+            return '';
+        }
+        var data = await res.json();
+        if (!data || !data.length || !data[0].sha) {
+            return '';
+        }
+        return data[0].sha;
+    }
+
+    function readSessionCache() {
+        if (cfg.cache === false) {
+            return null;
+        }
+        try {
+            var metaRaw = sessionStorage.getItem(cacheNamespace + '::meta');
+            var body = sessionStorage.getItem(cacheNamespace + '::body');
+            if (!metaRaw || !body) {
+                return null;
+            }
+            var meta = JSON.parse(metaRaw);
+            return {
+                markdown: body,
+                revKey: meta.revKey || '',
+                etag: meta.etag || '',
+                lastModified: meta.lastModified || ''
+            };
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function writeSessionCache(markdown, response, revKey) {
+        if (cfg.cache === false) {
+            return;
+        }
+        try {
+            var etag = '';
+            var lastModified = '';
+            if (response) {
+                etag = response.headers.get('ETag') || response.headers.get('etag') || '';
+                lastModified = response.headers.get('Last-Modified') || response.headers.get('last-modified') || '';
+            }
+            sessionStorage.setItem(
+                cacheNamespace + '::meta',
+                JSON.stringify({
+                    revKey: revKey || '',
+                    etag: etag,
+                    lastModified: lastModified
+                })
+            );
+            sessionStorage.setItem(cacheNamespace + '::body', markdown);
+        } catch (e) {
+            if (e && e.name === 'QuotaExceededError') {
+                try {
+                    sessionStorage.removeItem(cacheNamespace + '::meta');
+                    sessionStorage.removeItem(cacheNamespace + '::body');
+                } catch (ignore) {}
+            }
+            console.warn('BTCC spec session cache:', e);
+        }
+    }
+
     /** Marked v8+ removed headerIds; without IDs, #anchor TOC links do nothing. */
     var gfmHeadingApplied = false;
     var gfmHeadingWarned = false;
@@ -232,18 +327,7 @@
         });
     }
 
-    async function loadSpecMarkdown() {
-        try {
-            ensureGfmHeadingIds();
-
-            var response = await fetch(SPEC_URL);
-
-            if (!response.ok) {
-                throw new Error('HTTP error! status: ' + response.status);
-            }
-
-            var markdown = await response.text();
-
+    async function renderMarkdownPayload(markdown) {
             var mermaidDiagrams = [];
             var mermaidIndex = 0;
 
@@ -369,8 +453,66 @@
                 }, 100);
                 setTimeout(function () { clearInterval(checkMathJax); }, 10000);
             }
+    }
+
+    async function loadSpecMarkdown() {
+        try {
+            ensureGfmHeadingIds();
+
+            var gh = parseGithubRawRef(rawBase);
+            var revKey = '';
+            if (gh && cfg.cache !== false) {
+                try {
+                    revKey = await fetchGithubFileRevKey(gh.owner, gh.repo, gh.ref, fileName);
+                } catch (revErr) {
+                    console.warn('BTCC spec: could not check GitHub revision', revErr);
+                }
+            }
+
+            var cached = readSessionCache();
+
+            if (cached && cached.markdown && revKey && cached.revKey === revKey) {
+                await renderMarkdownPayload(cached.markdown);
+                return;
+            }
+
+            var fetchOpts = { credentials: 'omit' };
+            if (cached && !revKey) {
+                fetchOpts.headers = {};
+                if (cached.etag) {
+                    fetchOpts.headers['If-None-Match'] = cached.etag;
+                } else if (cached.lastModified) {
+                    fetchOpts.headers['If-Modified-Since'] = cached.lastModified;
+                }
+            }
+
+            var response = await fetch(SPEC_URL, fetchOpts);
+
+            if (response.status === 304 && cached && cached.markdown) {
+                await renderMarkdownPayload(cached.markdown);
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error('HTTP error! status: ' + response.status);
+            }
+
+            var markdown = await response.text();
+            writeSessionCache(markdown, response, revKey);
+
+            await renderMarkdownPayload(markdown);
         } catch (error) {
             console.error('Error loading spec markdown:', error);
+            var cachedFallback = readSessionCache();
+            if (cachedFallback && cachedFallback.markdown) {
+                console.warn('BTCC spec: network error; showing cached copy from this session.');
+                try {
+                    await renderMarkdownPayload(cachedFallback.markdown);
+                    return;
+                } catch (renderErr) {
+                    console.error(renderErr);
+                }
+            }
             document.getElementById('loading').style.display = 'none';
             document.getElementById('error').style.display = 'block';
         }
