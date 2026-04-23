@@ -2,14 +2,30 @@
 
 ## Quick Start
 
+From the **`commons-website`** directory (the folder that contains `index.html` — **not** the `btc-commons` repo root):
+
 ```bash
-cd commons-website
-python3 -m http.server 8080
+cd /path/to/commons-website
+python3 -m http.server 8080 --bind 127.0.0.1
+```
+
+Or use the helper script (defaults to port **8890**):
+
+```bash
+cd /path/to/commons-website
+chmod +x serve-preview.sh
+./serve-preview.sh
 ```
 
 Then open in browser:
-- **Production viewer**: http://localhost:8080/orange-paper.html
-- **Local test page**: http://localhost:8080/test-local.html
+
+- **Home / landing**: http://127.0.0.1:8890/index.html (or your chosen port; `index2.html` redirects here)
+- **Production viewer**: http://127.0.0.1:8080/orange-paper.html
+- **Local test page**: http://127.0.0.1:8080/test-local.html
+
+Use **`127.0.0.1`** instead of `localhost` if your system resolves `localhost` oddly. **`--bind 127.0.0.1`** avoids some “connection refused” cases on `0.0.0.0` vs IPv6.
+
+If you see **`Address already in use`**, pick another port: `python3 -m http.server 8891 --bind 127.0.0.1` or `./serve-preview.sh 8891`.
 
 
 ## Testing Methods

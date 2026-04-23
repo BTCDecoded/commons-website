@@ -1,0 +1,147 @@
+<svg width="900" height="500" viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .heatmap-cell { stroke: white; stroke-width: 2; }
+      .risk-high { fill: #e74c3c; }
+      .risk-medium { fill: #f39c12; }
+      .risk-low { fill: #27ae60; }
+      .risk-very-low { fill: #2ecc71; }
+      .risk-none { fill: #ecf0f1; }
+      .label { font-family: Arial, sans-serif; font-size: 12px; fill: #333; text-anchor: middle; }
+      .title { font-family: Arial, sans-serif; font-size: 18px; fill: #2c3e50; text-anchor: middle; font-weight: bold; }
+      .subtitle { font-family: Arial, sans-serif; font-size: 14px; fill: #7f8c8d; text-anchor: middle; }
+      .value-text { font-family: Arial, sans-serif; font-size: 11px; fill: white; text-anchor: middle; font-weight: bold; }
+      .legend-text { font-family: Arial, sans-serif; font-size: 11px; fill: #333; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="450" y="25" class="title">Attack Vector Risk Analysis</text>
+  <text x="450" y="45" class="subtitle">Bitcoin Core & Knots vs Commons (BTCDecoded.org) Protection</text>
+  
+  <!-- Grid lines -->
+  <line x1="100" y1="80" x2="800" y2="80" stroke="#ddd" stroke-width="1"/>
+  <line x1="100" y1="130" x2="800" y2="130" stroke="#ddd" stroke-width="1"/>
+  <line x1="100" y1="180" x2="800" y2="180" stroke="#ddd" stroke-width="1"/>
+  <line x1="100" y1="230" x2="800" y2="230" stroke="#ddd" stroke-width="1"/>
+  <line x1="100" y1="280" x2="800" y2="280" stroke="#ddd" stroke-width="1"/>
+  <line x1="100" y1="330" x2="800" y2="330" stroke="#ddd" stroke-width="1"/>
+  
+  <line x1="100" y1="80" x2="100" y2="380" stroke="#ddd" stroke-width="1"/>
+  <line x1="300" y1="80" x2="300" y2="380" stroke="#ddd" stroke-width="1"/>
+  <line x1="500" y1="80" x2="500" y2="380" stroke="#ddd" stroke-width="1"/>
+  <line x1="700" y1="80" x2="700" y2="380" stroke="#ddd" stroke-width="1"/>
+  <line x1="800" y1="80" x2="800" y2="380" stroke="#ddd" stroke-width="1"/>
+  
+  <!-- Column headers -->
+  <text x="200" y="70" class="label" font-weight="bold">Core & Knots Risk</text>
+  <text x="400" y="70" class="label" font-weight="bold">Commons Protection</text>
+  <text x="600" y="70" class="label" font-weight="bold">Risk Reduction</text>
+  <text x="750" y="70" class="label" font-weight="bold">Improvement</text>
+  
+  <!-- Row labels -->
+  <text x="50" y="110" class="label">Social Engineering</text>
+  <text x="50" y="160" class="label">Funding Pressure</text>
+  <text x="50" y="210" class="label">Maintainer Capture</text>
+  <text x="50" y="260" class="label">Regulatory Pressure</text>
+  <text x="50" y="310" class="label">Corporate Influence</text>
+  <text x="50" y="360" class="label">Insider Threats</text>
+  
+  <!-- Current Risk cells (High risk) -->
+  <rect x="150" y="100" width="100" height="30" class="heatmap-cell risk-high"/>
+  <text x="200" y="118" class="value-text">High</text>
+  
+  <rect x="150" y="150" width="100" height="30" class="heatmap-cell risk-high"/>
+  <text x="200" y="168" class="value-text">High</text>
+  
+  <rect x="150" y="200" width="100" height="30" class="heatmap-cell risk-high"/>
+  <text x="200" y="218" class="value-text">High</text>
+  
+  <rect x="150" y="250" width="100" height="30" class="heatmap-cell risk-high"/>
+  <text x="200" y="268" class="value-text">High</text>
+  
+  <rect x="150" y="300" width="100" height="30" class="heatmap-cell risk-high"/>
+  <text x="200" y="318" class="value-text">High</text>
+  
+  <rect x="150" y="350" width="100" height="30" class="heatmap-cell risk-medium"/>
+  <text x="200" y="368" class="value-text">Medium</text>
+  
+  <!-- BTCDecoded Protection cells (Low risk) -->
+  <rect x="350" y="100" width="100" height="30" class="heatmap-cell risk-low"/>
+  <text x="400" y="118" class="value-text">Low</text>
+  
+  <rect x="350" y="150" width="100" height="30" class="heatmap-cell risk-very-low"/>
+  <text x="400" y="168" class="value-text">Very Low</text>
+  
+  <rect x="350" y="200" width="100" height="30" class="heatmap-cell risk-low"/>
+  <text x="400" y="218" class="value-text">Low</text>
+  
+  <rect x="350" y="250" width="100" height="30" class="heatmap-cell risk-low"/>
+  <text x="400" y="268" class="value-text">Low</text>
+  
+  <rect x="350" y="300" width="100" height="30" class="heatmap-cell risk-low"/>
+  <text x="400" y="318" class="value-text">Low</text>
+  
+  <rect x="350" y="350" width="100" height="30" class="heatmap-cell risk-low"/>
+  <text x="400" y="368" class="value-text">Low</text>
+  
+  <!-- Risk Reduction cells -->
+  <rect x="550" y="100" width="100" height="30" class="heatmap-cell risk-medium"/>
+  <text x="600" y="118" class="value-text">80%</text>
+  
+  <rect x="550" y="150" width="100" height="30" class="heatmap-cell risk-low"/>
+  <text x="600" y="168" class="value-text">90%</text>
+  
+  <rect x="550" y="200" width="100" height="30" class="heatmap-cell risk-medium"/>
+  <text x="600" y="218" class="value-text">85%</text>
+  
+  <rect x="550" y="250" width="100" height="30" class="heatmap-cell risk-low"/>
+  <text x="600" y="268" class="value-text">80%</text>
+  
+  <rect x="550" y="300" width="100" height="30" class="heatmap-cell risk-medium"/>
+  <text x="600" y="318" class="value-text">75%</text>
+  
+  <rect x="550" y="350" width="100" height="30" class="heatmap-cell risk-medium"/>
+  <text x="600" y="368" class="value-text">60%</text>
+  
+  <!-- Improvement indicators -->
+  <rect x="720" y="100" width="60" height="30" class="heatmap-cell risk-low"/>
+  <text x="750" y="118" class="value-text">6x</text>
+  
+  <rect x="720" y="150" width="60" height="30" class="heatmap-cell risk-low"/>
+  <text x="750" y="168" class="value-text">10x</text>
+  
+  <rect x="720" y="200" width="60" height="30" class="heatmap-cell risk-low"/>
+  <text x="750" y="218" class="value-text">7x</text>
+  
+  <rect x="720" y="250" width="60" height="30" class="heatmap-cell risk-low"/>
+  <text x="750" y="268" class="value-text">5x</text>
+  
+  <rect x="720" y="300" width="60" height="30" class="heatmap-cell risk-medium"/>
+  <text x="750" y="318" class="value-text">4x</text>
+  
+  <rect x="720" y="350" width="60" height="30" class="heatmap-cell risk-medium"/>
+  <text x="750" y="368" class="value-text">3x</text>
+  
+  <!-- Legend -->
+  <rect x="100" y="400" width="700" height="80" fill="white" stroke="#ddd" stroke-width="1"/>
+  <text x="450" y="420" class="legend-text" text-anchor="middle" font-weight="bold">Risk Level Legend</text>
+  
+  <rect x="120" y="435" width="30" height="20" class="heatmap-cell risk-high"/>
+  <text x="160" y="448" class="legend-text">High Risk</text>
+  
+  <rect x="220" y="435" width="30" height="20" class="heatmap-cell risk-medium"/>
+  <text x="260" y="448" class="legend-text">Medium Risk</text>
+  
+  <rect x="320" y="435" width="30" height="20" class="heatmap-cell risk-low"/>
+  <text x="360" y="448" class="legend-text">Low Risk</text>
+  
+  <rect x="420" y="435" width="30" height="20" class="heatmap-cell risk-very-low"/>
+  <text x="460" y="448" class="legend-text">Very Low Risk</text>
+  
+  <rect x="520" y="435" width="30" height="20" class="heatmap-cell risk-none"/>
+  <text x="560" y="448" class="legend-text">No Risk</text>
+  
+  <!-- Summary -->
+  <text x="450" y="470" class="legend-text" text-anchor="middle" font-weight="bold">Overall Security Improvement: 6x Harder to Capture</text>
+</svg>

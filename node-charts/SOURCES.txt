@@ -1,0 +1,16 @@
+Vendored HTML chart sources for commons-website (same-origin with index2).
+
+Files in this folder:
+- bllvm-dependency-flow.html: from node-comparison/dist/executive-pitch-final/whitepaper-charts/bllvm-dependency-flow.html (same diagram logic; dark theme + #chart-scale-wrap scaling; ?embed=1 hides title chrome for a tight iframe height on index2.html)
+- shared-visuals.css: from node-comparison/dist/executive-pitch-final/whitepaper-charts/shared-visuals.css
+- bitcoin-architecture-comparison.html: from node-comparison/bitcoin-architecture-comparison.html (Chart.js script pointed at ../assets/vendor/chart.umd.min.js)
+- bitcoin-architecture-radar.html: derived in-repo; radar-only + dark theme; same dataset as bitcoin-architecture-comparison.html (optional standalone)
+- governance-spectrum-line.html: minimal dark spectrum (axis + four labels + zones only), derived from node-comparison/dist/executive-pitch-final/whitepaper-charts/governance-spectrum.html (embedded on index2.html “Why Bitcoin Commons”)
+- economic-decentralization-index.html: from node-comparison/dist/economic-decentralization-index.html (dark + embed=1; optional standalone, not on index2)
+- implementation-stack-architecture.html: from node-comparison/implementation-stack-architecture.html (unchanged; loads ECharts from jsDelivr CDN when opened)
+
+index2.html “Why Bitcoin Commons”: governance-spectrum-line.html (governance spectrum axis only).
+
+Optional (not on index2): economic-decentralization-index.html (from node-comparison/dist/economic-decentralization-index.html).
+
+Upstream repo path on this machine: /home/user/src/node-comparison/

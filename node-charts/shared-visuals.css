@@ -1,0 +1,61 @@
+/* Shared visuals styles for validation vs governance charts */
+:root {
+  --bg: #f8f9fa;
+  --panel: #ffffff;
+  --text: #2c3e50;
+  --muted: #7f8c8d;
+  --shadow: 0 6px 20px rgba(0,0,0,0.08);
+  --rule: #111827;
+  /* Governance (problem) */
+  --gov-1: #b91c1c; /* deep red */
+  --gov-2: #ef4444; /* red */
+  --gov-3: #f59e0b; /* amber */
+  /* Validation / solution */
+  --val-1: #2c7be5; /* blue */
+  --val-2: #2563eb; /* darker blue */
+  --sol-1: #10b981; /* green */
+  --sol-2: #059669; /* darker green */
+  --gray-1: #e5e7eb;
+}
+
+* { box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin:0; background: var(--bg); }
+.container { max-width: 1200px; margin: 24px auto; background: var(--panel); border-radius: 12px; padding: 24px; box-shadow: var(--shadow); }
+h1 { margin: 0 0 12px 0; color: var(--text); font-size: 22px; }
+.subtitle { color: var(--muted); margin: 0 0 16px 0; font-size: 14px; }
+.caption { color: var(--muted); font-size: 12px; margin-top: 12px; }
+.hr { height: 3px; background: #000; margin: 8px 0; }
+.row { display: flex; gap: 20px; }
+.col { flex: 1; }
+.center { text-align: center; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+.badge-red { background: rgba(239,68,68,0.12); color: #991b1b; border: 1px solid rgba(239,68,68,0.4); }
+.badge-green { background: rgba(16,185,129,0.12); color: #065f46; border: 1px solid rgba(16,185,129,0.35); }
+.check { color: var(--sol-2); font-weight: 800; }
+.xmark { color: var(--gov-2); font-weight: 800; }
+.progress { height: 12px; background: var(--gray-1); border-radius: 8px; overflow: hidden; }
+.progress > span { display: block; height: 100%; background: linear-gradient(90deg, var(--sol-1), var(--sol-2)); }
+.progress.low > span { background: linear-gradient(90deg, var(--gov-2), var(--gov-3)); }
+.figure { position: relative; }
+.figcaption { margin-top: 10px; color: var(--muted); font-size: 12px; }
+.note { font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+/* Utility patterns for grayscale-friendly fills */
+.pattern-diag {
+  background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.08) 0 6px, rgba(0,0,0,0.02) 6px 12px);
+}
+.pattern-dots {
+  background-image: radial-gradient(currentColor 1px, transparent 1px);
+  background-size: 10px 10px;
+}
+
+@media print {
+  .container { box-shadow: none; border: 1px solid #ccc; }
+}
+
+
+
+
+
+
+

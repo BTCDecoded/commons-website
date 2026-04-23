@@ -183,6 +183,7 @@ h4.subheading {
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.38);
 }
 
 .hero .subtagline {
@@ -2623,6 +2624,16 @@ body.spec-maps-body {
 /* Utility: orange text, removed at mobile breakpoint */
 .lg-screen-text-orange {
   color: var(--bitcoin-orange) !important;
+}
+
+@media (min-width: 769px) {
+  .hero h1.lg-screen-text-orange {
+    text-shadow: 5px 5px 7px rgba(0, 0, 0, 0.4);
+  }
+  .hero h2.lg-screen-text-orange,
+  .hero .subtagline.lg-screen-text-orange {
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.36);
+  }
 }
 
 @media (max-width: 768px) {

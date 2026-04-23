@@ -1,681 +1,34 @@
 <!DOCTYPE html>
-<html lang="en" class="index2">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data: https:; frame-src 'self'; font-src 'self' data: https: https://cdnjs.cloudflare.com;"
+      content="script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;"
     />
-    <title>The Bitcoin Commons</title>
-    <meta
-      name="description"
-      content="Forkable governance for Bitcoin implementations: coordination without authority, grounded in specification and commons principles."
-    />
-    <meta
-      property="og:title"
-      content="The Bitcoin Commons: coordination without authority"
-    />
-    <meta
-      property="og:description"
-      content="Forkable governance for Bitcoin implementations: coordination without authority, grounded in specification and commons principles."
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://thebitcoincommons.org/" />
-    <meta
-      property="og:image"
-      content="https://thebitcoincommons.org/assets/og-image.png"
-    />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="The Bitcoin Commons: coordination without authority"
-    />
-    <meta
-      name="twitter:description"
-      content="Forkable governance for Bitcoin implementations: coordination without authority, grounded in specification and commons principles."
-    />
-    <meta
-      name="twitter:image"
-      content="https://thebitcoincommons.org/assets/og-image.png"
-    />
+    <title>FAQ · The Bitcoin Commons</title>
     <link rel="stylesheet" href="style.css?v=7" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
     <style>
-      html.index2 {
-        color-scheme: dark;
-        --i2-fg: #ececec;
-        --i2-muted: #9aa0a6;
-        --i2-bg: #111111;
-        --i2-surface: #181818;
-        --i2-elevated: #1f1f1f;
-        --i2-border: #2e2e2e;
-        --i2-orange: #f7931a;
-        --i2-orange-dim: #c97916;
-      }
-      html.index2 body {
-        margin: 0;
-        color: var(--i2-fg);
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          "Helvetica Neue", Arial, sans-serif;
-        line-height: 1.6;
-        -webkit-font-smoothing: antialiased;
-        background-color: var(--i2-bg);
-      }
-      /* Match index hero; keep commons visible on small screens (global style hides it). */
-      @media (max-width: 768px) {
-        html.index2 .hero-background {
-          display: block !important;
-        }
-        html.index2 .hero-content {
-          background: none !important;
-        }
-      }
-      .i2-wrap {
-        max-width: 40rem;
-        margin: 0 auto;
-        padding: 2rem 1.25rem 3.5rem;
-      }
-      .i2-paths {
-        font-size: 0.8125rem;
-        color: var(--i2-muted);
-        margin: 0 0 2.5rem;
-        line-height: 1.6;
-      }
-      .i2-paths a {
-        color: var(--i2-orange);
-        text-decoration: none;
+      .faq-page-back {
+        display: inline-block;
+        margin: 1rem 1.25rem 0;
+        color: var(--bitcoin-orange);
         font-weight: 600;
+        text-decoration: none;
       }
-      .i2-paths a:hover {
+      .faq-page-back:hover {
         text-decoration: underline;
-      }
-      .i2-paths-label {
-        color: var(--i2-fg);
-        font-weight: 600;
-      }
-      .i2-why-grid {
-        display: grid;
-        gap: 1rem;
-        margin-top: 1rem;
-      }
-      @media (min-width: 640px) {
-        .i2-why-grid {
-          grid-template-columns: repeat(3, 1fr);
-        }
-      }
-      .i2-why-card {
-        background: var(--i2-surface);
-        border: 1px solid var(--i2-border);
-        border-radius: 12px;
-        padding: 1.1rem 1.15rem 1.2rem;
-      }
-      .i2-why-card h3 {
-        margin: 0 0 0.5rem;
-        font-size: 0.9375rem;
-        font-weight: 600;
-        color: var(--i2-fg);
-      }
-      .i2-why-card p {
-        margin: 0;
-        font-size: 0.8125rem;
-        color: var(--i2-muted);
-        line-height: 1.5;
-      }
-      .i2-chart-embed {
-        margin-top: 1rem;
-        border-radius: 14px;
-        border: 1px solid var(--i2-border);
-        overflow: hidden;
-        background: #0c0c0c;
-      }
-      .i2-chart-embed iframe {
-        display: block;
-        width: 100%;
-        border: 0;
-      }
-      .i2-chart-embed--gov-spectrum iframe {
-        min-height: 140px;
-        height: 200px;
-        max-height: 340px;
-      }
-      .i2-path {
-        scroll-margin-top: 1rem;
-      }
-      .i2-path .i2-learn-grid {
-        margin-top: 0.85rem;
-      }
-      .i2-impl-grid {
-        display: grid;
-        gap: 1rem;
-        margin-top: 1rem;
-      }
-      @media (min-width: 560px) {
-        .i2-impl-grid {
-          grid-template-columns: 1fr 1fr;
-        }
-      }
-      .i2-impl-card {
-        background: var(--i2-surface);
-        border: 1px solid var(--i2-border);
-        border-radius: 12px;
-        padding: 1.15rem 1.2rem 1.25rem;
-      }
-      .i2-impl-card h3 {
-        margin: 0 0 0.5rem;
-        font-size: 1rem;
-        font-weight: 600;
-        color: var(--i2-fg);
-      }
-      .i2-impl-card p {
-        margin: 0 0 1rem;
-        font-size: 0.8125rem;
-        color: var(--i2-muted);
-        line-height: 1.5;
-      }
-      .i2-impl-card .i2-impl-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
-      }
-      .i2-impl-card .i2-impl-links a {
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: var(--i2-orange);
-        text-decoration: none;
-      }
-      .i2-impl-card .i2-impl-links a:hover {
-        text-decoration: underline;
-      }
-      .i2-impl-card.i2-impl-soon {
-        opacity: 0.92;
-      }
-      .i2-block {
-        margin-bottom: 2.75rem;
-      }
-      .i2-block-head {
-        margin-bottom: 0.65rem;
-      }
-      .i2-eyebrow {
-        display: block;
-        font-size: 0.6875rem;
-        font-weight: 600;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: var(--i2-orange-dim);
-        margin-bottom: 0.35rem;
-      }
-      .i2-block-title {
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: var(--i2-fg);
-        margin: 0;
-      }
-      .i2-block-note {
-        font-size: 0.875rem;
-        color: var(--i2-muted);
-        margin: 0.5rem 0 0;
-        line-height: 1.5;
-      }
-      .i2-block-note a {
-        color: var(--i2-orange);
-        text-decoration: none;
-      }
-      .i2-block-note a:hover {
-        text-decoration: underline;
-      }
-      .i2-spec-card {
-        margin-top: 1rem;
-        border-radius: 14px;
-        border: 1px solid var(--i2-border);
-        background: var(--i2-elevated);
-        overflow: hidden;
-      }
-      .i2-spec-card .i2-spec-head {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.5rem;
-        padding: 0.65rem 1rem;
-        background: rgba(0, 0, 0, 0.35);
-        border-bottom: 1px solid var(--i2-border);
-        font-size: 0.8125rem;
-        color: var(--i2-muted);
-      }
-      .i2-spec-card .i2-spec-head a {
-        color: var(--i2-orange);
-        text-decoration: none;
-        font-weight: 600;
-      }
-      .i2-spec-card .i2-spec-head a:hover {
-        text-decoration: underline;
-      }
-      .i2-spec-card .i2-spec-head--solo {
-        justify-content: flex-end;
-      }
-      .i2-spec-card iframe {
-        display: block;
-        width: 100%;
-        min-height: 300px;
-        height: 680px;
-        border: 0;
-        overflow: hidden;
-      }
-      /* FAQ: no section-level fill; cards carry surface (matches other i2 blocks). */
-      html.index2 .i2-faq.faq-section {
-        background: transparent;
-        padding: 0;
-      }
-      html.index2 .i2-faq .faq-categories {
-        margin-top: 0.75rem;
-      }
-      html.index2 .i2-faq .faq-category {
-        margin-bottom: 2rem;
-      }
-      html.index2 .i2-faq .faq-category h3 {
-        color: var(--i2-fg);
-        font-size: 0.9375rem;
-        font-weight: 600;
-        border-bottom-color: var(--i2-border);
-        margin-bottom: 1rem;
-        padding-bottom: 0.4rem;
-      }
-      html.index2 .i2-faq .faq-item {
-        background: var(--i2-surface);
-        border-color: var(--i2-border);
-      }
-      html.index2 .i2-faq .faq-item:hover {
-        border-color: rgba(247, 147, 26, 0.35);
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-      }
-      html.index2 .i2-faq .faq-question {
-        color: var(--i2-fg);
-        font-size: 0.9375rem;
-      }
-      html.index2 .i2-faq .faq-question:hover,
-      html.index2 .i2-faq .faq-question[aria-expanded="true"] {
-        background: var(--i2-elevated);
-        color: var(--i2-orange);
-      }
-      html.index2 .i2-faq .faq-question:focus {
-        outline-color: var(--i2-orange);
-      }
-      html.index2 .i2-faq .faq-answer p {
-        color: var(--i2-muted);
-      }
-      html.index2 .i2-faq .faq-answer a {
-        color: var(--i2-orange);
-      }
-
-      .i2-footer-outer {
-        width: 100%;
-        box-sizing: border-box;
-        margin-top: 1.5rem;
-        padding: 2rem 1.25rem 2.25rem;
-        border-top: 1px solid var(--i2-border);
-        background: transparent;
-      }
-      .i2-footer-shell {
-        max-width: 40rem;
-        margin: 0 auto;
-      }
-      .i2-footer-brand {
-        margin-bottom: 1.35rem;
-        padding-bottom: 1.25rem;
-        border-bottom: 1px solid var(--i2-border);
-      }
-      .i2-footer-name {
-        display: block;
-        font-size: 0.9375rem;
-        font-weight: 600;
-        color: var(--i2-fg);
-        letter-spacing: -0.02em;
-      }
-      .i2-footer-tag {
-        display: block;
-        margin-top: 0.2rem;
-        font-size: 0.75rem;
-        color: var(--i2-muted);
-        line-height: 1.4;
-      }
-      .i2-footer-nav {
-        display: grid;
-        gap: 1.25rem 1.5rem;
-        grid-template-columns: 1fr 1fr;
-      }
-      @media (min-width: 480px) {
-        .i2-footer-nav {
-          grid-template-columns: 1fr 1fr 1fr;
-        }
-      }
-      .i2-footer-col-title {
-        display: block;
-        font-size: 0.625rem;
-        font-weight: 600;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--i2-muted);
-        margin-bottom: 0.55rem;
-      }
-      .i2-footer-links {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 0.45rem;
-      }
-      .i2-footer-links a {
-        font-size: 0.8125rem;
-        font-weight: 500;
-        color: var(--i2-fg);
-        text-decoration: none;
-        line-height: 1.35;
-      }
-      .i2-footer-links a:hover {
-        color: var(--i2-orange);
-      }
-      .i2-footer-meta {
-        margin-top: 1.5rem;
-        padding-top: 1.25rem;
-        border-top: 1px solid var(--i2-border);
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.75rem 1rem;
-      }
-      .i2-footer-copy {
-        font-size: 0.6875rem;
-        color: var(--i2-muted);
-        line-height: 1.4;
-      }
-      .i2-footer-social {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
-      .i2-footer-social a {
-        color: var(--i2-muted);
-        font-size: 1.125rem;
-        text-decoration: none;
-        line-height: 1;
-      }
-      .i2-footer-social a:hover {
-        color: var(--i2-orange);
-      }
-      .i2-impl-card .i2-impl-links a.i2-impl-icon {
-        font-size: 1.125rem;
-        line-height: 1;
       }
     </style>
   </head>
   <body>
-    <header class="hero">
-      <div class="hero-background">
-        <img
-          src="assets/commons.jpg"
-          alt="Ancient commons with Bitcoin as the sun"
-          class="hero-image"
-          width="1920"
-          height="1080"
-          decoding="async"
-        />
-      </div>
-      <div class="hero-content">
-        <a href="index.html"
-          ><img
-            src="assets/bitcoin-commons-logo.png"
-            alt="Bitcoin Commons"
-            class="logo"
-            width="400"
-            height="160"
-        /></a>
+    <a class="faq-page-back" href="index.html">← The Bitcoin Commons</a>
+      <section id="faq" class="faq-section">
         <div class="container">
-          <h1 class="lg-screen-text-orange">The Bitcoin Commons</h1>
-          <h2 class="lg-screen-text-orange">Coordination without authority</h2>
-        </div>
-      </div>
-    </header>
+          <h2>Frequently Asked Questions</h2>
 
-    <div class="i2-wrap i2">
-      <p class="i2-paths" role="navigation" aria-label="Section shortcuts">
-        <span class="i2-paths-label">Jump to</span>:
-        <a href="#path-learning">Learning</a>
-        ·
-        <a href="#path-implementations">Implementations</a>
-        ·
-        <a href="#path-orange-paper">Orange Paper</a>
-        ·
-        <a href="#faq">FAQ</a>
-        ·
-        <a
-          href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md"
-          target="_blank"
-          rel="noopener"
-          >Project status</a
-        >
-      </p>
-
-      <section class="i2-block" aria-labelledby="why-title">
-        <div class="i2-block-head">
-          <span class="i2-eyebrow">Belief</span>
-          <h2 class="i2-block-title" id="why-title">Why Bitcoin Commons</h2>
-        </div>
-        <div class="i2-why-grid">
-          <div class="i2-why-card">
-            <h3>Modular architecture</h3>
-            <p>
-              The stack is built from composable pieces tied to a specification
-              you can audit and fork. Compete on implementation and governance without
-              treating every product decision as a consensus upgrade.
-            </p>
-          </div>
-          <div class="i2-why-card">
-            <h3>Economic sustainability</h3>
-            <p>
-              Keep miner and development incentives in the same orbit, for
-              example through merge-mining and fee alignment, so the commons
-              isn’t dependent on patronage or one-off sponsorship.
-            </p>
-          </div>
-          <div class="i2-why-card">
-            <h3>Commons discipline</h3>
-            <p>
-              Borrow proven stewardship patterns: visible rules, accountable
-              process, and cryptographic checks. The aim is coordination among
-              people who ship software, not a claim to steer the network for
-              everyone else.
-            </p>
-          </div>
-        </div>
-        <figure class="i2-chart-embed i2-chart-embed--gov-spectrum">
-          <iframe
-            id="i2-gov-spectrum"
-            title="Governance spectrum: centralized to decentralized (Bank, Bitcoin now, Modular, Chaos)"
-            src="node-charts/governance-spectrum-line.html"
-            loading="lazy"
-            height="200"
-          ></iframe>
-        </figure>
-      </section>
-
-      <section
-        class="i2-block i2-path"
-        id="path-learning"
-        aria-labelledby="path-learn-title"
-      >
-        <div class="i2-block-head">
-          <span class="i2-eyebrow">Path</span>
-          <h2 class="i2-block-title" id="path-learn-title">Learning</h2>
-          <p class="i2-block-note">
-            Long-form narrative, FAQs, and updates, plus the hosted
-            documentation for reading deeper.
-          </p>
-        </div>
-        <div class="i2-impl-grid i2-learn-grid">
-          <div class="i2-impl-card">
-            <h3>Documentation</h3>
-            <p>
-              Technical documentation on docs.thebitcoincommons.org:
-              architecture, repositories, verification, and how the pieces fit
-              together.
-            </p>
-            <div class="i2-impl-links">
-              <a
-                href="https://docs.thebitcoincommons.org"
-                target="_blank"
-                rel="noopener"
-                >Open documentation</a
-              >
-            </div>
-          </div>
-          <div class="i2-impl-card">
-            <h3>Orange Paper</h3>
-            <p>
-              The formal specification as published on this site, including
-              structure, math, and definitions you can audit line by line.
-            </p>
-            <div class="i2-impl-links">
-              <a href="orange-paper.html">Read Orange Paper</a>
-            </div>
-          </div>
-          <div class="i2-impl-card">
-            <h3>White Paper</h3>
-            <p>
-              Narrative walkthrough of the commons idea: problem, modular
-              governance, economics, and roadmap, with PDF and e-book downloads.
-            </p>
-            <div class="i2-impl-links">
-              <a href="whitepaper.html">Read White Paper</a>
-            </div>
-          </div>
-          <div class="i2-impl-card">
-            <h3>Substack</h3>
-            <p>
-              Essays and project updates in long form, with context and
-              commentary outside the repo and docs.
-            </p>
-            <div class="i2-impl-links">
-              <a
-                href="https://btccommons.substack.com/"
-                target="_blank"
-                rel="noopener"
-                >Open Substack</a
-              >
-            </div>
-          </div>
-          <div class="i2-impl-card">
-            <h3>FAQ</h3>
-            <p>
-              Short answers to common questions: how governance works, what
-              ships when, and how this relates to Bitcoin the network.
-            </p>
-            <div class="i2-impl-links">
-              <a href="faq.html">Open FAQ</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section
-        class="i2-block i2-path"
-        id="path-implementations"
-        aria-labelledby="impl-title"
-      >
-        <div class="i2-block-head">
-          <span class="i2-eyebrow">Ecosystem</span>
-          <h2 class="i2-block-title" id="impl-title">Implementations</h2>
-          <p class="i2-block-note">
-            Multiple codebases can adopt the same governance ideas; each ships its
-            own process while sharing principles.
-          </p>
-        </div>
-        <div class="i2-impl-grid">
-          <div class="i2-impl-card">
-            <h3>BTCDecoded</h3>
-            <p>
-              Reference stack with governance infrastructure and the Orange Paper
-              extract in-repo.
-            </p>
-            <div class="i2-impl-links">
-              <a href="https://btcdecoded.org" target="_blank" rel="noopener"
-                >Website</a
-              >
-              <a
-                class="i2-impl-icon"
-                href="https://github.com/BTCDecoded"
-                target="_blank"
-                rel="noopener"
-                aria-label="BTCDecoded on GitHub"
-                ><i class="fa-brands fa-github" aria-hidden="true"></i
-              ></a>
-            </div>
-          </div>
-          <div class="i2-impl-card i2-impl-soon">
-            <h3>Your implementation</h3>
-            <p>
-              Fork the governance model and adapt it to your organization’s
-              release and review culture.
-            </p>
-            <div class="i2-impl-links">
-              <a href="governance-designer.html">Open governance designer</a>
-              <a
-                href="https://github.com/BTCDecoded/governance"
-                target="_blank"
-                rel="noopener"
-                >Governance repo</a
-              >
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section
-        class="i2-block i2-path"
-        id="path-orange-paper"
-        aria-labelledby="spec-title"
-      >
-        <div class="i2-block-head">
-          <span class="i2-eyebrow" id="spec-eyebrow">Specification</span>
-          <h2 class="i2-block-title" id="spec-title">Orange Paper</h2>
-          <p class="i2-block-note">
-            The Orange Paper is the formal specification for BLVM and the
-            commons stack: protocol rules, architecture, and related definitions
-            in one auditable document. Larger slices in the chart mean more
-            specification text lives under that heading; click a slice to preview
-            or jump to the full viewers.
-          </p>
-        </div>
-        <div class="i2-spec-card">
-          <div class="i2-spec-head i2-spec-head--solo">
-            <a href="orange-paper.html">Read spec →</a>
-          </div>
-          <iframe
-            id="i2-sunburst"
-            src="spec-viz/sunburst.html?embed=1"
-            title="Orange Paper structure"
-            height="680"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
-        </div>
-      </section>
-
-      <section
-        id="faq"
-        class="faq-section i2-block i2-faq"
-        aria-labelledby="faq-heading"
-      >
-        <h2 id="faq-heading" class="i2-block-title">Frequently Asked Questions</h2>
-
-        <div class="faq-categories">
+          <div class="faq-categories">
             <!-- Category 0: Top 5 Most Asked Questions -->
             <div class="faq-category">
               <h3>Top 5 Most Asked Questions</h3>
@@ -1586,192 +939,90 @@
               </div>
             </div>
           </div>
+        </div>
       </section>
-    </div>
 
-    <footer class="i2-footer-outer">
-      <div class="i2-footer-shell">
-        <div class="i2-footer-brand">
-          <span class="i2-footer-name">The Bitcoin Commons</span>
-          <span class="i2-footer-tag"
-            >Forkable governance and formal specification for Bitcoin
-            software.</span
-          >
-        </div>
-        <nav class="i2-footer-nav" aria-label="Site links">
-          <div>
-            <span class="i2-footer-col-title">Learn</span>
-            <ul class="i2-footer-links">
-              <li><a href="#faq">FAQ</a></li>
-              <li>
-                <a
-                  href="https://docs.thebitcoincommons.org"
-                  target="_blank"
-                  rel="noopener"
-                  >Documentation</a
-                >
-              </li>
-              <li><a href="orange-paper.html">Orange Paper</a></li>
-              <li><a href="whitepaper.html">White Paper</a></li>
-            </ul>
-          </div>
-          <div>
-            <span class="i2-footer-col-title">Specification</span>
-            <ul class="i2-footer-links">
-              <li><a href="protocol.html">PROTOCOL</a></li>
-              <li><a href="architecture.html">ARCHITECTURE</a></li>
-              <li><a href="spec-maps.html">Spec maps</a></li>
-              <li>
-                <a href="node-charts/SOURCES.txt">Chart sources</a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <span class="i2-footer-col-title">Project</span>
-            <ul class="i2-footer-links">
-              <li>
-                <a href="governance-designer.html">Governance designer</a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md"
-                  target="_blank"
-                  rel="noopener"
-                  >Project status</a
-                >
-              </li>
-              <li>
-                <a
-                  href="https://github.com/BTCDecoded"
-                  target="_blank"
-                  rel="noopener"
-                  >GitHub organization</a
-                >
-              </li>
-            </ul>
-          </div>
-        </nav>
-        <div class="i2-footer-meta">
-          <p class="i2-footer-copy">
-            Bitcoin network consensus is not governed here; this site covers
-            software commons, specification, and process.
-          </p>
-          <div class="i2-footer-social">
-            <a
-              href="https://github.com/BTCDecoded"
-              target="_blank"
-              rel="noopener"
-              aria-label="BTCDecoded on GitHub"
-              ><i class="fa-brands fa-github" aria-hidden="true"></i
-            ></a>
-          </div>
-        </div>
-      </div>
-    </footer>
     <script>
-      (function () {
-        var sunburst = document.getElementById("i2-sunburst");
-        var govSpectrum = document.getElementById("i2-gov-spectrum");
-        window.addEventListener("message", function (e) {
-          if (!e.data || typeof e.data.type !== "string") return;
-          if (
-            sunburst &&
-            e.source === sunburst.contentWindow &&
-            e.data.type === "btcc-sunburst-embed-height"
-          ) {
-            var h = e.data.height;
-            if (typeof h !== "number" || !isFinite(h) || h <= 0) return;
-            /* Fit full chart height; do not cap below reported content (avoids clipping). */
-            sunburst.style.height =
-              Math.max(Math.round(h + 12), 300) + "px";
-            return;
-          }
-          if (
-            govSpectrum &&
-            e.source === govSpectrum.contentWindow &&
-            e.data.type === "btcc-gov-spectrum-height"
-          ) {
-            var hg = e.data.height;
-            if (typeof hg !== "number" || !isFinite(hg) || hg <= 0) return;
-            govSpectrum.style.height =
-              Math.min(
-                Math.max(Math.round(hg + 4), 140),
-                340
-              ) + "px";
-            return;
-          }
-        });
-      })();
-
       document.addEventListener("DOMContentLoaded", function () {
-        var faqQuestions = document.querySelectorAll(".faq-question");
-        faqQuestions.forEach(function (question) {
-          question.addEventListener("click", function () {
-            var isExpanded = this.getAttribute("aria-expanded") === "true";
-            var answer = this.nextElementSibling;
-            var category = this.closest(".faq-category");
-            var allQuestionsInCategory = category.querySelectorAll(
-              ".faq-question"
-            );
-            var allAnswersInCategory = category.querySelectorAll(".faq-answer");
+        // FAQ Accordion functionality
+        const faqQuestions = document.querySelectorAll(".faq-question");
 
-            allQuestionsInCategory.forEach(function (q) {
-              if (q !== question) q.setAttribute("aria-expanded", "false");
+        faqQuestions.forEach((question) => {
+          question.addEventListener("click", function () {
+            const isExpanded = this.getAttribute("aria-expanded") === "true";
+            const answer = this.nextElementSibling;
+
+            // Close all other FAQ items in the same category
+            const category = this.closest(".faq-category");
+            const allQuestionsInCategory =
+              category.querySelectorAll(".faq-question");
+            const allAnswersInCategory =
+              category.querySelectorAll(".faq-answer");
+
+            allQuestionsInCategory.forEach((q) => {
+              if (q !== this) {
+                q.setAttribute("aria-expanded", "false");
+              }
             });
 
-            allAnswersInCategory.forEach(function (a) {
+            allAnswersInCategory.forEach((a) => {
               if (a !== answer) {
                 a.style.height = "0";
                 a.style.padding = "0 2rem";
-                var q = a.previousElementSibling;
+                const q = a.previousElementSibling;
                 if (q) q.setAttribute("aria-expanded", "false");
               }
             });
 
+            // Toggle current item
             if (isExpanded) {
               this.setAttribute("aria-expanded", "false");
               answer.style.height = "0";
               answer.style.padding = "0 2rem";
             } else {
               this.setAttribute("aria-expanded", "true");
-              var currentTransition = answer.style.transition;
+              // Save current styles
+              const currentTransition = answer.style.transition;
+              // Set padding first and wait for it to apply
               answer.style.padding = "1.5rem 2rem 2rem 2rem";
+              // Remove transition temporarily
               answer.style.transition = "none";
-              requestAnimationFrame(function () {
+              // Use requestAnimationFrame to ensure padding is applied before measuring
+              requestAnimationFrame(() => {
+                // Temporarily remove all height constraints to measure accurately
                 answer.style.height = "auto";
                 answer.style.maxHeight = "none";
                 answer.style.minHeight = "0";
+                // Force browser reflow
                 void answer.offsetHeight;
-                var measuredHeight = answer.scrollHeight;
+                // Get the actual content height
+                // scrollHeight is the total height including padding
+                const measuredHeight = answer.scrollHeight;
+                // Reset to collapsed state
                 answer.style.height = "0";
                 answer.style.maxHeight = "";
                 answer.style.minHeight = "";
+                // Restore transition
                 answer.style.transition = currentTransition || "";
+                // Force another reflow
                 void answer.offsetHeight;
-                requestAnimationFrame(function () {
+                // Animate to full height
+                requestAnimationFrame(() => {
                   answer.style.height = measuredHeight + "px";
                 });
               });
             }
           });
 
+          // Keyboard accessibility
           question.addEventListener("keydown", function (e) {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              question.click();
+              this.click();
             }
           });
         });
 
-        document.querySelectorAll('a[href="#faq"]').forEach(function (link) {
-          link.addEventListener("click", function (e) {
-            var faqSection = document.getElementById("faq");
-            if (faqSection) {
-              e.preventDefault();
-              faqSection.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-          });
-        });
       });
     </script>
   </body>
