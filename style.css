@@ -2064,15 +2064,32 @@ footer .copyright {
   text-align: center;
 }
 
-/* Markdown spec viewers (orange-paper, protocol, architecture, compact): accent links on gray/dark backgrounds */
+/* Markdown spec viewers + spec-maps / spec-reference: sticky nav (shared with embedded viewers) */
+.orange-paper-nav {
+  position: sticky;
+  top: 0;
+  background: var(--bg-primary);
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+  z-index: 100;
+}
+
+.orange-paper-nav .container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing);
+}
+
 .orange-paper-nav a {
   margin-right: 1.5rem;
 }
 
+/* Orange Paper family: accent links (nav, markdown chrome, spec-maps / spec-reference hosts) */
 .orange-paper-nav a,
 .orange-paper-header a,
 .orange-paper-meta a,
-.orange-paper-content a {
+.orange-paper-content a,
+.spec-maps-hero a {
   color: var(--bitcoin-orange);
   text-decoration: none;
   transition: color 0.2s ease;
@@ -2085,7 +2102,9 @@ footer .copyright {
 .orange-paper-meta a:hover,
 .orange-paper-meta a:focus,
 .orange-paper-content a:hover,
-.orange-paper-content a:focus {
+.orange-paper-content a:focus,
+.spec-maps-hero a:hover,
+.spec-maps-hero a:focus {
   color: #e6820a;
   text-decoration: underline;
 }
@@ -2093,8 +2112,58 @@ footer .copyright {
 .orange-paper-nav a:visited,
 .orange-paper-header a:visited,
 .orange-paper-meta a:visited,
-.orange-paper-content a:visited {
+.orange-paper-content a:visited,
+.spec-maps-hero a:visited {
   color: var(--bitcoin-orange);
+}
+
+/* spec-maps.html & spec-reference.html (iframe embed hosts) */
+body.spec-maps-body {
+  margin: 0;
+}
+
+.spec-maps-hero {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1rem var(--spacing) 0.75rem;
+}
+
+.spec-maps-hero h1 {
+  margin: 0 0 0.4rem;
+  font-size: 1.65rem;
+  color: var(--bitcoin-orange);
+}
+
+.spec-maps-hero p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.spec-maps-hero-lead {
+  max-width: 72ch;
+}
+
+.spec-maps-hero code {
+  font-size: 0.88em;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: 0.12em 0.35em;
+  border-radius: 4px;
+}
+
+.spec-maps-frame-wrap {
+  width: 100%;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+}
+
+.spec-maps-frame-wrap iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  min-height: 400px;
 }
 
 /* Whitepaper Styles */

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src 'self'; font-src 'self' data:;">
+    <title>Orange Paper — spec ↔ code maps | Bitcoin Commons</title>
+    <meta name="description" content="Interactive coverage maps: PROTOCOL.md / ARCHITECTURE.md outlines and #[spec_locked] linkage in blvm-consensus.">
+    <meta property="og:title" content="Orange Paper — specification maps">
+    <meta property="og:description" content="Interactive maps from the Orange Paper to consensus code annotations.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thebitcoincommons.org/spec-maps.html">
+    <link rel="stylesheet" href="style.css?v=7">
+</head>
+<body class="spec-maps-body">
+    <div class="orange-paper-nav">
+        <div class="container">
+            <a href="index.html">← Home</a>
+            <a href="orange-paper.html">Orange Paper</a>
+            <a href="protocol.html">PROTOCOL.md</a>
+            <a href="architecture.html">ARCHITECTURE.md</a>
+            <a href="compact.html">Compact</a>
+            <a href="spec-maps.html"><strong>Spec maps</strong></a>
+            <a href="spec-reference.html">Spec reference</a>
+            <a href="https://github.com/BTCDecoded/blvm-spec" target="_blank" rel="noopener">blvm-spec</a>
+        </div>
+    </div>
+
+    <header class="spec-maps-hero" id="top">
+        <h1>Specification ↔ code maps</h1>
+        <p class="spec-maps-hero-lead">
+            Outline weight and <code>spec_locked</code> coverage in <code>blvm-consensus</code> (data baked at build time).
+            <a href="spec-reference.html">Constants &amp; formula index</a>
+            · <a href="protocol.html">PROTOCOL viewer</a>
+        </p>
+    </header>
+
+    <div class="spec-maps-frame-wrap">
+        <iframe
+            id="spec-viz-iframe"
+            src="spec-viz/index.html"
+            title="Orange Paper specification visualizations"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+    </div>
+    <script>
+        (function () {
+            function resizeSpecVizIframe() {
+                var f = document.getElementById("spec-viz-iframe");
+                if (!f || !f.contentWindow || !f.contentWindow.document) return;
+                var doc = f.contentWindow.document;
+                var body = doc.body;
+                var el = doc.documentElement;
+                var h = Math.max(
+                    body ? body.scrollHeight : 0,
+                    el ? el.scrollHeight : 0,
+                    body ? body.offsetHeight : 0,
+                    el ? el.offsetHeight : 0
+                );
+                if (h > 0) f.style.height = h + 24 + "px";
+            }
+            var f = document.getElementById("spec-viz-iframe");
+            if (!f) return;
+            f.addEventListener("load", function () {
+                resizeSpecVizIframe();
+                [100, 400, 1200, 2500].forEach(function (ms) {
+                    setTimeout(resizeSpecVizIframe, ms);
+                });
+            });
+            window.addEventListener("resize", function () {
+                resizeSpecVizIframe();
+            });
+        })();
+    </script>
+</body>
+</html>

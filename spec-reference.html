@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src 'self'; font-src 'self' data: https:;">
+    <title>Orange Paper — PROTOCOL constants &amp; formula index | Bitcoin Commons</title>
+    <meta name="description" content="PROTOCOL §4 constants and KaTeX formula index from blvm-spec (Orange Paper).">
+    <meta property="og:title" content="Orange Paper — spec reference (constants &amp; formulas)">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thebitcoincommons.org/spec-reference.html">
+    <link rel="stylesheet" href="style.css?v=7">
+</head>
+<body class="spec-maps-body">
+    <div class="orange-paper-nav">
+        <div class="container">
+            <a href="index.html">← Home</a>
+            <a href="orange-paper.html">Orange Paper</a>
+            <a href="protocol.html">PROTOCOL.md</a>
+            <a href="architecture.html">ARCHITECTURE.md</a>
+            <a href="compact.html">Compact</a>
+            <a href="spec-maps.html">Spec maps</a>
+            <a href="spec-reference.html"><strong>Spec reference</strong></a>
+            <a href="https://github.com/BTCDecoded/blvm-spec" target="_blank" rel="noopener">blvm-spec</a>
+        </div>
+    </div>
+
+    <header class="spec-maps-hero" id="top">
+        <h1>PROTOCOL constants &amp; formula index</h1>
+        <p class="spec-maps-hero-lead">
+            §4 scalars and <code>PROTOCOL.md</code> display math in the viewer below.
+            <a href="spec-viz/reference.html#protocol-constants" target="spec-viz-reference">Constants</a>
+            · <a href="spec-viz/reference.html#formula-index" target="spec-viz-reference">Formulas</a>
+            · <a href="spec-maps.html">Spec maps</a>
+            · <a href="protocol.html">PROTOCOL viewer</a>
+        </p>
+    </header>
+
+    <div class="spec-maps-frame-wrap">
+        <iframe
+            id="spec-viz-reference-iframe"
+            name="spec-viz-reference"
+            src="spec-viz/reference.html"
+            title="PROTOCOL constants and formula index"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+    </div>
+    <script>
+        (function () {
+            function resizeIframe() {
+                var f = document.getElementById("spec-viz-reference-iframe");
+                if (!f || !f.contentWindow || !f.contentWindow.document) return;
+                var doc = f.contentWindow.document;
+                var body = doc.body;
+                var el = doc.documentElement;
+                var h = Math.max(
+                    body ? body.scrollHeight : 0,
+                    el ? el.scrollHeight : 0,
+                    body ? body.offsetHeight : 0,
+                    el ? el.offsetHeight : 0
+                );
+                if (h > 0) f.style.height = h + 24 + "px";
+            }
+            var f = document.getElementById("spec-viz-reference-iframe");
+            if (!f) return;
+            f.addEventListener("load", function () {
+                resizeIframe();
+                [100, 400, 1200, 2500].forEach(function (ms) {
+                    setTimeout(resizeIframe, ms);
+                });
+            });
+            window.addEventListener("resize", resizeIframe);
+        })();
+    </script>
+</body>
+</html>
