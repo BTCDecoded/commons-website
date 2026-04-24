@@ -488,8 +488,8 @@
           <div class="i2-why-card">
             <h3>Modular architecture</h3>
             <p>
-              Bitcoin Core keeps consensus inside a huge C++ codebase with no
-              math spec wired to the implementation. BLVM moves those rules
+              The dominant reference client keeps consensus inside a huge C++
+              codebase with no math spec wired to the implementation. BLVM moves those rules
               into the Orange Paper so behavior is checkable, not guessed.
               Compete on code and governance instead of treating every product
               call like a consensus fork.
@@ -503,7 +503,7 @@
               The module marketplace is the main bet: distribution, discovery,
               and fees tie revenue to adoption. Patronage and grants help but do
               not scale alone; merge mining and similar options are optional
-              supplements, not the core model.
+              supplements, not the primary economic model.
             </p>
           </div>
           <div class="i2-why-card">
@@ -731,18 +731,20 @@
                   <div class="faq-answer">
                     <p>
                       BTCDecoded has been differentially tested against Bitcoin
-                      Core across 900,000+ mainnet blocks with zero consensus
-                      divergence. Fuzzing in CI stresses consensus and protocol
-                      code beyond what chain replay alone reaches.
+                      Core across 900,000+ mainnet blocks
+                      with zero consensus divergence. Fuzzing in CI stresses
+                      consensus and protocol code beyond what chain replay alone
+                      reaches.
                     </p>
                     <p>
-                      Today&apos;s network is not running a second Core-class
-                      node at this bar: btcd&apos;s mainnet footprint is on the
+                      Today&apos;s network is not running a second reference-grade
+                      full node at this bar: btcd&apos;s mainnet footprint is on the
                       order of tens of nodes, with serious use concentrated in
                       Lightning testing; libbitcoin is not a drop-in full node: it
                       does not ship the UTXO set and mempool integration a network
                       participant expects. No alternative full-node effort has
-                      matched this mainnet differential record against Core.
+                      matched this mainnet differential record against that
+                      reference implementation.
                       <a
                         href="https://docs.thebitcoincommons.org/development/differential-testing.html"
                         target="_blank"
@@ -755,21 +757,22 @@
 
                 <div class="faq-item">
                   <button class="faq-question" aria-expanded="false">
-                    <span>How is this different from Bitcoin Core?</span>
+                    <span>How is this different from the reference client?</span>
                     <span class="faq-icon">+</span>
                   </button>
                   <div class="faq-answer">
                     <p>
-                      Bitcoin Core has a dominant implementation with no
-                      authoritative formal specification tied to the code and
-                      concentrated merge authority. Redundancy matters: bugs like
-                      CVE-2018-17144 shipped in production releases for nearly two
-                      years before the fix. An independent client that
-                      differentially tests the same chain against Core and
-                      fuzzes consensus-relevant parsing is the kind of parallel
-                      verification that surfaces those failures earlier. For the
-                      full testing record and what counts as a Core-class second
-                      node, see
+                      Bitcoin Core remains the dominant full-node
+                      implementation, with no authoritative formal specification
+                      tied line-for-line to that code and concentrated merge
+                      authority. Redundancy matters: CVE-2018-17144 remained in
+                      Bitcoin Core production releases for nearly two years before
+                      the fix. An independent
+                      client that differentially tests the same chain against the
+                      reference node and fuzzes consensus-relevant parsing is the
+                      kind of parallel verification that surfaces those failures
+                      earlier. For the full testing record and what counts as a
+                      reference-grade second node, see
                       <a href="#faq-proof-consensus">Proof of consensus compatibility</a>.
                       Bitcoin Commons provides both the mathematical specification
                       that makes serious alternatives practical and the governance
@@ -958,18 +961,18 @@
 
                 <div class="faq-item">
                   <button class="faq-question" aria-expanded="false">
-                    <span>How is BLVM different from Bitcoin Core?</span>
+                    <span>How is BLVM different from the reference client?</span>
                     <span class="faq-icon">+</span>
                   </button>
                   <div class="faq-answer">
                     <p>
-                      Bitcoin Core embeds consensus rules in 350,000+ lines of
-                      C++ with no mathematical specification. BLVM provides: (1)
-                      Mathematical specification (Orange Paper), (2) Formal
-                      verification (specification locking annotations), (3)
+                      The dominant C++ full node embeds consensus rules in
+                      350,000+ lines with no mathematical specification. BLVM
+                      provides: (1) Mathematical specification (Orange Paper), (2)
+                      Formal verification (specification locking annotations), (3)
                       Proofs locked to code, (4) Compiler-like architecture
-                      enabling safe alternative implementations. BLVM doesn't
-                      replace Bitcoin Core; it enables safe alternatives.
+                      enabling safe alternative implementations. BLVM does not
+                      replace that client; it enables checkable alternatives.
                     </p>
                   </div>
                 </div>
@@ -982,7 +985,7 @@
                   <div class="faq-answer">
                     <p>
                       Like a compiler has source code → IR → machine code, BLVM
-                      has: Bitcoin Core code → Orange Paper (IR) →
+                      has: Bitcoin Core consensus code → Orange Paper (IR) →
                       blvm-consensus → blvm-node. The Orange Paper serves as the
                       intermediate representation that multiple implementations
                       can target, just like multiple compilers can target the
@@ -1326,9 +1329,9 @@
                       Forkable governance means users can fork to a better
                       governance model. This creates exit competition: captured
                       governance loses users to better-governed implementations.
-                      The threat of forking prevents capture. Unlike Bitcoin
-                      Core, you can fork the governance rules, not just the
-                      code.
+                      The threat of forking prevents capture. Unlike typical
+                      reference-client governance, you can fork the governance
+                      rules, not just the code.
                     </p>
                   </div>
                 </div>
