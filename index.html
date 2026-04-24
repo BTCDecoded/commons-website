@@ -10,15 +10,15 @@
     <title>The Bitcoin Commons</title>
     <meta
       name="description"
-      content="Forkable governance for Bitcoin implementations: coordination without authority, grounded in specification and commons principles."
+      content="Formal specification, differential testing, fuzzing, and forkable governance for Bitcoin software: structural fix for single-client development risk."
     />
     <meta
       property="og:title"
-      content="The Bitcoin Commons: coordination without authority"
+      content="The Bitcoin Commons: specification, verification, forkable governance"
     />
     <meta
       property="og:description"
-      content="Forkable governance for Bitcoin implementations: coordination without authority, grounded in specification and commons principles."
+      content="Formal specification, differential testing, fuzzing, and forkable governance for Bitcoin software: structural fix for single-client development risk."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://thebitcoincommons.org/" />
@@ -29,11 +29,11 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="The Bitcoin Commons: coordination without authority"
+      content="The Bitcoin Commons: specification, verification, forkable governance"
     />
     <meta
       name="twitter:description"
-      content="Forkable governance for Bitcoin implementations: coordination without authority, grounded in specification and commons principles."
+      content="Formal specification, differential testing, fuzzing, and forkable governance for Bitcoin software: structural fix for single-client development risk."
     />
     <meta
       name="twitter:image"
@@ -149,6 +149,23 @@
       }
       .i2-path .i2-learn-grid {
         margin-top: 0.85rem;
+      }
+      .i2-proof-block {
+        margin-bottom: 2.75rem;
+      }
+      .i2-proof-block .i2-block-title {
+        margin-bottom: 0.65rem;
+      }
+      .i2-proof-lead {
+        margin: 0;
+        font-size: 0.9375rem;
+        line-height: 1.55;
+        color: var(--i2-fg);
+        padding: 1rem 1.15rem;
+        background: var(--i2-surface);
+        border: 1px solid var(--i2-border);
+        border-radius: 12px;
+        border-left: 4px solid var(--i2-orange);
       }
       .i2-impl-grid {
         display: grid;
@@ -439,7 +456,11 @@
         /></a>
         <div class="container">
           <h1 class="lg-screen-text-orange">The Bitcoin Commons</h1>
-          <h2 class="lg-screen-text-orange">Coordination without authority</h2>
+          <p class="tagline lg-screen-text-orange">
+            Bitcoin still depends on one dominant implementation, a small
+            maintainer set, and no authoritative formal specification tied to
+            that code. That is a structural failure. Bitcoin Commons fixes it.
+          </p>
         </div>
       </div>
     </header>
@@ -447,6 +468,8 @@
     <div class="i2-wrap i2">
       <p class="i2-paths" role="navigation" aria-label="Section shortcuts">
         <span class="i2-paths-label">Jump to</span>:
+        <a href="#path-proof-consensus">Proof</a>
+        ·
         <a href="#path-learning">Learning</a>
         ·
         <a href="#path-implementations">Implementations</a>
@@ -463,35 +486,79 @@
         >
       </p>
 
+      <section
+        class="i2-block i2-path i2-proof-block"
+        id="path-proof-consensus"
+        aria-labelledby="proof-title"
+      >
+        <h2 class="i2-block-title" id="proof-title">
+          Proof of consensus compatibility
+        </h2>
+        <p class="i2-proof-lead">
+          BTCDecoded has been differentially tested against Bitcoin Core across
+          900,000+ mainnet blocks with zero consensus divergence. Fuzzing in CI
+          stresses consensus and protocol code beyond what chain replay alone
+          reaches. Today&apos;s network is not running a second Core-class node
+          at this bar: btcd&apos;s mainnet footprint is on the order of tens of
+          nodes, with serious use concentrated in Lightning testing; libbitcoin
+          is not a drop-in full node: it does not ship the UTXO set and mempool
+          integration a network participant expects. No alternative full-node
+          effort has matched this mainnet differential record against Core.
+          <a
+            href="https://docs.thebitcoincommons.org/development/differential-testing.html"
+            target="_blank"
+            rel="noopener"
+            >How differential testing works</a
+          >.
+        </p>
+      </section>
+
       <section class="i2-block" aria-labelledby="why-title">
         <div class="i2-block-head">
           <span class="i2-eyebrow">Belief</span>
           <h2 class="i2-block-title" id="why-title">Why Bitcoin Commons</h2>
+          <p class="i2-block-note">
+            The Orange Paper is BLVM&apos;s formal specification: auditable,
+            forkable, and checkable against the implementation. Without that
+            kind of spec tied to consensus code, alternative full nodes
+            reverse-engineer Bitcoin Core&apos;s effective behavior from source
+            and folklore. Implementation diversity stops being guesswork about
+            what Core would have done.
+          </p>
         </div>
         <div class="i2-why-grid">
           <div class="i2-why-card">
             <h3>Modular architecture</h3>
             <p>
-              The stack is built from composable pieces tied to a specification
-              you can audit and fork. Compete on implementation and governance without
-              treating every product decision as a consensus upgrade.
+              Bitcoin Core embeds consensus in 300,000 lines of C++ with no
+              mathematical specification. BLVM extracts those rules into an
+              auditable formal spec so any implementation can prove correctness
+              rather than guess at it. The stack is built from composable pieces
+              tied to a specification you can audit and fork. Compete on
+              implementation and governance without treating every product
+              decision as a consensus upgrade.
             </p>
           </div>
           <div class="i2-why-card">
             <h3>Economic sustainability</h3>
             <p>
-              Keep miner and development incentives in the same orbit, for
-              example through merge-mining and fee alignment, so the commons
-              isn’t dependent on patronage or one-off sponsorship.
+              Most funding and attention still flow to a single reference
+              client; shared specs and alternative implementations struggle to
+              fund security work at network scale. A commons that depends only
+              on patronage or one-off sponsorship cannot keep pace. Bitcoin
+              Commons aligns miner and development incentives, for example
+              through merge-mining and fee-aligned priorities, so long-run
+              maintenance can match the network&apos;s needs.
             </p>
           </div>
           <div class="i2-why-card">
             <h3>Commons discipline</h3>
             <p>
-              Borrow proven stewardship patterns: visible rules, accountable
-              process, and cryptographic checks. The aim is coordination among
-              people who ship software, not a claim to steer the network for
-              everyone else.
+              Maintainer discretion without published, forkable rules makes exits
+              costly and turns disputes personal. Bitcoin Commons borrows proven
+              stewardship patterns: visible rules, accountable process, and
+              cryptographic checks. The aim is coordination among people who
+              ship software, not a claim to steer the network for everyone else.
             </p>
           </div>
         </div>
@@ -578,7 +645,7 @@
               ships when, and how this relates to Bitcoin the network.
             </p>
             <div class="i2-impl-links">
-              <a href="faq.html">Open FAQ</a>
+              <a href="#faq">Open FAQ</a>
             </div>
           </div>
         </div>
@@ -687,13 +754,16 @@
                   </button>
                   <div class="faq-answer">
                     <p>
-                      Bitcoin Commons is a project that solves Bitcoin's
-                      governance asymmetry through two complementary
-                      innovations: BLVM (the technical stack providing
-                      mathematical rigor) and Bitcoin Commons (the governance
-                      framework providing coordination without civil war).
-                      Together, they enable safe alternative Bitcoin
-                      implementations with forkable governance.
+                      Bitcoin Commons is the overarching project. It combines
+                      two innovations: <strong>BLVM</strong>, the implementation
+                      stack (Orange Paper formal specification, verified
+                      consensus, full node), and <strong>cryptographic commons
+                      governance</strong> with forkable rules, accountable process,
+                      and coordination without civil war. <strong>BTCDecoded</strong>
+                      is the engineering organization that builds and ships BLVM
+                      under Bitcoin Commons. Together they target safe alternative
+                      Bitcoin implementations you can govern without recentralizing
+                      into informal gatekeeping.
                     </p>
                   </div>
                 </div>
@@ -705,12 +775,17 @@
                   </button>
                   <div class="faq-answer">
                     <p>
-                      Bitcoin Core is a single implementation with informal
-                      governance. Bitcoin Commons provides: (1) BLVM -
-                      Mathematical rigor enabling safe alternatives, (2) Commons
-                      - Forkable governance enabling coordination. Bitcoin Core
-                      has excellent consensus security; Bitcoin Commons adds
-                      governance security and implementation diversity.
+                      Bitcoin Core has a dominant implementation with no
+                      authoritative formal specification tied to the code and
+                      concentrated merge authority. Redundancy matters: bugs like
+                      CVE-2018-17144 shipped in production releases for nearly two
+                      years before the fix. An independent client that
+                      differentially tests the same chain against Core and
+                      fuzzes consensus-relevant parsing is the kind of parallel
+                      verification that surfaces those failures earlier. Bitcoin
+                      Commons provides both the mathematical specification that
+                      makes serious alternatives practical and the governance
+                      framework that can keep them maintained.
                     </p>
                   </div>
                 </div>
@@ -739,12 +814,18 @@
                   </button>
                   <div class="faq-answer">
                     <p>
-                      The system is in Phase 1 (Infrastructure Complete). All
-                      core components of both BLVM and Bitcoin Commons are
-                      implemented, but governance is not yet activated. Phase 2
-                      (Governance Activation) will proceed when a suitable
-                      cohort of keyholders has been found. The system is not yet
-                      battle-tested in production.
+                      Phase 1 infrastructure is complete. All core components are
+                      implemented and verified. Phase 2 begins governance
+                      activation with a keyholder cohort. The system is ready for
+                      that transition. Governance rules are not yet cryptographically
+                      enforced in production. See
+                      <a
+                        href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md"
+                        target="_blank"
+                        rel="noopener"
+                        >Project status</a
+                      >
+                      for phase detail.
                     </p>
                   </div>
                 </div>
@@ -756,16 +837,15 @@
                   </button>
                   <div class="faq-answer">
                     <p>
-                      BLVM provides the mathematical foundation and
-                      compiler-like architecture (Orange Paper as IR, formal
-                      verification passes). Bitcoin Commons provides the
-                      governance framework (coordination without civil war). The
-                      modular architecture is where both meet: BLVM ensures
-                      correctness through architectural enforcement; Commons
-                      ensures coordination through governance rules. You can't
-                      have safe alternative implementations without BLVM's
-                      mathematical rigor, and you can't have coordination
-                      without Commons' governance framework.
+                      The two innovations stack together: BLVM is the
+                      implementation (Orange Paper as the shared IR, spec-locked
+                      consensus, full node). Bitcoin Commons is the governance
+                      layer with forkable rules, cryptographic thresholds, and
+                      accountable process for how that software changes and ships. BLVM
+                      supplies checkable correctness; Commons supplies
+                      coordination without civil war. You do not get a serious
+                      second node without both the spec-backed stack and
+                      governance that resists informal capture.
                     </p>
                   </div>
                 </div>
@@ -810,13 +890,13 @@
                   </button>
                   <div class="faq-answer">
                     <p>
-                      Bitcoin Commons is the governance framework; BTCDecoded is
-                      the first complete implementation of both innovations
-                      (BLVM + Commons). Think of BLVM as the technical
-                      foundation, Bitcoin Commons as the governance
-                      constitution, and BTCDecoded as the first "government"
-                      built on both. Other implementations can adopt the same
-                      framework.
+                      Bitcoin Commons is the umbrella project. BLVM is the
+                      implementation stack (spec, proofs, node). BTCDecoded is
+                      the GitHub organization and engineering team that builds
+                      and ships BLVM and implements Commons governance for the
+                      project today. Another group could ship a BLVM-based node
+                      under the same open frameworks; BTCDecoded is the team
+                      doing the work now.
                     </p>
                   </div>
                 </div>
@@ -941,7 +1021,7 @@
                       solves Bitcoin's fundamental governance asymmetry. While
                       Bitcoin's technical consensus is bulletproof
                       (proof-of-work, cryptographic signatures), its development
-                      governance has remained fragile—controlled by a handful of
+                      governance has remained fragile, controlled by a handful of
                       maintainers with no systematic process. Bitcoin Commons
                       applies Elinor Ostrom's Nobel Prize-winning commons
                       management principles through cryptographic enforcement,
@@ -975,7 +1055,8 @@
                       signatures and 90 days; Tier 5 (governance changes)
                       requires 5-of-5 signatures and 180 days. The system
                       combines two dimensions: <strong>Layers</strong> (which
-                      repository—Protocol Engine, Consensus, etc.) and
+                      repository is affected, for example Protocol Engine,
+                      Consensus, or related layers) and
                       <strong>Tiers</strong> (what type of change), using "most
                       restrictive wins" for maximum security. All governance
                       actions are cryptographically signed by maintainers and
@@ -1216,11 +1297,11 @@
                     <p>
                       The Fork Registry is a public, self-service registry for
                       governance forks. Anyone can submit a pull request to add
-                      their governance fork—no approval needed, just automated
+                      their governance fork. No approval is needed, just automated
                       validation. The registry tracks governance forks with
                       their signature thresholds, review periods, and
                       relationships (which fork was created from which). Use the
-                      <a href="#fork-governance">"Fork Your Governance"</a>
+                      <a href="governance-designer.html#fork-governance">"Fork Your Governance"</a>
                       section on this website to browse the registry, compare
                       forks, view the genealogy tree, and create your own fork.
                     </p>
@@ -1328,13 +1409,13 @@
                     </p>
                     <p>
                       <strong>Interactive Tools:</strong> Use the
-                      <a href="#fork-governance">"Fork Your Governance"</a>
+                      <a href="governance-designer.html#fork-governance">"Fork Your Governance"</a>
                       section on this website to browse existing forks, start
                       from templates, customize your own ruleset, compare
                       different governance models, and view the fork genealogy
                       tree. The system includes a
                       <strong>self-service fork registry</strong> where anyone
-                      can submit their governance fork via pull request—no
+                      can submit their governance fork via pull request with no
                       approval needed, just automated validation.
                     </p>
                   </div>
@@ -1423,9 +1504,12 @@
                       and forking), emergency tier system (three-tiered
                       response), and layer+tier combination model.
                       However, governance is not yet activated (test keys only)
-                      and keyholders are not yet onboarded. Phase 2 activation
-                      will proceed when a suitable cohort of keyholders has been
-                      found.
+                      and keyholders are not yet onboarded. Phase 2 begins with
+                      initial keyholder onboarding; see
+                      <a href="https://github.com/BTCDecoded" target="_blank" rel="noopener"
+                        >BTCDecoded on GitHub</a
+                      >
+                      to follow progress or get involved.
                     </p>
                   </div>
                 </div>
@@ -1437,11 +1521,18 @@
                   </button>
                   <div class="faq-answer">
                     <p>
-                      Phase 2 activation will proceed when a suitable cohort of
-                      keyholders has been found. This requires: (1) Security
-                      audits, (2) Keyholder onboarding, (3) Governance app
-                      deployment, (4) Community testing. Phase 3 (full
-                      operation) will follow after Phase 2 is stable.
+                      Phase 2 governance activation begins with initial
+                      keyholder onboarding. If you are a Bitcoin developer,
+                      researcher, or institution interested in participating as
+                      a keyholder, contact the project via the
+                      <a
+                        href="https://github.com/BTCDecoded"
+                        target="_blank"
+                        rel="noopener"
+                        >BTCDecoded organization on GitHub</a
+                      >. Security audits, governance app deployment, and community
+                      testing remain part of the path to stable Phase 2 and Phase
+                      3 full operation.
                     </p>
                   </div>
                 </div>

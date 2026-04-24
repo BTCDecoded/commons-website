@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-From the **`commons-website`** directory (the folder that contains `index.html` — **not** the `btc-commons` repo root):
+From the **`commons-website`** directory (the folder that contains `index.html`, **not** the `btc-commons` repo root):
 
 ```bash
 cd /path/to/commons-website
