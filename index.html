@@ -147,25 +147,11 @@
       .i2-path {
         scroll-margin-top: 1rem;
       }
+      #faq-proof-consensus {
+        scroll-margin-top: 4.5rem;
+      }
       .i2-path .i2-learn-grid {
         margin-top: 0.85rem;
-      }
-      .i2-proof-block {
-        margin-bottom: 2.75rem;
-      }
-      .i2-proof-block .i2-block-title {
-        margin-bottom: 0.65rem;
-      }
-      .i2-proof-lead {
-        margin: 0;
-        font-size: 0.9375rem;
-        line-height: 1.55;
-        color: var(--i2-fg);
-        padding: 1rem 1.15rem;
-        background: var(--i2-surface);
-        border: 1px solid var(--i2-border);
-        border-radius: 12px;
-        border-left: 4px solid var(--i2-orange);
       }
       .i2-impl-grid {
         display: grid;
@@ -468,8 +454,6 @@
     <div class="i2-wrap i2">
       <p class="i2-paths" role="navigation" aria-label="Section shortcuts">
         <span class="i2-paths-label">Jump to</span>:
-        <a href="#path-proof-consensus">Proof</a>
-        ·
         <a href="#path-learning">Learning</a>
         ·
         <a href="#path-implementations">Implementations</a>
@@ -485,33 +469,6 @@
           >Project status</a
         >
       </p>
-
-      <section
-        class="i2-block i2-path i2-proof-block"
-        id="path-proof-consensus"
-        aria-labelledby="proof-title"
-      >
-        <h2 class="i2-block-title" id="proof-title">
-          Proof of consensus compatibility
-        </h2>
-        <p class="i2-proof-lead">
-          BTCDecoded has been differentially tested against Bitcoin Core across
-          900,000+ mainnet blocks with zero consensus divergence. Fuzzing in CI
-          stresses consensus and protocol code beyond what chain replay alone
-          reaches. Today&apos;s network is not running a second Core-class node
-          at this bar: btcd&apos;s mainnet footprint is on the order of tens of
-          nodes, with serious use concentrated in Lightning testing; libbitcoin
-          is not a drop-in full node: it does not ship the UTXO set and mempool
-          integration a network participant expects. No alternative full-node
-          effort has matched this mainnet differential record against Core.
-          <a
-            href="https://docs.thebitcoincommons.org/development/differential-testing.html"
-            target="_blank"
-            rel="noopener"
-            >How differential testing works</a
-          >.
-        </p>
-      </section>
 
       <section class="i2-block" aria-labelledby="why-title">
         <div class="i2-block-head">
@@ -530,35 +487,32 @@
           <div class="i2-why-card">
             <h3>Modular architecture</h3>
             <p>
-              Bitcoin Core embeds consensus in 300,000 lines of C++ with no
-              mathematical specification. BLVM extracts those rules into an
-              auditable formal spec so any implementation can prove correctness
-              rather than guess at it. The stack is built from composable pieces
-              tied to a specification you can audit and fork. Compete on
-              implementation and governance without treating every product
-              decision as a consensus upgrade.
+              Bitcoin Core keeps consensus inside a huge C++ codebase with no
+              math spec wired to the implementation. BLVM moves those rules
+              into the Orange Paper so behavior is checkable, not guessed.
+              Compete on code and governance instead of treating every product
+              call like a consensus fork.
             </p>
           </div>
           <div class="i2-why-card">
             <h3>Economic sustainability</h3>
             <p>
-              Most funding and attention still flow to a single reference
-              client; shared specs and alternative implementations struggle to
-              fund security work at network scale. A commons that depends only
-              on patronage or one-off sponsorship cannot keep pace. Bitcoin
-              Commons aligns miner and development incentives, for example
-              through merge-mining and fee-aligned priorities, so long-run
-              maintenance can match the network&apos;s needs.
+              Money and attention still pile into one reference client, so
+              serious second implementations struggle to fund security work.
+              The module marketplace is the main bet: distribution, discovery,
+              and fees tie revenue to adoption. Patronage and grants help but do
+              not scale alone; merge mining and similar options are optional
+              supplements, not the core model.
             </p>
           </div>
           <div class="i2-why-card">
             <h3>Commons discipline</h3>
             <p>
-              Maintainer discretion without published, forkable rules makes exits
-              costly and turns disputes personal. Bitcoin Commons borrows proven
-              stewardship patterns: visible rules, accountable process, and
-              cryptographic checks. The aim is coordination among people who
-              ship software, not a claim to steer the network for everyone else.
+              Informal maintainer discretion makes exits costly and turns
+              disputes personal. Commons governance publishes forkable rules and
+              uses cryptographic thresholds so authority is visible. The aim is
+              coordination among people who ship software, not steering the
+              network for everyone else.
             </p>
           </div>
         </div>
@@ -743,9 +697,9 @@
         <h2 id="faq-heading" class="i2-block-title">Frequently Asked Questions</h2>
 
         <div class="faq-categories">
-            <!-- Category 0: Top 5 Most Asked Questions -->
+            <!-- Category 0: Entry FAQ -->
             <div class="faq-category">
-              <h3>Top 5 Most Asked Questions</h3>
+              <h3>Common questions</h3>
               <div class="faq-accordion">
                 <div class="faq-item">
                   <button class="faq-question" aria-expanded="false">
@@ -768,6 +722,36 @@
                   </div>
                 </div>
 
+                <div class="faq-item" id="faq-proof-consensus">
+                  <button class="faq-question" aria-expanded="false">
+                    <span>Proof of consensus compatibility</span>
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">
+                    <p>
+                      BTCDecoded has been differentially tested against Bitcoin
+                      Core across 900,000+ mainnet blocks with zero consensus
+                      divergence. Fuzzing in CI stresses consensus and protocol
+                      code beyond what chain replay alone reaches.
+                    </p>
+                    <p>
+                      Today&apos;s network is not running a second Core-class
+                      node at this bar: btcd&apos;s mainnet footprint is on the
+                      order of tens of nodes, with serious use concentrated in
+                      Lightning testing; libbitcoin is not a drop-in full node: it
+                      does not ship the UTXO set and mempool integration a network
+                      participant expects. No alternative full-node effort has
+                      matched this mainnet differential record against Core.
+                      <a
+                        href="https://docs.thebitcoincommons.org/development/differential-testing.html"
+                        target="_blank"
+                        rel="noopener"
+                        >How differential testing works</a
+                      >.
+                    </p>
+                  </div>
+                </div>
+
                 <div class="faq-item">
                   <button class="faq-question" aria-expanded="false">
                     <span>How is this different from Bitcoin Core?</span>
@@ -782,9 +766,12 @@
                       years before the fix. An independent client that
                       differentially tests the same chain against Core and
                       fuzzes consensus-relevant parsing is the kind of parallel
-                      verification that surfaces those failures earlier. Bitcoin
-                      Commons provides both the mathematical specification that
-                      makes serious alternatives practical and the governance
+                      verification that surfaces those failures earlier. For the
+                      full testing record and what counts as a Core-class second
+                      node, see
+                      <a href="#faq-proof-consensus">Proof of consensus compatibility</a>.
+                      Bitcoin Commons provides both the mathematical specification
+                      that makes serious alternatives practical and the governance
                       framework that can keep them maintained.
                     </p>
                   </div>
@@ -1085,9 +1072,11 @@
                       users to exit if governance is captured, (2) Multiple
                       implementations compete, preventing monopoly, (3)
                       Cryptographic enforcement makes power visible and
-                      accountable, (4) Economic alignment through merge mining,
-                      (5) Graduated thresholds prevent rapid changes, (6)
-                      Transparent audit trails.
+                      accountable, (4) Economic alignment through the module
+                      marketplace and usage-based revenue (optional merge mining
+                      can supplement but is not the primary bet), (5) Graduated
+                      thresholds prevent rapid changes, (6) Transparent audit
+                      trails.
                     </p>
                   </div>
                 </div>
@@ -1161,12 +1150,13 @@
                   <div class="faq-answer">
                     <p>
                       The modular architecture has three layers: (1) Mandatory
-                      Consensus (BLVM ensures correctness), (2) Optional Modules
-                      (Commons enables competition), (3) Economic Coordination
-                      (merge mining funds both). BLVM ensures correctness
-                      through architectural enforcement; Commons ensures
-                      coordination through governance rules. The architecture is
-                      where both meet.
+                      consensus (BLVM ensures correctness), (2) Optional modules
+                      (Commons enables competition), (3) Economic coordination
+                      (the module marketplace funds development and aligns
+                      adoption with revenue; merge mining is an optional
+                      supplement). BLVM enforces correctness in the base layer;
+                      Commons supplies governance for how modules and releases
+                      evolve. The architecture is where both meet.
                     </p>
                   </div>
                 </div>
@@ -1349,11 +1339,14 @@
                   </button>
                   <div class="faq-answer">
                     <p>
-                      Through merge mining revenue. Secondary chains merge-mine
-                      with Bitcoin, providing revenue that flows to development
-                      priorities through governance decisions. Miners have
-                      economic incentives to support well-governed
-                      implementations because they benefit from network health.
+                      Primarily through the module marketplace: paid distribution
+                      and discovery tie project revenue to real adoption.
+                      Lightning-based governance zaps and similar channels add
+                      direct community funding. Merge mining is a possible
+                      supplement for operators who enable it, not the default
+                      path. Well-governed implementations still benefit when the
+                      network is healthy, but the economic story starts with
+                      modules and usage, not hash-rate side chains.
                     </p>
                   </div>
                 </div>
@@ -1365,12 +1358,13 @@
                   </button>
                   <div class="faq-answer">
                     <p>
-                      Merge mining allows miners to mine multiple blockchains
-                      simultaneously using the same proof-of-work. Bitcoin
-                      Commons implementations can merge-mine with Bitcoin,
-                      providing economic sustainability without changing
-                      Bitcoin's consensus. 1% of merged chain rewards fund
-                      development.
+                      Merge mining lets miners work additional chains with the
+                      same proof-of-work. It is an <strong>optional</strong>
+                      supplement for pools that want extra revenue; it is not
+                      the main sustainability lever (see the module marketplace
+                      and module fees). Where it is used, a small share of merged
+                      chain rewards can flow to development without changing
+                      Bitcoin&apos;s consensus rules.
                     </p>
                   </div>
                 </div>
