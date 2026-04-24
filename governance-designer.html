@@ -159,7 +159,7 @@
           <h2>Fork Your Governance</h2>
           <p class="section-intro">
             Code is a commons. Forking should be as natural as breathing. Browse
-            existing forks, start from a template, or create your own—all in one
+            existing forks, start from a template, or create your own, all in one
             click.
           </p>
 
@@ -2459,7 +2459,7 @@ Loading preview...</pre
             const parsed2 = parseSignatureThreshold(sig2);
 
             if (!parsed1 || !parsed2) return "N/A";
-            if (sig1 === sig2) return "—";
+            if (sig1 === sig2) return "Same";
 
             const ratioDiff = parsed1.ratio - parsed2.ratio;
             const requiredDiff = parsed1.required - parsed2.required;
@@ -2496,20 +2496,20 @@ Loading preview...</pre
             fork2Name = "",
           ) {
             if (val1 === "N/A" || val2 === "N/A" || val1 === val2) {
-              return val1 === val2 ? "—" : "N/A";
+              return val1 === val2 ? "Same" : "N/A";
             }
 
             if (type === "number") {
               const num1 = parseInt(val1) || 0;
               const num2 = parseInt(val2) || 0;
               const diff = num1 - num2;
-              if (diff === 0) return "—";
+              if (diff === 0) return "Same";
               return diff > 0 ? `+${diff}` : `${diff}`;
             } else if (type === "signature") {
               // For signature thresholds, provide descriptive differences
               return describeSignatureDiff(val1, val2, fork1Name, fork2Name);
             } else {
-              return val1 !== val2 ? "Different" : "—";
+              return val1 !== val2 ? "Different" : "Same";
             }
           }
 
@@ -2570,7 +2570,7 @@ Loading preview...</pre
           setTimeout(() => {
             document.querySelectorAll(".diff-cell").forEach((cell) => {
               const text = cell.textContent.trim();
-              if (text !== "—" && text !== "N/A" && text !== "") {
+              if (text !== "Same" && text !== "N/A" && text !== "") {
                 cell.classList.add("has-diff");
                 // Style descriptive text differences (not numeric)
                 if (!text.match(/^[+-]?\d+/)) {
@@ -2881,7 +2881,7 @@ git push origin main</code>
                         </div>
                         
                         <div class="deployment-note" style="margin-top: 1.5rem; padding: 1rem; background-color: var(--bg-secondary); border-radius: 6px; border-left: 3px solid var(--bitcoin-orange);">
-                            <p style="margin: 0;"><strong>💡 Remember:</strong> This is a permissionless, self-service registry. No approval needed—just follow the format and automated validation will handle the rest.</p>
+                            <p style="margin: 0;"><strong>💡 Remember:</strong> This is a permissionless, self-service registry. No approval is needed; just follow the format and automated validation will handle the rest.</p>
                         </div>
                         
                         <div class="deployment-actions" style="margin-top: 1.5rem; display: flex; gap: 1rem;">

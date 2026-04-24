@@ -38,7 +38,7 @@
      * (latest commit touching this file on the same ref) and skip the large raw download when
      * that revision id is unchanged.
      */
-    var CACHE_VERSION = 'BTCC_SPEC_SESSION_V3';
+    var CACHE_VERSION = 'BTCC_SPEC_SESSION_V4';
     var cacheNamespace = CACHE_VERSION + '::' + SPEC_URL;
 
     function parseGithubRawRef(rawBaseUrl) {
@@ -145,6 +145,34 @@
         }
     }
 
+    /**
+     * Lines that contain both inline $...$ math and [text](#hash) links often fail to
+     * produce <a> in marked (e.g. PROTOCOL §4.1 to §4.4). Replace hash-only MD links on those
+     * lines with HTML comments, then substitute <a> after marked.parse.
+     */
+    function expandInlineHashMdLinksForMathLines(markdown, linkPlaceholders) {
+        var lines = markdown.split(/\r?\n/);
+        return lines
+            .map(function (line) {
+                if (/^\|/.test(line)) {
+                    return line;
+                }
+                if (!/\$/.test(line) || !/\[[^\]]+\]\(#[^)]+\)/.test(line)) {
+                    return line;
+                }
+                return line.replace(/\[([^\]]+)\]\((#[a-zA-Z0-9._-]+)\)/g, function (m, text, hash) {
+                    var id = linkPlaceholders.length;
+                    var safe = String(text)
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+                    linkPlaceholders.push('<a href="' + hash + '">' + safe + '</a>');
+                    return '<!--btcc-link-' + id + '-->';
+                });
+            })
+            .join('\n');
+    }
+
     /** Markdown → HTML (marked + math mask + mermaid placeholders); no DOM. */
     function markdownToHtml(markdown) {
         var mermaidDiagrams = [];
@@ -183,6 +211,9 @@
             return placeholder;
         });
 
+        var inlineHashLinkHtml = [];
+        markdown = expandInlineHashMdLinksForMathLines(markdown, inlineHashLinkHtml);
+
         var texMasked = maskTexMath(markdown);
         markdown = texMasked.masked;
         var texChunks = texMasked.chunks;
@@ -194,6 +225,10 @@
 
         var html = marked.parse(markdown);
         html = unmaskTexMath(html, texChunks);
+
+        inlineHashLinkHtml.forEach(function (anchorHtml, id) {
+            html = html.split('<!--btcc-link-' + id + '-->').join(anchorHtml);
+        });
 
         mermaidDiagrams.forEach(function (diagram, index) {
             var processedDiagram = diagram.replace(/fill:#ffcdd2/g, 'fill:#c62828');

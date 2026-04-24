@@ -251,7 +251,7 @@
 </figure>
 <p><strong>Status:</strong> Complete specification available at <a href="https://github.com/BTCDecoded/blvm-spec">https://github.com/BTCDecoded/blvm-spec</a>. The specification is actively maintained and verified against network behavior through automated testing.</p>
 <h3>BLVM Spec Lock (how verification works today)</h3>
-<p>Consensus code is tied to the Orange Paper through <strong><code>blvm-spec-lock</code></strong>, a purpose-built tool (<a href="https://github.com/BTCDecoded/blvm-spec-lock"><code>BTCDecoded/blvm-spec-lock</code></a>). Annotated Rust functions carry <code>#[spec_locked("section")]</code> references into the spec plus explicit <code>#[requires]</code> and <code>#[ensures]</code> contracts. The Orange Paper markdown is <strong>parsed</strong> for extractable specifications; a <strong>lexer</strong> tokenizes parseable mathematical conditions so they can be translated and checked against those contracts. <strong>Static analysis</strong> handles simple proof obligations quickly; richer properties are discharged with the <strong>Z3</strong> SMT solver (optional <code>z3</code> feature). Companion commands report <strong>spec coverage</strong> and <strong>drift</strong> between spec wording and lockable contracts—complementing property tests and differential tests against observed network behavior.</p>
+<p>Consensus code is tied to the Orange Paper through <strong><code>blvm-spec-lock</code></strong>, a purpose-built tool (<a href="https://github.com/BTCDecoded/blvm-spec-lock"><code>BTCDecoded/blvm-spec-lock</code></a>). Annotated Rust functions carry <code>#[spec_locked("section")]</code> references into the spec plus explicit <code>#[requires]</code> and <code>#[ensures]</code> contracts. The Orange Paper markdown is <strong>parsed</strong> for extractable specifications; a <strong>lexer</strong> tokenizes parseable mathematical conditions so they can be translated and checked against those contracts. <strong>Static analysis</strong> handles simple proof obligations quickly; richer properties are discharged with the <strong>Z3</strong> SMT solver (optional <code>z3</code> feature). Companion commands report <strong>spec coverage</strong> and <strong>drift</strong> between spec wording and lockable contracts, complementing property tests and differential tests against observed network behavior.</p>
 <h3>4.4 BLVM Architecture</h3>
 <figure>
 <img src="/assets/images/stack.png" alt="BLVM Stack Architecture" style="">
@@ -289,7 +289,7 @@
 <h4 class="subheading">Revenue Model</h4>
 <ul>
 <li>Self-sustaining development through operational modules</li>
-<li>Three complementary channels—no single stream is required: <strong>module marketplace</strong> (distribution and fees), <strong>governance announcement zaps</strong> (Lightning), and <strong>optional merge mining</strong> for pools that choose secondary-chain revenue</li>
+<li>Three complementary channels, and no single stream is required: <strong>module marketplace</strong> (distribution and fees), <strong>governance announcement zaps</strong> (Lightning), and <strong>optional merge mining</strong> for pools that choose secondary-chain revenue</li>
 <li>Reduces reliance on grants, donations, or external funding</li>
 <li>Aligns incentives with usage and adoption, reducing capture risk</li>
 </ul>
@@ -316,7 +316,7 @@
 <ul>
 <li><strong>"Don't Change Bitcoin" Camp</strong>: Gets pure Bitcoin base layer with no modifications</li>
 <li><strong>"Make Bitcoin Useful" Camp</strong>: Gets optional features through modules</li>
-<li><strong>Miners and pools</strong>: Stratum V2 connectivity to the ecosystem; optional merge mining only where operators enable it—not the primary sustainability bet</li>
+<li><strong>Miners and pools</strong>: Stratum V2 connectivity to the ecosystem; optional merge mining only where operators enable it, and that path is not the primary sustainability bet</li>
 </ul>
 <p><strong>The Module System IS The Governance System:</strong> Instead of governing through committees deciding features, we govern through architecture enabling choice. The module system isn't just technical: it's the governance mechanism itself, implementing Ostrom's collective choice arrangements through user configuration, Hayek's competitive discovery through module competition, and Bitcoin's permissionless innovation through fork-ability.</p>
 <h3>Architecture Diagrams</h3>
@@ -476,9 +476,9 @@
 <p>Only $8.4 million from 13 organizations supported Bitcoin Core development in 2023, while the network reached a $2 trillion market cap (Hough, 2025). This 0.42% funding-to-market-cap ratio creates systemic vulnerabilities and limits Bitcoin's ability to scale safely.</p>
 <h3>Self-Sustaining Revenue Models</h3>
 <p>Bitcoin Commons operates modules to generate revenue for funding operations, reducing reliance on grants, donations, or external funding. Sustainability is intentionally <strong>multi-channel</strong>: marketplace activity, Lightning zaps, and optional mining-side revenue each contribute; none is assumed to carry the project alone.</p>
-<p><strong>Module marketplace:</strong> Distribution, discovery, and monetization for modules—the main lever for aligning developer adoption with project revenue.</p>
+<p><strong>Module marketplace:</strong> Distribution, discovery, and monetization for modules, which are the main lever for aligning developer adoption with project revenue.</p>
 <p><strong>Governance announcement zaps:</strong> Lightning zaps attached to governance announcements fund governance operations directly and tie community support to transparent announcements.</p>
-<p><strong>Optional merge mining:</strong> For pools that enable it, coordinates merge mining for secondary chains as <strong>supplemental</strong> revenue—not a prerequisite for the economic model.</p>
+<p><strong>Optional merge mining:</strong> For pools that enable it, coordinates merge mining for secondary chains as <strong>supplemental</strong> revenue and is not a prerequisite for the economic model.</p>
 <p>These self-sustaining models align incentives with usage and adoption, making the system less vulnerable to capture than grant-dependent funding models.</p>
 <h3>Infrastructure Costs</h3>
 <ul>
