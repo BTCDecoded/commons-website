@@ -39,7 +39,7 @@
       name="twitter:image"
       content="https://thebitcoincommons.org/assets/og-image.png"
     />
-    <link rel="stylesheet" href="style.css?v=8" />
+    <link rel="stylesheet" href="style.css?v=10" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -464,11 +464,11 @@
     <div class="i2-wrap i2">
       <p class="i2-paths" role="navigation" aria-label="Section shortcuts">
         <span class="i2-paths-label">Jump to</span>:
+        <a href="#path-orange-paper">Orange Paper</a>
+        ·
         <a href="#path-learning">Learning</a>
         ·
         <a href="#path-implementations">Implementations</a>
-        ·
-        <a href="#path-orange-paper">Orange Paper</a>
         ·
         <a href="#faq">FAQ</a>
         ·
@@ -535,6 +535,37 @@
             height="200"
           ></iframe>
         </figure>
+      </section>
+
+      <section
+        class="i2-block i2-path"
+        id="path-orange-paper"
+        aria-labelledby="spec-title"
+      >
+        <div class="i2-block-head">
+          <span class="i2-eyebrow" id="spec-eyebrow">Specification</span>
+          <h2 class="i2-block-title" id="spec-title">Orange Paper</h2>
+          <p class="i2-block-note">
+            The Orange Paper is the formal specification for BLVM and the
+            commons stack: protocol rules, architecture, and related definitions
+            in one auditable document. Larger slices in the chart mean more
+            specification text lives under that heading; click a slice to preview
+            or jump to the full viewers.
+          </p>
+        </div>
+        <div class="i2-spec-card">
+          <div class="i2-spec-head i2-spec-head--solo">
+            <a href="orange-paper.html">Read spec →</a>
+          </div>
+          <iframe
+            id="i2-sunburst"
+            src="spec-viz/sunburst.html?embed=1"
+            title="Orange Paper structure"
+            height="680"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
       </section>
 
       <section
@@ -623,16 +654,36 @@
             Release notes, essays, and project updates — straight to your inbox.
           </p>
         </div>
-        <div class="i2-subscribe-embed">
-          <iframe
-            src="https://btccommons.substack.com/embed"
-            width="100%"
-            height="150"
-            style="border:none; background:transparent;"
-            frameborder="0"
-            scrolling="no"
-            title="Subscribe to Bitcoin Commons on Substack"
-          ></iframe>
+        <div class="i2-subscribe-dark" role="region" aria-label="Newsletter subscribe">
+          <p class="i2-subscribe-dark-lead">
+            Inline signup (styled for this site’s dark theme). Substack’s embed is
+            light by default; we invert it in CSS so it matches the page.
+          </p>
+          <div class="i2-subscribe-embed-dark">
+            <iframe
+              src="https://btccommons.substack.com/embed"
+              title="Subscribe to Bitcoin Commons on Substack"
+              width="100%"
+              height="150"
+              style="border: 0; background: transparent"
+              frameborder="0"
+              scrolling="no"
+            ></iframe>
+          </div>
+          <div class="i2-subscribe-dark-actions">
+            <a
+              class="i2-subscribe-dark-btn"
+              href="https://btccommons.substack.com/subscribe"
+              target="_blank"
+              rel="noopener"
+            >Subscribe on Substack</a>
+            <a
+              class="i2-subscribe-dark-link"
+              href="https://btccommons.substack.com/"
+              target="_blank"
+              rel="noopener"
+            >Open publication →</a>
+          </div>
         </div>
       </section>
 
@@ -686,37 +737,6 @@
               >
             </div>
           </div>
-        </div>
-      </section>
-
-      <section
-        class="i2-block i2-path"
-        id="path-orange-paper"
-        aria-labelledby="spec-title"
-      >
-        <div class="i2-block-head">
-          <span class="i2-eyebrow" id="spec-eyebrow">Specification</span>
-          <h2 class="i2-block-title" id="spec-title">Orange Paper</h2>
-          <p class="i2-block-note">
-            The Orange Paper is the formal specification for BLVM and the
-            commons stack: protocol rules, architecture, and related definitions
-            in one auditable document. Larger slices in the chart mean more
-            specification text lives under that heading; click a slice to preview
-            or jump to the full viewers.
-          </p>
-        </div>
-        <div class="i2-spec-card">
-          <div class="i2-spec-head i2-spec-head--solo">
-            <a href="orange-paper.html">Read spec →</a>
-          </div>
-          <iframe
-            id="i2-sunburst"
-            src="spec-viz/sunburst.html?embed=1"
-            title="Orange Paper structure"
-            height="680"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
         </div>
       </section>
 

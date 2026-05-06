@@ -1683,6 +1683,9 @@ button.btn {
   justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .genealogy-node {
@@ -1690,6 +1693,33 @@ button.btn {
   margin: 1.5rem;
   min-width: 300px;
   max-width: 350px;
+}
+
+/* Root node wraps the card + full-width child row; don't cap at 350px */
+.genealogy-node[data-level="0"] {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin-left: 0;
+  margin-right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.genealogy-node[data-level="0"] .genealogy-node-content {
+  max-width: 380px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.genealogy-node[data-level="0"] .genealogy-children,
+.genealogy-node[data-level="0"] .genealogy-children-row {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
 }
 
 .genealogy-node-content {
@@ -2718,4 +2748,77 @@ body:has(.release-banner) .hero {
   background: var(--i2-surface);
   overflow: hidden;
   padding: 0.5rem;
+}
+
+/* Dark-native subscribe (Substack iframe has no official dark theme) */
+.i2-subscribe-dark {
+  margin-top: 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--i2-border);
+  background: linear-gradient(145deg, #141414 0%, #1a1a1a 100%);
+  padding: 1.25rem 1.35rem 1.35rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Light Substack embed → dark appearance (no official dark embed API) */
+.i2-subscribe-embed-dark {
+  margin: 0 0 1rem;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0a0a0a;
+  line-height: 0;
+}
+
+.i2-subscribe-embed-dark iframe {
+  display: block;
+  width: 100%;
+  min-height: 150px;
+  transform: translateZ(0);
+  filter: invert(1) hue-rotate(180deg) contrast(0.92) brightness(1.05);
+}
+
+.i2-subscribe-dark-lead {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--i2-muted, #9aa0a6);
+}
+
+.i2-subscribe-dark-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+}
+
+.i2-subscribe-dark-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1.15rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: #111;
+  background: #f7931a;
+  border: 1px solid #e6820a;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.i2-subscribe-dark-btn:hover {
+  background: #ffa033;
+  color: #111;
+}
+
+.i2-subscribe-dark-link {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--i2-orange, #f7931a);
+  text-decoration: none;
+}
+
+.i2-subscribe-dark-link:hover {
+  text-decoration: underline;
 }
