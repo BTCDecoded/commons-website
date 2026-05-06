@@ -3,8 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="dark">
+  <meta name="color-scheme" content="dark light">
   <title>Governance spectrum</title>
+  <script>
+    (function () {
+      if (/[?&]theme=light(?:&|$)/.test(location.search)) {
+        document.documentElement.classList.add("spectrum-light");
+      }
+    })();
+  </script>
   <style>
     :root {
       --bg: #0a0a0b;
@@ -14,6 +21,24 @@
       --text: #e8eaef;
       --axis: #4b5563;
       --marker: #cbd5e1;
+      --label-bg: rgba(24, 28, 32, 0.92);
+      --label-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      --opt-title: #6ee7b7;
+    }
+    html.spectrum-light {
+      color-scheme: light;
+    }
+    html.spectrum-light {
+      --bg: #f1f3f5;
+      --panel: #ffffff;
+      --border: #d1d9e6;
+      --muted: #64748b;
+      --text: #0f172a;
+      --axis: #94a3b8;
+      --marker: #475569;
+      --label-bg: rgba(255, 255, 255, 0.96);
+      --label-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
+      --opt-title: #047857;
     }
     * { box-sizing: border-box; }
     html, body {
@@ -55,12 +80,12 @@
       font-size: 12px;
       text-align: center;
       line-height: 1.25;
-      background: rgba(24, 28, 32, 0.92);
+      background: var(--label-bg);
       padding: 4px 8px;
       border-radius: 8px;
       border: 1px solid var(--border);
       color: var(--text);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      box-shadow: var(--label-shadow);
       max-width: 140px;
     }
     .label .note {
@@ -109,7 +134,7 @@
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.05em;
-      color: #6ee7b7;
+      color: var(--opt-title);
       text-align: center;
       white-space: nowrap;
       line-height: 1.2;
