@@ -2660,3 +2660,62 @@ body.spec-maps-body {
     page-break-inside: avoid;
   }
 }
+
+/* ── Release banner ── */
+.release-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: #f7931a;
+  color: white;
+  text-align: center;
+  padding: 0.45rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.release-banner a {
+  color: white;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.release-banner-badge {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.release-banner-text {
+  color: white;
+}
+
+/* Push hero down when banner is present */
+body:has(.release-banner) .hero {
+  padding-top: calc(120px + 2.25rem);
+}
+
+/* ── Subscribe embed ── */
+.i2-subscribe {
+  border-top: 1px solid var(--i2-border);
+  padding-top: 2rem;
+}
+
+.i2-subscribe-embed {
+  margin-top: 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--i2-border);
+  background: var(--i2-surface);
+  overflow: hidden;
+  padding: 0.5rem;
+}
