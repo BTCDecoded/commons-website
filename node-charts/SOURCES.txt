@@ -1,7 +1,7 @@
 Vendored HTML chart sources for commons-website (same-origin with index2).
 
 Files in this folder:
-- bllvm-dependency-flow.html: from node-comparison/dist/executive-pitch-final/whitepaper-charts/bllvm-dependency-flow.html (same diagram logic; dark theme + #chart-scale-wrap scaling; ?embed=1 hides title chrome for a tight iframe height on index2.html)
+- bllvm-dependency-flow.html: from node-comparison/dist/executive-pitch-final/whitepaper-charts/bllvm-dependency-flow.html (same diagram logic; dark theme default, ?theme=light for light UI; #chart-scale-wrap scaling; ?embed=1 hides title chrome for a tight iframe height on index2.html)
 - shared-visuals.css: from node-comparison/dist/executive-pitch-final/whitepaper-charts/shared-visuals.css
 - bitcoin-architecture-comparison.html: from node-comparison/bitcoin-architecture-comparison.html (Chart.js script pointed at ../assets/vendor/chart.umd.min.js)
 - bitcoin-architecture-radar.html: derived in-repo; radar-only + dark theme; same dataset as bitcoin-architecture-comparison.html (optional standalone)
