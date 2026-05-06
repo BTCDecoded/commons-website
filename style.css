@@ -2750,22 +2750,12 @@ body:has(.release-banner) .hero {
   padding: 0.5rem;
 }
 
-/* Dark-native subscribe (Substack iframe has no official dark theme) */
-.i2-subscribe-dark {
-  margin-top: 1rem;
-  border-radius: 12px;
-  border: 1px solid var(--i2-border);
-  background: linear-gradient(145deg, #141414 0%, #1a1a1a 100%);
-  padding: 1.25rem 1.35rem 1.35rem;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-}
-
-/* Light Substack embed → dark appearance (no official dark embed API) */
+/* Substack embed: light UI inverted to match dark page (no official dark embed) */
 .i2-subscribe-embed-dark {
-  margin: 0 0 1rem;
+  margin-top: 1rem;
   border-radius: 10px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--i2-border);
   background: #0a0a0a;
   line-height: 0;
 }
@@ -2778,47 +2768,17 @@ body:has(.release-banner) .hero {
   filter: invert(1) hue-rotate(180deg) contrast(0.92) brightness(1.05);
 }
 
-.i2-subscribe-dark-lead {
-  margin: 0 0 1rem;
-  font-size: 0.9rem;
-  line-height: 1.55;
-  color: var(--i2-muted, #9aa0a6);
+.i2-subscribe-pub {
+  margin: 0.85rem 0 0;
 }
 
-.i2-subscribe-dark-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem 1.25rem;
-}
-
-.i2-subscribe-dark-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.55rem 1.15rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  text-decoration: none;
-  color: #111;
-  background: #f7931a;
-  border: 1px solid #e6820a;
-  transition: background 0.15s ease, transform 0.15s ease;
-}
-
-.i2-subscribe-dark-btn:hover {
-  background: #ffa033;
-  color: #111;
-}
-
-.i2-subscribe-dark-link {
+.i2-subscribe-pub-link {
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--i2-orange, #f7931a);
   text-decoration: none;
 }
 
-.i2-subscribe-dark-link:hover {
+.i2-subscribe-pub-link:hover {
   text-decoration: underline;
 }
