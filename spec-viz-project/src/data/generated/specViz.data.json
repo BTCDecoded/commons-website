@@ -1,0 +1,2197 @@
+{
+  "generatedAt": "2026-04-23T16:09:14.398Z",
+  "repoRelative": {
+    "protocol": "blvm-spec/PROTOCOL.md",
+    "architecture": "blvm-spec/ARCHITECTURE.md",
+    "consensus": "blvm-consensus/src"
+  },
+  "protocolOutline": {
+    "name": "PROTOCOL.md",
+    "value": 0,
+    "children": [
+      {
+        "name": "A Complete Mathematical Description of the Bitcoin Consensus System",
+        "value": 6,
+        "preview": "Version 1.0 Consensus specification (implementation-agnostic) Authors: BTCDecoded.org, MyBitcoinFuture.com, @secsovereign ---",
+        "children": []
+      },
+      {
+        "name": "Abstract",
+        "value": 3,
+        "preview": "This paper presents a mathematical specification of the Bitcoin consensus protocol as observed on the live network and in widely deployed node software. Unlike informal descriptions, this work states rules, invariants, and state transitions in precise notation so independent implementations can be checked for equivalence. This “Orange Paper” is intended as…",
+        "children": []
+      },
+      {
+        "name": "1. Introduction",
+        "value": 23,
+        "preview": "Bitcoin is a distributed consensus system that maintains a shared ledger of transactions without requiring trusted intermediaries. The system achieves consensus through proof-of-work and enforces economic rules through cryptographic validation. This paper provides a complete mathematical description of how Bitcoin operates. - Complete State Machine: Formal…",
+        "children": [
+          {
+            "name": "1.1 Key Contributions",
+            "value": 6,
+            "preview": "Complete State Machine: Formal specification of Bitcoin's state transitions - Economic Model: Mathematical description of the monetary system - Validation Rules: Precise definition of all consensus-critical checks - Security Properties: Formal statements of Bitcoin's security guarantees",
+            "children": []
+          },
+          {
+            "name": "1.2 Document Structure",
+            "value": 12,
+            "preview": "This specification is organized into four main parts: 1. Foundations (§2–§4): Mathematical foundations, data structures, and constants 2. Core Protocol (§5–§8): State transitions, economic model, proof-of-work, and security 3. Network Layer (§9–§11): Mempool, P2P protocol, and advanced features 4. Mining Protocol (§12): Block creation and mining process…",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "2. System Model",
+        "value": 30,
+        "preview": "Miners: Create blocks and compete for block rewards - Nodes: Validate transactions and maintain the blockchain - Users: Create transactions to transfer value - Asynchronous Network: Messages may be delayed or reordered - Byzantine Fault Tolerance: Some participants may behave maliciously - Economic Rationality: Participants act to maximize their utility…",
+        "children": [
+          {
+            "name": "2.1 Participants",
+            "value": 5,
+            "preview": "Miners: Create blocks and compete for block rewards - Nodes: Validate transactions and maintain the blockchain - Users: Create transactions to transfer value",
+            "children": []
+          },
+          {
+            "name": "2.2 Network Assumptions",
+            "value": 5,
+            "preview": "Asynchronous Network: Messages may be delayed or reordered - Byzantine Fault Tolerance: Some participants may behave maliciously - Economic Rationality: Participants act to maximize their utility",
+            "children": []
+          },
+          {
+            "name": "2.2.1 Networks and Parameters",
+            "value": 16,
+            "preview": "Consensus rules are identical across networks. Only parameters differ. Network set: $\\text{Network} = \\{\\text{mainnet}, \\text{testnet}, \\text{testnet4}, \\text{signet}, \\text{regtest}\\}$ For each $n \\in \\text{Network}$, the following parameters may differ: | Parameter | mainnet | testnet | testnet4 | signet | regtest |…",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "3. Mathematical Foundations",
+        "value": 33,
+        "preview": "Hash Values: $\\mathbb{H} = \\{0,1\\}^{256}$ - Set of 256-bit hashes Byte Strings: $\\mathbb{S} = \\{0,1\\}^*$ - Set of byte strings Natural Numbers: $\\mathbb{N} = \\{0, 1, 2, \\ldots\\}$ - Set of natural numbers Integers: $\\mathbb{Z} = \\{\\ldots, -2, -1, 0, 1, 2, \\ldots\\}$ - Set of integers Rational Numbers: $\\mathbb{Q}$ - Set of rational numbers Notation:…",
+        "children": [
+          {
+            "name": "3.1 Basic Types",
+            "value": 14,
+            "preview": "Hash Values: $\\mathbb{H} = \\{0,1\\}^{256}$ - Set of 256-bit hashes Byte Strings: $\\mathbb{S} = \\{0,1\\}^*$ - Set of byte strings Natural Numbers: $\\mathbb{N} = \\{0, 1, 2, \\ldots\\}$ - Set of natural numbers Integers: $\\mathbb{Z} = \\{\\ldots, -2, -1, 0, 1, 2, \\ldots\\}$ - Set of integers Rational Numbers: $\\mathbb{Q}$ - Set of rational numbers Notation:…",
+            "children": []
+          },
+          {
+            "name": "3.2 Core Data Structures",
+            "value": 10,
+            "preview": "OutPoint: $\\mathcal{O} = \\mathbb{H} \\times \\mathbb{N}$ (see §3.2, Cartesian product) Transaction Input: $\\mathcal{I} = \\mathcal{O} \\times \\mathbb{S} \\times \\mathbb{N}$ (see §3.3) Transaction Output: $\\mathcal{T} = \\mathbb{Z} \\times \\mathbb{S}$ (see §4.1) Transaction: $\\mathcal{TX} = \\mathbb{N} \\times \\mathcal{I}^* \\times \\mathcal{T}^* \\times \\mathbb{N}$…",
+            "children": []
+          },
+          {
+            "name": "3.3 Script System",
+            "value": 5,
+            "preview": "Script: $\\mathcal{SC} = \\mathbb{S}$ (sequence of opcodes) Witness: $\\mathcal{W} = \\mathbb{S}^*$ (stack of witness data) Stack: $\\mathcal{ST} = \\mathbb{S}^*$ (execution stack, see Script Execution)",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "4. Consensus Constants",
+        "value": 26,
+        "preview": "$C = 10^8$ (satoshis per BTC, see Economic Model) $M_{max} = 21 \\times 10^6 \\times C$ (maximum money supply, see §6.2) $H = 210,000$ (halving interval, see Block Subsidy) $W_{max} = 4 \\times 10^6$ (maximum block weight, see Block Validation) $S_{max} = 80,000$ (maximum sigops per block, see Script Execution) $R = 100$ (coinbase maturity requirement, see…",
+        "children": [
+          {
+            "name": "4.1 Monetary Constants",
+            "value": 5,
+            "preview": "$C = 10^8$ (satoshis per BTC, see Economic Model) $M_{max} = 21 \\times 10^6 \\times C$ (maximum money supply, see §6.2) $H = 210,000$ (halving interval, see Block Subsidy)",
+            "children": []
+          },
+          {
+            "name": "4.2 Block Constants",
+            "value": 5,
+            "preview": "$W_{max} = 4 \\times 10^6$ (maximum block weight, see Block Validation) $S_{max} = 80,000$ (maximum sigops per block, see Script Execution) $R = 100$ (coinbase maturity requirement, see Transaction Validation)",
+            "children": []
+          },
+          {
+            "name": "4.3 Script Constants",
+            "value": 6,
+            "preview": "$L_{script} = 10,000$ (maximum script length, see §8.3) $L_{stack} = 1,000$ (maximum stack size, see Theorem 8.4) $L_{ops} = 201$ (maximum operations per script, see Theorem 8.4) $L_{element} = 520$ (maximum element size, see Script Execution)",
+            "children": []
+          },
+          {
+            "name": "4.4 Difficulty Constants",
+            "value": 5,
+            "preview": "$D_{interval} = 2016$ (blocks per difficulty adjustment period, see Difficulty Adjustment) $T_{block} = 600$ (target block time in seconds, 10 minutes) $T_{future} = 7200$ (maximum allowed block time in future, 2 hours, see Block Validation)",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "5. State Transition Functions",
+        "value": 1439,
+        "preview": "CheckTransaction: $\\mathcal{TX} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ A transaction $tx = (v, ins, outs, lt)$ is valid if and only if: 1. $|ins| > 0 \\land |outs| > 0$ 2. $\\forall o \\in outs: 0 \\leq o.value \\leq M_{max}$ 3. $\\sum_{o \\in outs} o.value \\leq M_{max}$ 4. $\\forall i,j \\in ins: i \\neq j \\Rightarrow i.prevout \\neq j.prevout$ 5. If $tx$ is…",
+        "children": [
+          {
+            "name": "5.1 Transaction Validation",
+            "value": 194,
+            "preview": "CheckTransaction: $\\mathcal{TX} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ A transaction $tx = (v, ins, outs, lt)$ is valid if and only if: 1. $|ins| > 0 \\land |outs| > 0$ 2. $\\forall o \\in outs: 0 \\leq o.value \\leq M_{max}$ 3. $\\sum_{o \\in outs} o.value \\leq M_{max}$ 4. $\\forall i,j \\in ins: i \\neq j \\Rightarrow i.prevout \\neq j.prevout$ 5. If $tx$ is…",
+            "children": [
+              {
+                "name": "5.1.1 Transaction Sighash Calculation",
+                "value": 115,
+                "preview": "CalculateSighash: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathcal{US} \\times \\text{SighashType} \\times \\mathbb{N} \\rightarrow \\mathbb{H}$ Properties: - Hash length: $\\text{CalculateSighash}(tx, i, us, st, h) = h \\implies |h| = 32$ (32-byte hash) - Input index requirement: $\\text{CalculateSighash}(tx, i, us, st, h)$ requires $i < |tx.inputs|$ (valid input…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "5.2 Script Execution",
+            "value": 351,
+            "preview": "Bitcoin uses a stack-based scripting language for transaction validation. Scripts are executed to determine whether a transaction output can be spent. EvalScript: $\\mathcal{SC} \\times \\mathcal{ST} \\times \\mathbb{N} \\rightarrow \\{\\text{true}, \\text{false}\\}$ $\\text{EvalScript}(script, S_0, f) = \\text{true}$ iff execution terminates without failure and the…",
+            "children": [
+              {
+                "name": "5.2.1 P2SH Push-Only Validation",
+                "value": 43,
+                "preview": "P2SHPushOnlyCheck: $\\mathbb{S} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Push-only validation: $\\text{P2SHPushOnlyCheck}(ss) = \\text{valid} \\iff \\forall op \\in ss : \\text{IsPushOpcode}(op)$ - Boolean result: $\\text{P2SHPushOnlyCheck}(ss) \\in \\{\\text{valid}, \\text{invalid}\\}$ - Deterministic: $\\text{P2SHPushOnlyCheck}(ss_1) =…",
+                "children": []
+              },
+              {
+                "name": "5.2.2 Signature Operation Counting",
+                "value": 73,
+                "preview": "Signature operations (sigops) are counted to enforce the MAX_BLOCK_SIGOPS_COST limit (80,000) per block. Sigops include OP_CHECKSIG, OP_CHECKSIGVERIFY, OP_CHECKMULTISIG, and OP_CHECKMULTISIGVERIFY operations. CountSigOpsInScript: $\\mathbb{S} \\times \\{\\text{true}, \\text{false}\\} \\rightarrow \\mathbb{N}$ Properties: - Sigop count bounded:…",
+                "children": []
+              },
+              {
+                "name": "5.2.3 Stack Operations",
+                "value": 36,
+                "preview": "AltStack: $\\mathcal{ST}_{alt} = \\mathbb{S}^*$ (alternate stack for temporary storage) Combined Stack Size Limit: $|stack| + |altstack| \\leq L_{stack}$ (combined size must not exceed maximum) OP_TOALTSTACK (opcode 0x6b): - Stack Input: $[item]$ where $item \\in \\mathbb{S}$ - Stack Output: $\\emptyset$ (item moved to altstack) - AltStack Output: $[item]$ (item…",
+                "children": []
+              },
+              {
+                "name": "5.2.4 Conditional Opcode Execution",
+                "value": 38,
+                "preview": "Execution State: $fExec \\in \\{\\text{true}, \\text{false}\\}$ (current execution state) OP_VER (opcode 0x62): - Stack Input: $\\emptyset$ - Stack Output: $\\emptyset$ (opcode fails if executing) - Validation: - If $fExec = \\text{true}$: $\\text{OP_VER}(stack, fExec) = \\text{error}$ (disabled opcode, fails when executing) - If $fExec = \\text{false}$:…",
+                "children": []
+              },
+              {
+                "name": "5.2.5 Script Verification Flags",
+                "value": 57,
+                "preview": "CalculateScriptFlags: $\\mathcal{TX} \\times \\mathcal{W}^? \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\mathbb{N}_{32}$ Properties: - Flag activation: $\\text{CalculateScriptFlags}(tx, w, h, n) = f \\implies \\forall flag \\in f: h \\geq H_{flag}(n)$ - Per-transaction calculation: $\\text{CalculateScriptFlags}(tx_1, w_1, h, n) \\neq…",
+                "children": []
+              },
+              {
+                "name": "5.2.6 Script Flag Exceptions",
+                "value": 16,
+                "preview": "Some blocks use different script verification flags than the default (historical BIP16 and Taproot activation exceptions). ScriptFlagExceptions: $\\text{Network} \\rightarrow (\\mathbb{H} \\rightharpoonup \\mathbb{N}_{32})$ For each network $n$, $\\text{ScriptFlagExceptions}(n)$ is a partial map from block hash to override flags. When validating transactions in…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "5.3 Block Validation",
+            "value": 127,
+            "preview": "ConnectBlock: $\\mathcal{B} \\times \\mathcal{US} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\} \\times \\mathcal{US}$ Properties: - Block structure: $\\text{ConnectBlock}(b, us, height) = \\text{valid} \\implies |b.transactions| > 0$ (block must have transactions) - Coinbase requirement: $\\text{ConnectBlock}(b, us, height) = \\text{valid} \\implies…",
+            "children": [
+              {
+                "name": "5.3.1 Transaction Application Equivalence",
+                "value": 109,
+                "preview": "Theorem 5.3.1 (ApplyTransaction Equivalence): The functions apply_transaction and apply_transaction_with_id produce identical results: $$\\forall tx \\in \\mathcal{TX}, us \\in \\mathcal{US}, h \\in \\mathbb{N}:$$ $$\\text{ApplyTransaction}(tx, us, h) = \\text{ApplyTransactionWithId}(tx, \\text{CalculateTxId}(tx), us, h)$$ *Proof*: Both functions apply identical UTXO…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "5.4 BIP Validation Rules",
+            "value": 640,
+            "preview": "This section specifies the mathematical properties of critical Bitcoin Improvement Proposals (BIPs) that enforce consensus rules for block and transaction validation. BIP30Check: $\\mathcal{B} \\times \\mathcal{US} \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Deactivation height: $\\text{BIP30Check}(b, us,…",
+            "children": [
+              {
+                "name": "5.4.1 BIP30: Duplicate Coinbase Prevention",
+                "value": 41,
+                "preview": "BIP30Check: $\\mathcal{B} \\times \\mathcal{US} \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Deactivation height: $\\text{BIP30Check}(b, us, h, n) = \\text{valid} \\implies h > H_{30\\_deact}(n)$ (after deactivation, always valid) - Duplicate coinbase prevention: $\\text{BIP30Check}(b, us, h, n) =…",
+                "children": []
+              },
+              {
+                "name": "5.4.2 BIP34: Block Height in Coinbase",
+                "value": 40,
+                "preview": "BIP34Check: $\\mathcal{B} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Height requirement: $\\text{BIP34Check}(b, h) = \\text{valid} \\implies h < H_{34} \\lor (\\forall tx \\in b.transactions : \\text{IsCoinbase}(tx) \\implies \\text{ExtractHeight}(tx) = h)$ - Coinbase height: $\\text{BIP34Check}(b, h) = \\text{invalid} \\implies h \\geq…",
+                "children": []
+              },
+              {
+                "name": "5.4.3 BIP66: Strict DER Signature Validation",
+                "value": 40,
+                "preview": "BIP66Check: $\\mathbb{S} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Strict DER requirement: $\\text{BIP66Check}(sig, h) = \\text{valid} \\implies h < H_{66} \\lor \\text{IsStrictDER}(sig)$ - DER validation: $\\text{BIP66Check}(sig, h) = \\text{invalid} \\implies h \\geq H_{66} \\land \\neg \\text{IsStrictDER}(sig)$ - Validation…",
+                "children": []
+              },
+              {
+                "name": "5.4.4 BIP90: Block Version Enforcement",
+                "value": 46,
+                "preview": "BIP90Check: $\\mathcal{H} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Version requirement: $\\text{BIP90Check}(h, height) = \\text{valid} \\implies height < H_{34} \\lor h.version \\geq 2$ - Version enforcement: $\\text{BIP90Check}(h, height) = \\text{invalid} \\implies height \\geq H_{34} \\land h.version < 2$ - Validation…",
+                "children": []
+              },
+              {
+                "name": "5.4.5 BIP147: NULLDUMMY Enforcement",
+                "value": 69,
+                "preview": "BIP147Check: $\\mathbb{S} \\times \\mathbb{S} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - NULLDUMMY requirement: $\\text{BIP147Check}(scriptSig, scriptPubkey, h) = \\text{valid} \\implies h < H_{147} \\lor \\neg \\text{ContainsMultisig}(scriptPubkey) \\lor \\text{IsNullDummy}(scriptSig)$ - Multisig validation:…",
+                "children": []
+              },
+              {
+                "name": "5.4.6 BIP119: OP_CHECKTEMPLATEVERIFY (CTV)",
+                "value": 110,
+                "preview": "BIP119Check: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathbb{H} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Template hash validation: $\\text{BIP119Check}(tx, i, h) = \\text{valid} \\iff \\text{TemplateHash}(tx, i) = h$ - Input index requirement: $\\text{BIP119Check}(tx, i, h)$ requires $i < |tx.inputs|$ (valid input index) - Validation…",
+                "children": []
+              },
+              {
+                "name": "5.4.7 BIP65: OP_CHECKLOCKTIMEVERIFY (CLTV)",
+                "value": 70,
+                "preview": "BIP65Check: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathbb{N} \\times \\mathbb{H} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Zero locktime rejection: $\\text{BIP65Check}(tx, i, lt, h) = \\text{invalid} \\iff tx.\\text{lockTime} = 0$ (zero locktime always invalid) - Type consistency: $\\text{BIP65Check}(tx, i, lt, h) = \\text{valid} \\implies…",
+                "children": []
+              },
+              {
+                "name": "5.4.8 BIP348: OP_CHECKSIGFROMSTACK (CSFS)",
+                "value": 187,
+                "preview": "BIP348Check: $\\mathbb{S} \\times \\mathbb{S} \\times \\mathbb{S} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Tapscript-only: $\\text{BIP348Check}(msg, pk, sig, h) = \\text{valid} \\implies \\text{SigVersion} = \\text{Tapscript}$ (only available in Tapscript) - Zero pubkey rejection: $|pk| = 0 \\implies \\text{BIP348Check}(msg, pk,…",
+                "children": []
+              },
+              {
+                "name": "5.4.9 BIP54: Consensus Cleanup",
+                "value": 25,
+                "preview": "BIP54 bundles several consensus fixes (timewarp mitigation, per-tx sigop limit, 64-byte tx invalidity, coinbase nLockTime/nSequence). All are gated by a single activation height $H_{54}$. BIP54TimewarpCheck: $\\mathcal{H} \\times \\mathbb{N} \\times \\mathbb{N} \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ At difficulty…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "5.5 Sequence Locks (BIP68)",
+            "value": 121,
+            "preview": "Sequence locks enforce relative locktime constraints using transaction input sequence numbers. Unlike absolute locktime (nLockTime), sequence locks are relative to when the input was confirmed. Sequence Number Encoding: $nSequence \\in \\mathbb{N}_{32}$ (32-bit unsigned integer) The sequence number encodes: - Bit 31 (0x80000000): Disable flag - if set,…",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "6. Economic Model",
+        "value": 210,
+        "preview": "GetBlockSubsidy: $\\mathbb{N} \\rightarrow \\mathbb{Z}$ Properties: - Non-negative: $\\text{GetBlockSubsidy}(h) \\geq 0$ for all $h \\in \\mathbb{N}$ - Upper bound: $\\text{GetBlockSubsidy}(h) \\leq \\text{INITIAL\\_SUBSIDY}$ for all $h \\in \\mathbb{N}$ - Genesis block: $h = 0 \\implies \\text{GetBlockSubsidy}(h) = \\text{INITIAL\\_SUBSIDY}$ - After 64 halvings: $h \\geq…",
+        "children": [
+          {
+            "name": "6.1 Block Subsidy",
+            "value": 55,
+            "preview": "GetBlockSubsidy: $\\mathbb{N} \\rightarrow \\mathbb{Z}$ Properties: - Non-negative: $\\text{GetBlockSubsidy}(h) \\geq 0$ for all $h \\in \\mathbb{N}$ - Upper bound: $\\text{GetBlockSubsidy}(h) \\leq \\text{INITIAL\\_SUBSIDY}$ for all $h \\in \\mathbb{N}$ - Genesis block: $h = 0 \\implies \\text{GetBlockSubsidy}(h) = \\text{INITIAL\\_SUBSIDY}$ - After 64 halvings: $h \\geq…",
+            "children": []
+          },
+          {
+            "name": "6.2 Total Supply",
+            "value": 40,
+            "preview": "TotalSupply: $\\mathbb{N} \\rightarrow \\mathbb{Z}$ Properties: - Non-negativity: $\\text{TotalSupply}(h) \\geq 0$ for all $h \\in \\mathbb{N}$ - Supply limit: $\\text{TotalSupply}(h) \\leq \\text{MAX\\_MONEY}$ for all $h \\in \\mathbb{N}$ (critical security invariant) - Genesis block: $\\text{TotalSupply}(0) = 50 \\times C = \\text{INITIAL\\_SUBSIDY}$ - Monotonicity:…",
+            "children": []
+          },
+          {
+            "name": "6.3 Supply Limit Validation",
+            "value": 23,
+            "preview": "ValidateSupplyLimit: $\\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ $$\\text{ValidateSupplyLimit}(h) = \\begin{cases} \\text{valid} & \\text{if } \\text{TotalSupply}(h) \\leq \\text{MAX\\_MONEY} \\\\ \\text{invalid} & \\text{otherwise} \\end{cases}$$ Validates that the total supply at height $h$ does not exceed the maximum money supply. Properties: -…",
+            "children": []
+          },
+          {
+            "name": "6.4 Coinbase Detection",
+            "value": 31,
+            "preview": "IsCoinbase: $\\mathcal{TX} \\rightarrow \\{\\text{true}, \\text{false}\\}$ A transaction $tx = (v, ins, outs, lt)$ is a coinbase transaction if and only if: $$\\text{IsCoinbase}(tx) = \\begin{cases} \\text{true} & \\text{if } |ins| = 1 \\land ins[0].\\text{prevout}.\\text{hash} = 0^{32} \\land ins[0].\\text{prevout}.\\text{index} = 2^{32} - 1 \\\\ \\text{false} &…",
+            "children": []
+          },
+          {
+            "name": "6.5 Fee Market",
+            "value": 55,
+            "preview": "Transaction Fee: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\mathbb{Z}$ Properties: - Fee formula: $\\text{Fee}(tx, us) = \\sum_{i \\in tx.\\text{inputs}} us(i.\\text{prevout}).\\text{value} - \\sum_{o \\in tx.\\text{outputs}} o.\\text{value}$ - Coinbase fee: $\\text{IsCoinbase}(tx) = \\text{true} \\implies \\text{Fee}(tx, us) = 0$ - Non-negative fee: $\\text{Fee}(tx,…",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "7. Proof of Work",
+        "value": 124,
+        "preview": "ExpandTarget: $\\mathbb{N} \\rightarrow \\mathbb{U256}$ Properties: - Positive bits: $\\text{ExpandTarget}(bits)$ requires $bits > 0$ (bits must be positive) - Target expansion: $\\text{ExpandTarget}(bits)$ expands compact difficulty representation to full 256-bit target - Formula correctness: $\\text{ExpandTarget}(bits) = \\text{mantissa} \\times 2^{8 \\times…",
+        "children": [
+          {
+            "name": "7.1 Difficulty Adjustment",
+            "value": 106,
+            "preview": "ExpandTarget: $\\mathbb{N} \\rightarrow \\mathbb{U256}$ Properties: - Positive bits: $\\text{ExpandTarget}(bits)$ requires $bits > 0$ (bits must be positive) - Target expansion: $\\text{ExpandTarget}(bits)$ expands compact difficulty representation to full 256-bit target - Formula correctness: $\\text{ExpandTarget}(bits) = \\text{mantissa} \\times 2^{8 \\times…",
+            "children": []
+          },
+          {
+            "name": "7.2 Block Validation",
+            "value": 15,
+            "preview": "CheckProofOfWork: $\\mathcal{H} \\rightarrow \\{\\text{true}, \\text{false}\\}$ $$\\text{CheckProofOfWork}(h) = \\text{SHA256}(\\text{SHA256}(h)) < \\text{ExpandTarget}(h.bits)$$ Where SHA256 is the Secure Hash Algorithm and $\\text{ExpandTarget}$ converts the compact difficulty representation to a full 256-bit target. Properties: - PoW correctness:…",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "8. Security Properties",
+        "value": 178,
+        "preview": "Conservation of Value: For any valid transaction $tx$: $$\\sum_{i \\in tx.inputs} us(i.prevout).value \\geq \\sum_{o \\in tx.outputs} o.value$$ Theorem 8.1 (UTXO Set Invariant): The UTXO set maintains the invariant that the sum of all UTXO values equals the total money supply. *Proof*: Let $US_h$ be the UTXO set at height $h$. We prove by induction: Base case:…",
+        "children": [
+          {
+            "name": "8.1 Economic Security",
+            "value": 35,
+            "preview": "Conservation of Value: For any valid transaction $tx$: $$\\sum_{i \\in tx.inputs} us(i.prevout).value \\geq \\sum_{o \\in tx.outputs} o.value$$ Theorem 8.1 (UTXO Set Invariant): The UTXO set maintains the invariant that the sum of all UTXO values equals the total money supply. *Proof*: Let $US_h$ be the UTXO set at height $h$. We prove by induction: Base case:…",
+            "children": []
+          },
+          {
+            "name": "8.2 Integration and Round-Trip Properties",
+            "value": 54,
+            "preview": "Integration properties verify that multiple functions work together correctly in multi-function workflows. Property (Economic Block Integration): For valid blocks, economic rules are consistently enforced: $$\\forall b \\in \\mathcal{B}, h \\in \\mathbb{N}: \\text{ConnectBlock}(b, us, h) = \\text{valid} \\implies$$ $$\\text{GetBlockSubsidy}(h) + \\sum_{tx \\in…",
+            "children": [
+              {
+                "name": "8.2.1 Integration Properties",
+                "value": 28,
+                "preview": "Integration properties verify that multiple functions work together correctly in multi-function workflows. Property (Economic Block Integration): For valid blocks, economic rules are consistently enforced: $$\\forall b \\in \\mathcal{B}, h \\in \\mathbb{N}: \\text{ConnectBlock}(b, us, h) = \\text{valid} \\implies$$ $$\\text{GetBlockSubsidy}(h) + \\sum_{tx \\in…",
+                "children": []
+              },
+              {
+                "name": "8.2.2 Round-Trip Properties",
+                "value": 23,
+                "preview": "Round-trip properties ensure that encoding/decoding and serialization/deserialization operations are inverse operations. Property (Transaction Serialization Round-Trip): Transaction serialization and deserialization are inverse operations: $$\\forall tx \\in \\mathcal{TX}: \\text{DeserializeTransaction}(\\text{SerializeTransaction}(tx)) = tx$$ Property (SegWit…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "8.3 Cryptographic Security",
+            "value": 22,
+            "preview": "Signature Verification: For public key $pk$, signature $sig$, and message hash $m$: $$\\text{VerifySignature}(pk, sig, m) = \\text{secp256k1\\_verify}(pk, sig, m)$$ Where secp256k1 is the elliptic curve used by Bitcoin and ECDSA is the signature algorithm. Theorem 8.3 (Signature Security): Assuming the discrete logarithm problem is hard in the secp256k1 group,…",
+            "children": []
+          },
+          {
+            "name": "8.4 Merkle Tree Security",
+            "value": 38,
+            "preview": "ComputeMerkleRoot: $\\mathcal{H}^+ \\rightarrow \\mathbb{H}$ (non-empty sequence of 32-byte hashes to 32-byte root hash) Properties: - Deterministic: $\\text{ComputeMerkleRoot}(H) = \\text{ComputeMerkleRoot}(H)$ for all $H$ - Single element: $|H| = 1 \\implies \\text{ComputeMerkleRoot}(H) = H[0]$ - Collision resistance: $\\text{ComputeMerkleRoot}(H_1) =…",
+            "children": [
+              {
+                "name": "8.4.1 ComputeMerkleRoot",
+                "value": 36,
+                "preview": "ComputeMerkleRoot: $\\mathcal{H}^+ \\rightarrow \\mathbb{H}$ (non-empty sequence of 32-byte hashes to 32-byte root hash) Properties: - Deterministic: $\\text{ComputeMerkleRoot}(H) = \\text{ComputeMerkleRoot}(H)$ for all $H$ - Single element: $|H| = 1 \\implies \\text{ComputeMerkleRoot}(H) = H[0]$ - Collision resistance: $\\text{ComputeMerkleRoot}(H_1) =…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "8.5 Deterministic Properties",
+            "value": 23,
+            "preview": "Many consensus functions must be deterministic to ensure all nodes reach the same results. Theorem 8.5.1 (Proof of Work Determinism): Proof of work validation is deterministic: $$\\forall h \\in \\mathcal{H}: \\text{CheckProofOfWork}(h) \\text{ is deterministic}$$ *Proof*: The function uses only the block header and deterministic hash functions (SHA256). Given…",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "9. Mempool Protocol",
+        "value": 70,
+        "preview": "AcceptToMemoryPool: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\{\\text{accepted}, \\text{rejected}\\}$ Properties: - Acceptance correctness: $\\text{AcceptToMemoryPool}(tx, us) = \\text{accepted} \\implies \\text{CheckTransaction}(tx) = \\text{valid} \\land \\neg \\text{IsCoinbase}(tx)$ - Coinbase rejection: $\\text{IsCoinbase}(tx) = \\text{true} \\implies…",
+        "children": [
+          {
+            "name": "9.1 Mempool Validation",
+            "value": 22,
+            "preview": "AcceptToMemoryPool: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\{\\text{accepted}, \\text{rejected}\\}$ Properties: - Acceptance correctness: $\\text{AcceptToMemoryPool}(tx, us) = \\text{accepted} \\implies \\text{CheckTransaction}(tx) = \\text{valid} \\land \\neg \\text{IsCoinbase}(tx)$ - Coinbase rejection: $\\text{IsCoinbase}(tx) = \\text{true} \\implies…",
+            "children": [
+              {
+                "name": "9.1.1 Transaction Finality",
+                "value": 13,
+                "preview": "$\\text{CheckFinalTxAtTip}(tx)$ requires that absolute lock time ($nLockTime$) and input sequence locks (BIP68/BIP112) are satisfied at the current chain tip so the transaction is not treated as non-final for relay. A transaction $tx$ is accepted to the mempool if and only if: 1. Basic Validation: $tx$ passes CheckTransaction 2. Non-Coinbase: $\\neg…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "9.2 Standard Transaction Rules",
+            "value": 24,
+            "preview": "IsStandardTx: $\\mathcal{TX} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Standard version: $\\text{IsStandardTx}(tx) = \\text{true} \\implies tx.version \\in \\{1, 2\\}$ (version must be 1 or 2) - Standard scripts: $\\text{IsStandardTx}(tx) = \\text{true} \\implies$ all outputs use standard script types (P2PKH, P2SH, P2WPKH, P2WSH, P2TR) - Boolean…",
+            "children": []
+          },
+          {
+            "name": "9.3 Replace-By-Fee (RBF)",
+            "value": 20,
+            "preview": "ReplacementChecks: $\\mathcal{TX} \\times \\mathcal{TX} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - RBF requirement: $\\text{ReplacementChecks}(tx_1, tx_2) = \\text{true} \\implies \\exists i \\in tx_1.inputs : i.sequence < \\text{SEQUENCE\\_FINAL}$ (RBF signaling required) - Fee bump requirement: $\\text{ReplacementChecks}(tx_1, tx_2) = \\text{true}…",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "10. Network Protocol",
+        "value": 118,
+        "preview": "The Bitcoin network protocol enables nodes to synchronize the blockchain and relay transactions. The protocol operates over TCP connections and uses a message-based communication system. NetworkMessage: $\\mathcal{M} = \\{\\text{version}, \\text{verack}, \\text{addr}, \\text{inv}, \\text{getdata}, \\text{tx}, \\text{block}, \\text{headers}, \\text{getheaders},…",
+        "children": [
+          {
+            "name": "10.1 Message Types",
+            "value": 76,
+            "preview": "NetworkMessage: $\\mathcal{M} = \\{\\text{version}, \\text{verack}, \\text{addr}, \\text{inv}, \\text{getdata}, \\text{tx}, \\text{block}, \\text{headers}, \\text{getheaders}, \\text{ping}, \\text{pong}\\}$ Message Flow: 1. Connection: Nodes establish TCP connections 2. Handshake: Exchange version and verack messages 3. Synchronization: Request and receive blocks/headers…",
+            "children": [
+              {
+                "name": "10.1.1 Message Header Parsing",
+                "value": 27,
+                "preview": "MessageHeader: 24 bytes = magic (4) ‖ command (12) ‖ payload_length (4) ‖ checksum (4) ParseMessage: $\\mathbb{S} \\rightarrow \\mathcal{M} \\cup \\{\\text{error}\\}$ Parses raw bytes into a protocol message. Rejects messages that are too short, too long, have invalid magic, unknown command, invalid checksum, or incomplete payload. Properties: - Size minimum:…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "10.2 Connection Management",
+            "value": 9,
+            "preview": "Connection Types: - Outbound: Active connections to other nodes - Inbound: Passive connections from other nodes - Feeler: Short-lived connections for peer discovery - Block-Relay: Connections that only relay blocks Further P2P lifecycle and dispatch details appear with §10.3 and §10.6 in ARCHITECTURE.md.",
+            "children": []
+          },
+          {
+            "name": "10.2.1 Handshake Invariants",
+            "value": 9,
+            "preview": "HandleVersionReceived: On receipt of version message, node must send verack only after processing. VerAck is never sent before Version. Properties: - Version-before-VerAck: $\\text{VerAckSent} \\implies \\text{VersionReceived}$ (ordering rule) - No premature VerAck: VerAck must not be sent before Version is received and processed Theorem 10.2.1 (Handshake…",
+            "children": []
+          },
+          {
+            "name": "10.4 Block Synchronization",
+            "value": 9,
+            "preview": "GetHeaders: Request block headers from a specific point Headers: Response containing block headers GetBlocks: Request block inventory (deprecated) Inv: Inventory message listing available objects GetData: Request specific objects (blocks, transactions) Block: Full block data MerkleBlock: Block with merkle proof for filtered nodes",
+            "children": []
+          },
+          {
+            "name": "10.5 Transaction Relay",
+            "value": 7,
+            "preview": "Tx: Broadcast transaction to peers MemPool: Request mempool contents FeeFilter: Set minimum fee rate for transaction relay",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "11. Advanced Features",
+        "value": 661,
+        "preview": "Witness Data: $\\mathcal{W} = \\mathbb{S}^*$ (stack of witness elements) Witness Merkle (BIP141): The commitment uses the witness transaction id (wtxid) merkle tree (not a hash of raw witness stacks). Let $\\text{wtxid}(tx)$ be the 32-byte hash defined in BIP141: coinbase wtxid is fixed to $0^{32}$; for other transactions, if no witness data is present,…",
+        "children": [
+          {
+            "name": "11.1 Segregated Witness (SegWit)",
+            "value": 287,
+            "preview": "Witness Data: $\\mathcal{W} = \\mathbb{S}^*$ (stack of witness elements) Witness Merkle (BIP141): The commitment uses the witness transaction id (wtxid) merkle tree (not a hash of raw witness stacks). Let $\\text{wtxid}(tx)$ be the 32-byte hash defined in BIP141: coinbase wtxid is fixed to $0^{32}$; for other transactions, if no witness data is present,…",
+            "children": [
+              {
+                "name": "11.1.1 Weight and Size Calculations",
+                "value": 68,
+                "preview": "CalculateTransactionWeight: $\\mathcal{TX} \\times \\mathcal{W}^? \\rightarrow \\mathbb{N}$ Properties: - Weight formula: $\\text{CalculateTransactionWeight}(tx, w) = 3 \\times \\text{BaseSize}(tx) + \\text{TotalSize}(tx, w)$ (BIP141) - Non-negativity: $\\text{CalculateTransactionWeight}(tx, w) \\geq 0$ for all valid transactions - Minimum weight:…",
+                "children": []
+              },
+              {
+                "name": "11.1.2 Witness Structure Validation",
+                "value": 25,
+                "preview": "ValidateSegWitWitnessStructure: $\\mathcal{W} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Element size bounds: $\\text{ValidateSegWitWitnessStructure}(w) = \\text{true} \\iff \\forall e \\in w : |e| \\leq 520$ - Empty witness: $\\text{ValidateSegWitWitnessStructure}(\\emptyset) = \\text{true}$ (empty witness is valid) - Structure validation:…",
+                "children": []
+              },
+              {
+                "name": "11.1.3 Witness Program Extraction",
+                "value": 46,
+                "preview": "ExtractWitnessVersion: $\\mathbb{S} \\rightarrow \\{\\text{None}, \\text{SegWitV0}, \\text{TaprootV1}\\}$ Properties: - Version range: $\\text{ExtractWitnessVersion}(s) \\neq \\text{None} \\implies |s| \\geq 2 \\land (s[0] = 0x00 \\lor s[0] = 0x51)$ - Valid version: $\\text{ExtractWitnessVersion}(s) = \\text{SegWitV0} \\implies s[0] = 0x00 \\land |s| \\geq 2$ - Taproot…",
+                "children": []
+              },
+              {
+                "name": "11.1.4 Witness Merkle Root",
+                "value": 15,
+                "preview": "ComputeWitnessMerkleRoot: $\\mathcal{B} \\times \\mathcal{W}^* \\rightarrow \\mathbb{H}$ Definition (BIP141 wtxid tree): For each transaction index $i$, define the leaf hash $L_i$: - $L_0 = 0^{32}$ (coinbase wtxid is fixed to zero). - For $i > 0$: let $w^{(i)}$ be the witness data for transaction $i$ (per-input stacks). If no witness element is non-empty, $L_i =…",
+                "children": []
+              },
+              {
+                "name": "11.1.5 Witness Commitment Validation",
+                "value": 19,
+                "preview": "ValidateWitnessCommitment: $\\mathcal{TX} \\times \\mathbb{H} \\times \\mathcal{W}^* \\rightarrow \\{\\text{true}, \\text{false}\\}$ Inputs: coinbase transaction $tx$, computed witness merkle root $r$, and the coinbase transaction’s witness stacks (to obtain the witness reserved value). Let $n \\in \\{0,1\\}^{256}$ be the 32-byte witness reserved value: the first push…",
+                "children": []
+              },
+              {
+                "name": "11.1.6 SegWit Transaction Detection",
+                "value": 14,
+                "preview": "IsSegWitTransaction: $\\mathcal{TX} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Output detection: $\\text{IsSegWitTransaction}(tx) = \\text{true} \\iff \\exists o \\in tx.outputs : \\text{IsSegWitOutput}(o.scriptPubkey)$ - Boolean result: $\\text{IsSegWitTransaction}(tx) \\in \\{\\text{true}, \\text{false}\\}$ - Witness presence:…",
+                "children": []
+              },
+              {
+                "name": "11.1.7 Block Validation",
+                "value": 17,
+                "preview": "ValidateSegWitBlock: $\\mathcal{B} \\times \\mathcal{W}^* \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ (Parameters: block $b$, per-transaction witness data $w_1,\\ldots,w_n$, maximum block weight $W_{\\text{max}}$.) Properties: - Let $r = \\text{ComputeWitnessMerkleRoot}(b, w_1, \\ldots, w_n)$ as in §11.1.4. - Witness commitment (when present)…",
+                "children": []
+              },
+              {
+                "name": "11.1.8 Nested SegWit (P2WSH-in-P2SH, P2WPKH-in-P2SH)",
+                "value": 31,
+                "preview": "Nested SegWit: SegWit outputs can be wrapped in P2SH, creating nested SegWit transactions. P2WPKH-in-P2SH: Pay-to-Witness-Public-Key-Hash wrapped in P2SH For P2WPKH-in-P2SH: - Redeem Script Format: $[0x00, 0x14, h_{20}]$ where $h_{20} \\in \\{0,1\\}^{160}$ - $0x00$ is OP_0 - $0x14$ is push 20 bytes - $h_{20}$ is the 20-byte pubkey hash - Witness: Contains…",
+                "children": []
+              },
+              {
+                "name": "11.1.9 BIP143 Witness Sighash (ComputeWitnessSignatureHash)",
+                "value": 31,
+                "preview": "ComputeWitnessSignatureHash: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathbb{S} \\times \\mathbb{Z} \\times \\mathbb{N}_{8} \\rightarrow \\mathbb{H}$ Computes the signature hash for SegWit (P2WPKH, P2WSH) inputs per BIP 143. Replaces legacy sighash with a committed structure that excludes scriptSig and binds the amount. Preimage structure (BIP 143 byte layout):…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "11.2 Taproot",
+            "value": 239,
+            "preview": "Taproot Output: P2TR script OP_1 <32-byte-hash> P2TR Script Format: $\\text{P2TR} = [0x51, 0x20, h_{32}]$ where $h_{32} \\in \\{0,1\\}^{256}$ P2TR Detection: $\\text{IsP2TR}(spk) = (|spk| = 34) \\land (spk[0] = 0x51) \\land (spk[1] = 0x20)$ Empty ScriptSig Requirement: For Taproot transactions, scriptSig must be empty: $$\\forall tx \\in \\mathcal{TX}, i \\in…",
+            "children": [
+              {
+                "name": "11.2.1 Taproot Script Validation",
+                "value": 37,
+                "preview": "ValidateTaprootScript: $\\mathbb{S} \\rightarrow \\{\\text{true}, \\text{false}\\}$ For script $s$: $$\\text{ValidateTaprootScript}(s) = (|s| = 34) \\land (s[0] = 0x51) \\land (s[1] = 0x20)$$ Properties: - Length validation: $\\text{ValidateTaprootScript}(s) = \\text{true} \\iff |s| = 34$ - Format correctness: $\\text{ValidateTaprootScript}(s) = \\text{true} \\implies…",
+                "children": []
+              },
+              {
+                "name": "11.2.2 Taproot Key Operations",
+                "value": 25,
+                "preview": "ComputeTaprootTweak: $[0,1]^{256} \\times \\mathbb{H} \\rightarrow [0,1]^{256}$ Properties: - Tweak length: $\\text{ComputeTaprootTweak}(pk, root) = t \\implies |t| = 32$ (32-byte tweak) - Deterministic: $\\text{ComputeTaprootTweak}(pk_1, root_1) = \\text{ComputeTaprootTweak}(pk_2, root_2) \\iff pk_1 = pk_2 \\land root_1 = root_2$ - Hash property:…",
+                "children": []
+              },
+              {
+                "name": "11.2.3 Taproot Script Path",
+                "value": 50,
+                "preview": "ValidateTaprootScriptPath: $\\mathbb{S} \\times [\\mathbb{H}]^* \\times [0,1]^{256} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Merkle proof validation: $\\text{ValidateTaprootScriptPath}(s, proof, root) = \\text{true} \\iff \\text{ComputeScriptMerkleRoot}(s, proof, v) = root$ - Boolean result: $\\text{ValidateTaprootScriptPath}(s, proof, root) \\in…",
+                "children": []
+              },
+              {
+                "name": "11.2.4 Taproot Witness Structure",
+                "value": 15,
+                "preview": "ValidateTaprootWitnessStructure: $\\mathcal{W} \\times \\{\\text{true}, \\text{false}\\} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Key path structure: $\\text{ValidateTaprootWitnessStructure}(w, \\text{false}) = \\text{true} \\iff |w| = 1 \\land |w[0]| = 64$ (single 64-byte signature) - Script path structure: $\\text{ValidateTaprootWitnessStructure}(w,…",
+                "children": []
+              },
+              {
+                "name": "11.2.5 Taproot Transaction Validation",
+                "value": 15,
+                "preview": "ValidateTaprootTransaction: $\\mathcal{TX} \\times \\mathcal{W}^? \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - ScriptSig empty: $\\text{ValidateTaprootTransaction}(tx, w) = \\text{valid} \\implies \\forall i \\in tx.inputs : \\text{IsP2TR}(tx.outputs[j].scriptPubkey) \\implies i.scriptSig = \\emptyset$ - Witness structure:…",
+                "children": []
+              },
+              {
+                "name": "11.2.6 Taproot Signature Hash",
+                "value": 12,
+                "preview": "ComputeTaprootSignatureHash: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathcal{US} \\times \\mathbb{N}_{32} \\times \\mathbb{H}^? \\rightarrow \\mathbb{H}$ Properties: - Hash length: $\\text{ComputeTaprootSignatureHash}(tx, i, us, type, leaf) = h \\implies |h| = 32$ (32-byte hash) - Deterministic: $\\text{ComputeTaprootSignatureHash}(tx_1, i_1, us_1, type_1, leaf_1) =…",
+                "children": []
+              },
+              {
+                "name": "11.2.7 Tapscript Signature Hash (BIP 342)",
+                "value": 34,
+                "preview": "ComputeTapscriptSignatureHash: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathcal{US} \\times \\mathbb{S} \\times \\mathbb{N}_{8} \\times \\mathbb{N}_{32} \\times \\mathbb{N}_{8} \\rightarrow \\mathbb{H}$ Computes the signature hash for tapscript (script-path) spending. Same base SigMsg structure as key-path (11.2.6), with an extension field $ext$ that binds the…",
+                "children": []
+              },
+              {
+                "name": "11.2.8 Tapscript Opcodes and SigOp Counting (BIP 342)",
+                "value": 27,
+                "preview": "OP_CHECKSIGADD (opcode 0xba): Tapscript-only opcode for signature aggregation. Stack semantics: Pops $(pk, n, sig)$ where $pk \\in \\mathbb{B}^{32}$, $n \\in \\mathbb{N}_{32}$, $sig \\in \\mathbb{B}^{64}$. Verifies BIP 340 Schnorr signature $(pk, sig)$ against the tapscript sighash. If valid: push $(n+1)$; else: fail. $$\\text{OP\\_CHECKSIGADD}(pk, n, sig) =…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "11.4 UTXO Commitments",
+            "value": 109,
+            "preview": "Scope: UTXO commitments are not consensus-active on Bitcoin mainnet at the chain tip described in this document. They are specified for optional deployments, research implementations, and networks that choose to enable them (for example behind feature flags). Treat material in this section as non–mainnet-mandatory unless your deployment explicitly activates…",
+            "children": []
+          },
+          {
+            "name": "11.5 Signet (BIP325)",
+            "value": 21,
+            "preview": "Signet is a test network with an additional consensus parameter: the coinbase witness commitment must satisfy a challenge script. See BIP325. SignetChallenge: $\\text{Network} \\rightarrow \\mathbb{S}^?$ For each network $n$, $\\text{SignetChallenge}(n) \\in \\mathbb{S} \\cup \\{\\emptyset\\}$. When $\\text{SignetChallenge}(n) \\neq \\emptyset$, signet validation…",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "12. Mining Protocol",
+        "value": 45,
+        "preview": "Coinbase Transaction: Special transaction with no inputs that creates new bitcoins CreateCoinbaseTransaction: $\\mathbb{N} \\times \\mathbb{Z} \\times \\mathbb{H} \\times \\mathbb{S} \\rightarrow \\mathcal{TX}$ Constructs a valid coinbase transaction for block at height $h$ with total fees $fees$, witness commitment hash $witness\\_commitment$, and optional extra…",
+        "children": [
+          {
+            "name": "12.2 Coinbase Transaction",
+            "value": 26,
+            "preview": "Coinbase Transaction: Special transaction with no inputs that creates new bitcoins CreateCoinbaseTransaction: $\\mathbb{N} \\times \\mathbb{Z} \\times \\mathbb{H} \\times \\mathbb{S} \\rightarrow \\mathcal{TX}$ Constructs a valid coinbase transaction for block at height $h$ with total fees $fees$, witness commitment hash $witness\\_commitment$, and optional extra…",
+            "children": []
+          },
+          {
+            "name": "12.4 Block Template Interface",
+            "value": 16,
+            "preview": "BlockTemplate: Interface for mining software Required Methods: - getBlockHeader(): Return block header for hashing - getBlock(): Return complete block (with dummy coinbase) - getCoinbaseTx(): Return actual coinbase transaction - getCoinbaseCommitment(): Return witness commitment - submitSolution(version, timestamp, nonce, coinbase): Submit mining solution…",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "13. Engineering-Specific Edge Cases",
+        "value": 95,
+        "preview": "PROTOCOL.md states consensus rules mainly as mathematical predicates, types, and state transitions (§2–§12 and cross-referenced clauses). This section adds consensus-critical material not covered by those predicates alone: engineering invariants in §13.3.1–§13.3.4 (checked arithmetic on amounts and fees, canonical serialization and decoding, exact…",
+        "children": [
+          {
+            "name": "13.3 Engineering Invariants",
+            "value": 91,
+            "preview": "Subsections 13.3.1–13.3.5 state engineering invariants and cross-module integration properties that implementations must satisfy together with the core protocol. Critical Requirement: All monetary value arithmetic must use checked operations to prevent overflow/underflow. Edge Cases: 1. Value Summation: Input/output value summation can overflow i64::MAX…",
+            "children": [
+              {
+                "name": "13.3.1 Integer Arithmetic Overflow/Underflow",
+                "value": 11,
+                "preview": "Critical Requirement: All monetary value arithmetic must use checked operations to prevent overflow/underflow. Edge Cases: 1. Value Summation: Input/output value summation can overflow i64::MAX when combining many large UTXOs 2. Fee Calculation: total_in - total_out can underflow or overflow near boundaries 3. Coinbase Value: subsidy + fees can exceed…",
+                "children": []
+              },
+              {
+                "name": "13.3.2 Serialization/Deserialization Correctness",
+                "value": 25,
+                "preview": "Critical Requirement: Wire format must match the canonical P2P serialization observed on the network byte-for-byte. Edge Cases: 1. VarInt Encoding: Boundary values (0xfc, 0xfd, 0xfe, 0xff) must use correct encoding format 2. Little-Endian: All integers must be serialized as little-endian 3. Block Header: Must be exactly 80 bytes 4. Transaction Format: Must…",
+                "children": []
+              },
+              {
+                "name": "13.3.3 Resource Limit Enforcement",
+                "value": 11,
+                "preview": "Critical Requirement: DoS protection limits must be enforced deterministically at exact boundaries. Edge Cases: 1. Script Operation Limit: Exactly 201 operations must fail (limit check happens after increment) 2. Stack Size Limit: Exactly 1000 stack items must fail before next push 3. Transaction Size: Exactly 1,000,000 bytes must pass, 1,000,001 must fail…",
+                "children": []
+              },
+              {
+                "name": "13.3.4 Parser Determinism",
+                "value": 10,
+                "preview": "Critical Requirement: Malformed data must be rejected deterministically. All nodes must agree on invalid inputs. Edge Cases: 1. Truncated Data: EOF at any point must be rejected with clear error 2. Invalid Length Fields: Length > remaining bytes, invalid VarInt encodings 3. Malformed Structures: Negative counts, maximum value abuse Implementation:…",
+                "children": []
+              },
+              {
+                "name": "13.3.5 Integration Proofs",
+                "value": 26,
+                "preview": "Integration proofs verify that different consensus modules work together correctly, ensuring that cross-module interactions maintain mathematical correctness. Theorem 13.3.5.1 (BIP65/BIP112 Locktime Consistency): BIP65 (CLTV) and BIP112 (CSV) use shared locktime logic consistently: $$\\forall lt \\in \\mathbb{N}_{32}:$$…",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "architectureOutline": {
+    "name": "ARCHITECTURE.md",
+    "value": 0,
+    "children": [
+      {
+        "name": "10.3 Peer Discovery",
+        "value": 6,
+        "preview": "AddrMan: Address manager maintaining peer database GetAddr: Request peer addresses from connected nodes Addr: Broadcast known peer addresses",
+        "children": []
+      },
+      {
+        "name": "10.6 Dandelion++ k-Anonymity",
+        "value": 62,
+        "preview": "*Full specification: DANDELION_SPEC.md in blvm-node. This section retains the k-anonymity definition, stem phase algorithm, and Implementation Invariants for spec-lock verification.* Adversary Model: Passive observer capable of monitoring network traffic, operating nodes, and performing graph analysis. k-Anonymity Definition: A transaction $tx$ satisfies…",
+        "children": []
+      },
+      {
+        "name": "11.3 Chain Reorganization",
+        "value": 52,
+        "preview": "Chain Selection: Choose chain with most cumulative work $$\\text{BestChain} = \\arg\\max_{chain} \\sum_{block \\in chain} \\text{Work}(block)$$ Reorganization: When a longer chain is found: 1. Disconnect blocks from current tip 2. Connect blocks from new chain 3. Update UTXO set accordingly Chain reorganization requires disconnecting blocks from the current chain…",
+        "children": [
+          {
+            "name": "11.3.1 Undo Log Pattern",
+            "value": 42,
+            "preview": "Chain reorganization requires disconnecting blocks from the current chain and connecting blocks from the new chain. To efficiently reverse the effects of ConnectBlock, we use an undo log pattern that records all UTXO set changes made by a block. Undo Entry: $\\mathcal{UE} = \\mathcal{O} \\times \\mathcal{U}^? \\times \\mathcal{U}^?$ An undo entry records: -…",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "12.1 Block Template Generation",
+        "value": 27,
+        "preview": "*One valid algorithm. Protocol requires output passes ConnectBlock; this section describes one way to construct a valid block template.* CreateNewBlock: $\\mathcal{US} \\times \\mathcal{TX}^* \\rightarrow \\mathcal{B}$ Properties: - Block structure: $\\text{CreateNewBlock}(us, mempool)$ returns a block with at least one transaction (coinbase) - Coinbase…",
+        "children": []
+      },
+      {
+        "name": "12.3 Mining Process",
+        "value": 64,
+        "preview": "*One valid algorithm. Protocol requires CheckProofOfWork(block) = true; this section describes one mining loop.* MineBlock: $\\mathcal{B} \\times \\mathbb{N} \\rightarrow \\mathcal{B} \\times \\{\\text{success}, \\text{failure}\\}$ Properties: - PoW success: $\\text{MineBlock}(block, maxTries) = (block', \\text{success}) \\implies \\text{CheckProofOfWork}(block') =…",
+        "children": []
+      },
+      {
+        "name": "13.1 Performance",
+        "value": 5,
+        "preview": "UTXO Set: Maintain in-memory for $O(1)$ lookups - Script Caching: Cache verification results - Parallel Validation: Validate transactions concurrently",
+        "children": []
+      },
+      {
+        "name": "13.2 Security",
+        "value": 6,
+        "preview": "Malleability: Prevented through SegWit - DoS Protection: Resource limits on size and operations - Replay Protection: Sequence numbers and locktime",
+        "children": []
+      },
+      {
+        "name": "13.4 Peer Consensus Protocol",
+        "value": 134,
+        "preview": "*One valid algorithm. Protocol requires UTXO commitment verification; this section describes one peer consensus approach.* The peer consensus protocol implements an N-of-M consensus model for UTXO commitment verification. It discovers diverse peers and finds consensus among them to verify UTXO commitments without trusting any single peer. This protocol is…",
+        "children": []
+      },
+      {
+        "name": "14. Conclusion",
+        "value": 29,
+        "preview": "This Orange Paper is a complete, definitive mathematical specification of Bitcoin consensus within the scope of PROTOCOL.md and this document (see each table of contents). BLVM validates it through extensive differential testing against Bitcoin Core, integration tests on consensus crates, and mainnet-observable behavior; when a discrepancy appears,…",
+        "children": [
+          {
+            "name": "14.1 Summary of Contributions",
+            "value": 15,
+            "preview": "Complete protocol specification (in scope): The formalized topics include, among others: - Transaction and block validation rules - Script execution semantics - Economic model with formal proofs - Proof-of-work and difficulty adjustment - Network protocol and mempool management - Mining process and block template generation Mathematical Rigor: The…",
+            "children": []
+          },
+          {
+            "name": "14.2 Applications",
+            "value": 9,
+            "preview": "This specification can be used for: - Formal Verification: Proving correctness properties of Bitcoin implementations - Protocol Analysis: Understanding the security and economic properties of Bitcoin - Implementation Reference: Building new Bitcoin-compatible software - Academic Research: Studying distributed consensus and cryptocurrency systems The…",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "References",
+        "value": 20,
+        "preview": "1. Reference implementation (bitcoin/bitcoin) 2. Bitcoin Improvement Proposals (BIPs) 3. Satoshi Nakamoto, \"Bitcoin: A Peer-to-Peer Electronic Cash System\" (2008) 4. FIPS 180-4: Secure Hash Standard 5. SEC 2: Recommended Elliptic Curve Domain Parameters 6. RFC 6979: Deterministic Usage of DSA and ECDSA 7. Set Theory 8. Discrete Mathematics 9. Cryptographic…",
+        "children": [
+          {
+            "name": "Bitcoin Protocol",
+            "value": 4,
+            "preview": "1. Reference implementation (bitcoin/bitcoin) 2. Bitcoin Improvement Proposals (BIPs) 3. Satoshi Nakamoto, \"Bitcoin: A Peer-to-Peer Electronic Cash System\" (2008)",
+            "children": []
+          },
+          {
+            "name": "Cryptographic Standards",
+            "value": 4,
+            "preview": "4. FIPS 180-4: Secure Hash Standard 5. SEC 2: Recommended Elliptic Curve Domain Parameters 6. RFC 6979: Deterministic Usage of DSA and ECDSA",
+            "children": []
+          },
+          {
+            "name": "Mathematical Concepts",
+            "value": 5,
+            "preview": "7. Set Theory 8. Discrete Mathematics 9. Cryptographic Hash Function 10. Elliptic Curve Cryptography",
+            "children": []
+          },
+          {
+            "name": "Security Vulnerabilities",
+            "value": 2,
+            "preview": "11. CVE-2012-2459: Bitcoin Merkle Tree Vulnerability",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "orangePaper": {
+    "name": "Orange Paper",
+    "value": 0,
+    "children": [
+      {
+        "name": "PROTOCOL.md",
+        "value": 0,
+        "children": [
+          {
+            "name": "A Complete Mathematical Description of the Bitcoin Consensus System",
+            "value": 6,
+            "preview": "Version 1.0 Consensus specification (implementation-agnostic) Authors: BTCDecoded.org, MyBitcoinFuture.com, @secsovereign ---",
+            "children": []
+          },
+          {
+            "name": "Abstract",
+            "value": 3,
+            "preview": "This paper presents a mathematical specification of the Bitcoin consensus protocol as observed on the live network and in widely deployed node software. Unlike informal descriptions, this work states rules, invariants, and state transitions in precise notation so independent implementations can be checked for equivalence. This “Orange Paper” is intended as…",
+            "children": []
+          },
+          {
+            "name": "1. Introduction",
+            "value": 23,
+            "preview": "Bitcoin is a distributed consensus system that maintains a shared ledger of transactions without requiring trusted intermediaries. The system achieves consensus through proof-of-work and enforces economic rules through cryptographic validation. This paper provides a complete mathematical description of how Bitcoin operates. - Complete State Machine: Formal…",
+            "children": [
+              {
+                "name": "1.1 Key Contributions",
+                "value": 6,
+                "preview": "Complete State Machine: Formal specification of Bitcoin's state transitions - Economic Model: Mathematical description of the monetary system - Validation Rules: Precise definition of all consensus-critical checks - Security Properties: Formal statements of Bitcoin's security guarantees",
+                "children": []
+              },
+              {
+                "name": "1.2 Document Structure",
+                "value": 12,
+                "preview": "This specification is organized into four main parts: 1. Foundations (§2–§4): Mathematical foundations, data structures, and constants 2. Core Protocol (§5–§8): State transitions, economic model, proof-of-work, and security 3. Network Layer (§9–§11): Mempool, P2P protocol, and advanced features 4. Mining Protocol (§12): Block creation and mining process…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "2. System Model",
+            "value": 30,
+            "preview": "Miners: Create blocks and compete for block rewards - Nodes: Validate transactions and maintain the blockchain - Users: Create transactions to transfer value - Asynchronous Network: Messages may be delayed or reordered - Byzantine Fault Tolerance: Some participants may behave maliciously - Economic Rationality: Participants act to maximize their utility…",
+            "children": [
+              {
+                "name": "2.1 Participants",
+                "value": 5,
+                "preview": "Miners: Create blocks and compete for block rewards - Nodes: Validate transactions and maintain the blockchain - Users: Create transactions to transfer value",
+                "children": []
+              },
+              {
+                "name": "2.2 Network Assumptions",
+                "value": 5,
+                "preview": "Asynchronous Network: Messages may be delayed or reordered - Byzantine Fault Tolerance: Some participants may behave maliciously - Economic Rationality: Participants act to maximize their utility",
+                "children": []
+              },
+              {
+                "name": "2.2.1 Networks and Parameters",
+                "value": 16,
+                "preview": "Consensus rules are identical across networks. Only parameters differ. Network set: $\\text{Network} = \\{\\text{mainnet}, \\text{testnet}, \\text{testnet4}, \\text{signet}, \\text{regtest}\\}$ For each $n \\in \\text{Network}$, the following parameters may differ: | Parameter | mainnet | testnet | testnet4 | signet | regtest |…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "3. Mathematical Foundations",
+            "value": 33,
+            "preview": "Hash Values: $\\mathbb{H} = \\{0,1\\}^{256}$ - Set of 256-bit hashes Byte Strings: $\\mathbb{S} = \\{0,1\\}^*$ - Set of byte strings Natural Numbers: $\\mathbb{N} = \\{0, 1, 2, \\ldots\\}$ - Set of natural numbers Integers: $\\mathbb{Z} = \\{\\ldots, -2, -1, 0, 1, 2, \\ldots\\}$ - Set of integers Rational Numbers: $\\mathbb{Q}$ - Set of rational numbers Notation:…",
+            "children": [
+              {
+                "name": "3.1 Basic Types",
+                "value": 14,
+                "preview": "Hash Values: $\\mathbb{H} = \\{0,1\\}^{256}$ - Set of 256-bit hashes Byte Strings: $\\mathbb{S} = \\{0,1\\}^*$ - Set of byte strings Natural Numbers: $\\mathbb{N} = \\{0, 1, 2, \\ldots\\}$ - Set of natural numbers Integers: $\\mathbb{Z} = \\{\\ldots, -2, -1, 0, 1, 2, \\ldots\\}$ - Set of integers Rational Numbers: $\\mathbb{Q}$ - Set of rational numbers Notation:…",
+                "children": []
+              },
+              {
+                "name": "3.2 Core Data Structures",
+                "value": 10,
+                "preview": "OutPoint: $\\mathcal{O} = \\mathbb{H} \\times \\mathbb{N}$ (see §3.2, Cartesian product) Transaction Input: $\\mathcal{I} = \\mathcal{O} \\times \\mathbb{S} \\times \\mathbb{N}$ (see §3.3) Transaction Output: $\\mathcal{T} = \\mathbb{Z} \\times \\mathbb{S}$ (see §4.1) Transaction: $\\mathcal{TX} = \\mathbb{N} \\times \\mathcal{I}^* \\times \\mathcal{T}^* \\times \\mathbb{N}$…",
+                "children": []
+              },
+              {
+                "name": "3.3 Script System",
+                "value": 5,
+                "preview": "Script: $\\mathcal{SC} = \\mathbb{S}$ (sequence of opcodes) Witness: $\\mathcal{W} = \\mathbb{S}^*$ (stack of witness data) Stack: $\\mathcal{ST} = \\mathbb{S}^*$ (execution stack, see Script Execution)",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "4. Consensus Constants",
+            "value": 26,
+            "preview": "$C = 10^8$ (satoshis per BTC, see Economic Model) $M_{max} = 21 \\times 10^6 \\times C$ (maximum money supply, see §6.2) $H = 210,000$ (halving interval, see Block Subsidy) $W_{max} = 4 \\times 10^6$ (maximum block weight, see Block Validation) $S_{max} = 80,000$ (maximum sigops per block, see Script Execution) $R = 100$ (coinbase maturity requirement, see…",
+            "children": [
+              {
+                "name": "4.1 Monetary Constants",
+                "value": 5,
+                "preview": "$C = 10^8$ (satoshis per BTC, see Economic Model) $M_{max} = 21 \\times 10^6 \\times C$ (maximum money supply, see §6.2) $H = 210,000$ (halving interval, see Block Subsidy)",
+                "children": []
+              },
+              {
+                "name": "4.2 Block Constants",
+                "value": 5,
+                "preview": "$W_{max} = 4 \\times 10^6$ (maximum block weight, see Block Validation) $S_{max} = 80,000$ (maximum sigops per block, see Script Execution) $R = 100$ (coinbase maturity requirement, see Transaction Validation)",
+                "children": []
+              },
+              {
+                "name": "4.3 Script Constants",
+                "value": 6,
+                "preview": "$L_{script} = 10,000$ (maximum script length, see §8.3) $L_{stack} = 1,000$ (maximum stack size, see Theorem 8.4) $L_{ops} = 201$ (maximum operations per script, see Theorem 8.4) $L_{element} = 520$ (maximum element size, see Script Execution)",
+                "children": []
+              },
+              {
+                "name": "4.4 Difficulty Constants",
+                "value": 5,
+                "preview": "$D_{interval} = 2016$ (blocks per difficulty adjustment period, see Difficulty Adjustment) $T_{block} = 600$ (target block time in seconds, 10 minutes) $T_{future} = 7200$ (maximum allowed block time in future, 2 hours, see Block Validation)",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "5. State Transition Functions",
+            "value": 1439,
+            "preview": "CheckTransaction: $\\mathcal{TX} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ A transaction $tx = (v, ins, outs, lt)$ is valid if and only if: 1. $|ins| > 0 \\land |outs| > 0$ 2. $\\forall o \\in outs: 0 \\leq o.value \\leq M_{max}$ 3. $\\sum_{o \\in outs} o.value \\leq M_{max}$ 4. $\\forall i,j \\in ins: i \\neq j \\Rightarrow i.prevout \\neq j.prevout$ 5. If $tx$ is…",
+            "children": [
+              {
+                "name": "5.1 Transaction Validation",
+                "value": 194,
+                "preview": "CheckTransaction: $\\mathcal{TX} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ A transaction $tx = (v, ins, outs, lt)$ is valid if and only if: 1. $|ins| > 0 \\land |outs| > 0$ 2. $\\forall o \\in outs: 0 \\leq o.value \\leq M_{max}$ 3. $\\sum_{o \\in outs} o.value \\leq M_{max}$ 4. $\\forall i,j \\in ins: i \\neq j \\Rightarrow i.prevout \\neq j.prevout$ 5. If $tx$ is…",
+                "children": [
+                  {
+                    "name": "5.1.1 Transaction Sighash Calculation",
+                    "value": 115,
+                    "preview": "CalculateSighash: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathcal{US} \\times \\text{SighashType} \\times \\mathbb{N} \\rightarrow \\mathbb{H}$ Properties: - Hash length: $\\text{CalculateSighash}(tx, i, us, st, h) = h \\implies |h| = 32$ (32-byte hash) - Input index requirement: $\\text{CalculateSighash}(tx, i, us, st, h)$ requires $i < |tx.inputs|$ (valid input…",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "5.2 Script Execution",
+                "value": 351,
+                "preview": "Bitcoin uses a stack-based scripting language for transaction validation. Scripts are executed to determine whether a transaction output can be spent. EvalScript: $\\mathcal{SC} \\times \\mathcal{ST} \\times \\mathbb{N} \\rightarrow \\{\\text{true}, \\text{false}\\}$ $\\text{EvalScript}(script, S_0, f) = \\text{true}$ iff execution terminates without failure and the…",
+                "children": [
+                  {
+                    "name": "5.2.1 P2SH Push-Only Validation",
+                    "value": 43,
+                    "preview": "P2SHPushOnlyCheck: $\\mathbb{S} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Push-only validation: $\\text{P2SHPushOnlyCheck}(ss) = \\text{valid} \\iff \\forall op \\in ss : \\text{IsPushOpcode}(op)$ - Boolean result: $\\text{P2SHPushOnlyCheck}(ss) \\in \\{\\text{valid}, \\text{invalid}\\}$ - Deterministic: $\\text{P2SHPushOnlyCheck}(ss_1) =…",
+                    "children": []
+                  },
+                  {
+                    "name": "5.2.2 Signature Operation Counting",
+                    "value": 73,
+                    "preview": "Signature operations (sigops) are counted to enforce the MAX_BLOCK_SIGOPS_COST limit (80,000) per block. Sigops include OP_CHECKSIG, OP_CHECKSIGVERIFY, OP_CHECKMULTISIG, and OP_CHECKMULTISIGVERIFY operations. CountSigOpsInScript: $\\mathbb{S} \\times \\{\\text{true}, \\text{false}\\} \\rightarrow \\mathbb{N}$ Properties: - Sigop count bounded:…",
+                    "children": []
+                  },
+                  {
+                    "name": "5.2.3 Stack Operations",
+                    "value": 36,
+                    "preview": "AltStack: $\\mathcal{ST}_{alt} = \\mathbb{S}^*$ (alternate stack for temporary storage) Combined Stack Size Limit: $|stack| + |altstack| \\leq L_{stack}$ (combined size must not exceed maximum) OP_TOALTSTACK (opcode 0x6b): - Stack Input: $[item]$ where $item \\in \\mathbb{S}$ - Stack Output: $\\emptyset$ (item moved to altstack) - AltStack Output: $[item]$ (item…",
+                    "children": []
+                  },
+                  {
+                    "name": "5.2.4 Conditional Opcode Execution",
+                    "value": 38,
+                    "preview": "Execution State: $fExec \\in \\{\\text{true}, \\text{false}\\}$ (current execution state) OP_VER (opcode 0x62): - Stack Input: $\\emptyset$ - Stack Output: $\\emptyset$ (opcode fails if executing) - Validation: - If $fExec = \\text{true}$: $\\text{OP_VER}(stack, fExec) = \\text{error}$ (disabled opcode, fails when executing) - If $fExec = \\text{false}$:…",
+                    "children": []
+                  },
+                  {
+                    "name": "5.2.5 Script Verification Flags",
+                    "value": 57,
+                    "preview": "CalculateScriptFlags: $\\mathcal{TX} \\times \\mathcal{W}^? \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\mathbb{N}_{32}$ Properties: - Flag activation: $\\text{CalculateScriptFlags}(tx, w, h, n) = f \\implies \\forall flag \\in f: h \\geq H_{flag}(n)$ - Per-transaction calculation: $\\text{CalculateScriptFlags}(tx_1, w_1, h, n) \\neq…",
+                    "children": []
+                  },
+                  {
+                    "name": "5.2.6 Script Flag Exceptions",
+                    "value": 16,
+                    "preview": "Some blocks use different script verification flags than the default (historical BIP16 and Taproot activation exceptions). ScriptFlagExceptions: $\\text{Network} \\rightarrow (\\mathbb{H} \\rightharpoonup \\mathbb{N}_{32})$ For each network $n$, $\\text{ScriptFlagExceptions}(n)$ is a partial map from block hash to override flags. When validating transactions in…",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "5.3 Block Validation",
+                "value": 127,
+                "preview": "ConnectBlock: $\\mathcal{B} \\times \\mathcal{US} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\} \\times \\mathcal{US}$ Properties: - Block structure: $\\text{ConnectBlock}(b, us, height) = \\text{valid} \\implies |b.transactions| > 0$ (block must have transactions) - Coinbase requirement: $\\text{ConnectBlock}(b, us, height) = \\text{valid} \\implies…",
+                "children": [
+                  {
+                    "name": "5.3.1 Transaction Application Equivalence",
+                    "value": 109,
+                    "preview": "Theorem 5.3.1 (ApplyTransaction Equivalence): The functions apply_transaction and apply_transaction_with_id produce identical results: $$\\forall tx \\in \\mathcal{TX}, us \\in \\mathcal{US}, h \\in \\mathbb{N}:$$ $$\\text{ApplyTransaction}(tx, us, h) = \\text{ApplyTransactionWithId}(tx, \\text{CalculateTxId}(tx), us, h)$$ *Proof*: Both functions apply identical UTXO…",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "5.4 BIP Validation Rules",
+                "value": 640,
+                "preview": "This section specifies the mathematical properties of critical Bitcoin Improvement Proposals (BIPs) that enforce consensus rules for block and transaction validation. BIP30Check: $\\mathcal{B} \\times \\mathcal{US} \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Deactivation height: $\\text{BIP30Check}(b, us,…",
+                "children": [
+                  {
+                    "name": "5.4.1 BIP30: Duplicate Coinbase Prevention",
+                    "value": 41,
+                    "preview": "BIP30Check: $\\mathcal{B} \\times \\mathcal{US} \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Deactivation height: $\\text{BIP30Check}(b, us, h, n) = \\text{valid} \\implies h > H_{30\\_deact}(n)$ (after deactivation, always valid) - Duplicate coinbase prevention: $\\text{BIP30Check}(b, us, h, n) =…",
+                    "children": []
+                  },
+                  {
+                    "name": "5.4.2 BIP34: Block Height in Coinbase",
+                    "value": 40,
+                    "preview": "BIP34Check: $\\mathcal{B} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Height requirement: $\\text{BIP34Check}(b, h) = \\text{valid} \\implies h < H_{34} \\lor (\\forall tx \\in b.transactions : \\text{IsCoinbase}(tx) \\implies \\text{ExtractHeight}(tx) = h)$ - Coinbase height: $\\text{BIP34Check}(b, h) = \\text{invalid} \\implies h \\geq…",
+                    "children": []
+                  },
+                  {
+                    "name": "5.4.3 BIP66: Strict DER Signature Validation",
+                    "value": 40,
+                    "preview": "BIP66Check: $\\mathbb{S} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Strict DER requirement: $\\text{BIP66Check}(sig, h) = \\text{valid} \\implies h < H_{66} \\lor \\text{IsStrictDER}(sig)$ - DER validation: $\\text{BIP66Check}(sig, h) = \\text{invalid} \\implies h \\geq H_{66} \\land \\neg \\text{IsStrictDER}(sig)$ - Validation…",
+                    "children": []
+                  },
+                  {
+                    "name": "5.4.4 BIP90: Block Version Enforcement",
+                    "value": 46,
+                    "preview": "BIP90Check: $\\mathcal{H} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Version requirement: $\\text{BIP90Check}(h, height) = \\text{valid} \\implies height < H_{34} \\lor h.version \\geq 2$ - Version enforcement: $\\text{BIP90Check}(h, height) = \\text{invalid} \\implies height \\geq H_{34} \\land h.version < 2$ - Validation…",
+                    "children": []
+                  },
+                  {
+                    "name": "5.4.5 BIP147: NULLDUMMY Enforcement",
+                    "value": 69,
+                    "preview": "BIP147Check: $\\mathbb{S} \\times \\mathbb{S} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - NULLDUMMY requirement: $\\text{BIP147Check}(scriptSig, scriptPubkey, h) = \\text{valid} \\implies h < H_{147} \\lor \\neg \\text{ContainsMultisig}(scriptPubkey) \\lor \\text{IsNullDummy}(scriptSig)$ - Multisig validation:…",
+                    "children": []
+                  },
+                  {
+                    "name": "5.4.6 BIP119: OP_CHECKTEMPLATEVERIFY (CTV)",
+                    "value": 110,
+                    "preview": "BIP119Check: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathbb{H} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Template hash validation: $\\text{BIP119Check}(tx, i, h) = \\text{valid} \\iff \\text{TemplateHash}(tx, i) = h$ - Input index requirement: $\\text{BIP119Check}(tx, i, h)$ requires $i < |tx.inputs|$ (valid input index) - Validation…",
+                    "children": []
+                  },
+                  {
+                    "name": "5.4.7 BIP65: OP_CHECKLOCKTIMEVERIFY (CLTV)",
+                    "value": 70,
+                    "preview": "BIP65Check: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathbb{N} \\times \\mathbb{H} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Zero locktime rejection: $\\text{BIP65Check}(tx, i, lt, h) = \\text{invalid} \\iff tx.\\text{lockTime} = 0$ (zero locktime always invalid) - Type consistency: $\\text{BIP65Check}(tx, i, lt, h) = \\text{valid} \\implies…",
+                    "children": []
+                  },
+                  {
+                    "name": "5.4.8 BIP348: OP_CHECKSIGFROMSTACK (CSFS)",
+                    "value": 187,
+                    "preview": "BIP348Check: $\\mathbb{S} \\times \\mathbb{S} \\times \\mathbb{S} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Tapscript-only: $\\text{BIP348Check}(msg, pk, sig, h) = \\text{valid} \\implies \\text{SigVersion} = \\text{Tapscript}$ (only available in Tapscript) - Zero pubkey rejection: $|pk| = 0 \\implies \\text{BIP348Check}(msg, pk,…",
+                    "children": []
+                  },
+                  {
+                    "name": "5.4.9 BIP54: Consensus Cleanup",
+                    "value": 25,
+                    "preview": "BIP54 bundles several consensus fixes (timewarp mitigation, per-tx sigop limit, 64-byte tx invalidity, coinbase nLockTime/nSequence). All are gated by a single activation height $H_{54}$. BIP54TimewarpCheck: $\\mathcal{H} \\times \\mathbb{N} \\times \\mathbb{N} \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ At difficulty…",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "5.5 Sequence Locks (BIP68)",
+                "value": 121,
+                "preview": "Sequence locks enforce relative locktime constraints using transaction input sequence numbers. Unlike absolute locktime (nLockTime), sequence locks are relative to when the input was confirmed. Sequence Number Encoding: $nSequence \\in \\mathbb{N}_{32}$ (32-bit unsigned integer) The sequence number encodes: - Bit 31 (0x80000000): Disable flag - if set,…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "6. Economic Model",
+            "value": 210,
+            "preview": "GetBlockSubsidy: $\\mathbb{N} \\rightarrow \\mathbb{Z}$ Properties: - Non-negative: $\\text{GetBlockSubsidy}(h) \\geq 0$ for all $h \\in \\mathbb{N}$ - Upper bound: $\\text{GetBlockSubsidy}(h) \\leq \\text{INITIAL\\_SUBSIDY}$ for all $h \\in \\mathbb{N}$ - Genesis block: $h = 0 \\implies \\text{GetBlockSubsidy}(h) = \\text{INITIAL\\_SUBSIDY}$ - After 64 halvings: $h \\geq…",
+            "children": [
+              {
+                "name": "6.1 Block Subsidy",
+                "value": 55,
+                "preview": "GetBlockSubsidy: $\\mathbb{N} \\rightarrow \\mathbb{Z}$ Properties: - Non-negative: $\\text{GetBlockSubsidy}(h) \\geq 0$ for all $h \\in \\mathbb{N}$ - Upper bound: $\\text{GetBlockSubsidy}(h) \\leq \\text{INITIAL\\_SUBSIDY}$ for all $h \\in \\mathbb{N}$ - Genesis block: $h = 0 \\implies \\text{GetBlockSubsidy}(h) = \\text{INITIAL\\_SUBSIDY}$ - After 64 halvings: $h \\geq…",
+                "children": []
+              },
+              {
+                "name": "6.2 Total Supply",
+                "value": 40,
+                "preview": "TotalSupply: $\\mathbb{N} \\rightarrow \\mathbb{Z}$ Properties: - Non-negativity: $\\text{TotalSupply}(h) \\geq 0$ for all $h \\in \\mathbb{N}$ - Supply limit: $\\text{TotalSupply}(h) \\leq \\text{MAX\\_MONEY}$ for all $h \\in \\mathbb{N}$ (critical security invariant) - Genesis block: $\\text{TotalSupply}(0) = 50 \\times C = \\text{INITIAL\\_SUBSIDY}$ - Monotonicity:…",
+                "children": []
+              },
+              {
+                "name": "6.3 Supply Limit Validation",
+                "value": 23,
+                "preview": "ValidateSupplyLimit: $\\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ $$\\text{ValidateSupplyLimit}(h) = \\begin{cases} \\text{valid} & \\text{if } \\text{TotalSupply}(h) \\leq \\text{MAX\\_MONEY} \\\\ \\text{invalid} & \\text{otherwise} \\end{cases}$$ Validates that the total supply at height $h$ does not exceed the maximum money supply. Properties: -…",
+                "children": []
+              },
+              {
+                "name": "6.4 Coinbase Detection",
+                "value": 31,
+                "preview": "IsCoinbase: $\\mathcal{TX} \\rightarrow \\{\\text{true}, \\text{false}\\}$ A transaction $tx = (v, ins, outs, lt)$ is a coinbase transaction if and only if: $$\\text{IsCoinbase}(tx) = \\begin{cases} \\text{true} & \\text{if } |ins| = 1 \\land ins[0].\\text{prevout}.\\text{hash} = 0^{32} \\land ins[0].\\text{prevout}.\\text{index} = 2^{32} - 1 \\\\ \\text{false} &…",
+                "children": []
+              },
+              {
+                "name": "6.5 Fee Market",
+                "value": 55,
+                "preview": "Transaction Fee: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\mathbb{Z}$ Properties: - Fee formula: $\\text{Fee}(tx, us) = \\sum_{i \\in tx.\\text{inputs}} us(i.\\text{prevout}).\\text{value} - \\sum_{o \\in tx.\\text{outputs}} o.\\text{value}$ - Coinbase fee: $\\text{IsCoinbase}(tx) = \\text{true} \\implies \\text{Fee}(tx, us) = 0$ - Non-negative fee: $\\text{Fee}(tx,…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "7. Proof of Work",
+            "value": 124,
+            "preview": "ExpandTarget: $\\mathbb{N} \\rightarrow \\mathbb{U256}$ Properties: - Positive bits: $\\text{ExpandTarget}(bits)$ requires $bits > 0$ (bits must be positive) - Target expansion: $\\text{ExpandTarget}(bits)$ expands compact difficulty representation to full 256-bit target - Formula correctness: $\\text{ExpandTarget}(bits) = \\text{mantissa} \\times 2^{8 \\times…",
+            "children": [
+              {
+                "name": "7.1 Difficulty Adjustment",
+                "value": 106,
+                "preview": "ExpandTarget: $\\mathbb{N} \\rightarrow \\mathbb{U256}$ Properties: - Positive bits: $\\text{ExpandTarget}(bits)$ requires $bits > 0$ (bits must be positive) - Target expansion: $\\text{ExpandTarget}(bits)$ expands compact difficulty representation to full 256-bit target - Formula correctness: $\\text{ExpandTarget}(bits) = \\text{mantissa} \\times 2^{8 \\times…",
+                "children": []
+              },
+              {
+                "name": "7.2 Block Validation",
+                "value": 15,
+                "preview": "CheckProofOfWork: $\\mathcal{H} \\rightarrow \\{\\text{true}, \\text{false}\\}$ $$\\text{CheckProofOfWork}(h) = \\text{SHA256}(\\text{SHA256}(h)) < \\text{ExpandTarget}(h.bits)$$ Where SHA256 is the Secure Hash Algorithm and $\\text{ExpandTarget}$ converts the compact difficulty representation to a full 256-bit target. Properties: - PoW correctness:…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "8. Security Properties",
+            "value": 178,
+            "preview": "Conservation of Value: For any valid transaction $tx$: $$\\sum_{i \\in tx.inputs} us(i.prevout).value \\geq \\sum_{o \\in tx.outputs} o.value$$ Theorem 8.1 (UTXO Set Invariant): The UTXO set maintains the invariant that the sum of all UTXO values equals the total money supply. *Proof*: Let $US_h$ be the UTXO set at height $h$. We prove by induction: Base case:…",
+            "children": [
+              {
+                "name": "8.1 Economic Security",
+                "value": 35,
+                "preview": "Conservation of Value: For any valid transaction $tx$: $$\\sum_{i \\in tx.inputs} us(i.prevout).value \\geq \\sum_{o \\in tx.outputs} o.value$$ Theorem 8.1 (UTXO Set Invariant): The UTXO set maintains the invariant that the sum of all UTXO values equals the total money supply. *Proof*: Let $US_h$ be the UTXO set at height $h$. We prove by induction: Base case:…",
+                "children": []
+              },
+              {
+                "name": "8.2 Integration and Round-Trip Properties",
+                "value": 54,
+                "preview": "Integration properties verify that multiple functions work together correctly in multi-function workflows. Property (Economic Block Integration): For valid blocks, economic rules are consistently enforced: $$\\forall b \\in \\mathcal{B}, h \\in \\mathbb{N}: \\text{ConnectBlock}(b, us, h) = \\text{valid} \\implies$$ $$\\text{GetBlockSubsidy}(h) + \\sum_{tx \\in…",
+                "children": [
+                  {
+                    "name": "8.2.1 Integration Properties",
+                    "value": 28,
+                    "preview": "Integration properties verify that multiple functions work together correctly in multi-function workflows. Property (Economic Block Integration): For valid blocks, economic rules are consistently enforced: $$\\forall b \\in \\mathcal{B}, h \\in \\mathbb{N}: \\text{ConnectBlock}(b, us, h) = \\text{valid} \\implies$$ $$\\text{GetBlockSubsidy}(h) + \\sum_{tx \\in…",
+                    "children": []
+                  },
+                  {
+                    "name": "8.2.2 Round-Trip Properties",
+                    "value": 23,
+                    "preview": "Round-trip properties ensure that encoding/decoding and serialization/deserialization operations are inverse operations. Property (Transaction Serialization Round-Trip): Transaction serialization and deserialization are inverse operations: $$\\forall tx \\in \\mathcal{TX}: \\text{DeserializeTransaction}(\\text{SerializeTransaction}(tx)) = tx$$ Property (SegWit…",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "8.3 Cryptographic Security",
+                "value": 22,
+                "preview": "Signature Verification: For public key $pk$, signature $sig$, and message hash $m$: $$\\text{VerifySignature}(pk, sig, m) = \\text{secp256k1\\_verify}(pk, sig, m)$$ Where secp256k1 is the elliptic curve used by Bitcoin and ECDSA is the signature algorithm. Theorem 8.3 (Signature Security): Assuming the discrete logarithm problem is hard in the secp256k1 group,…",
+                "children": []
+              },
+              {
+                "name": "8.4 Merkle Tree Security",
+                "value": 38,
+                "preview": "ComputeMerkleRoot: $\\mathcal{H}^+ \\rightarrow \\mathbb{H}$ (non-empty sequence of 32-byte hashes to 32-byte root hash) Properties: - Deterministic: $\\text{ComputeMerkleRoot}(H) = \\text{ComputeMerkleRoot}(H)$ for all $H$ - Single element: $|H| = 1 \\implies \\text{ComputeMerkleRoot}(H) = H[0]$ - Collision resistance: $\\text{ComputeMerkleRoot}(H_1) =…",
+                "children": [
+                  {
+                    "name": "8.4.1 ComputeMerkleRoot",
+                    "value": 36,
+                    "preview": "ComputeMerkleRoot: $\\mathcal{H}^+ \\rightarrow \\mathbb{H}$ (non-empty sequence of 32-byte hashes to 32-byte root hash) Properties: - Deterministic: $\\text{ComputeMerkleRoot}(H) = \\text{ComputeMerkleRoot}(H)$ for all $H$ - Single element: $|H| = 1 \\implies \\text{ComputeMerkleRoot}(H) = H[0]$ - Collision resistance: $\\text{ComputeMerkleRoot}(H_1) =…",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "8.5 Deterministic Properties",
+                "value": 23,
+                "preview": "Many consensus functions must be deterministic to ensure all nodes reach the same results. Theorem 8.5.1 (Proof of Work Determinism): Proof of work validation is deterministic: $$\\forall h \\in \\mathcal{H}: \\text{CheckProofOfWork}(h) \\text{ is deterministic}$$ *Proof*: The function uses only the block header and deterministic hash functions (SHA256). Given…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "9. Mempool Protocol",
+            "value": 70,
+            "preview": "AcceptToMemoryPool: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\{\\text{accepted}, \\text{rejected}\\}$ Properties: - Acceptance correctness: $\\text{AcceptToMemoryPool}(tx, us) = \\text{accepted} \\implies \\text{CheckTransaction}(tx) = \\text{valid} \\land \\neg \\text{IsCoinbase}(tx)$ - Coinbase rejection: $\\text{IsCoinbase}(tx) = \\text{true} \\implies…",
+            "children": [
+              {
+                "name": "9.1 Mempool Validation",
+                "value": 22,
+                "preview": "AcceptToMemoryPool: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\{\\text{accepted}, \\text{rejected}\\}$ Properties: - Acceptance correctness: $\\text{AcceptToMemoryPool}(tx, us) = \\text{accepted} \\implies \\text{CheckTransaction}(tx) = \\text{valid} \\land \\neg \\text{IsCoinbase}(tx)$ - Coinbase rejection: $\\text{IsCoinbase}(tx) = \\text{true} \\implies…",
+                "children": [
+                  {
+                    "name": "9.1.1 Transaction Finality",
+                    "value": 13,
+                    "preview": "$\\text{CheckFinalTxAtTip}(tx)$ requires that absolute lock time ($nLockTime$) and input sequence locks (BIP68/BIP112) are satisfied at the current chain tip so the transaction is not treated as non-final for relay. A transaction $tx$ is accepted to the mempool if and only if: 1. Basic Validation: $tx$ passes CheckTransaction 2. Non-Coinbase: $\\neg…",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "9.2 Standard Transaction Rules",
+                "value": 24,
+                "preview": "IsStandardTx: $\\mathcal{TX} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Standard version: $\\text{IsStandardTx}(tx) = \\text{true} \\implies tx.version \\in \\{1, 2\\}$ (version must be 1 or 2) - Standard scripts: $\\text{IsStandardTx}(tx) = \\text{true} \\implies$ all outputs use standard script types (P2PKH, P2SH, P2WPKH, P2WSH, P2TR) - Boolean…",
+                "children": []
+              },
+              {
+                "name": "9.3 Replace-By-Fee (RBF)",
+                "value": 20,
+                "preview": "ReplacementChecks: $\\mathcal{TX} \\times \\mathcal{TX} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - RBF requirement: $\\text{ReplacementChecks}(tx_1, tx_2) = \\text{true} \\implies \\exists i \\in tx_1.inputs : i.sequence < \\text{SEQUENCE\\_FINAL}$ (RBF signaling required) - Fee bump requirement: $\\text{ReplacementChecks}(tx_1, tx_2) = \\text{true}…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "10. Network Protocol",
+            "value": 118,
+            "preview": "The Bitcoin network protocol enables nodes to synchronize the blockchain and relay transactions. The protocol operates over TCP connections and uses a message-based communication system. NetworkMessage: $\\mathcal{M} = \\{\\text{version}, \\text{verack}, \\text{addr}, \\text{inv}, \\text{getdata}, \\text{tx}, \\text{block}, \\text{headers}, \\text{getheaders},…",
+            "children": [
+              {
+                "name": "10.1 Message Types",
+                "value": 76,
+                "preview": "NetworkMessage: $\\mathcal{M} = \\{\\text{version}, \\text{verack}, \\text{addr}, \\text{inv}, \\text{getdata}, \\text{tx}, \\text{block}, \\text{headers}, \\text{getheaders}, \\text{ping}, \\text{pong}\\}$ Message Flow: 1. Connection: Nodes establish TCP connections 2. Handshake: Exchange version and verack messages 3. Synchronization: Request and receive blocks/headers…",
+                "children": [
+                  {
+                    "name": "10.1.1 Message Header Parsing",
+                    "value": 27,
+                    "preview": "MessageHeader: 24 bytes = magic (4) ‖ command (12) ‖ payload_length (4) ‖ checksum (4) ParseMessage: $\\mathbb{S} \\rightarrow \\mathcal{M} \\cup \\{\\text{error}\\}$ Parses raw bytes into a protocol message. Rejects messages that are too short, too long, have invalid magic, unknown command, invalid checksum, or incomplete payload. Properties: - Size minimum:…",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "10.2 Connection Management",
+                "value": 9,
+                "preview": "Connection Types: - Outbound: Active connections to other nodes - Inbound: Passive connections from other nodes - Feeler: Short-lived connections for peer discovery - Block-Relay: Connections that only relay blocks Further P2P lifecycle and dispatch details appear with §10.3 and §10.6 in ARCHITECTURE.md.",
+                "children": []
+              },
+              {
+                "name": "10.2.1 Handshake Invariants",
+                "value": 9,
+                "preview": "HandleVersionReceived: On receipt of version message, node must send verack only after processing. VerAck is never sent before Version. Properties: - Version-before-VerAck: $\\text{VerAckSent} \\implies \\text{VersionReceived}$ (ordering rule) - No premature VerAck: VerAck must not be sent before Version is received and processed Theorem 10.2.1 (Handshake…",
+                "children": []
+              },
+              {
+                "name": "10.4 Block Synchronization",
+                "value": 9,
+                "preview": "GetHeaders: Request block headers from a specific point Headers: Response containing block headers GetBlocks: Request block inventory (deprecated) Inv: Inventory message listing available objects GetData: Request specific objects (blocks, transactions) Block: Full block data MerkleBlock: Block with merkle proof for filtered nodes",
+                "children": []
+              },
+              {
+                "name": "10.5 Transaction Relay",
+                "value": 7,
+                "preview": "Tx: Broadcast transaction to peers MemPool: Request mempool contents FeeFilter: Set minimum fee rate for transaction relay",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "11. Advanced Features",
+            "value": 661,
+            "preview": "Witness Data: $\\mathcal{W} = \\mathbb{S}^*$ (stack of witness elements) Witness Merkle (BIP141): The commitment uses the witness transaction id (wtxid) merkle tree (not a hash of raw witness stacks). Let $\\text{wtxid}(tx)$ be the 32-byte hash defined in BIP141: coinbase wtxid is fixed to $0^{32}$; for other transactions, if no witness data is present,…",
+            "children": [
+              {
+                "name": "11.1 Segregated Witness (SegWit)",
+                "value": 287,
+                "preview": "Witness Data: $\\mathcal{W} = \\mathbb{S}^*$ (stack of witness elements) Witness Merkle (BIP141): The commitment uses the witness transaction id (wtxid) merkle tree (not a hash of raw witness stacks). Let $\\text{wtxid}(tx)$ be the 32-byte hash defined in BIP141: coinbase wtxid is fixed to $0^{32}$; for other transactions, if no witness data is present,…",
+                "children": [
+                  {
+                    "name": "11.1.1 Weight and Size Calculations",
+                    "value": 68,
+                    "preview": "CalculateTransactionWeight: $\\mathcal{TX} \\times \\mathcal{W}^? \\rightarrow \\mathbb{N}$ Properties: - Weight formula: $\\text{CalculateTransactionWeight}(tx, w) = 3 \\times \\text{BaseSize}(tx) + \\text{TotalSize}(tx, w)$ (BIP141) - Non-negativity: $\\text{CalculateTransactionWeight}(tx, w) \\geq 0$ for all valid transactions - Minimum weight:…",
+                    "children": []
+                  },
+                  {
+                    "name": "11.1.2 Witness Structure Validation",
+                    "value": 25,
+                    "preview": "ValidateSegWitWitnessStructure: $\\mathcal{W} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Element size bounds: $\\text{ValidateSegWitWitnessStructure}(w) = \\text{true} \\iff \\forall e \\in w : |e| \\leq 520$ - Empty witness: $\\text{ValidateSegWitWitnessStructure}(\\emptyset) = \\text{true}$ (empty witness is valid) - Structure validation:…",
+                    "children": []
+                  },
+                  {
+                    "name": "11.1.3 Witness Program Extraction",
+                    "value": 46,
+                    "preview": "ExtractWitnessVersion: $\\mathbb{S} \\rightarrow \\{\\text{None}, \\text{SegWitV0}, \\text{TaprootV1}\\}$ Properties: - Version range: $\\text{ExtractWitnessVersion}(s) \\neq \\text{None} \\implies |s| \\geq 2 \\land (s[0] = 0x00 \\lor s[0] = 0x51)$ - Valid version: $\\text{ExtractWitnessVersion}(s) = \\text{SegWitV0} \\implies s[0] = 0x00 \\land |s| \\geq 2$ - Taproot…",
+                    "children": []
+                  },
+                  {
+                    "name": "11.1.4 Witness Merkle Root",
+                    "value": 15,
+                    "preview": "ComputeWitnessMerkleRoot: $\\mathcal{B} \\times \\mathcal{W}^* \\rightarrow \\mathbb{H}$ Definition (BIP141 wtxid tree): For each transaction index $i$, define the leaf hash $L_i$: - $L_0 = 0^{32}$ (coinbase wtxid is fixed to zero). - For $i > 0$: let $w^{(i)}$ be the witness data for transaction $i$ (per-input stacks). If no witness element is non-empty, $L_i =…",
+                    "children": []
+                  },
+                  {
+                    "name": "11.1.5 Witness Commitment Validation",
+                    "value": 19,
+                    "preview": "ValidateWitnessCommitment: $\\mathcal{TX} \\times \\mathbb{H} \\times \\mathcal{W}^* \\rightarrow \\{\\text{true}, \\text{false}\\}$ Inputs: coinbase transaction $tx$, computed witness merkle root $r$, and the coinbase transaction’s witness stacks (to obtain the witness reserved value). Let $n \\in \\{0,1\\}^{256}$ be the 32-byte witness reserved value: the first push…",
+                    "children": []
+                  },
+                  {
+                    "name": "11.1.6 SegWit Transaction Detection",
+                    "value": 14,
+                    "preview": "IsSegWitTransaction: $\\mathcal{TX} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Output detection: $\\text{IsSegWitTransaction}(tx) = \\text{true} \\iff \\exists o \\in tx.outputs : \\text{IsSegWitOutput}(o.scriptPubkey)$ - Boolean result: $\\text{IsSegWitTransaction}(tx) \\in \\{\\text{true}, \\text{false}\\}$ - Witness presence:…",
+                    "children": []
+                  },
+                  {
+                    "name": "11.1.7 Block Validation",
+                    "value": 17,
+                    "preview": "ValidateSegWitBlock: $\\mathcal{B} \\times \\mathcal{W}^* \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ (Parameters: block $b$, per-transaction witness data $w_1,\\ldots,w_n$, maximum block weight $W_{\\text{max}}$.) Properties: - Let $r = \\text{ComputeWitnessMerkleRoot}(b, w_1, \\ldots, w_n)$ as in §11.1.4. - Witness commitment (when present)…",
+                    "children": []
+                  },
+                  {
+                    "name": "11.1.8 Nested SegWit (P2WSH-in-P2SH, P2WPKH-in-P2SH)",
+                    "value": 31,
+                    "preview": "Nested SegWit: SegWit outputs can be wrapped in P2SH, creating nested SegWit transactions. P2WPKH-in-P2SH: Pay-to-Witness-Public-Key-Hash wrapped in P2SH For P2WPKH-in-P2SH: - Redeem Script Format: $[0x00, 0x14, h_{20}]$ where $h_{20} \\in \\{0,1\\}^{160}$ - $0x00$ is OP_0 - $0x14$ is push 20 bytes - $h_{20}$ is the 20-byte pubkey hash - Witness: Contains…",
+                    "children": []
+                  },
+                  {
+                    "name": "11.1.9 BIP143 Witness Sighash (ComputeWitnessSignatureHash)",
+                    "value": 31,
+                    "preview": "ComputeWitnessSignatureHash: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathbb{S} \\times \\mathbb{Z} \\times \\mathbb{N}_{8} \\rightarrow \\mathbb{H}$ Computes the signature hash for SegWit (P2WPKH, P2WSH) inputs per BIP 143. Replaces legacy sighash with a committed structure that excludes scriptSig and binds the amount. Preimage structure (BIP 143 byte layout):…",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "11.2 Taproot",
+                "value": 239,
+                "preview": "Taproot Output: P2TR script OP_1 <32-byte-hash> P2TR Script Format: $\\text{P2TR} = [0x51, 0x20, h_{32}]$ where $h_{32} \\in \\{0,1\\}^{256}$ P2TR Detection: $\\text{IsP2TR}(spk) = (|spk| = 34) \\land (spk[0] = 0x51) \\land (spk[1] = 0x20)$ Empty ScriptSig Requirement: For Taproot transactions, scriptSig must be empty: $$\\forall tx \\in \\mathcal{TX}, i \\in…",
+                "children": [
+                  {
+                    "name": "11.2.1 Taproot Script Validation",
+                    "value": 37,
+                    "preview": "ValidateTaprootScript: $\\mathbb{S} \\rightarrow \\{\\text{true}, \\text{false}\\}$ For script $s$: $$\\text{ValidateTaprootScript}(s) = (|s| = 34) \\land (s[0] = 0x51) \\land (s[1] = 0x20)$$ Properties: - Length validation: $\\text{ValidateTaprootScript}(s) = \\text{true} \\iff |s| = 34$ - Format correctness: $\\text{ValidateTaprootScript}(s) = \\text{true} \\implies…",
+                    "children": []
+                  },
+                  {
+                    "name": "11.2.2 Taproot Key Operations",
+                    "value": 25,
+                    "preview": "ComputeTaprootTweak: $[0,1]^{256} \\times \\mathbb{H} \\rightarrow [0,1]^{256}$ Properties: - Tweak length: $\\text{ComputeTaprootTweak}(pk, root) = t \\implies |t| = 32$ (32-byte tweak) - Deterministic: $\\text{ComputeTaprootTweak}(pk_1, root_1) = \\text{ComputeTaprootTweak}(pk_2, root_2) \\iff pk_1 = pk_2 \\land root_1 = root_2$ - Hash property:…",
+                    "children": []
+                  },
+                  {
+                    "name": "11.2.3 Taproot Script Path",
+                    "value": 50,
+                    "preview": "ValidateTaprootScriptPath: $\\mathbb{S} \\times [\\mathbb{H}]^* \\times [0,1]^{256} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Merkle proof validation: $\\text{ValidateTaprootScriptPath}(s, proof, root) = \\text{true} \\iff \\text{ComputeScriptMerkleRoot}(s, proof, v) = root$ - Boolean result: $\\text{ValidateTaprootScriptPath}(s, proof, root) \\in…",
+                    "children": []
+                  },
+                  {
+                    "name": "11.2.4 Taproot Witness Structure",
+                    "value": 15,
+                    "preview": "ValidateTaprootWitnessStructure: $\\mathcal{W} \\times \\{\\text{true}, \\text{false}\\} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Key path structure: $\\text{ValidateTaprootWitnessStructure}(w, \\text{false}) = \\text{true} \\iff |w| = 1 \\land |w[0]| = 64$ (single 64-byte signature) - Script path structure: $\\text{ValidateTaprootWitnessStructure}(w,…",
+                    "children": []
+                  },
+                  {
+                    "name": "11.2.5 Taproot Transaction Validation",
+                    "value": 15,
+                    "preview": "ValidateTaprootTransaction: $\\mathcal{TX} \\times \\mathcal{W}^? \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - ScriptSig empty: $\\text{ValidateTaprootTransaction}(tx, w) = \\text{valid} \\implies \\forall i \\in tx.inputs : \\text{IsP2TR}(tx.outputs[j].scriptPubkey) \\implies i.scriptSig = \\emptyset$ - Witness structure:…",
+                    "children": []
+                  },
+                  {
+                    "name": "11.2.6 Taproot Signature Hash",
+                    "value": 12,
+                    "preview": "ComputeTaprootSignatureHash: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathcal{US} \\times \\mathbb{N}_{32} \\times \\mathbb{H}^? \\rightarrow \\mathbb{H}$ Properties: - Hash length: $\\text{ComputeTaprootSignatureHash}(tx, i, us, type, leaf) = h \\implies |h| = 32$ (32-byte hash) - Deterministic: $\\text{ComputeTaprootSignatureHash}(tx_1, i_1, us_1, type_1, leaf_1) =…",
+                    "children": []
+                  },
+                  {
+                    "name": "11.2.7 Tapscript Signature Hash (BIP 342)",
+                    "value": 34,
+                    "preview": "ComputeTapscriptSignatureHash: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathcal{US} \\times \\mathbb{S} \\times \\mathbb{N}_{8} \\times \\mathbb{N}_{32} \\times \\mathbb{N}_{8} \\rightarrow \\mathbb{H}$ Computes the signature hash for tapscript (script-path) spending. Same base SigMsg structure as key-path (11.2.6), with an extension field $ext$ that binds the…",
+                    "children": []
+                  },
+                  {
+                    "name": "11.2.8 Tapscript Opcodes and SigOp Counting (BIP 342)",
+                    "value": 27,
+                    "preview": "OP_CHECKSIGADD (opcode 0xba): Tapscript-only opcode for signature aggregation. Stack semantics: Pops $(pk, n, sig)$ where $pk \\in \\mathbb{B}^{32}$, $n \\in \\mathbb{N}_{32}$, $sig \\in \\mathbb{B}^{64}$. Verifies BIP 340 Schnorr signature $(pk, sig)$ against the tapscript sighash. If valid: push $(n+1)$; else: fail. $$\\text{OP\\_CHECKSIGADD}(pk, n, sig) =…",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "11.4 UTXO Commitments",
+                "value": 109,
+                "preview": "Scope: UTXO commitments are not consensus-active on Bitcoin mainnet at the chain tip described in this document. They are specified for optional deployments, research implementations, and networks that choose to enable them (for example behind feature flags). Treat material in this section as non–mainnet-mandatory unless your deployment explicitly activates…",
+                "children": []
+              },
+              {
+                "name": "11.5 Signet (BIP325)",
+                "value": 21,
+                "preview": "Signet is a test network with an additional consensus parameter: the coinbase witness commitment must satisfy a challenge script. See BIP325. SignetChallenge: $\\text{Network} \\rightarrow \\mathbb{S}^?$ For each network $n$, $\\text{SignetChallenge}(n) \\in \\mathbb{S} \\cup \\{\\emptyset\\}$. When $\\text{SignetChallenge}(n) \\neq \\emptyset$, signet validation…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "12. Mining Protocol",
+            "value": 45,
+            "preview": "Coinbase Transaction: Special transaction with no inputs that creates new bitcoins CreateCoinbaseTransaction: $\\mathbb{N} \\times \\mathbb{Z} \\times \\mathbb{H} \\times \\mathbb{S} \\rightarrow \\mathcal{TX}$ Constructs a valid coinbase transaction for block at height $h$ with total fees $fees$, witness commitment hash $witness\\_commitment$, and optional extra…",
+            "children": [
+              {
+                "name": "12.2 Coinbase Transaction",
+                "value": 26,
+                "preview": "Coinbase Transaction: Special transaction with no inputs that creates new bitcoins CreateCoinbaseTransaction: $\\mathbb{N} \\times \\mathbb{Z} \\times \\mathbb{H} \\times \\mathbb{S} \\rightarrow \\mathcal{TX}$ Constructs a valid coinbase transaction for block at height $h$ with total fees $fees$, witness commitment hash $witness\\_commitment$, and optional extra…",
+                "children": []
+              },
+              {
+                "name": "12.4 Block Template Interface",
+                "value": 16,
+                "preview": "BlockTemplate: Interface for mining software Required Methods: - getBlockHeader(): Return block header for hashing - getBlock(): Return complete block (with dummy coinbase) - getCoinbaseTx(): Return actual coinbase transaction - getCoinbaseCommitment(): Return witness commitment - submitSolution(version, timestamp, nonce, coinbase): Submit mining solution…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "13. Engineering-Specific Edge Cases",
+            "value": 95,
+            "preview": "PROTOCOL.md states consensus rules mainly as mathematical predicates, types, and state transitions (§2–§12 and cross-referenced clauses). This section adds consensus-critical material not covered by those predicates alone: engineering invariants in §13.3.1–§13.3.4 (checked arithmetic on amounts and fees, canonical serialization and decoding, exact…",
+            "children": [
+              {
+                "name": "13.3 Engineering Invariants",
+                "value": 91,
+                "preview": "Subsections 13.3.1–13.3.5 state engineering invariants and cross-module integration properties that implementations must satisfy together with the core protocol. Critical Requirement: All monetary value arithmetic must use checked operations to prevent overflow/underflow. Edge Cases: 1. Value Summation: Input/output value summation can overflow i64::MAX…",
+                "children": [
+                  {
+                    "name": "13.3.1 Integer Arithmetic Overflow/Underflow",
+                    "value": 11,
+                    "preview": "Critical Requirement: All monetary value arithmetic must use checked operations to prevent overflow/underflow. Edge Cases: 1. Value Summation: Input/output value summation can overflow i64::MAX when combining many large UTXOs 2. Fee Calculation: total_in - total_out can underflow or overflow near boundaries 3. Coinbase Value: subsidy + fees can exceed…",
+                    "children": []
+                  },
+                  {
+                    "name": "13.3.2 Serialization/Deserialization Correctness",
+                    "value": 25,
+                    "preview": "Critical Requirement: Wire format must match the canonical P2P serialization observed on the network byte-for-byte. Edge Cases: 1. VarInt Encoding: Boundary values (0xfc, 0xfd, 0xfe, 0xff) must use correct encoding format 2. Little-Endian: All integers must be serialized as little-endian 3. Block Header: Must be exactly 80 bytes 4. Transaction Format: Must…",
+                    "children": []
+                  },
+                  {
+                    "name": "13.3.3 Resource Limit Enforcement",
+                    "value": 11,
+                    "preview": "Critical Requirement: DoS protection limits must be enforced deterministically at exact boundaries. Edge Cases: 1. Script Operation Limit: Exactly 201 operations must fail (limit check happens after increment) 2. Stack Size Limit: Exactly 1000 stack items must fail before next push 3. Transaction Size: Exactly 1,000,000 bytes must pass, 1,000,001 must fail…",
+                    "children": []
+                  },
+                  {
+                    "name": "13.3.4 Parser Determinism",
+                    "value": 10,
+                    "preview": "Critical Requirement: Malformed data must be rejected deterministically. All nodes must agree on invalid inputs. Edge Cases: 1. Truncated Data: EOF at any point must be rejected with clear error 2. Invalid Length Fields: Length > remaining bytes, invalid VarInt encodings 3. Malformed Structures: Negative counts, maximum value abuse Implementation:…",
+                    "children": []
+                  },
+                  {
+                    "name": "13.3.5 Integration Proofs",
+                    "value": 26,
+                    "preview": "Integration proofs verify that different consensus modules work together correctly, ensuring that cross-module interactions maintain mathematical correctness. Theorem 13.3.5.1 (BIP65/BIP112 Locktime Consistency): BIP65 (CLTV) and BIP112 (CSV) use shared locktime logic consistently: $$\\forall lt \\in \\mathbb{N}_{32}:$$…",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ARCHITECTURE.md",
+        "value": 0,
+        "children": [
+          {
+            "name": "10.3 Peer Discovery",
+            "value": 6,
+            "preview": "AddrMan: Address manager maintaining peer database GetAddr: Request peer addresses from connected nodes Addr: Broadcast known peer addresses",
+            "children": []
+          },
+          {
+            "name": "10.6 Dandelion++ k-Anonymity",
+            "value": 62,
+            "preview": "*Full specification: DANDELION_SPEC.md in blvm-node. This section retains the k-anonymity definition, stem phase algorithm, and Implementation Invariants for spec-lock verification.* Adversary Model: Passive observer capable of monitoring network traffic, operating nodes, and performing graph analysis. k-Anonymity Definition: A transaction $tx$ satisfies…",
+            "children": []
+          },
+          {
+            "name": "11.3 Chain Reorganization",
+            "value": 52,
+            "preview": "Chain Selection: Choose chain with most cumulative work $$\\text{BestChain} = \\arg\\max_{chain} \\sum_{block \\in chain} \\text{Work}(block)$$ Reorganization: When a longer chain is found: 1. Disconnect blocks from current tip 2. Connect blocks from new chain 3. Update UTXO set accordingly Chain reorganization requires disconnecting blocks from the current chain…",
+            "children": [
+              {
+                "name": "11.3.1 Undo Log Pattern",
+                "value": 42,
+                "preview": "Chain reorganization requires disconnecting blocks from the current chain and connecting blocks from the new chain. To efficiently reverse the effects of ConnectBlock, we use an undo log pattern that records all UTXO set changes made by a block. Undo Entry: $\\mathcal{UE} = \\mathcal{O} \\times \\mathcal{U}^? \\times \\mathcal{U}^?$ An undo entry records: -…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "12.1 Block Template Generation",
+            "value": 27,
+            "preview": "*One valid algorithm. Protocol requires output passes ConnectBlock; this section describes one way to construct a valid block template.* CreateNewBlock: $\\mathcal{US} \\times \\mathcal{TX}^* \\rightarrow \\mathcal{B}$ Properties: - Block structure: $\\text{CreateNewBlock}(us, mempool)$ returns a block with at least one transaction (coinbase) - Coinbase…",
+            "children": []
+          },
+          {
+            "name": "12.3 Mining Process",
+            "value": 64,
+            "preview": "*One valid algorithm. Protocol requires CheckProofOfWork(block) = true; this section describes one mining loop.* MineBlock: $\\mathcal{B} \\times \\mathbb{N} \\rightarrow \\mathcal{B} \\times \\{\\text{success}, \\text{failure}\\}$ Properties: - PoW success: $\\text{MineBlock}(block, maxTries) = (block', \\text{success}) \\implies \\text{CheckProofOfWork}(block') =…",
+            "children": []
+          },
+          {
+            "name": "13.1 Performance",
+            "value": 5,
+            "preview": "UTXO Set: Maintain in-memory for $O(1)$ lookups - Script Caching: Cache verification results - Parallel Validation: Validate transactions concurrently",
+            "children": []
+          },
+          {
+            "name": "13.2 Security",
+            "value": 6,
+            "preview": "Malleability: Prevented through SegWit - DoS Protection: Resource limits on size and operations - Replay Protection: Sequence numbers and locktime",
+            "children": []
+          },
+          {
+            "name": "13.4 Peer Consensus Protocol",
+            "value": 134,
+            "preview": "*One valid algorithm. Protocol requires UTXO commitment verification; this section describes one peer consensus approach.* The peer consensus protocol implements an N-of-M consensus model for UTXO commitment verification. It discovers diverse peers and finds consensus among them to verify UTXO commitments without trusting any single peer. This protocol is…",
+            "children": []
+          },
+          {
+            "name": "14. Conclusion",
+            "value": 29,
+            "preview": "This Orange Paper is a complete, definitive mathematical specification of Bitcoin consensus within the scope of PROTOCOL.md and this document (see each table of contents). BLVM validates it through extensive differential testing against Bitcoin Core, integration tests on consensus crates, and mainnet-observable behavior; when a discrepancy appears,…",
+            "children": [
+              {
+                "name": "14.1 Summary of Contributions",
+                "value": 15,
+                "preview": "Complete protocol specification (in scope): The formalized topics include, among others: - Transaction and block validation rules - Script execution semantics - Economic model with formal proofs - Proof-of-work and difficulty adjustment - Network protocol and mempool management - Mining process and block template generation Mathematical Rigor: The…",
+                "children": []
+              },
+              {
+                "name": "14.2 Applications",
+                "value": 9,
+                "preview": "This specification can be used for: - Formal Verification: Proving correctness properties of Bitcoin implementations - Protocol Analysis: Understanding the security and economic properties of Bitcoin - Implementation Reference: Building new Bitcoin-compatible software - Academic Research: Studying distributed consensus and cryptocurrency systems The…",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "References",
+            "value": 20,
+            "preview": "1. Reference implementation (bitcoin/bitcoin) 2. Bitcoin Improvement Proposals (BIPs) 3. Satoshi Nakamoto, \"Bitcoin: A Peer-to-Peer Electronic Cash System\" (2008) 4. FIPS 180-4: Secure Hash Standard 5. SEC 2: Recommended Elliptic Curve Domain Parameters 6. RFC 6979: Deterministic Usage of DSA and ECDSA 7. Set Theory 8. Discrete Mathematics 9. Cryptographic…",
+            "children": [
+              {
+                "name": "Bitcoin Protocol",
+                "value": 4,
+                "preview": "1. Reference implementation (bitcoin/bitcoin) 2. Bitcoin Improvement Proposals (BIPs) 3. Satoshi Nakamoto, \"Bitcoin: A Peer-to-Peer Electronic Cash System\" (2008)",
+                "children": []
+              },
+              {
+                "name": "Cryptographic Standards",
+                "value": 4,
+                "preview": "4. FIPS 180-4: Secure Hash Standard 5. SEC 2: Recommended Elliptic Curve Domain Parameters 6. RFC 6979: Deterministic Usage of DSA and ECDSA",
+                "children": []
+              },
+              {
+                "name": "Mathematical Concepts",
+                "value": 5,
+                "preview": "7. Set Theory 8. Discrete Mathematics 9. Cryptographic Hash Function 10. Elliptic Curve Cryptography",
+                "children": []
+              },
+              {
+                "name": "Security Vulnerabilities",
+                "value": 2,
+                "preview": "11. CVE-2012-2459: Bitcoin Merkle Tree Vulnerability",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "specLocked": {
+    "bySection": [
+      {
+        "section": "5.1",
+        "count": 10
+      },
+      {
+        "section": "5.5",
+        "count": 9
+      },
+      {
+        "section": "11.3",
+        "count": 9
+      },
+      {
+        "section": "11.1.1",
+        "count": 8
+      },
+      {
+        "section": "5.2",
+        "count": 7
+      },
+      {
+        "section": "7.1",
+        "count": 7
+      },
+      {
+        "section": "5.2.2",
+        "count": 7
+      },
+      {
+        "section": "5.1.1",
+        "count": 6
+      },
+      {
+        "section": "5.3",
+        "count": 5
+      },
+      {
+        "section": "8.4.1",
+        "count": 5
+      },
+      {
+        "section": "5.2.5",
+        "count": 5
+      },
+      {
+        "section": "9.1",
+        "count": 5
+      },
+      {
+        "section": "5.4.7",
+        "count": 5
+      },
+      {
+        "section": "5.4.6",
+        "count": 4
+      },
+      {
+        "section": "7.2",
+        "count": 4
+      },
+      {
+        "section": "9.3",
+        "count": 4
+      },
+      {
+        "section": "12.1",
+        "count": 4
+      },
+      {
+        "section": "11.2.1",
+        "count": 4
+      },
+      {
+        "section": "5.4.8",
+        "count": 3
+      },
+      {
+        "section": "5.4",
+        "count": 3
+      },
+      {
+        "section": "5.2.1",
+        "count": 3
+      },
+      {
+        "section": "11.1.4",
+        "count": 3
+      },
+      {
+        "section": "11.2.3",
+        "count": 3
+      },
+      {
+        "section": "11.1.3",
+        "count": 3
+      },
+      {
+        "section": "5.4.5",
+        "count": 2
+      },
+      {
+        "section": "5.3.1",
+        "count": 2
+      },
+      {
+        "section": "6.1",
+        "count": 2
+      },
+      {
+        "section": "6.2",
+        "count": 2
+      },
+      {
+        "section": "9.2",
+        "count": 2
+      },
+      {
+        "section": "12.3",
+        "count": 2
+      },
+      {
+        "section": "11.1.7",
+        "count": 2
+      },
+      {
+        "section": "11.2.5",
+        "count": 2
+      },
+      {
+        "section": "11.1",
+        "count": 2
+      },
+      {
+        "section": "11.1.5",
+        "count": 2
+      },
+      {
+        "section": "11.2.2",
+        "count": 2
+      },
+      {
+        "section": "11.1.9",
+        "count": 2
+      },
+      {
+        "section": "11.1.2",
+        "count": 2
+      },
+      {
+        "section": "5.4.1",
+        "count": 1
+      },
+      {
+        "section": "5.4.2",
+        "count": 1
+      },
+      {
+        "section": "5.4.3",
+        "count": 1
+      },
+      {
+        "section": "5.4.4",
+        "count": 1
+      },
+      {
+        "section": "6.5",
+        "count": 1
+      },
+      {
+        "section": "6.3",
+        "count": 1
+      },
+      {
+        "section": "12.4",
+        "count": 1
+      },
+      {
+        "section": "12.2",
+        "count": 1
+      },
+      {
+        "section": "11.3.1",
+        "count": 1
+      },
+      {
+        "section": "11.1.6",
+        "count": 1
+      },
+      {
+        "section": "11.2.8",
+        "count": 1
+      },
+      {
+        "section": "11.2.4",
+        "count": 1
+      },
+      {
+        "section": "11.2.6",
+        "count": 1
+      },
+      {
+        "section": "11.2.7",
+        "count": 1
+      },
+      {
+        "section": "6.4",
+        "count": 1
+      },
+      {
+        "section": "11.2",
+        "count": 1
+      }
+    ],
+    "byModule": [
+      {
+        "module": "lib",
+        "total": 17,
+        "sections": {
+          "5.1": 1,
+          "5.3": 1,
+          "5.2": 1,
+          "7.2": 1,
+          "6.1": 1,
+          "6.2": 1,
+          "7.1": 1,
+          "9.1": 1,
+          "9.2": 1,
+          "9.3": 1,
+          "12.1": 1,
+          "12.3": 1,
+          "11.3": 1,
+          "11.1.1": 1,
+          "11.1.7": 1,
+          "11.2.5": 1,
+          "11.2.1": 1
+        }
+      },
+      {
+        "module": "block",
+        "total": 7,
+        "sections": {
+          "5.3.1": 1,
+          "5.1": 1,
+          "5.3": 2,
+          "5.5": 1,
+          "8.4.1": 1,
+          "5.2.5": 1
+        }
+      },
+      {
+        "module": "mining",
+        "total": 7,
+        "sections": {
+          "12.1": 1,
+          "12.3": 1,
+          "12.4": 1,
+          "12.2": 1,
+          "8.4.1": 1,
+          "7.2": 1,
+          "7.1": 1
+        }
+      },
+      {
+        "module": "taproot",
+        "total": 7,
+        "sections": {
+          "11.2.1": 1,
+          "11.2.2": 1,
+          "11.2.3": 1,
+          "11.2.4": 1,
+          "11.2.5": 1,
+          "11.2.6": 1,
+          "11.2.7": 1
+        }
+      },
+      {
+        "module": "bip_validation",
+        "total": 6,
+        "sections": {
+          "5.4.1": 1,
+          "5.4.2": 1,
+          "5.4": 1,
+          "5.4.3": 1,
+          "5.4.4": 1,
+          "5.4.5": 1
+        }
+      },
+      {
+        "module": "segwit",
+        "total": 6,
+        "sections": {
+          "11.1.1": 1,
+          "11.1.4": 1,
+          "11.1": 1,
+          "11.1.5": 1,
+          "11.1.6": 1,
+          "11.1.7": 1
+        }
+      },
+      {
+        "module": "script",
+        "total": 5,
+        "sections": {
+          "5.2": 2,
+          "5.4.5": 1,
+          "5.2.1": 1,
+          "5.1.1": 1
+        }
+      },
+      {
+        "module": "economic",
+        "total": 4,
+        "sections": {
+          "6.1": 1,
+          "6.2": 1,
+          "6.5": 1,
+          "6.3": 1
+        }
+      },
+      {
+        "module": "mempool",
+        "total": 4,
+        "sections": {
+          "9.1": 1,
+          "9.2": 1,
+          "9.3": 1,
+          "5.1": 1
+        }
+      },
+      {
+        "module": "sigop",
+        "total": 4,
+        "sections": {
+          "5.2.2": 1,
+          "11.2.8": 1,
+          "5.2.1": 1,
+          "11.1": 1
+        }
+      },
+      {
+        "module": "witness",
+        "total": 4,
+        "sections": {
+          "11.1.2": 1,
+          "11.2": 1,
+          "11.1.1": 1,
+          "11.1.3": 1
+        }
+      },
+      {
+        "module": "transaction_hash",
+        "total": 3,
+        "sections": {
+          "5.1.1": 1,
+          "5.1": 1,
+          "11.1.9": 1
+        }
+      },
+      {
+        "module": "locktime",
+        "total": 2,
+        "sections": {
+          "5.4.7": 1,
+          "5.5": 1
+        }
+      },
+      {
+        "module": "pow",
+        "total": 2,
+        "sections": {
+          "7.1": 1,
+          "7.2": 1
+        }
+      },
+      {
+        "module": "reorganization",
+        "total": 2,
+        "sections": {
+          "11.3": 1,
+          "11.3.1": 1
+        }
+      },
+      {
+        "module": "transaction",
+        "total": 2,
+        "sections": {
+          "5.1": 1,
+          "6.4": 1
+        }
+      },
+      {
+        "module": "bip113",
+        "total": 1,
+        "sections": {
+          "5.5": 1
+        }
+      },
+      {
+        "module": "bip119",
+        "total": 1,
+        "sections": {
+          "5.4.6": 1
+        }
+      },
+      {
+        "module": "bip348",
+        "total": 1,
+        "sections": {
+          "5.4.8": 1
+        }
+      },
+      {
+        "module": "sequence_locks",
+        "total": 1,
+        "sections": {
+          "5.5": 1
+        }
+      }
+    ],
+    "cooccurrenceTopSections": [
+      "5.1",
+      "5.5",
+      "11.3",
+      "11.1.1",
+      "5.2",
+      "7.1",
+      "5.2.2",
+      "5.1.1",
+      "5.3",
+      "8.4.1",
+      "5.2.5",
+      "9.1",
+      "5.4.7",
+      "7.2"
+    ],
+    "cooccurrenceMatrix": [
+      [
+        10,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        2,
+        0,
+        1
+      ],
+      [
+        0,
+        9,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        1,
+        0,
+        9,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      [
+        1,
+        0,
+        1,
+        8,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      [
+        1,
+        0,
+        1,
+        1,
+        7,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      [
+        1,
+        0,
+        1,
+        1,
+        1,
+        7,
+        0,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        3
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        7,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        5,
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      [
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        5,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        5,
+        0,
+        0,
+        0
+      ],
+      [
+        2,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        5,
+        0,
+        1
+      ],
+      [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        5,
+        0
+      ],
+      [
+        1,
+        0,
+        1,
+        1,
+        1,
+        3,
+        0,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        4
+      ]
+    ],
+    "filesWithSpecLock": 24
+  }
+}
