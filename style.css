@@ -2308,6 +2308,25 @@ body.spec-maps-body {
   font-style: italic;
 }
 
+/* In-body links (TOC links use .toc a above) */
+.whitepaper-content a {
+  color: var(--bitcoin-orange);
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(247, 147, 26, 0.35);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.whitepaper-content a:hover,
+.whitepaper-content a:focus {
+  color: #e6820a;
+  border-bottom-color: rgba(230, 130, 10, 0.65);
+}
+
+.whitepaper-content a:visited {
+  color: var(--bitcoin-orange);
+}
+
 .whitepaper-content img {
   max-width: 100%;
   height: auto;
