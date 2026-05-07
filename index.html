@@ -437,6 +437,161 @@
         font-size: 1.125rem;
         line-height: 1;
       }
+
+      /* ── Sunburst detail modal (managed by parent page) ── */
+      #sb-modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        background: rgba(8, 12, 24, 0.72);
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        backdrop-filter: blur(3px);
+      }
+      #sb-modal-overlay.sb-open {
+        display: flex;
+      }
+      #sb-modal {
+        background: var(--i2-surface, #141427);
+        border: 1px solid var(--i2-border, #2a2a45);
+        border-radius: 14px;
+        box-shadow: 0 28px 56px rgba(0, 0, 0, 0.6);
+        width: min(30rem, calc(100vw - 2rem));
+        max-height: min(88vh, 640px);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        color: var(--i2-fg, #e2e8f0);
+        animation: sb-modal-in 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      @keyframes sb-modal-in {
+        from { opacity: 0; transform: translateY(10px) scale(0.97); }
+        to   { opacity: 1; transform: none; }
+      }
+      #sb-modal-head {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 1rem 1.1rem 0.85rem;
+        border-bottom: 1px solid var(--i2-border, #2a2a45);
+        flex-shrink: 0;
+      }
+      #sb-modal-head-text {
+        flex: 1;
+        min-width: 0;
+      }
+      #sb-modal-meta {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--i2-orange, #f7931a);
+        margin-bottom: 0.3rem;
+      }
+      #sb-modal-title {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--i2-fg, #f1f5f9);
+        line-height: 1.35;
+        word-break: break-word;
+      }
+      #sb-modal-close {
+        flex-shrink: 0;
+        width: 2.1rem;
+        height: 2.1rem;
+        padding: 0;
+        border: none;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--i2-muted, #64748b);
+        font-size: 1.4rem;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.12s, color 0.12s;
+      }
+      #sb-modal-close:hover {
+        background: var(--i2-border, #2a2a45);
+        color: var(--i2-fg, #f1f5f9);
+      }
+      #sb-modal-body {
+        padding: 0.9rem 1.1rem 1.1rem;
+        overflow-y: auto;
+        flex: 1;
+        min-height: 0;
+      }
+      #sb-modal-linecount {
+        font-size: 0.72rem;
+        color: var(--i2-muted, #64748b);
+        margin: 0 0 0.6rem;
+      }
+      #sb-modal-preview {
+        margin: 0 0 0.75rem;
+        font-size: 0.82rem;
+        color: #cbd5e1;
+        line-height: 1.55;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      #sb-modal-path {
+        margin: 0 0 0.9rem;
+        font-size: 0.75rem;
+        color: var(--i2-muted, #64748b);
+        word-break: break-word;
+      }
+      #sb-modal-path code {
+        font-size: 0.73em;
+        background: rgba(255,255,255,0.07);
+        border-radius: 4px;
+        padding: 0.1em 0.35em;
+        color: #e2e8f0;
+      }
+      #sb-modal-open-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.45rem 0.95rem;
+        background: rgba(247, 147, 26, 0.13);
+        border: 1px solid rgba(247, 147, 26, 0.5);
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--i2-orange, #f7931a);
+        text-decoration: none;
+        transition: background 0.13s, border-color 0.13s;
+      }
+      #sb-modal-open-btn:hover {
+        background: rgba(247, 147, 26, 0.22);
+        border-color: var(--i2-orange, #f7931a);
+      }
+      @media (max-width: 480px) {
+        #sb-modal {
+          border-radius: 12px 12px 0 0;
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          width: 100%;
+          max-width: 100%;
+          max-height: 80dvh;
+          animation: sb-modal-up 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        @keyframes sb-modal-up {
+          from { transform: translateY(100%); }
+          to   { transform: translateY(0); }
+        }
+        #sb-modal-overlay {
+          align-items: flex-end;
+          padding: 0;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1815,8 +1970,149 @@
       (function () {
         var sunburst = document.getElementById("i2-sunburst");
         var govSpectrum = document.getElementById("i2-gov-spectrum");
-        /* Stash sunburst's natural height so we can restore it after a mobile modal closes. */
-        var sunburstNaturalHeight = null;
+
+        /* ── Sunburst popup modal ─────────────────────────────────── */
+        var sbOverlay = null;
+        var sbModal   = null;
+        var sbCloseBtn = null;
+        var sbTitle   = null;
+        var sbMeta    = null;
+        var sbLinecount = null;
+        var sbPreview = null;
+        var sbPath    = null;
+        var sbOpenBtn = null;
+
+        function buildSbModal() {
+          if (sbOverlay) return;
+
+          sbOverlay = document.createElement("div");
+          sbOverlay.id = "sb-modal-overlay";
+          sbOverlay.setAttribute("role", "presentation");
+          sbOverlay.addEventListener("click", function (e) {
+            if (e.target === sbOverlay) closeSbModal();
+          });
+
+          sbModal = document.createElement("div");
+          sbModal.id = "sb-modal";
+          sbModal.setAttribute("role", "dialog");
+          sbModal.setAttribute("aria-modal", "true");
+          sbModal.setAttribute("aria-labelledby", "sb-modal-title");
+
+          var head = document.createElement("div");
+          head.id = "sb-modal-head";
+
+          var headText = document.createElement("div");
+          headText.id = "sb-modal-head-text";
+
+          sbMeta = document.createElement("div");
+          sbMeta.id = "sb-modal-meta";
+
+          sbTitle = document.createElement("h3");
+          sbTitle.id = "sb-modal-title";
+
+          headText.appendChild(sbMeta);
+          headText.appendChild(sbTitle);
+
+          sbCloseBtn = document.createElement("button");
+          sbCloseBtn.id = "sb-modal-close";
+          sbCloseBtn.type = "button";
+          sbCloseBtn.setAttribute("aria-label", "Close");
+          sbCloseBtn.textContent = "×";
+          sbCloseBtn.addEventListener("click", closeSbModal);
+
+          head.appendChild(headText);
+          head.appendChild(sbCloseBtn);
+
+          var body = document.createElement("div");
+          body.id = "sb-modal-body";
+
+          sbLinecount = document.createElement("p");
+          sbLinecount.id = "sb-modal-linecount";
+
+          sbPreview = document.createElement("p");
+          sbPreview.id = "sb-modal-preview";
+
+          sbPath = document.createElement("p");
+          sbPath.id = "sb-modal-path";
+
+          var actions = document.createElement("div");
+          sbOpenBtn = document.createElement("a");
+          sbOpenBtn.id = "sb-modal-open-btn";
+          sbOpenBtn.target = "_blank";
+          sbOpenBtn.rel = "noopener noreferrer";
+          actions.appendChild(sbOpenBtn);
+
+          body.appendChild(sbLinecount);
+          body.appendChild(sbPreview);
+          body.appendChild(sbPath);
+          body.appendChild(actions);
+
+          sbModal.appendChild(head);
+          sbModal.appendChild(body);
+          sbOverlay.appendChild(sbModal);
+          document.body.appendChild(sbOverlay);
+
+          document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape" && sbOverlay.classList.contains("sb-open")) closeSbModal();
+          });
+        }
+
+        function openSbModal(data) {
+          buildSbModal();
+          var isSection = data.kind === "section";
+          var isDocRoot = data.kind === "doc-root";
+
+          sbMeta.textContent = isSection ? (data.viewerLabel || "SPEC") + " viewer"
+            : (data.doc === "protocol" ? "PROTOCOL viewer" : "ARCHITECTURE viewer");
+
+          sbTitle.textContent = isSection ? data.title
+            : (data.doc === "protocol" ? "PROTOCOL.md" : "ARCHITECTURE.md");
+
+          if (isSection && data.lineCount) {
+            sbLinecount.textContent = "~" + data.lineCount + " prose line(s) under this heading";
+            sbLinecount.style.display = "";
+          } else {
+            sbLinecount.style.display = "none";
+          }
+
+          if (isSection && data.preview) {
+            /* Strip KaTeX delimiters for plain display */
+            sbPreview.textContent = data.preview.replace(/\\\(|\\\)/g, "").replace(/\\\[|\\\]/g, "").trim();
+            sbPreview.style.display = "";
+          } else if (isDocRoot) {
+            sbPreview.textContent = data.doc === "protocol"
+              ? "Full Orange Paper protocol extract: constants, formulas, and definitions with math rendering and heading navigation."
+              : "Full Orange Paper architecture extract: system structure, major components, and how they connect.";
+            sbPreview.style.display = "";
+          } else {
+            sbPreview.style.display = "none";
+          }
+
+          var pathArr = Array.isArray(data.path) ? data.path : [];
+          if (pathArr.length > 0) {
+            sbPath.innerHTML = "<strong>Path:</strong> <code>" + pathArr.join(" → ") + "</code>";
+            sbPath.style.display = "";
+          } else {
+            sbPath.style.display = "none";
+          }
+
+          sbOpenBtn.href = isSection ? data.href : data.docHref;
+          sbOpenBtn.textContent = isSection ? "Open section ↗" : (data.doc === "protocol" ? "Open protocol page ↗" : "Open architecture page ↗");
+
+          document.body.style.overflow = "hidden";
+          sbOverlay.classList.add("sb-open");
+          sbCloseBtn.focus();
+        }
+
+        function closeSbModal() {
+          if (!sbOverlay) return;
+          sbOverlay.classList.remove("sb-open");
+          document.body.style.overflow = "";
+          /* Tell the iframe to clear its focus-ring highlight. */
+          if (sunburst && sunburst.contentWindow) {
+            sunburst.contentWindow.postMessage({ type: "btcc-sunburst-popup-close" }, "*");
+          }
+        }
 
         window.addEventListener("message", function (e) {
           if (!e.data || typeof e.data.type !== "string") return;
@@ -1827,41 +2123,15 @@
           ) {
             var h = e.data.height;
             if (typeof h !== "number" || !isFinite(h) || h <= 0) return;
-            /* Fit full chart height; do not cap below reported content (avoids clipping). */
-            var newH = Math.max(Math.round(h + 12), 300) + "px";
-            sunburst.style.height = newH;
-            sunburstNaturalHeight = newH;
-            return;
-          }
-          /* Mobile fullscreen modal: make the iframe a fixed overlay so the fixed-position
-             detail panel inside can cover the whole screen. */
-          if (
-            sunburst &&
-            e.source === sunburst.contentWindow &&
-            e.data.type === "btcc-sunburst-modal-open"
-          ) {
-            sunburstNaturalHeight = sunburstNaturalHeight || sunburst.style.height || sunburst.offsetHeight + "px";
-            sunburst.style.position = "fixed";
-            sunburst.style.inset = "0";
-            sunburst.style.width = "100%";
-            sunburst.style.height = "100%";
-            sunburst.style.zIndex = "9000";
-            sunburst.style.borderRadius = "0";
-            document.body.style.overflow = "hidden";
+            sunburst.style.height = Math.max(Math.round(h + 12), 300) + "px";
             return;
           }
           if (
             sunburst &&
             e.source === sunburst.contentWindow &&
-            e.data.type === "btcc-sunburst-modal-close"
+            e.data.type === "btcc-sunburst-popup-open"
           ) {
-            sunburst.style.position = "";
-            sunburst.style.inset = "";
-            sunburst.style.width = "";
-            sunburst.style.height = sunburstNaturalHeight || "";
-            sunburst.style.zIndex = "";
-            sunburst.style.borderRadius = "";
-            document.body.style.overflow = "";
+            openSbModal(e.data);
             return;
           }
           if (
