@@ -122,10 +122,30 @@
         color: var(--i2-fg);
       }
       .i2-why-card p {
-        margin: 0;
+        margin: 0 0 0.85rem;
         font-size: 0.8125rem;
         color: var(--i2-muted);
         line-height: 1.5;
+      }
+      .i2-why-card .i2-why-cta {
+        margin-top: 0.1rem;
+      }
+      .i2-why-card .i2-why-cta a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.45rem 0.9rem;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-decoration: none;
+        color: #111;
+        background: var(--i2-orange);
+        border: 1px solid #e6820a;
+        transition: filter 0.15s ease, transform 0.15s ease;
+      }
+      .i2-why-card .i2-why-cta a:hover {
+        filter: brightness(1.06);
       }
       .i2-chart-embed {
         margin-top: 1rem;
@@ -497,33 +517,45 @@
           <div class="i2-why-card">
             <h3>Modular architecture</h3>
             <p>
-              The dominant reference client keeps consensus inside a huge C++
-              codebase with no math spec wired to the implementation. BLVM moves those rules
-              into the Orange Paper so behavior is checkable, not guessed.
-              Compete on code and governance instead of treating every product
-              call like a consensus fork.
+              One dominant client still buries consensus in a huge C++ tree with
+              no spec tied to the code. BLVM puts the rules in the Orange Paper so
+              they can be checked—teams compete on code and governance, not
+              informal veto power over every roadmap.
             </p>
+            <div class="i2-why-cta">
+              <a href="orange-paper.html">Read Orange Paper</a>
+            </div>
           </div>
           <div class="i2-why-card">
             <h3>Economic sustainability</h3>
             <p>
-              Money and attention still pile into one reference client, so
-              serious second implementations struggle to fund security work.
-              The module marketplace is the main bet: distribution, discovery,
-              and fees tie revenue to adoption. Patronage and grants help but do
-              not scale alone; merge mining and similar options are optional
-              supplements, not the primary economic model.
+              Funding and reviewers still pile into one client, so serious
+              alternatives struggle to pay for security. The module marketplace is
+              the main lever: distribution and fees tie revenue to adoption;
+              patronage helps but does not scale alone.
             </p>
+            <div class="i2-why-cta">
+              <a href="whitepaper.html#7-economic-sustainability"
+                >Economic model in white paper</a
+              >
+            </div>
           </div>
           <div class="i2-why-card">
             <h3>Commons discipline</h3>
             <p>
-              Informal maintainer discretion makes exits costly and turns
-              disputes personal. Commons governance publishes forkable rules and
-              uses cryptographic thresholds so authority is visible. The aim is
-              coordination among people who ship software, not steering the
-              network for everyone else.
+              Informal maintainer discretion makes exits costly and disputes
+              personal. Published, forkable rules and cryptographic thresholds make
+              authority visible—coordination among people who ship software, not
+              steering the network for everyone else.
             </p>
+            <div class="i2-why-cta">
+              <a
+                href="https://docs.thebitcoincommons.org/governance/overview.html"
+                target="_blank"
+                rel="noopener"
+                >Governance overview</a
+              >
+            </div>
           </div>
         </div>
         <figure class="i2-chart-embed i2-chart-embed--gov-spectrum">
