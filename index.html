@@ -26,6 +26,12 @@
       property="og:image"
       content="https://thebitcoincommons.org/assets/og-image.png"
     />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="The Bitcoin Commons: formal specification and forkable governance for Bitcoin software"
+    />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
@@ -39,19 +45,39 @@
       name="twitter:image"
       content="https://thebitcoincommons.org/assets/og-image.png"
     />
+    <link rel="canonical" href="https://thebitcoincommons.org/" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="preconnect" href="https://docs.thebitcoincommons.org" />
     <link rel="stylesheet" href="style.css?v=12" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css"
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "name": "The Bitcoin Commons",
+            "url": "https://thebitcoincommons.org/",
+            "description": "Coordination without authority: formal specification, differential testing, fuzzing, and forkable governance for Bitcoin software.",
+            "publisher": { "@id": "https://thebitcoincommons.org/#organization" }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://thebitcoincommons.org/#organization",
+            "name": "The Bitcoin Commons",
+            "url": "https://thebitcoincommons.org/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://thebitcoincommons.org/assets/bitcoin-commons-logo.png"
+            },
+            "sameAs": [
+              "https://github.com/BTCDecoded",
+              "https://docs.thebitcoincommons.org/",
+              "https://btccommons.substack.com/"
+            ]
+          }
+        ]
+      }
+    </script>
     <style>
       html.index2 {
         color-scheme: dark;
@@ -92,6 +118,19 @@
         color: var(--i2-muted);
         margin: 0 0 2.5rem;
         line-height: 1.6;
+      }
+      .i2-paths ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: inline;
+      }
+      .i2-paths li {
+        display: inline;
+      }
+      .i2-paths li + li::before {
+        content: " · ";
+        color: var(--i2-muted);
       }
       .i2-paths a {
         color: var(--i2-orange);
@@ -170,11 +209,38 @@
         height: 200px;
         max-height: 340px;
       }
-      .i2-path {
-        scroll-margin-top: 1rem;
+      .i2-path,
+      #what-weve-built {
+        scroll-margin-top: 4rem;
       }
-      #faq-proof-consensus {
+      #main-content {
+        scroll-margin-top: 0;
+      }
+      .i2-skip-link {
+        position: absolute;
+        left: 0.75rem;
+        top: 0.5rem;
+        z-index: 10001;
+        padding: 0.5rem 0.85rem;
+        background: var(--i2-orange);
+        color: #111;
+        font-weight: 700;
+        font-size: 0.8125rem;
+        text-decoration: none;
+        border-radius: 6px;
+        transform: translateY(-150%);
+        transition: transform 0.15s ease;
+      }
+      .i2-skip-link:focus {
+        transform: translateY(0);
+        outline: 2px solid #fff;
+        outline-offset: 2px;
+      }
+      html.index2 .i2-faq .faq-item[id] {
         scroll-margin-top: 4.5rem;
+      }
+      html.index2 #faq {
+        scroll-margin-top: 4rem;
       }
       .i2-path .i2-learn-grid {
         margin-top: 0.85rem;
@@ -443,6 +509,25 @@
         font-size: 1.125rem;
         line-height: 1;
       }
+      .i2-icon-github {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .faq-answer {
+          transition: none !important;
+        }
+        #sb-modal {
+          animation: none !important;
+        }
+        @keyframes sb-modal-in {
+          from { opacity: 1; transform: none; }
+        }
+        @keyframes sb-modal-up {
+          from { transform: none; }
+        }
+      }
 
       /* ── Sunburst detail modal (managed by parent page) ── */
       #sb-modal-overlay {
@@ -620,7 +705,12 @@
     </style>
   </head>
   <body>
-    <div class="release-banner" role="banner" aria-label="Release announcement">
+    <a class="i2-skip-link" href="#main-content">Skip to main content</a>
+    <div
+      class="release-banner"
+      aria-live="polite"
+      aria-label="Latest BLVM release"
+    >
       <span id="release-banner-badge" class="release-banner-badge">v0.1.5</span>
       <span class="release-banner-text">
         Latest release.
@@ -636,6 +726,7 @@
           width="1920"
           height="1080"
           decoding="async"
+          fetchpriority="high"
         />
       </div>
       <div class="hero-content">
@@ -657,26 +748,27 @@
       </div>
     </header>
 
-    <div class="i2-wrap i2">
-      <p class="i2-paths" role="navigation" aria-label="Section shortcuts">
+    <main class="i2-wrap i2" id="main-content">
+      <nav class="i2-paths" aria-label="Section shortcuts">
         <span class="i2-paths-label">Jump to</span>:
-        <a href="#path-orange-paper">Orange Paper</a>
-        ·
-        <a href="#path-learning">Learning</a>
-        ·
-        <a href="#path-implementations">Implementations</a>
-        ·
-        <a href="#faq">FAQ</a>
-        ·
-        <a
-          href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md"
-          target="_blank"
-          rel="noopener"
-          >Project status</a
-        >
-      </p>
+        <ul>
+          <li><a href="#what-weve-built">What we've built</a></li>
+          <li><a href="#path-orange-paper">Orange Paper</a></li>
+          <li><a href="#path-learning">Learning</a></li>
+          <li><a href="#path-implementations">Implementations</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li>
+            <a
+              href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md"
+              target="_blank"
+              rel="noopener"
+              >Project status</a
+            >
+          </li>
+        </ul>
+      </nav>
 
-      <section class="i2-block" aria-labelledby="built-title">
+      <section class="i2-block" id="what-weve-built" aria-labelledby="built-title">
         <div class="i2-block-head">
           <span class="i2-eyebrow">What we've built</span>
           <h2 class="i2-block-title" id="built-title">Formal spec. Verified node. Forkable governance.</h2>
@@ -860,6 +952,7 @@
             title="Subscribe to Bitcoin Commons on Substack"
             width="100%"
             height="150"
+            loading="lazy"
             style="border: 0; background: transparent"
             frameborder="0"
             scrolling="no"
@@ -905,7 +998,7 @@
                 target="_blank"
                 rel="noopener"
                 aria-label="BTCDecoded on GitHub"
-                ><i class="fa-brands fa-github" aria-hidden="true"></i
+                ><svg class="i2-icon-github" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.607.069-.607 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.337-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.547 1.376.203 2.394.1 2.646.641.698 1.028 1.591 1.028 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg
               ></a>
             </div>
           </div>
@@ -936,11 +1029,10 @@
         <h2 id="faq-heading" class="i2-block-title">Frequently Asked Questions</h2>
 
         <div class="faq-categories">
-            <!-- Category 0: Entry FAQ -->
             <div class="faq-category">
               <h3>Common questions</h3>
               <div class="faq-accordion">
-                <div class="faq-item">
+                <div class="faq-item" id="faq-what-is-bitcoin-commons">
                   <button class="faq-question" aria-expanded="false">
                     <span>What is Bitcoin Commons?</span>
                     <span class="faq-icon">+</span>
@@ -956,7 +1048,16 @@
                       is the engineering organization that builds and ships BLVM
                       under Bitcoin Commons. Together they target safe alternative
                       Bitcoin implementations you can govern without recentralizing
-                      into informal gatekeeping.
+                      into informal gatekeeping. BLVM supplies checkable
+                      correctness; Commons supplies coordination—both are aimed at
+                      a serious second node and governance that resists informal
+                      capture.
+                    </p>
+                    <p>
+                      Bitcoin Commons is the umbrella; BLVM is the stack (spec,
+                      proofs, node). BTCDecoded is the GitHub org and team shipping
+                      that work today—another group could use the same open
+                      frameworks later.
                     </p>
                   </div>
                 </div>
@@ -993,7 +1094,7 @@
                   </div>
                 </div>
 
-                <div class="faq-item">
+                <div class="faq-item" id="faq-vs-reference-client">
                   <button class="faq-question" aria-expanded="false">
                     <span>How is this different from the reference client?</span>
                     <span class="faq-icon">+</span>
@@ -1019,7 +1120,7 @@
                   </div>
                 </div>
 
-                <div class="faq-item">
+                <div class="faq-item" id="faq-is-this-a-bitcoin-fork">
                   <button class="faq-question" aria-expanded="false">
                     <span>Is this a fork of Bitcoin?</span>
                     <span class="faq-icon">+</span>
@@ -1036,7 +1137,7 @@
                   </div>
                 </div>
 
-                <div class="faq-item">
+                <div class="faq-item" id="faq-production-ready">
                   <button class="faq-question" aria-expanded="false">
                     <span>Is the system production ready?</span>
                     <span class="faq-icon">+</span>
@@ -1058,85 +1159,13 @@
                     </p>
                   </div>
                 </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>How do BLVM and Bitcoin Commons work together?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      The two innovations stack together: BLVM is the
-                      implementation (Orange Paper as the shared IR, spec-locked
-                      consensus, full node). Bitcoin Commons is the governance
-                      layer with forkable rules, cryptographic thresholds, and
-                      accountable process for how that software changes and ships. BLVM
-                      supplies checkable correctness; Commons supplies
-                      coordination without civil war. You do not get a serious
-                      second node without both the spec-backed stack and
-                      governance that resists informal capture.
-                    </p>
-                  </div>
-                </div>
               </div>
             </div>
 
-            <!-- Category 1: Overview - Two Innovations -->
             <div class="faq-category">
-              <h3>Overview: Two Innovations</h3>
+              <h3>BLVM</h3>
               <div class="faq-accordion">
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>What are the two innovations?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      <strong>BLVM (Bitcoin Low-Level Virtual Machine)</strong>:
-                      Technical innovation providing mathematical rigor through
-                      the Orange Paper (mathematical specification), formal
-                      verification (specification locking annotations), proofs
-                      locked to code, and a compiler-like architecture. This
-                      ensures correctness.
-                    </p>
-                    <p>
-                      <strong>Bitcoin Commons (Cryptographic Commons)</strong>:
-                      Governance innovation providing forkable governance
-                      through Ostrom's principles, cryptographic enforcement,
-                      5-tier governance model, and transparent audit trails.
-                      This ensures coordination.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span
-                      >What's the relationship between Bitcoin Commons and
-                      BTCDecoded?</span
-                    >
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Bitcoin Commons is the umbrella project. BLVM is the
-                      implementation stack (spec, proofs, node). BTCDecoded is
-                      the GitHub organization and engineering team that builds
-                      and ships BLVM and implements Commons governance for the
-                      project today. Another group could ship a BLVM-based node
-                      under the same open frameworks; BTCDecoded is the team
-                      doing the work now.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Category 2: BLVM - Technical Innovation -->
-            <div class="faq-category">
-              <h3>BLVM: Technical Innovation</h3>
-              <div class="faq-accordion">
-                <div class="faq-item">
+                <div class="faq-item" id="faq-what-is-blvm">
                   <button class="faq-question" aria-expanded="false">
                     <span>What is BLVM?</span>
                     <span class="faq-icon">+</span>
@@ -1144,669 +1173,186 @@
                   <div class="faq-answer">
                     <p>
                       BLVM (Bitcoin Low-Level Virtual Machine) is the technical
-                      stack that provides mathematical rigor for Bitcoin
-                      implementations. It includes: (1)
-                      <strong>blvm-spec</strong> (Orange Paper) - complete
-                      mathematical specification of Bitcoin consensus, (2)
-                      <strong>blvm-consensus</strong> - pure mathematical
-                      implementation with formal verification, (3)
-                      <strong>blvm-protocol</strong> - Bitcoin abstraction
-                      layer, (4) <strong>blvm-node</strong> - full node
-                      implementation, (5) <strong>blvm</strong> - binary wrapper
-                      for blvm-node, (6) <strong>blvm-sdk</strong> - developer
-                      toolkit. Think of it as a compiler-like architecture where
-                      the Orange Paper is the IR (intermediate representation).
+                      stack for rigorous Bitcoin implementations:
+                      <strong>blvm-spec</strong> (Orange Paper),
+                      <strong>blvm-consensus</strong>,
+                      <strong>blvm-protocol</strong>,
+                      <strong>blvm-node</strong>, <strong>blvm</strong> (binary
+                      wrapper), and <strong>blvm-sdk</strong>.
+                    </p>
+                    <p>
+                      The Orange Paper is the mathematical specification of
+                      Bitcoin consensus—the &quot;IR&quot; in a compiler-like
+                      pipeline (Core consensus &rarr; Orange Paper &rarr;
+                      blvm-consensus &rarr; blvm-node) so multiple implementations
+                      can target the same written rules.
                     </p>
                   </div>
                 </div>
 
-                <div class="faq-item">
+                <div class="faq-item" id="faq-blvm-correctness">
                   <button class="faq-question" aria-expanded="false">
-                    <span>What is the Orange Paper?</span>
+                    <span>How does BLVM ensure correctness?</span>
                     <span class="faq-icon">+</span>
                   </button>
                   <div class="faq-answer">
                     <p>
-                      The Orange Paper is a complete mathematical specification
-                      of Bitcoin's consensus protocol, extracted from Bitcoin
-                      Core using AI-assisted analysis. It serves as the
-                      "intermediate representation" (IR) in BLVM's compiler-like
-                      architecture. It enables safe alternative implementations
-                      by providing formal, verifiable consensus rules that can
-                      be mathematically proven correct.
+                      Specification locking and formal verification tie
+                      consensus-critical code to the Orange Paper; the codebase
+                      includes on the order of <strong>200 embedded proofs</strong>
+                      checked continuously. Proofs live with the code so drift
+                      forces updates. A dependency chain routes consensus through
+                      verified functions; spec-drift tooling flags mismatches.
                     </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>How does formal verification work in BLVM?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
                     <p>
-                      BLVM uses specification locking annotations and formal
-                      verification to formally verify consensus-critical code.
-                      The Orange Paper provides the mathematical specification;
-                      blvm-consensus implements it with proofs locked to code.
-                      All consensus decisions flow through verified functions,
-                      and the dependency chain prevents bypassing verification.
-                      This provides mathematical proof of correctness, not just
-                      testing.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>How is BLVM different from the reference client?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      The dominant C++ full node embeds consensus rules in
-                      350,000+ lines with no mathematical specification. BLVM
-                      provides: (1) Mathematical specification (Orange Paper), (2)
-                      Formal verification (specification locking annotations), (3)
-                      Proofs locked to code, (4) Compiler-like architecture
-                      enabling safe alternative implementations. BLVM does not
-                      replace that client; it enables checkable alternatives.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>What does "compiler-like architecture" mean?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Like a compiler has source code → IR → machine code, BLVM
-                      has: Bitcoin Core consensus code → Orange Paper (IR) →
-                      blvm-consensus → blvm-node. The Orange Paper serves as the
-                      intermediate representation that multiple implementations
-                      can target, just like multiple compilers can target the
-                      same IR. This enables implementation diversity while
-                      maintaining consensus correctness.
+                      Empirical checks complement that: differential testing and
+                      CI fuzzing (see
+                      <a href="#faq-proof-consensus">Proof of consensus compatibility</a>).
+                      BLVM does not replace the reference client; it is a path to
+                      checkable alternatives alongside it.
                     </p>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Category 3: Bitcoin Commons - Governance Innovation -->
             <div class="faq-category">
-              <h3>Bitcoin Commons: Governance Innovation</h3>
+              <h3>Bitcoin Commons governance</h3>
               <div class="faq-accordion">
-                <div class="faq-item">
+                <div class="faq-item" id="faq-governance-how">
                   <button class="faq-question" aria-expanded="false">
-                    <span>What is Bitcoin Commons and why does it exist?</span>
+                    <span>How does governance work?</span>
                     <span class="faq-icon">+</span>
                   </button>
                   <div class="faq-answer">
                     <p>
-                      Bitcoin Commons is a forkable governance framework that
-                      solves Bitcoin's fundamental governance asymmetry. While
-                      Bitcoin's technical consensus is bulletproof
-                      (proof-of-work, cryptographic signatures), its development
-                      governance has remained fragile, controlled by a handful of
-                      maintainers with no systematic process. Bitcoin Commons
-                      applies Elinor Ostrom's Nobel Prize-winning commons
-                      management principles through cryptographic enforcement,
-                      making development governance as robust as technical
-                      consensus. It enables coordination without authority,
-                      allowing multiple implementations to compete while
-                      maintaining Bitcoin consensus compatibility. The framework
-                      provides an architectural solution: if you disagree with
-                      governance decisions, you can fork the governance rules
-                      (not just the code) and create a better-governed
-                      implementation.
+                      Bitcoin Commons applies Elinor Ostrom&apos;s commons
+                      principles with cryptographic enforcement: forkable rules,
+                      transparent multisig decisions, and coordination without
+                      turning governance into an informal gate. You can fork
+                      <em>governance</em> (not Bitcoin consensus) if you disagree
+                      with how software changes ship.
+                    </p>
+                    <p>
+                      The model uses a <strong>5-tier constitutional</strong> path
+                      (graduated thresholds and review periods),
+                      <strong>layers</strong> (which repo is affected) and
+                      <strong>tiers</strong> (what class of change), with
+                      &quot;most restrictive wins&quot; when both apply—for
+                      example a Protocol Engine fix can require stricter review
+                      than a routine maintenance tier alone would. A
+                      <strong>three-tier emergency</strong> path shortens review
+                      only for proportional critical response. Maintainer
+                      keyholders approve changes via signatures; the blvm-commons
+                      GitHub app verifies thresholds and blocks merges until
+                      requirements are met.
                     </p>
                   </div>
                 </div>
 
-                <div class="faq-item">
+                <div class="faq-item" id="faq-fork-registry-capture-modular">
                   <button class="faq-question" aria-expanded="false">
-                    <span
-                      >How does the Bitcoin Commons governance system work
-                      technically?</span
-                    >
+                    <span>Fork registry, capture, and modular stack</span>
                     <span class="faq-icon">+</span>
                   </button>
                   <div class="faq-answer">
                     <p>
-                      The system uses a
-                      <strong>5-tier constitutional model</strong> with
-                      graduated signature thresholds and review periods: Tier 1
-                      (routine maintenance) requires 3-of-5 signatures and 7
-                      days; Tier 3 (consensus-adjacent changes) requires 5-of-5
-                      signatures and 90 days; Tier 5 (governance changes)
-                      requires 5-of-5 signatures and 180 days. The system
-                      combines two dimensions: <strong>Layers</strong> (which
-                      repository is affected, for example Protocol Engine,
-                      Consensus, or related layers) and
-                      <strong>Tiers</strong> (what type of change), using "most
-                      restrictive wins" for maximum security. All governance
-                      actions are cryptographically signed by maintainers and
-                      transparently auditable. A
-                      <strong>three-tiered emergency system</strong> provides
-                      proportional response (0-90 day review periods) for
-                      critical issues. Users can export governance rulesets as
-                      versioned, signed packages and fork to different
-                      governance models if they disagree with decisions,
-                      creating exit competition that prevents capture.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span
-                      >What makes Bitcoin Commons governance "6x harder to
-                      capture"?</span
-                    >
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Multiple mechanisms: (1) Forkable governance rules allow
-                      users to exit if governance is captured, (2) Multiple
-                      implementations compete, preventing monopoly, (3)
-                      Cryptographic enforcement makes power visible and
-                      accountable, (4) Economic alignment through the module
-                      marketplace and usage-based revenue (optional merge mining
-                      can supplement but is not the primary bet), (5) Graduated
-                      thresholds prevent rapid changes, (6) Transparent audit
-                      trails.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>How does forkable governance work?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Users can fork the governance rules (not just the code) if
-                      they disagree with decisions. This creates exit
-                      competition: if governance is captured, users can fork to
-                      a better governance model while maintaining Bitcoin
-                      consensus compatibility. The threat of forking prevents
-                      capture.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>What are Ostrom's principles?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Elinor Ostrom's Nobel Prize-winning research identified 8
-                      principles for managing commons successfully. Bitcoin
-                      Commons applies these through: clearly defined boundaries,
-                      proportional equivalence, collective choice, monitoring,
-                      graduated sanctions, conflict resolution, minimal
-                      recognition of rights, and nested enterprises.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Category 4: How They Work Together -->
-            <div class="faq-category">
-              <h3>How They Work Together</h3>
-              <div class="faq-accordion">
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>Why do you need both BLVM and Bitcoin Commons?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      BLVM solves the technical problem (mathematical rigor,
-                      safe alternative implementations). Bitcoin Commons solves
-                      the governance problem (coordination without civil war).
-                      You can't have safe alternatives without BLVM's
-                      mathematical foundation, and you can't have coordination
-                      without Commons' governance framework. They enable each
-                      other.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span
-                      >How does the modular architecture combine both
-                      innovations?</span
-                    >
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      The modular architecture has three layers: (1) Mandatory
-                      consensus (BLVM ensures correctness), (2) Optional modules
-                      (Commons enables competition), (3) Economic coordination
-                      (the module marketplace funds development and aligns
-                      adoption with revenue; merge mining is an optional
-                      supplement). BLVM enforces correctness in the base layer;
-                      Commons supplies governance for how modules and releases
-                      evolve. The architecture is where both meet.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span
-                      >Can you use BLVM without Bitcoin Commons
-                      governance?</span
-                    >
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Technically yes: BLVM is a technical stack that can be
-                      used independently. However, without Bitcoin Commons
-                      governance, you'd still have the governance capture
-                      problem. The innovations are designed to work together:
-                      BLVM enables safe alternatives, Commons enables
-                      coordination between alternatives.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span
-                      >Can you use Bitcoin Commons governance without
-                      BLVM?</span
-                    >
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      The governance framework could theoretically be applied to
-                      other implementations, but BLVM's mathematical rigor
-                      (Orange Paper, formal verification) is what makes
-                      alternative implementations safe. Without BLVM, you'd have
-                      governance but still risk consensus bugs from informal
-                      implementations.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Category 5: Technical Details - BLVM -->
-            <div class="faq-category">
-              <h3>Technical Details: BLVM</h3>
-              <div class="faq-accordion">
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>What is formal verification in BLVM?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      BLVM uses specification locking annotations and formal
-                      verification to mathematically prove code correctness. The
-                      Orange Paper provides the specification; blvm-consensus
-                      implements it with proofs. All consensus decisions flow
-                      through verified functions. This provides mathematical
-                      proof, not just testing.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>How many formal proofs does BLVM have?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      BLVM has nearly 200 formal proofs in the source code,
-                      providing comprehensive formal verification coverage of
-                      consensus-critical functions. The proofs are embedded
-                      directly in the codebase and verified continuously.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>What does "proofs locked to code" mean?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Formal verification proofs are embedded in the code
-                      itself, not separate documentation. The proofs verify that
-                      the code matches the Orange Paper specification. If code
-                      changes, proofs must be updated, ensuring correctness is
-                      maintained.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>How does BLVM prevent consensus bugs?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Through multiple layers: (1) Orange Paper provides
-                      mathematical specification, (2) Formal verification proves
-                      implementation matches spec, (3) Proofs locked to code
-                      prevent drift, (4) Dependency chain forces all consensus
-                      through verified functions, (5) Spec drift detection
-                      alerts if code diverges from spec.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Category 6: Governance Details - Bitcoin Commons -->
-            <div class="faq-category">
-              <h3>Governance Details: Bitcoin Commons</h3>
-              <div class="faq-accordion">
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>What is the Fork Registry?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      The Fork Registry is a public, self-service registry for
-                      governance forks. Anyone can submit a pull request to add
-                      their governance fork. No approval is needed, just automated
-                      validation. The registry tracks governance forks with
-                      their signature thresholds, review periods, and
-                      relationships (which fork was created from which). Use the
-                      <a href="governance-designer.html#fork-governance">"Fork Your Governance"</a>
-                      section on this website to browse the registry, compare
-                      forks, view the genealogy tree, and create your own fork.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>How does cryptographic enforcement work?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      All governance actions require cryptographic signatures
-                      from maintainers. The blvm-commons (GitHub App) verifies
-                      signatures, enforces thresholds (e.g., 6-of-7), and blocks
-                      merges until requirements are met. This makes power
-                      visible and accountable: you can see who signed what,
-                      when.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>What happens if governance is captured?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Forkable governance means users can fork to a better
-                      governance model. This creates exit competition: captured
-                      governance loses users to better-governed implementations.
-                      The threat of forking prevents capture. Unlike typical
-                      reference-client governance, you can fork the governance
-                      rules, not just the code.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>How does economic alignment work?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Primarily through the module marketplace: paid distribution
-                      and discovery tie project revenue to real adoption.
-                      Lightning-based governance zaps and similar channels add
-                      direct community funding. Merge mining is a possible
-                      supplement for operators who enable it, not the default
-                      path. Well-governed implementations still benefit when the
-                      network is healthy, but the economic story starts with
-                      modules and usage, not hash-rate side chains.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>What is merge mining?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Merge mining lets miners work additional chains with the
-                      same proof-of-work. It is an <strong>optional</strong>
-                      supplement for pools that want extra revenue; it is not
-                      the main sustainability lever (see the module marketplace
-                      and module fees). Where it is used, a small share of merged
-                      chain rewards can flow to development without changing
-                      Bitcoin&apos;s consensus rules.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>Who approves governance changes?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Bitcoin Commons uses maintainer multisig governance.
-                      Maintainer keyholders approve changes through
-                      cryptographic signatures. This keeps decisions transparent
-                      and auditable while preserving Bitcoin consensus
-                      compatibility.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>How does governance forking work?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Governance forks allow users to choose different
-                      governance rulesets without affecting Bitcoin consensus.
-                      Users can export governance rulesets as versioned, signed
-                      packages and fork to a better governance model if they
-                      disagree with decisions. This provides an escape hatch:
-                      captured governance loses users to better-governed
-                      implementations. The threat of forking prevents capture
-                      while maintaining Bitcoin consensus immutability.
-                    </p>
-                    <p>
-                      <strong>Interactive Tools:</strong> Use the
-                      <a href="governance-designer.html#fork-governance">"Fork Your Governance"</a>
-                      section on this website to browse existing forks, start
-                      from templates, customize your own ruleset, compare
-                      different governance models, and view the fork genealogy
-                      tree. The system includes a
-                      <strong>self-service fork registry</strong> where anyone
-                      can submit their governance fork via pull request with no
-                      approval needed, just automated validation.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>How do layers and tiers combine in governance?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Bitcoin Commons uses a dual-dimensional system:
-                      <strong>Layers</strong> (which repository) and
-                      <strong>Tiers</strong> (what type of change). When both
-                      apply, the system uses "most restrictive wins" - taking
-                      the highest signature threshold and longest review period.
-                      For example, a bug fix in the Protocol Engine (Layer 3)
-                      requires 4-of-5 signatures and 90 days, even though Tier 1
-                      (routine maintenance) normally requires only 3-of-5 and 7
-                      days. This ensures maximum security for sensitive
-                      repositories.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>How does the emergency tier system work?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Bitcoin Commons uses a three-tiered emergency response
-                      system for proportional handling of critical issues:
-                      <strong>Tier 1: Critical Emergency</strong>
-                      (network-threatening, 0 days, 4-of-7 maintainers, 7 day
-                      max), <strong>Tier 2: Urgent Security</strong> (security
-                      issues, 7 days, 5-of-7 maintainers, 30 day max),
-                      <strong>Tier 3: Elevated Priority</strong> (important but
-                      not critical, 30 days, 6-of-7 maintainers, 90 day max).
-                      This ensures rapid response to critical threats while
-                      maintaining appropriate review for less urgent issues.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Category 7: Implementation Status -->
-            <div class="faq-category">
-              <h3>Implementation Status</h3>
-              <div class="faq-accordion">
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>What's the current status of BLVM?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      All 8 layers are implemented: blvm-spec (Orange Paper)
-                      complete, blvm-consensus with nearly 200 formal proofs,
-                      blvm-protocol, blvm-node, blvm (binary wrapper), and
-                      blvm-sdk all functional. Recent work includes high
-                      availability features, build state tracking, fork
-                      verification, binary signing tools, and deterministic
-                      build verification. The system is not yet battle-tested in
-                      production.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span
-                      >What's the current status of Bitcoin Commons
-                      governance?</span
-                    >
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      All core governance infrastructure is implemented:
-                      blvm-commons (GitHub integration, signature verification,
-                      status checks), governance fork capability (ruleset export
-                      and forking), emergency tier system (three-tiered
-                      response), and layer+tier combination model.
-                      However, governance is not yet activated (test keys only)
-                      and keyholders are not yet onboarded. Phase 2 begins with
-                      initial keyholder onboarding; see
-                      <a href="https://github.com/BTCDecoded" target="_blank" rel="noopener"
-                        >BTCDecoded on GitHub</a
+                      The <strong>Fork Registry</strong> is public and
+                      self-service: submit a pull request to list your governance
+                      fork (automated validation; no gatekeeper approval). Use
+                      <a href="governance-designer.html#fork-governance"
+                        >&quot;Fork Your Governance&quot;</a
                       >
-                      to follow progress or get involved.
+                      to browse, compare, see genealogy, and start from
+                      templates. If governance is captured, users can exit to
+                      another ruleset—consensus stays on Bitcoin; the threat of
+                      exit reduces capture pressure.
+                    </p>
+                    <p>
+                      Architecturally: mandatory consensus (BLVM) at the base,
+                      optional modules and competition above, and economic
+                      coordination through the module marketplace (merge mining is
+                      an optional supplement, not the default story). You can use
+                      BLVM without Commons (technically), but you still face
+                      governance capture risk; Commons without BLVM still leaves
+                      informal implementation risk for consensus-critical code.
                     </p>
                   </div>
                 </div>
 
-                <div class="faq-item">
+                <div class="faq-item" id="faq-economics-merge-mining">
                   <button class="faq-question" aria-expanded="false">
-                    <span>When will governance be activated?</span>
+                    <span>Economics and merge mining</span>
                     <span class="faq-icon">+</span>
                   </button>
                   <div class="faq-answer">
                     <p>
-                      Phase 2 governance activation begins with initial
-                      keyholder onboarding. If you are a Bitcoin developer,
-                      researcher, or institution interested in participating as
-                      a keyholder, contact the project via the
+                      Revenue and alignment start with the module marketplace and
+                      usage; Lightning zaps and similar channels can fund
+                      governance and development directly.
+                      <strong>Merge mining</strong> reuses proof-of-work across
+                      chains and is an optional pool-level supplement—not the main
+                      sustainability bet. Where used, a small share of merged-chain
+                      rewards can support development without changing Bitcoin
+                      consensus rules.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-category">
+              <h3>Implementation status</h3>
+              <div class="faq-accordion">
+                <div class="faq-item" id="faq-implementation-status">
+                  <button class="faq-question" aria-expanded="false">
+                    <span>Where are BLVM and governance today?</span>
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">
+                    <p>
+                      <strong>BLVM:</strong> Core layers are implemented (Orange
+                      Paper, blvm-consensus with ~200 proofs, protocol, node,
+                      wrapper, SDK). Work continues on HA, build/signing,
+                      deterministic builds, and hardening. Not yet battle-tested
+                      as a production deployment for everyone.
+                    </p>
+                    <p>
+                      <strong>Governance:</strong> Infrastructure is in place
+                      (blvm-commons app, fork exports, emergency tiers,
+                      layer+tier rules) but production governance is not activated
+                      yet (test keys; keyholders not onboarded).
+                      <strong>Phase 2</strong> starts with keyholder onboarding.
+                      Interested developers, researchers, or institutions can
+                      reach the project via
                       <a
                         href="https://github.com/BTCDecoded"
                         target="_blank"
                         rel="noopener"
-                        >BTCDecoded organization on GitHub</a
-                      >. Security audits, governance app deployment, and community
-                      testing remain part of the path to stable Phase 2 and Phase
-                      3 full operation.
+                        >BTCDecoded on GitHub</a
+                      >. Audits, app deployment, and community testing remain on
+                      the path to stable Phase 2 and beyond.
                     </p>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Category 8: Getting Involved -->
             <div class="faq-category">
-              <h3>Getting Involved</h3>
+              <h3>Get involved</h3>
               <div class="faq-accordion">
-                <div class="faq-item">
+                <div class="faq-item" id="faq-contribute">
                   <button class="faq-question" aria-expanded="false">
-                    <span>How can I contribute?</span>
+                    <span>How can I contribute or ship my own stack?</span>
                     <span class="faq-icon">+</span>
                   </button>
                   <div class="faq-answer">
                     <p>
-                      Review BLVM code and formal proofs, review Bitcoin Commons
-                      governance rules, submit issues and pull requests, help
-                      with testing and security audits, build your own
-                      implementation using both innovations, or participate in
-                      governance discussions.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>Can I build my own implementation?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Yes! You can use BLVM's technical stack (Orange Paper,
-                      blvm-consensus) and adopt Bitcoin Commons governance
-                      framework. Fork the governance model, customize it for
-                      your organization, and build your own Bitcoin-compatible
-                      implementation. See the
+                      Review BLVM and proofs, review governance rules, file
+                      issues and PRs, help test and audit, or participate in
+                      governance discussion. To ship your own Bitcoin-compatible
+                      implementation, adopt BLVM and/or Commons governance, fork
+                      rulesets for your org, and list yourself in the
                       <a
                         href="https://github.com/BTCDecoded/governance/blob/main/IMPLEMENTATIONS_REGISTRY.md"
                         target="_blank"
@@ -1817,96 +1363,71 @@
                   </div>
                 </div>
 
-                <div class="faq-item">
+                <div class="faq-item" id="faq-code-and-docs">
                   <button class="faq-question" aria-expanded="false">
-                    <span>Where is the code?</span>
+                    <span>Where is the code and what should I read?</span>
                     <span class="faq-icon">+</span>
                   </button>
                   <div class="faq-answer">
                     <p>
-                      All code is open source on GitHub under the
+                      Open source under
                       <a
                         href="https://github.com/BTCDecoded"
                         target="_blank"
                         rel="noopener"
-                        >BTCDecoded organization</a
-                      >. Key repositories: BLVM (blvm-spec/Orange Paper,
-                      blvm-consensus, blvm-protocol, blvm-node, blvm, blvm-sdk)
-                      and Commons (governance, blvm-commons). The
+                        >BTCDecoded</a
+                      >
+                      (BLVM repos, governance, blvm-commons). The
                       <a
                         href="https://github.com/BTCDecoded/governance/blob/main/fork-registry.yml"
                         target="_blank"
                         rel="noopener"
                         >fork registry</a
                       >
-                      is maintained in the governance repository.
+                      lives in the governance repo.
                     </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>What documentation should I read?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
                     <p>
-                      <a href="whitepaper.html">White Paper</a> for complete
-                      technical and governance overview,
+                      Start with the
+                      <a href="whitepaper.html">White Paper</a>,
                       <a
                         href="https://docs.thebitcoincommons.org"
                         target="_blank"
                         rel="noopener"
-                        >Documentation</a
-                      >
-                      for unified technical documentation, and
+                        >technical documentation</a
+                      >, and
                       <a
                         href="https://github.com/BTCDecoded/governance"
                         target="_blank"
                         rel="noopener"
-                        >Governance Docs</a
-                      >
-                      for governance rules and processes.
+                        >governance documentation</a
+                      >.
                     </p>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Category 9: Philosophy & Comparison -->
             <div class="faq-category">
-              <h3>Philosophy & Comparison</h3>
+              <h3>Philosophy</h3>
               <div class="faq-accordion">
-                <div class="faq-item">
+                <div class="faq-item" id="faq-philosophy-commons-cypherpunk">
                   <button class="faq-question" aria-expanded="false">
-                    <span>Why "commons"?</span>
+                    <span>Why &quot;commons&quot; and how does this extend cypherpunk ideas?</span>
                     <span class="faq-icon">+</span>
                   </button>
                   <div class="faq-answer">
                     <p>
-                      Bitcoin's codebase is a commons: a shared resource that
-                      benefits everyone but no one owns. Traditional commons
-                      fail due to tragedy of the commons. Ostrom showed how to
-                      manage commons successfully. Bitcoin Commons applies these
-                      proven principles through cryptographic enforcement.
+                      Bitcoin&apos;s codebase is a commons—shared, valuable, not
+                      owned by a single party. Ostrom showed how durable commons
+                      are governed; Bitcoin Commons applies that with cryptography
+                      so rules and power stay visible.
                     </p>
-                  </div>
-                </div>
-
-                <div class="faq-item">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>How does this relate to cypherpunk philosophy?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
                     <p>
-                      Cypherpunks focused on eliminating trusted third parties
-                      in transactions. Bitcoin Commons extends this to
-                      development: eliminate trusted parties in governance
-                      through cryptographic enforcement, transparency, and
-                      forkability. BLVM extends this to implementation:
-                      eliminate trusted implementations through mathematical
-                      proof.
+                      Cypherpunks removed trusted third parties from
+                      transactions; Commons and BLVM push the same idea into
+                      <em>how software is governed and verified</em>—less informal
+                      trust in a single implementation or maintainer culture, more
+                      auditability and mathematical specification.
                     </p>
                   </div>
                 </div>
@@ -1914,7 +1435,7 @@
             </div>
           </div>
       </section>
-    </div>
+    </main>
 
     <footer class="i2-footer-outer">
       <div class="i2-footer-shell">
@@ -1985,7 +1506,7 @@
               target="_blank"
               rel="noopener"
               aria-label="BTCDecoded on GitHub"
-              ><i class="fa-brands fa-github" aria-hidden="true"></i
+              ><svg class="i2-icon-github" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.607.069-.607 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.337-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.547 1.376.203 2.394.1 2.646.641.698 1.028 1.591 1.028 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg
             ></a>
           </div>
         </div>
@@ -2009,6 +1530,17 @@
 
         function buildSbModal() {
           if (sbOverlay) return;
+
+          /* Lazily inject KaTeX CSS the first time the modal is built. */
+          if (!document.getElementById("katex-css")) {
+            var kl = document.createElement("link");
+            kl.id = "katex-css";
+            kl.rel = "stylesheet";
+            kl.crossOrigin = "anonymous";
+            kl.referrerPolicy = "no-referrer";
+            kl.href = "https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css";
+            document.head.appendChild(kl);
+          }
 
           sbOverlay = document.createElement("div");
           sbOverlay.id = "sb-modal-overlay";
@@ -2184,6 +1716,31 @@
       })();
 
       document.addEventListener("DOMContentLoaded", function () {
+        function openFaqItemIfCollapsed(item) {
+          if (!item) return;
+          var btn = item.querySelector(".faq-question");
+          if (!btn || btn.getAttribute("aria-expanded") === "true") return;
+          btn.click();
+        }
+
+        function scrollFaqTargetIntoView(item) {
+          if (!item) return;
+          var behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth";
+          window.setTimeout(function () {
+            item.scrollIntoView({ behavior: behavior, block: "start" });
+          }, 320);
+        }
+
+        function activateFaqItemFromHash() {
+          var h = window.location.hash;
+          if (!h || h.length < 2) return;
+          var id = h.slice(1);
+          var item = document.getElementById(id);
+          if (!item || !item.classList.contains("faq-item")) return;
+          openFaqItemIfCollapsed(item);
+          scrollFaqTargetIntoView(item);
+        }
+
         var faqQuestions = document.querySelectorAll(".faq-question");
         faqQuestions.forEach(function (question) {
           question.addEventListener("click", function () {
@@ -2214,24 +1771,30 @@
               answer.style.padding = "0 2rem";
             } else {
               this.setAttribute("aria-expanded", "true");
-              var currentTransition = answer.style.transition;
               answer.style.padding = "1.5rem 2rem 2rem 2rem";
-              answer.style.transition = "none";
-              requestAnimationFrame(function () {
+              var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+              if (reducedMotion) {
+                answer.style.transition = "none";
                 answer.style.height = "auto";
-                answer.style.maxHeight = "none";
-                answer.style.minHeight = "0";
-                void answer.offsetHeight;
-                var measuredHeight = answer.scrollHeight;
-                answer.style.height = "0";
-                answer.style.maxHeight = "";
-                answer.style.minHeight = "";
-                answer.style.transition = currentTransition || "";
-                void answer.offsetHeight;
+              } else {
+                var currentTransition = answer.style.transition;
+                answer.style.transition = "none";
                 requestAnimationFrame(function () {
-                  answer.style.height = measuredHeight + "px";
+                  answer.style.height = "auto";
+                  answer.style.maxHeight = "none";
+                  answer.style.minHeight = "0";
+                  void answer.offsetHeight;
+                  var measuredHeight = answer.scrollHeight;
+                  answer.style.height = "0";
+                  answer.style.maxHeight = "";
+                  answer.style.minHeight = "";
+                  answer.style.transition = currentTransition || "";
+                  void answer.offsetHeight;
+                  requestAnimationFrame(function () {
+                    answer.style.height = measuredHeight + "px";
+                  });
                 });
-              });
+              }
             }
           });
 
@@ -2248,10 +1811,38 @@
             var faqSection = document.getElementById("faq");
             if (faqSection) {
               e.preventDefault();
-              faqSection.scrollIntoView({ behavior: "smooth", block: "start" });
+              var behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth";
+              faqSection.scrollIntoView({ behavior: behavior, block: "start" });
             }
           });
         });
+
+        document.addEventListener(
+          "click",
+          function (e) {
+            var t = e.target;
+            if (!t || !t.closest) return;
+            var a = t.closest('a[href^="#"]');
+            if (!a || !a.getAttribute("href")) return;
+            var href = a.getAttribute("href");
+            if (href === "#" || href === "#faq") return;
+            var id = href.slice(1);
+            if (!id) return;
+            var item = document.getElementById(id);
+            if (!item || !item.classList.contains("faq-item")) return;
+            e.preventDefault();
+            if (window.location.hash === href) {
+              openFaqItemIfCollapsed(item);
+              scrollFaqTargetIntoView(item);
+              return;
+            }
+            window.location.hash = id;
+          },
+          true
+        );
+
+        window.addEventListener("hashchange", activateFaqItemFromHash);
+        activateFaqItemFromHash();
       });
     </script>
   </body>

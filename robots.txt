@@ -1,0 +1,11 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Dev / duplicate tooling (not for search indexing)
+Disallow: /test-local.html
+Disallow: /test-css.html
+Disallow: /index2.html
+Disallow: /spec-viz-project/
+
+Sitemap: https://thebitcoincommons.org/sitemap.xml
