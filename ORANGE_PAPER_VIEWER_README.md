@@ -1,70 +1,39 @@
-# Orange Paper Viewer
+# Spec viewers (commons-website)
 
 ## Overview
 
-The Orange Paper Viewer (`orange-paper.html`) is a web-based viewer for The Orange Paper that properly renders all formats used in the specification, including:
+The site hosts markdown viewers for BLVM specification documents from `BTCDecoded/blvm-spec`:
 
-- **Mermaid Diagrams**: 9 flowcharts and sequence diagrams
-- **LaTeX Math**: 1031+ mathematical formulas (both inline `$...$` and block `$$...$$`)
-- **Markdown Formatting**: Full markdown support with proper styling
+| Page | Source | Role |
+|------|--------|------|
+| **`spec.html`** | `CONSENSUS_SPEC.md` | **Primary** — numbered consensus rules; `§5.3.1` refs link to `protocol.html` / `architecture.html` section anchors |
+| **`orange-paper.html`** | `THE_ORANGE_PAPER.md` | Extended formal spec — navigation hub for PROTOCOL / ARCHITECTURE |
+| **`protocol.html`** | `PROTOCOL.md` | Formal consensus math |
+| **`architecture.html`** | `ARCHITECTURE.md` | Implementation design |
+
+All viewers share `spec-markdown-viewer.js` (Marked.js, MathJax 3, Mermaid.js 10).
 
 ## Features
 
-### ✅ Proper Rendering
-
-Unlike GitHub's markdown renderer, this viewer:
-- Renders all Mermaid diagrams correctly
-- Displays LaTeX math formulas properly
-- Maintains consistent formatting
-- Supports dark mode
-- Is fully responsive
-
-### Technologies Used
-
-- **MathJax 3**: For LaTeX/mathematical formula rendering
-- **Mermaid.js 10**: For diagram rendering
-- **Marked.js**: For markdown parsing
-- **Vanilla JavaScript**: No framework dependencies
-
-### How It Works
-
-1. Fetches `THE_ORANGE_PAPER.md` from the blvm-spec repository (GitHub raw URL)
-2. Parses markdown using Marked.js
-3. Converts Mermaid code blocks to `<div class="mermaid">` elements
-4. Renders Mermaid diagrams using Mermaid.js
-5. Renders LaTeX math using MathJax
-6. Applies custom styling matching the Commons website
+- Renders Mermaid diagrams and LaTeX math (inline and block)
+- Full markdown styling, dark theme, responsive layout
+- Internal links from markdown rewrite to hosted viewers (e.g. `CONSENSUS_SPEC.md` → `spec.html`, `PROTOCOL.md#531-header-validation` → `protocol.html#531-header-validation`)
+- `section-link-map.json` (from `scripts/build-section-link-map.mjs`) maps Orange Paper section numbers to GFM heading ids
+- Fetches live content from GitHub raw URLs (requires network)
 
 ## Usage
 
-Simply open `orange-paper.html` in a web browser. The page will:
-1. Show a loading message
-2. Fetch the Orange Paper from GitHub
-3. Render all content with proper formatting
-4. Display any errors if loading fails
+Open any `*.html` viewer in a browser. The page loads the configured file via `window.BTCC_SPEC_VIEWER.fileName`.
+
+Local testing: see `LOCAL_TESTING.md`.
 
 ## Integration
 
-The viewer is linked from the homepage in the repository selection section. Users can click "View Orange Paper" to access the viewer.
-
-## Future Enhancements
-
-Potential improvements:
-- Table of contents sidebar navigation
-- Search functionality
-- Section anchors and deep linking
-- Print/PDF export
-- Offline support (service worker)
-- Version selection (if multiple versions exist)
-
-## Browser Compatibility
-
-- Modern browsers with ES6+ support
-- Requires JavaScript enabled
-- Works with Content Security Policy (CSP) configured
+- Homepage (`index.html`) promotes **Consensus Spec** (`spec.html`) as the primary entry; Orange Paper is linked as the extended formal spec.
+- Shared nav on all spec pages: Home → Consensus Spec → PROTOCOL → Architecture → Orange Paper → …
+- `sitemap.xml` lists `spec.html` at priority 0.95.
 
 ## Notes
 
-- The viewer fetches content from GitHub, so it requires internet connectivity
-- Mermaid diagrams use dark theme to match the site's dark mode
-- MathJax is configured to skip code blocks to avoid conflicts
+- Bump `spec-markdown-viewer.js?v=N` when changing the shared script so browsers pick up cache busts.
+- Content Security Policy allows GitHub API / raw fetches where configured per page.

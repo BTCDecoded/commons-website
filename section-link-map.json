@@ -1,0 +1,598 @@
+{
+  "generatedFrom": [
+    "PROTOCOL.md",
+    "ARCHITECTURE.md"
+  ],
+  "viewerPages": {
+    "PROTOCOL.md": "protocol.html",
+    "ARCHITECTURE.md": "architecture.html",
+    "THE_ORANGE_PAPER.md": "orange-paper.html"
+  },
+  "sections": {
+    "1": {
+      "file": "PROTOCOL.md",
+      "id": "1-introduction",
+      "text": "1. Introduction"
+    },
+    "2": {
+      "file": "PROTOCOL.md",
+      "id": "2-system-model",
+      "text": "2. System Model"
+    },
+    "3": {
+      "file": "PROTOCOL.md",
+      "id": "3-mathematical-foundations",
+      "text": "3. Mathematical Foundations"
+    },
+    "4": {
+      "file": "PROTOCOL.md",
+      "id": "4-consensus-constants",
+      "text": "4. Consensus Constants"
+    },
+    "5": {
+      "file": "PROTOCOL.md",
+      "id": "5-state-transition-functions",
+      "text": "5. State Transition Functions"
+    },
+    "6": {
+      "file": "PROTOCOL.md",
+      "id": "6-economic-model",
+      "text": "6. Economic Model"
+    },
+    "7": {
+      "file": "PROTOCOL.md",
+      "id": "7-proof-of-work",
+      "text": "7. Proof of Work"
+    },
+    "8": {
+      "file": "PROTOCOL.md",
+      "id": "8-security-properties",
+      "text": "8. Security Properties"
+    },
+    "9": {
+      "file": "PROTOCOL.md",
+      "id": "9-mempool-protocol",
+      "text": "9. Mempool Protocol"
+    },
+    "10": {
+      "file": "PROTOCOL.md",
+      "id": "10-network-protocol",
+      "text": "10. Network Protocol"
+    },
+    "11": {
+      "file": "PROTOCOL.md",
+      "id": "11-advanced-features",
+      "text": "11. Advanced Features"
+    },
+    "12": {
+      "file": "PROTOCOL.md",
+      "id": "12-mining-protocol",
+      "text": "12. Mining Protocol"
+    },
+    "13": {
+      "file": "PROTOCOL.md",
+      "id": "13-engineering-specific-edge-cases",
+      "text": "13. Engineering-Specific Edge Cases"
+    },
+    "14": {
+      "file": "ARCHITECTURE.md",
+      "id": "14-conclusion",
+      "text": "14. Conclusion"
+    },
+    "1.1": {
+      "file": "PROTOCOL.md",
+      "id": "11-key-contributions",
+      "text": "1.1 Key Contributions"
+    },
+    "1.2": {
+      "file": "PROTOCOL.md",
+      "id": "12-document-structure",
+      "text": "1.2 Document Structure"
+    },
+    "2.1": {
+      "file": "PROTOCOL.md",
+      "id": "21-participants",
+      "text": "2.1 Participants"
+    },
+    "2.2": {
+      "file": "PROTOCOL.md",
+      "id": "22-network-assumptions",
+      "text": "2.2 Network Assumptions"
+    },
+    "2.2.1": {
+      "file": "PROTOCOL.md",
+      "id": "221-networks-and-parameters",
+      "text": "2.2.1 Networks and Parameters"
+    },
+    "3.1": {
+      "file": "PROTOCOL.md",
+      "id": "31-basic-types",
+      "text": "3.1 Basic Types"
+    },
+    "3.2": {
+      "file": "PROTOCOL.md",
+      "id": "32-core-data-structures",
+      "text": "3.2 Core Data Structures"
+    },
+    "3.3": {
+      "file": "PROTOCOL.md",
+      "id": "33-script-system",
+      "text": "3.3 Script System"
+    },
+    "4.1": {
+      "file": "PROTOCOL.md",
+      "id": "41-monetary-constants",
+      "text": "4.1 Monetary Constants"
+    },
+    "4.2": {
+      "file": "PROTOCOL.md",
+      "id": "42-block-constants",
+      "text": "4.2 Block Constants"
+    },
+    "4.3": {
+      "file": "PROTOCOL.md",
+      "id": "43-script-constants",
+      "text": "4.3 Script Constants"
+    },
+    "4.4": {
+      "file": "PROTOCOL.md",
+      "id": "44-difficulty-constants",
+      "text": "4.4 Difficulty Constants"
+    },
+    "5.1": {
+      "file": "PROTOCOL.md",
+      "id": "51-transaction-validation",
+      "text": "5.1 Transaction Validation"
+    },
+    "5.1.1": {
+      "file": "PROTOCOL.md",
+      "id": "511-transaction-sighash-calculation",
+      "text": "5.1.1 Transaction Sighash Calculation"
+    },
+    "5.2": {
+      "file": "PROTOCOL.md",
+      "id": "52-script-execution",
+      "text": "5.2 Script Execution"
+    },
+    "5.2.1": {
+      "file": "PROTOCOL.md",
+      "id": "521-p2sh-push-only-validation",
+      "text": "5.2.1 P2SH Push-Only Validation"
+    },
+    "5.2.2": {
+      "file": "PROTOCOL.md",
+      "id": "522-signature-operation-counting",
+      "text": "5.2.2 Signature Operation Counting"
+    },
+    "5.2.3": {
+      "file": "PROTOCOL.md",
+      "id": "523-stack-operations",
+      "text": "5.2.3 Stack Operations"
+    },
+    "5.2.4": {
+      "file": "PROTOCOL.md",
+      "id": "524-conditional-opcode-execution",
+      "text": "5.2.4 Conditional Opcode Execution"
+    },
+    "5.2.5": {
+      "file": "PROTOCOL.md",
+      "id": "525-script-verification-flags",
+      "text": "5.2.5 Script Verification Flags"
+    },
+    "5.2.6": {
+      "file": "PROTOCOL.md",
+      "id": "526-script-flag-exceptions",
+      "text": "5.2.6 Script Flag Exceptions"
+    },
+    "5.3": {
+      "file": "PROTOCOL.md",
+      "id": "53-block-validation",
+      "text": "5.3 Block Validation"
+    },
+    "5.3.1": {
+      "file": "PROTOCOL.md",
+      "id": "531-header-validation",
+      "text": "5.3.1 Header Validation"
+    },
+    "5.3.2": {
+      "file": "PROTOCOL.md",
+      "id": "532-transaction-application-equivalence",
+      "text": "5.3.2 Transaction Application Equivalence"
+    },
+    "5.3.3": {
+      "file": "PROTOCOL.md",
+      "id": "533-connectblock-pipeline",
+      "text": "5.3.3 ConnectBlock Pipeline"
+    },
+    "5.4": {
+      "file": "PROTOCOL.md",
+      "id": "54-bip-validation-rules",
+      "text": "5.4 BIP Validation Rules"
+    },
+    "5.4.1": {
+      "file": "PROTOCOL.md",
+      "id": "541-bip30-duplicate-coinbase-prevention",
+      "text": "5.4.1 BIP30: Duplicate Coinbase Prevention"
+    },
+    "5.4.2": {
+      "file": "PROTOCOL.md",
+      "id": "542-bip34-block-height-in-coinbase",
+      "text": "5.4.2 BIP34: Block Height in Coinbase"
+    },
+    "5.4.3": {
+      "file": "PROTOCOL.md",
+      "id": "543-bip66-strict-der-signature-validation",
+      "text": "5.4.3 BIP66: Strict DER Signature Validation"
+    },
+    "5.4.4": {
+      "file": "PROTOCOL.md",
+      "id": "544-bip90-block-version-enforcement",
+      "text": "5.4.4 BIP90: Block Version Enforcement"
+    },
+    "5.4.5": {
+      "file": "PROTOCOL.md",
+      "id": "545-bip147-nulldummy-enforcement",
+      "text": "5.4.5 BIP147: NULLDUMMY Enforcement"
+    },
+    "5.4.6": {
+      "file": "PROTOCOL.md",
+      "id": "546-bip119-op_checktemplateverify-ctv",
+      "text": "5.4.6 BIP119: OP_CHECKTEMPLATEVERIFY (CTV)"
+    },
+    "5.4.7": {
+      "file": "PROTOCOL.md",
+      "id": "547-bip65-op_checklocktimeverify-cltv",
+      "text": "5.4.7 BIP65: OP_CHECKLOCKTIMEVERIFY (CLTV)"
+    },
+    "5.4.8": {
+      "file": "PROTOCOL.md",
+      "id": "548-bip348-op_checksigfromstack-csfs",
+      "text": "5.4.8 BIP348: OP_CHECKSIGFROMSTACK (CSFS)"
+    },
+    "5.4.9": {
+      "file": "PROTOCOL.md",
+      "id": "549-bip54-consensus-cleanup",
+      "text": "5.4.9 BIP54: Consensus Cleanup"
+    },
+    "5.5": {
+      "file": "PROTOCOL.md",
+      "id": "55-sequence-locks-bip68",
+      "text": "5.5 Sequence Locks (BIP68)"
+    },
+    "6.1": {
+      "file": "PROTOCOL.md",
+      "id": "61-block-subsidy",
+      "text": "6.1 Block Subsidy"
+    },
+    "6.2": {
+      "file": "PROTOCOL.md",
+      "id": "62-total-supply",
+      "text": "6.2 Total Supply"
+    },
+    "6.3": {
+      "file": "PROTOCOL.md",
+      "id": "63-supply-limit-validation",
+      "text": "6.3 Supply Limit Validation"
+    },
+    "6.4": {
+      "file": "PROTOCOL.md",
+      "id": "64-coinbase-detection",
+      "text": "6.4 Coinbase Detection"
+    },
+    "6.5": {
+      "file": "PROTOCOL.md",
+      "id": "65-fee-market",
+      "text": "6.5 Fee Market"
+    },
+    "7.1": {
+      "file": "PROTOCOL.md",
+      "id": "71-difficulty-adjustment",
+      "text": "7.1 Difficulty Adjustment"
+    },
+    "7.2": {
+      "file": "PROTOCOL.md",
+      "id": "72-block-validation",
+      "text": "7.2 Block Validation"
+    },
+    "8.1": {
+      "file": "PROTOCOL.md",
+      "id": "81-economic-security",
+      "text": "8.1 Economic Security"
+    },
+    "8.2": {
+      "file": "PROTOCOL.md",
+      "id": "82-integration-and-round-trip-properties",
+      "text": "8.2 Integration and Round-Trip Properties"
+    },
+    "8.2.1": {
+      "file": "PROTOCOL.md",
+      "id": "821-integration-properties",
+      "text": "8.2.1 Integration Properties"
+    },
+    "8.2.2": {
+      "file": "PROTOCOL.md",
+      "id": "822-round-trip-properties",
+      "text": "8.2.2 Round-Trip Properties"
+    },
+    "8.3": {
+      "file": "PROTOCOL.md",
+      "id": "83-cryptographic-security",
+      "text": "8.3 Cryptographic Security"
+    },
+    "8.4": {
+      "file": "PROTOCOL.md",
+      "id": "84-merkle-tree-security",
+      "text": "8.4 Merkle Tree Security"
+    },
+    "8.4.1": {
+      "file": "PROTOCOL.md",
+      "id": "841-computemerkleroot",
+      "text": "8.4.1 ComputeMerkleRoot"
+    },
+    "8.5": {
+      "file": "PROTOCOL.md",
+      "id": "85-deterministic-properties",
+      "text": "8.5 Deterministic Properties"
+    },
+    "9.1": {
+      "file": "PROTOCOL.md",
+      "id": "91-mempool-validation",
+      "text": "9.1 Mempool Validation"
+    },
+    "9.1.1": {
+      "file": "PROTOCOL.md",
+      "id": "911-transaction-finality",
+      "text": "9.1.1 Transaction Finality"
+    },
+    "9.2": {
+      "file": "PROTOCOL.md",
+      "id": "92-standard-transaction-rules",
+      "text": "9.2 Standard Transaction Rules"
+    },
+    "9.3": {
+      "file": "PROTOCOL.md",
+      "id": "93-replace-by-fee-rbf",
+      "text": "9.3 Replace-By-Fee (RBF)"
+    },
+    "10.1": {
+      "file": "PROTOCOL.md",
+      "id": "101-message-types",
+      "text": "10.1 Message Types"
+    },
+    "10.1.1": {
+      "file": "PROTOCOL.md",
+      "id": "1011-message-header-parsing",
+      "text": "10.1.1 Message Header Parsing"
+    },
+    "10.2": {
+      "file": "PROTOCOL.md",
+      "id": "102-connection-management",
+      "text": "10.2 Connection Management"
+    },
+    "10.2.1": {
+      "file": "PROTOCOL.md",
+      "id": "1021-handshake-invariants",
+      "text": "10.2.1 Handshake Invariants"
+    },
+    "10.4": {
+      "file": "PROTOCOL.md",
+      "id": "104-block-synchronization",
+      "text": "10.4 Block Synchronization"
+    },
+    "10.5": {
+      "file": "PROTOCOL.md",
+      "id": "105-transaction-relay",
+      "text": "10.5 Transaction Relay"
+    },
+    "11.1": {
+      "file": "PROTOCOL.md",
+      "id": "111-segregated-witness-segwit",
+      "text": "11.1 Segregated Witness (SegWit)"
+    },
+    "11.1.1": {
+      "file": "PROTOCOL.md",
+      "id": "1111-weight-and-size-calculations",
+      "text": "11.1.1 Weight and Size Calculations"
+    },
+    "11.1.2": {
+      "file": "PROTOCOL.md",
+      "id": "1112-witness-structure-validation",
+      "text": "11.1.2 Witness Structure Validation"
+    },
+    "11.1.3": {
+      "file": "PROTOCOL.md",
+      "id": "1113-witness-program-extraction",
+      "text": "11.1.3 Witness Program Extraction"
+    },
+    "11.1.4": {
+      "file": "PROTOCOL.md",
+      "id": "1114-witness-merkle-root",
+      "text": "11.1.4 Witness Merkle Root"
+    },
+    "11.1.5": {
+      "file": "PROTOCOL.md",
+      "id": "1115-witness-commitment-validation",
+      "text": "11.1.5 Witness Commitment Validation"
+    },
+    "11.1.6": {
+      "file": "PROTOCOL.md",
+      "id": "1116-segwit-transaction-detection",
+      "text": "11.1.6 SegWit Transaction Detection"
+    },
+    "11.1.7": {
+      "file": "PROTOCOL.md",
+      "id": "1117-block-validation",
+      "text": "11.1.7 Block Validation"
+    },
+    "11.1.8": {
+      "file": "PROTOCOL.md",
+      "id": "1118-nested-segwit-p2wsh-in-p2sh-p2wpkh-in-p2sh",
+      "text": "11.1.8 Nested SegWit (P2WSH-in-P2SH, P2WPKH-in-P2SH)"
+    },
+    "11.1.9": {
+      "file": "PROTOCOL.md",
+      "id": "1119-bip143-witness-sighash-computewitnesssignaturehash",
+      "text": "11.1.9 BIP143 Witness Sighash (ComputeWitnessSignatureHash)"
+    },
+    "11.1.9.1": {
+      "file": "PROTOCOL.md",
+      "id": "11191-derivewitnessscriptcode-bip143-scriptcode",
+      "text": "11.1.9.1 DeriveWitnessScriptCode (BIP143 scriptCode)"
+    },
+    "11.2": {
+      "file": "PROTOCOL.md",
+      "id": "112-taproot",
+      "text": "11.2 Taproot"
+    },
+    "11.2.1": {
+      "file": "PROTOCOL.md",
+      "id": "1121-taproot-script-validation",
+      "text": "11.2.1 Taproot Script Validation"
+    },
+    "11.2.2": {
+      "file": "PROTOCOL.md",
+      "id": "1122-taproot-key-operations",
+      "text": "11.2.2 Taproot Key Operations"
+    },
+    "11.2.3": {
+      "file": "PROTOCOL.md",
+      "id": "1123-taproot-script-path",
+      "text": "11.2.3 Taproot Script Path"
+    },
+    "11.2.4": {
+      "file": "PROTOCOL.md",
+      "id": "1124-taproot-witness-structure",
+      "text": "11.2.4 Taproot Witness Structure"
+    },
+    "11.2.5": {
+      "file": "PROTOCOL.md",
+      "id": "1125-taproot-transaction-validation",
+      "text": "11.2.5 Taproot Transaction Validation"
+    },
+    "11.2.6": {
+      "file": "PROTOCOL.md",
+      "id": "1126-taproot-signature-hash",
+      "text": "11.2.6 Taproot Signature Hash"
+    },
+    "11.2.7": {
+      "file": "PROTOCOL.md",
+      "id": "1127-tapscript-signature-hash-bip-342",
+      "text": "11.2.7 Tapscript Signature Hash (BIP 342)"
+    },
+    "11.2.8": {
+      "file": "PROTOCOL.md",
+      "id": "1128-tapscript-opcodes-and-sigop-counting-bip-342",
+      "text": "11.2.8 Tapscript Opcodes and SigOp Counting (BIP 342)"
+    },
+    "11.4": {
+      "file": "PROTOCOL.md",
+      "id": "114-utxo-commitments",
+      "text": "11.4 UTXO Commitments"
+    },
+    "11.5": {
+      "file": "PROTOCOL.md",
+      "id": "115-signet-bip325",
+      "text": "11.5 Signet (BIP325)"
+    },
+    "12.2": {
+      "file": "PROTOCOL.md",
+      "id": "122-coinbase-transaction",
+      "text": "12.2 Coinbase Transaction"
+    },
+    "12.4": {
+      "file": "PROTOCOL.md",
+      "id": "124-block-template-interface",
+      "text": "12.4 Block Template Interface"
+    },
+    "13.3": {
+      "file": "PROTOCOL.md",
+      "id": "133-engineering-invariants",
+      "text": "13.3 Engineering Invariants"
+    },
+    "13.3.1": {
+      "file": "PROTOCOL.md",
+      "id": "1331-integer-arithmetic-overflowunderflow",
+      "text": "13.3.1 Integer Arithmetic Overflow/Underflow"
+    },
+    "13.3.2": {
+      "file": "PROTOCOL.md",
+      "id": "1332-serializationdeserialization-correctness",
+      "text": "13.3.2 Serialization/Deserialization Correctness"
+    },
+    "13.3.3": {
+      "file": "PROTOCOL.md",
+      "id": "1333-resource-limit-enforcement",
+      "text": "13.3.3 Resource Limit Enforcement"
+    },
+    "13.3.4": {
+      "file": "PROTOCOL.md",
+      "id": "1334-parser-determinism",
+      "text": "13.3.4 Parser Determinism"
+    },
+    "13.3.5": {
+      "file": "PROTOCOL.md",
+      "id": "1335-integration-proofs",
+      "text": "13.3.5 Integration Proofs"
+    },
+    "13.3.6": {
+      "file": "PROTOCOL.md",
+      "id": "1336-spec-lock-formula-anchor-witness",
+      "text": "13.3.6 Spec-lock Formula Anchor Witness"
+    },
+    "10.3": {
+      "file": "ARCHITECTURE.md",
+      "id": "103-peer-discovery",
+      "text": "10.3 Peer Discovery"
+    },
+    "10.6": {
+      "file": "ARCHITECTURE.md",
+      "id": "106-dandelion-k-anonymity",
+      "text": "10.6 Dandelion++ k-Anonymity"
+    },
+    "11.3": {
+      "file": "ARCHITECTURE.md",
+      "id": "113-chain-reorganization",
+      "text": "11.3 Chain Reorganization"
+    },
+    "11.3.1": {
+      "file": "ARCHITECTURE.md",
+      "id": "1131-undo-log-pattern",
+      "text": "11.3.1 Undo Log Pattern"
+    },
+    "12.1": {
+      "file": "ARCHITECTURE.md",
+      "id": "121-block-template-generation",
+      "text": "12.1 Block Template Generation"
+    },
+    "12.3": {
+      "file": "ARCHITECTURE.md",
+      "id": "123-mining-process",
+      "text": "12.3 Mining Process"
+    },
+    "13.1": {
+      "file": "ARCHITECTURE.md",
+      "id": "131-performance",
+      "text": "13.1 Performance"
+    },
+    "13.2": {
+      "file": "ARCHITECTURE.md",
+      "id": "132-security",
+      "text": "13.2 Security"
+    },
+    "13.4": {
+      "file": "ARCHITECTURE.md",
+      "id": "134-peer-consensus-protocol",
+      "text": "13.4 Peer Consensus Protocol"
+    },
+    "14.1": {
+      "file": "ARCHITECTURE.md",
+      "id": "141-summary-of-contributions",
+      "text": "14.1 Summary of Contributions"
+    },
+    "14.2": {
+      "file": "ARCHITECTURE.md",
+      "id": "142-applications",
+      "text": "14.2 Applications"
+    }
+  }
+}

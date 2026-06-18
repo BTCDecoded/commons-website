@@ -23,6 +23,10 @@
                 location.replace('/compact.html');
                 return;
             }
+            if (lower === 'consensus_spec.md') {
+                location.replace('/spec.html');
+                return;
+            }
         })();
     </script>
 </head>
@@ -30,11 +34,12 @@
     <div class="container" style="max-width: 640px; margin: 4rem auto; padding: 1.5rem;">
         <h1>Page not found</h1>
         <p>The page you requested is not on this site.</p>
-        <p>Looking for the Orange Paper split?</p>
+        <p>Looking for the consensus specification or Orange Paper split?</p>
         <ul>
+            <li><a href="/spec.html">CONSENSUS_SPEC.md</a> (consensus rule register)</li>
             <li><a href="/protocol.html">PROTOCOL.md</a> (rendered viewer)</li>
             <li><a href="/architecture.html">ARCHITECTURE.md</a> (rendered viewer)</li>
-            <li><a href="/orange-paper.html">THE_ORANGE_PAPER.md</a> (overview)</li>
+            <li><a href="/orange-paper.html">THE_ORANGE_PAPER.md</a> (extended overview)</li>
             <li><a href="/compact.html">COMPACT.md</a> (governance compact)</li>
         </ul>
         <p><a href="/index.html">← Home</a></p>
