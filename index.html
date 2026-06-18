@@ -151,7 +151,12 @@
       }
       @media (min-width: 640px) {
         .i2-why-grid {
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (min-width: 960px) {
+        .i2-why-grid {
+          grid-template-columns: repeat(4, 1fr);
         }
       }
       .i2-why-card {
@@ -352,7 +357,9 @@
         text-decoration: underline;
       }
       .i2-spec-card .i2-spec-head--solo {
-        justify-content: flex-end;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 0.35rem 1rem;
       }
       .i2-spec-card iframe {
         display: block;
@@ -754,6 +761,7 @@
         <ul>
           <li><a href="#what-weve-built">What we've built</a></li>
           <li><a href="#path-orange-paper">Consensus Spec</a></li>
+          <li><a href="#path-orange-paper">Orange Paper</a></li>
           <li><a href="#path-learning">Learning</a></li>
           <li><a href="#path-implementations">Implementations</a></li>
           <li><a href="#faq">FAQ</a></li>
@@ -788,6 +796,17 @@
             </p>
             <div class="i2-why-cta">
               <a href="spec.html">Read the spec</a>
+            </div>
+          </div>
+          <div class="i2-why-card">
+            <h3>Orange Paper</h3>
+            <p>
+              Extended formal specification: PROTOCOL.md and ARCHITECTURE.md with
+              consensus math, invariants, and implementation design—auditable line
+              by line.
+            </p>
+            <div class="i2-why-cta">
+              <a href="orange-paper.html">Read Orange Paper</a>
             </div>
           </div>
           <div class="i2-why-card">
@@ -836,21 +855,24 @@
       >
         <div class="i2-block-head">
           <span class="i2-eyebrow" id="spec-eyebrow">Specification</span>
-          <h2 class="i2-block-title" id="spec-title">Bitcoin Consensus Specification</h2>
+          <h2 class="i2-block-title" id="spec-title">Consensus Spec &amp; Orange Paper</h2>
           <p class="i2-block-note">
             <a href="spec.html">CONSENSUS_SPEC.md</a> is the auditable rule register:
             numbered requirements in RFC&nbsp;2119 language, each tied to Orange Paper
             §refs and <code>blvm-consensus</code>. The
             <a href="orange-paper.html">Orange Paper</a> is the extended formal spec
-            (PROTOCOL.md, ARCHITECTURE.md, and related definitions). The chart below
-            shows Orange Paper structure; click a slice to preview or jump to the
-            full viewers.
+            (<a href="protocol.html">PROTOCOL.md</a>,
+            <a href="architecture.html">ARCHITECTURE.md</a>, and related definitions).
+            The chart below shows Orange Paper structure; click a slice to preview or
+            jump to the full viewers.
           </p>
         </div>
         <div class="i2-spec-card">
           <div class="i2-spec-head i2-spec-head--solo">
-            <a href="spec.html">Read Consensus Spec →</a>
-            <a href="orange-paper.html" style="margin-left: 1rem;">Orange Paper (extended) →</a>
+            <a href="spec.html">Consensus Spec →</a>
+            <a href="orange-paper.html">Orange Paper →</a>
+            <a href="protocol.html">PROTOCOL →</a>
+            <a href="architecture.html">ARCHITECTURE →</a>
           </div>
           <iframe
             id="i2-sunburst"
@@ -894,15 +916,25 @@
             </div>
           </div>
           <div class="i2-impl-card">
-            <h3>Consensus specification</h3>
+            <h3>Consensus Spec</h3>
             <p>
-              The rule register (<code>CONSENSUS_SPEC.md</code>) and extended Orange
-              Paper formal math—published on this site with structure you can audit
-              line by line.
+              The numbered rule register (<code>CONSENSUS_SPEC.md</code>): RFC&nbsp;2119
+              requirements mapped to Orange Paper §refs and verified implementation.
             </p>
             <div class="i2-impl-links">
-              <a href="spec.html">Consensus Spec</a>
-              <a href="orange-paper.html">Orange Paper</a>
+              <a href="spec.html">Read Consensus Spec</a>
+            </div>
+          </div>
+          <div class="i2-impl-card">
+            <h3>Orange Paper</h3>
+            <p>
+              Extended formal math and architecture—PROTOCOL.md, ARCHITECTURE.md, and
+              related definitions you can audit line by line.
+            </p>
+            <div class="i2-impl-links">
+              <a href="orange-paper.html">Read Orange Paper</a>
+              <a href="protocol.html">PROTOCOL</a>
+              <a href="architecture.html">ARCHITECTURE</a>
             </div>
           </div>
           <div class="i2-impl-card">
@@ -1477,6 +1509,7 @@
               <li><a href="spec.html">Consensus Spec</a></li>
               <li><a href="protocol.html">PROTOCOL</a></li>
               <li><a href="architecture.html">ARCHITECTURE</a></li>
+              <li><a href="orange-paper.html">Orange Paper</a></li>
               <li><a href="spec-maps.html">Spec maps</a></li>
             </ul>
           </div>
