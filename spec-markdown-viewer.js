@@ -32,13 +32,97 @@
     var BLOB_BASE = cfg.blobBase || blobBaseFromRawBase(rawBase);
     var SPEC_URL = rawBase + fileName;
 
+    /** Orange Paper section refs (§5.3.1) → PROTOCOL.md / ARCHITECTURE.md anchors; see section-link-map.json */
+    var sectionLinkMap = null;
+    var sectionLinkMapPromise = null;
+
+    function loadSectionLinkMap() {
+        if (sectionLinkMap) {
+            return Promise.resolve(sectionLinkMap);
+        }
+        if (sectionLinkMapPromise) {
+            return sectionLinkMapPromise;
+        }
+        sectionLinkMapPromise = fetch('section-link-map.json?v=1', { credentials: 'omit' })
+            .then(function (res) {
+                return res.ok ? res.json() : null;
+            })
+            .then(function (data) {
+                sectionLinkMap = data;
+                return data;
+            })
+            .catch(function (err) {
+                console.warn('BTCC spec: section-link-map.json unavailable', err);
+                return null;
+            });
+        return sectionLinkMapPromise;
+    }
+
+    function resolveSectionEntry(sectionNum) {
+        if (!sectionLinkMap || !sectionLinkMap.sections) {
+            return null;
+        }
+        var sections = sectionLinkMap.sections;
+        if (sections[sectionNum]) {
+            return sections[sectionNum];
+        }
+        var dot = sectionNum.lastIndexOf('.');
+        if (dot === -1) {
+            return null;
+        }
+        return resolveSectionEntry(sectionNum.slice(0, dot));
+    }
+
+    /** Link bare §5.3.1 refs in CONSENSUS_SPEC (skips code spans and existing markdown links). */
+    function linkifySectionReferences(md) {
+        if (fileName !== 'CONSENSUS_SPEC.md' || !sectionLinkMap || !sectionLinkMap.sections) {
+            return md;
+        }
+        var out = [];
+        var i = 0;
+        var n = md.length;
+        while (i < n) {
+            var ch = md[i];
+            if (ch === '`') {
+                var j = md.indexOf('`', i + 1);
+                if (j === -1) {
+                    out.push(md.slice(i));
+                    break;
+                }
+                out.push(md.slice(i, j + 1));
+                i = j + 1;
+                continue;
+            }
+            if (ch === '[') {
+                var linkMatch = md.slice(i).match(/^\[[^\]]*\]\([^)]*\)/);
+                if (linkMatch) {
+                    out.push(linkMatch[0]);
+                    i += linkMatch[0].length;
+                    continue;
+                }
+            }
+            var secMatch = md.slice(i).match(/^§(\d+(?:\.\d+)*)/);
+            if (secMatch) {
+                var entry = resolveSectionEntry(secMatch[1]);
+                if (entry) {
+                    out.push('[§' + secMatch[1] + '](' + entry.file + '#' + entry.id + ')');
+                    i += secMatch[0].length;
+                    continue;
+                }
+            }
+            out.push(ch);
+            i += 1;
+        }
+        return out.join('');
+    }
+
     /**
      * Session-scoped cache for spec markdown. raw.githubusercontent.com does not expose ETag to
      * cross-origin fetch(), so for GitHub raw URLs we revalidate with a small GitHub API request
      * (latest commit touching this file on the same ref) and skip the large raw download when
      * that revision id is unchanged.
      */
-    var CACHE_VERSION = 'BTCC_SPEC_SESSION_V4';
+    var CACHE_VERSION = 'BTCC_SPEC_SESSION_V5';
     var cacheNamespace = CACHE_VERSION + '::' + SPEC_URL;
 
     function parseGithubRawRef(rawBaseUrl) {
@@ -218,6 +302,8 @@
         markdown = texMasked.masked;
         var texChunks = texMasked.chunks;
 
+        markdown = linkifySectionReferences(markdown);
+
         marked.setOptions({
             breaks: true,
             gfm: true
@@ -394,6 +480,8 @@
             var path = pathPart.replace(/^\.\//, '');
 
             var toHtml = {
+                'CONSENSUS_SPEC.md': 'spec.html',
+                'consensus_spec.md': 'spec.html',
                 'PROTOCOL.md': 'protocol.html',
                 'protocol.md': 'protocol.html',
                 'ARCHITECTURE.md': 'architecture.html',
@@ -522,6 +610,7 @@
     async function loadSpecMarkdown() {
         try {
             ensureGfmHeadingIds();
+            await loadSectionLinkMap();
 
             var gh = parseGithubRawRef(rawBase);
             var revKey = '';

@@ -753,7 +753,7 @@
         <span class="i2-paths-label">Jump to</span>:
         <ul>
           <li><a href="#what-weve-built">What we've built</a></li>
-          <li><a href="#path-orange-paper">Orange Paper</a></li>
+          <li><a href="#path-orange-paper">Consensus Spec</a></li>
           <li><a href="#path-learning">Learning</a></li>
           <li><a href="#path-implementations">Implementations</a></li>
           <li><a href="#faq">FAQ</a></li>
@@ -780,14 +780,14 @@
         </div>
         <div class="i2-why-grid">
           <div class="i2-why-card">
-            <h3>Orange Paper</h3>
+            <h3>Consensus Spec</h3>
             <p>
-              Bitcoin consensus rules written as a formal mathematical
-              specification. Every rule is explicit, auditable, and testable by any
-              implementation, not buried in an implementation-specific codebase.
+              Numbered Bitcoin consensus rules in RFC&nbsp;2119 language—what must
+              hold on the network. Auditable register mapped to Orange Paper math
+              and <code>blvm-consensus</code> implementation.
             </p>
             <div class="i2-why-cta">
-              <a href="orange-paper.html">Read the spec</a>
+              <a href="spec.html">Read the spec</a>
             </div>
           </div>
           <div class="i2-why-card">
@@ -836,18 +836,21 @@
       >
         <div class="i2-block-head">
           <span class="i2-eyebrow" id="spec-eyebrow">Specification</span>
-          <h2 class="i2-block-title" id="spec-title">Orange Paper</h2>
+          <h2 class="i2-block-title" id="spec-title">Bitcoin Consensus Specification</h2>
           <p class="i2-block-note">
-            The Orange Paper is the formal specification for BLVM and the
-            commons stack: protocol rules, architecture, and related definitions
-            in one auditable document. Larger slices in the chart mean more
-            specification text lives under that heading; click a slice to preview
-            or jump to the full viewers.
+            <a href="spec.html">CONSENSUS_SPEC.md</a> is the auditable rule register:
+            numbered requirements in RFC&nbsp;2119 language, each tied to Orange Paper
+            §refs and <code>blvm-consensus</code>. The
+            <a href="orange-paper.html">Orange Paper</a> is the extended formal spec
+            (PROTOCOL.md, ARCHITECTURE.md, and related definitions). The chart below
+            shows Orange Paper structure; click a slice to preview or jump to the
+            full viewers.
           </p>
         </div>
         <div class="i2-spec-card">
           <div class="i2-spec-head i2-spec-head--solo">
-            <a href="orange-paper.html">Read spec →</a>
+            <a href="spec.html">Read Consensus Spec →</a>
+            <a href="orange-paper.html" style="margin-left: 1rem;">Orange Paper (extended) →</a>
           </div>
           <iframe
             id="i2-sunburst"
@@ -891,13 +894,15 @@
             </div>
           </div>
           <div class="i2-impl-card">
-            <h3>Orange Paper</h3>
+            <h3>Consensus specification</h3>
             <p>
-              The formal specification as published on this site, including
-              structure, math, and definitions you can audit line by line.
+              The rule register (<code>CONSENSUS_SPEC.md</code>) and extended Orange
+              Paper formal math—published on this site with structure you can audit
+              line by line.
             </p>
             <div class="i2-impl-links">
-              <a href="orange-paper.html">Read Orange Paper</a>
+              <a href="spec.html">Consensus Spec</a>
+              <a href="orange-paper.html">Orange Paper</a>
             </div>
           </div>
           <div class="i2-impl-card">
@@ -1174,18 +1179,20 @@
                     <p>
                       BLVM (Bitcoin Low-Level Virtual Machine) is the technical
                       stack for rigorous Bitcoin implementations:
-                      <strong>blvm-spec</strong> (Orange Paper),
+                      <strong>blvm-spec</strong> (consensus rule register +
+                      Orange Paper),
                       <strong>blvm-consensus</strong>,
                       <strong>blvm-protocol</strong>,
                       <strong>blvm-node</strong>, <strong>blvm</strong> (binary
                       wrapper), and <strong>blvm-sdk</strong>.
                     </p>
                     <p>
-                      The Orange Paper is the mathematical specification of
-                      Bitcoin consensus—the &quot;IR&quot; in a compiler-like
-                      pipeline (Core consensus &rarr; Orange Paper &rarr;
-                      blvm-consensus &rarr; blvm-node) so multiple implementations
-                      can target the same written rules.
+                      <a href="spec.html">CONSENSUS_SPEC.md</a> is the numbered rule
+                      register; the Orange Paper (PROTOCOL.md, ARCHITECTURE.md) is
+                      the extended formal specification—the &quot;IR&quot; in a
+                      compiler-like pipeline (Core consensus &rarr; spec register
+                      &rarr; Orange Paper &rarr; blvm-consensus &rarr; blvm-node) so
+                      multiple implementations can target the same written rules.
                     </p>
                   </div>
                 </div>
@@ -1198,8 +1205,8 @@
                   <div class="faq-answer">
                     <p>
                       Specification locking and formal verification tie
-                      consensus-critical code to the Orange Paper; the codebase
-                      includes on the order of <strong>200 embedded proofs</strong>
+                      consensus-critical code to the rule register and Orange Paper;
+                      the codebase includes on the order of <strong>200 embedded proofs</strong>
                       checked continuously. Proofs live with the code so drift
                       forces updates. A dependency chain routes consensus through
                       verified functions; spec-drift tooling flags mismatches.
@@ -1311,9 +1318,9 @@
                   </button>
                   <div class="faq-answer">
                     <p>
-                      <strong>BLVM:</strong> Core layers are implemented (Orange
-                      Paper, blvm-consensus with ~200 proofs, protocol, node,
-                      wrapper, SDK). Work continues on HA, build/signing,
+                      <strong>BLVM:</strong> Core layers are implemented (consensus
+                      spec register, Orange Paper, blvm-consensus with ~200 proofs,
+                      protocol, node, wrapper, SDK). Work continues on HA, build/signing,
                       deterministic builds, and hardening. Not yet battle-tested
                       as a production deployment for everyone.
                     </p>
@@ -1459,6 +1466,7 @@
                   >Documentation</a
                 >
               </li>
+              <li><a href="spec.html">Consensus Spec</a></li>
               <li><a href="orange-paper.html">Orange Paper</a></li>
               <li><a href="whitepaper.html">White Paper</a></li>
             </ul>
@@ -1466,6 +1474,7 @@
           <div>
             <span class="i2-footer-col-title">Specification</span>
             <ul class="i2-footer-links">
+              <li><a href="spec.html">Consensus Spec</a></li>
               <li><a href="protocol.html">PROTOCOL</a></li>
               <li><a href="architecture.html">ARCHITECTURE</a></li>
               <li><a href="spec-maps.html">Spec maps</a></li>
