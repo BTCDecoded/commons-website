@@ -72,11 +72,7 @@ html.index2 body {
 @media (min-width: 640px) {
   .i2-why-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (min-width: 960px) {
-  .i2-why-grid {
-    grid-template-columns: repeat(4, 1fr);
+    gap: 1.15rem;
   }
 }
 .i2-why-card {
