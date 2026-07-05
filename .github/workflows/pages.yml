@@ -25,9 +25,27 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - uses: actions/checkout@v6
+        with:
+          repository: BTCDecoded/blvm-spec
+          path: _blvm-spec
+          ref: main
+
+      - uses: actions/checkout@v6
+        with:
+          repository: BTCDecoded/governance
+          path: _governance
+          ref: main
+
       - uses: actions/setup-node@v5
         with:
           node-version: "20"
+
+      - name: Sync blvm-spec markdown for site viewers
+        run: BLVM_SPEC_DIR=_blvm-spec node scripts/sync-blvm-spec-markdown.mjs
+
+      - name: Sync governance assets for site viewers
+        run: GOVERNANCE_DIR=_governance node scripts/sync-governance-assets.mjs
 
       - name: Refresh BLVM release metadata (badge + assets/blvm-release.json)
         env:

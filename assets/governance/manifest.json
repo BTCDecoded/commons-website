@@ -1,0 +1,14 @@
+{
+  "rev": "8d7c667e953b1c7b",
+  "ref": "main",
+  "source": "github://BTCDecoded/governance",
+  "files": {
+    "COMPACT.md": {
+      "sha": null
+    },
+    "fork-registry.yml": {
+      "sha": null
+    }
+  },
+  "generatedAt": "2026-07-05T16:40:32.436Z"
+}

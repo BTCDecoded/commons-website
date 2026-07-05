@@ -1,7 +1,8 @@
 /**
  * Shared markdown viewer for thebitcoincommons.org.
  * Each page sets window.BTCC_SPEC_VIEWER before including this script.
- * Default source: BTCDecoded/blvm-spec main. Optional cfg.rawBase for other repos (e.g. governance).
+ * Default source: same-origin /assets/spec/ (synced from BTCDecoded/blvm-spec at build).
+ * Optional cfg.rawBase for GitHub raw URLs (e.g. governance compact).
  */
 (function () {
     'use strict';
@@ -13,24 +14,36 @@
         return;
     }
 
-    var DEFAULT_RAW_BASE = 'https://raw.githubusercontent.com/BTCDecoded/blvm-spec/main/';
+    var DEFAULT_RAW_BASE = '/assets/spec/';
+    var DEFAULT_BLOB_BASE = 'https://github.com/BTCDecoded/blvm-spec/blob/main/';
 
     function normalizeRawBase(base) {
         var b = base || DEFAULT_RAW_BASE;
         return b.replace(/\/?$/, '/');
     }
 
+    function isBundledSpecBase(base) {
+        return base.charAt(0) === '/';
+    }
+
     function blobBaseFromRawBase(rawBase) {
+        if (cfg.blobBase) {
+            return cfg.blobBase;
+        }
         var m = rawBase.match(/^https:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/([^/]+)\//);
         if (m) {
             return 'https://github.com/' + m[1] + '/' + m[2] + '/blob/' + m[3] + '/';
         }
-        return 'https://github.com/BTCDecoded/blvm-spec/blob/main/';
+        return DEFAULT_BLOB_BASE;
     }
 
     var rawBase = normalizeRawBase(cfg.rawBase);
-    var BLOB_BASE = cfg.blobBase || blobBaseFromRawBase(rawBase);
+    var BLOB_BASE = blobBaseFromRawBase(rawBase);
     var SPEC_URL = rawBase + fileName;
+    var bundledSpecBase = isBundledSpecBase(rawBase);
+    var bundledManifestUrl = bundledSpecBase
+        ? rawBase.replace(/\/?$/, '/') + 'manifest.json'
+        : '';
 
     /** Orange Paper section refs (§5.3.1) → PROTOCOL.md / ARCHITECTURE.md anchors; see section-link-map.json */
     var sectionLinkMap = null;
@@ -117,12 +130,12 @@
     }
 
     /**
-     * Session-scoped cache for spec markdown. raw.githubusercontent.com does not expose ETag to
+     * Session-scoped cache for spec markdown. GitHub raw URLs do not expose ETag to
      * cross-origin fetch(), so for GitHub raw URLs we revalidate with a small GitHub API request
      * (latest commit touching this file on the same ref) and skip the large raw download when
      * that revision id is unchanged.
      */
-    var CACHE_VERSION = 'BTCC_SPEC_SESSION_V5';
+    var CACHE_VERSION = 'BTCC_SPEC_SESSION_V6';
     var cacheNamespace = CACHE_VERSION + '::' + SPEC_URL;
 
     function parseGithubRawRef(rawBaseUrl) {
@@ -156,6 +169,18 @@
             return '';
         }
         return data[0].sha;
+    }
+
+    async function fetchBundledSpecRevKey() {
+        if (!bundledManifestUrl) {
+            return '';
+        }
+        var res = await fetch(bundledManifestUrl, { credentials: 'omit' });
+        if (!res.ok) {
+            return '';
+        }
+        var data = await res.json();
+        return (data && data.rev) || '';
     }
 
     function readSessionCache() {
@@ -614,7 +639,13 @@
 
             var gh = parseGithubRawRef(rawBase);
             var revKey = '';
-            if (gh && cfg.cache !== false) {
+            if (bundledSpecBase && cfg.cache !== false) {
+                try {
+                    revKey = await fetchBundledSpecRevKey();
+                } catch (revErr) {
+                    console.warn('BTCC spec: could not read bundled spec manifest', revErr);
+                }
+            } else if (gh && cfg.cache !== false) {
                 try {
                     revKey = await fetchGithubFileRevKey(gh.owner, gh.repo, gh.ref, fileName);
                 } catch (revErr) {

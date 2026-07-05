@@ -1,0 +1,86 @@
+# Bitcoin Commons Governance Fork Registry
+# 
+# This is a public, self-service registry. Anyone can submit a pull request to add their governance fork.
+# No approval needed - if the PR passes automated validation, it will be merged.
+#
+# Format:
+# - id: Unique identifier (lowercase, hyphens)
+# - name: Display name
+# - description: Brief description (1-2 sentences)
+# - forked_from: ID of parent fork (null for root/default)
+# - created_by: GitHub username or organization
+# - github: Full URL to GitHub repository (if applicable)
+# - ruleset_url: URL to ruleset file (GitHub raw URL or other)
+# - tier1: Signature threshold (e.g., "3-of-5")
+# - tier1_review: Review period in days
+# - tier2: Signature threshold
+# - tier2_review: Review period in days
+# - tier3: Signature threshold
+# - tier3_review: Review period in days
+# - verified: true/false (set to true after verification)
+# - created_at: ISO 8601 date (YYYY-MM-DD)
+
+forks:
+  - id: default
+    name: BTCDecoded Default
+    description: The standard Bitcoin Commons governance model. Balanced thresholds for security and agility.
+    forked_from: null
+    created_by: BTCDecoded
+    github: https://github.com/BTCDecoded/governance
+    ruleset_url: null
+    tier1: "3-of-5"
+    tier1_review: 7
+    tier2: "4-of-5"
+    tier2_review: 30
+    tier3: "5-of-5"
+    tier3_review: 90
+    verified: true
+    created_at: "2024-01-01"
+    
+  - id: conservative
+    name: Conservative Governance
+    description: Higher signature thresholds and longer review periods. Maximum security for critical systems.
+    forked_from: default
+    created_by: BTCDecoded
+    github: null
+    ruleset_url: null
+    tier1: "4-of-5"
+    tier1_review: 14
+    tier2: "5-of-5"
+    tier2_review: 60
+    tier3: "6-of-7"
+    tier3_review: 180
+    verified: false
+    created_at: "2024-01-15"
+    
+  - id: agile
+    name: Agile Governance
+    description: Faster iteration with lower thresholds. Ideal for experimental features and rapid development.
+    forked_from: default
+    created_by: BTCDecoded
+    github: null
+    ruleset_url: null
+    tier1: "2-of-3"
+    tier1_review: 3
+    tier2: "3-of-5"
+    tier2_review: 14
+    tier3: "4-of-5"
+    tier3_review: 60
+    verified: false
+    created_at: "2024-01-15"
+    
+  - id: community
+    name: Community-Driven
+    description: Emphasis on maintainer review and community-visible governance discussion.
+    forked_from: default
+    created_by: BTCDecoded
+    github: null
+    ruleset_url: null
+    tier1: "3-of-5"
+    tier1_review: 7
+    tier2: "4-of-5"
+    tier2_review: 30
+    tier3: "5-of-5"
+    tier3_review: 90
+    verified: false
+    created_at: "2024-01-15"
