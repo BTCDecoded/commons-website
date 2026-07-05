@@ -46,10 +46,18 @@
       content="https://thebitcoincommons.org/assets/og-image.png"
     />
     <link rel="canonical" href="https://thebitcoincommons.org/" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/assets/bitcoin-commons-icon.png"
+      sizes="128x128"
+    />
+    <link rel="apple-touch-icon" href="/assets/bitcoin-commons-symbol.png" />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
     <link rel="preconnect" href="https://docs.thebitcoincommons.org" />
     <link rel="stylesheet" href="style.css?v=12" />
-    <link rel="stylesheet" href="index-home.css?v=2" />
+    <link rel="stylesheet" href="index-home.css?v=7" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -69,6 +77,10 @@
             "logo": {
               "@type": "ImageObject",
               "url": "https://thebitcoincommons.org/assets/bitcoin-commons-logo.png"
+            },
+            "image": {
+              "@type": "ImageObject",
+              "url": "https://thebitcoincommons.org/assets/bitcoin-commons-symbol.png"
             },
             "sameAs": [
               "https://github.com/BTCDecoded",
@@ -113,6 +125,7 @@
             class="logo"
             width="400"
             height="160"
+            decoding="async"
         /></a>
         <div class="container">
           <h1 class="lg-screen-text-orange">The Bitcoin Commons</h1>
@@ -394,16 +407,6 @@
         aria-labelledby="faq-heading"
       >
         <h2 id="faq-heading" class="i2-block-title">Frequently Asked Questions</h2>
-        <p class="i2-block-note i2-faq-intro">
-          Project positioning below. Running a node?
-          <a
-            href="https://docs.thebitcoincommons.org/appendices/faq.html"
-            target="_blank"
-            rel="noopener"
-            >Operator FAQ</a
-          >
-          on docs.thebitcoincommons.org.
-        </p>
         <div class="faq-categories">
             <div class="faq-category">
               <h3>Common questions</h3>
@@ -764,7 +767,18 @@
     <footer class="i2-footer-outer">
       <div class="i2-footer-shell">
         <div class="i2-footer-brand">
-          <span class="i2-footer-name">The Bitcoin Commons</span>
+          <a href="index.html" class="i2-footer-brand-mark">
+            <img
+              src="assets/bitcoin-commons-icon.png"
+              alt=""
+              class="i2-footer-symbol"
+              width="28"
+              height="28"
+              decoding="async"
+              aria-hidden="true"
+            />
+            <span class="i2-footer-name">The Bitcoin Commons</span>
+          </a>
           <span class="i2-footer-tag"
             >Open-source spec, node stack, and forkable governance rules.</span
           >
