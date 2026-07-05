@@ -157,9 +157,6 @@ html.index2 body {
   outline: 2px solid #fff;
   outline-offset: 2px;
 }
-html.index2 .i2-faq .i2-faq-intro {
-  margin: -0.5rem 0 1.25rem;
-}
 html.index2 .i2-faq .faq-item[id] {
   scroll-margin-top: 4.5rem;
 }
@@ -350,6 +347,20 @@ html.index2 .i2-faq .faq-answer a {
   margin-bottom: 1.35rem;
   padding-bottom: 1.25rem;
   border-bottom: 1px solid var(--i2-border);
+}
+.i2-footer-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+  color: inherit;
+}
+.i2-footer-brand-mark:hover .i2-footer-name {
+  color: var(--bitcoin-orange);
+}
+.i2-footer-symbol {
+  flex-shrink: 0;
+  display: block;
 }
 .i2-footer-name {
   display: block;

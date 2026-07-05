@@ -2801,3 +2801,19 @@ body:has(.release-banner) .hero {
 .i2-subscribe-pub-link:hover {
   text-decoration: underline;
 }
+
+.not-found-page .not-found-mark {
+  display: inline-block;
+  margin-bottom: 1rem;
+  line-height: 0;
+  opacity: 0.92;
+  transition: opacity 0.15s ease;
+}
+
+.not-found-page .not-found-mark:hover {
+  opacity: 1;
+}
+
+.not-found-page .not-found-mark img {
+  display: block;
+}
