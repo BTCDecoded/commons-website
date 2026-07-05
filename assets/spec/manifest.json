@@ -1,0 +1,20 @@
+{
+  "rev": "ce434688d9aa2156",
+  "ref": "main",
+  "source": "github://BTCDecoded/blvm-spec",
+  "files": {
+    "CONSENSUS_SPEC.md": {
+      "sha": null
+    },
+    "PROTOCOL.md": {
+      "sha": null
+    },
+    "ARCHITECTURE.md": {
+      "sha": null
+    },
+    "THE_ORANGE_PAPER.md": {
+      "sha": null
+    }
+  },
+  "generatedAt": "2026-07-05T16:38:31.778Z"
+}

@@ -191,7 +191,7 @@
                 
                 if (source === 'github') {
                     // Fetch from GitHub
-                    const response = await fetch('https://raw.githubusercontent.com/BTCDecoded/blvm-spec/main/THE_ORANGE_PAPER.md');
+                    const response = await fetch('/assets/spec/THE_ORANGE_PAPER.md');
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }

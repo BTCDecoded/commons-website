@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: https:; connect-src 'self' https://api.github.com https://raw.githubusercontent.com;">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: https:; connect-src 'self';">
     <title>Bitcoin Commons Compact - Bitcoin Commons</title>
     <meta name="description" content="Purpose, legitimacy, and principles for Bitcoin Commons governance. Live from the governance repository.">
     <link rel="canonical" href="https://thebitcoincommons.org/compact.html" />
@@ -291,10 +291,11 @@
     <script>
         window.BTCC_SPEC_VIEWER = {
             fileName: 'COMPACT.md',
-            rawBase: 'https://raw.githubusercontent.com/BTCDecoded/governance/main/',
+            rawBase: '/assets/governance/',
+            blobBase: 'https://github.com/BTCDecoded/governance/blob/main/',
             skipHeavyRender: true
         };
     </script>
-    <script src="spec-markdown-viewer.js?v=11"></script>
+    <script src="spec-markdown-viewer.js?v=12"></script>
 </body>
 </html>
