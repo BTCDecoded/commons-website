@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;">
     <title>The Bitcoin Commons - White Paper</title>
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" href="/assets/bitcoin-commons-icon.png" sizes="128x128" />
-    <link rel="apple-touch-icon" href="/assets/bitcoin-commons-symbol.png" />
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -230,6 +227,7 @@
 <figcaption>Figure: Spec maintenance workflow: specification synchronized with implementation through automated testing and formal verification.</figcaption>
 </figure>
 <p>Commons publishes a <strong>layered specification</strong>: the <strong>Orange Paper</strong> (formal math), <strong>CONSENSUS_SPEC</strong> (numbered RFC 2119 rules mapped to code), and <strong>PROTOCOL</strong> (extended constants and formulas). Entry points are at <a href="https://thebitcoincommons.org/spec.html">thebitcoincommons.org/spec.html</a>. <strong>blvm-spec-lock</strong> ties <code>blvm-consensus</code> to these artifacts; drift and coverage tooling tracks alignment between spec wording and lockable contracts. Details: <a href="https://docs.thebitcoincommons.org/reference/orange-paper.html">Orange Paper</a>, <a href="https://docs.thebitcoincommons.org/consensus/formal-verification.html">Formal Verification</a>.</p>
+<p>Parallel independent specification efforts reinforce the same goal from complementary formalisms. Toby Sharp's Hornet project demonstrates that a minimal, executable consensus specification and domain-specific language can sync mainnet independently of the reference client (Sharp, 2025; <a href="https://hornetnode.org">hornetnode.org</a>), strengthening the case for Commons' layered Orange Paper and CONSENSUS_SPEC approach. Keagan McClelland's <strong>btc-verified</strong> pursues the same correctness goal through machine-checked Lean 4 proof leaves over serialization, transaction identifiers, and merkle commitments, validated against mainnet golden vectors (McClelland, 2026; <a href="https://github.com/ProofOfKeags/btc-verified">github.com/ProofOfKeags/btc-verified</a>). Where Hornet emphasizes an executable implementation-neutral specification, btc-verified emphasizes theorem-checked byte-layer foundations; Commons' spec-lock contracts and differential testing complement both.</p>
 <h3>Empirical consensus alignment (differential testing and fuzzing)</h3>
 <p>Mathematical specification and spec-lock contracts bound <em>what the rules ought to be</em>. <strong>Differential testing</strong> and <strong>fuzzing</strong> ask whether the running implementation agrees with the dominant reference implementation on real chain history and on adversarial inputs. Methodology, current depth, and CI status are documented in <a href="https://docs.thebitcoincommons.org/development/differential-testing.html">technical documentation</a>. Prefer that over this document for live coverage figures.</p>
 <p>Together these layers complement formal methods: <strong>specs and contracts</strong> for specification fidelity; <strong>replay and fuzzing</strong> for empirical alignment with observed network behavior.</p>
@@ -442,6 +440,8 @@
 </ul>
 <h3>Technical Sources</h3>
 <ul>
+<li>Sharp, T. (2025). Hornet Node and the Hornet DSL: A Minimal, Executable Specification for Bitcoin Consensus. <a href="https://hornetnode.org/paper.html">https://hornetnode.org/paper.html</a>, <a href="https://arxiv.org/abs/2509.15754">https://arxiv.org/abs/2509.15754</a>. Executable specification: <a href="https://hornetnode.org/spec">https://hornetnode.org/spec</a></li>
+<li>McClelland, K. (2026). btc-verified: Verified Bitcoin protocol components in Lean 4. <a href="https://github.com/ProofOfKeags/btc-verified">https://github.com/ProofOfKeags/btc-verified</a>. See also: <a href="https://proofofkeags.com/research/2026-05-12-formal-vibefication.html">Formal Vibefication</a></li>
 <li>CVE-2018-17144 (2018). Bitcoin Core Denial of Service Vulnerability. <em>CVE Details</em>. <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-17144">https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-17144</a></li>
 <li>Bitcoin Core Statistics. Public GitHub repository data.</li>
 <li>Bitcoin Optech Topics: High quality technical primers and references</li>
