@@ -1,0 +1,41 @@
+# Bitcoin Commons
+
+> Open, mathematically specified Bitcoin infrastructure: the Orange Paper consensus IR, BLVM implementation, and cryptographic governance for transparent development.
+
+Bitcoin Commons publishes the **normative consensus specification** (Orange Paper) separately from the **BLVM** reference implementation (Rust crates, node, SDK). The Orange Paper is implementation-agnostic mathematical notation; **blvm-consensus** implements and validates against it using tests, differential testing against Bitcoin Core, and BLVM Specification Lock (Z3) on annotated functions.
+
+For operators: download verified **`blvm`** binaries from the install page. For developers and researchers: use the documentation book for APIs, configuration, and verification methodology. Governance rules are forkable and enforced cryptographically when activated.
+
+## Normative specification
+
+- [Orange Paper](https://thebitcoincommons.org/orange-paper.html): Mathematical Bitcoin consensus specification (primary IR for BLVM)
+- [Consensus Spec register](https://thebitcoincommons.org/spec.html): Auditable rule register with cross-links and visualizations
+- [Protocol specification](https://thebitcoincommons.org/protocol.html): Wire-format and network protocol companion to the Orange Paper
+- [Architecture overview](https://thebitcoincommons.org/architecture.html): Six-layer stack (spec, consensus, protocol, node, SDK, governance)
+
+## Implementation and downloads
+
+- [Install BLVM](https://btcdecoded.org/install): Current release binaries, checksums, and platform matrix
+- [blvm (umbrella binary)](https://github.com/BTCDecoded/blvm): Reference node CLI and release artifacts
+- [blvm-consensus](https://github.com/BTCDecoded/blvm-consensus): Consensus rules implementation
+- [blvm-spec-lock](https://github.com/BTCDecoded/blvm-spec-lock): Specification Lock tooling (Z3 proofs on `#[spec_locked]` functions)
+
+## Documentation book
+
+- [BLVM documentation (full book)](https://docs.thebitcoincommons.org/introduction.html): Operators, developers, consensus, node, SDK, governance
+- [Formal verification](https://docs.thebitcoincommons.org/consensus/formal-verification.html): Spec-lock methodology, CI gates, coverage
+- [Deployment posture](https://docs.thebitcoincommons.org/security/deployment-posture.html): Security before exposing RPC on mainnet
+- [Book llms.txt](https://docs.thebitcoincommons.org/llms.txt): Machine-readable index of documentation chapters
+
+## Governance
+
+- [Governance repository](https://github.com/BTCDecoded/governance): Policy YAML, tiers, and procedures
+- [Whitepaper](https://thebitcoincommons.org/whitepaper.html): Bitcoin Commons project narrative and economic model
+- [System status](https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md): Activation state and project phase
+
+## Optional
+
+- [Homepage](https://thebitcoincommons.org/): Marketing, learning paths, FAQ
+- [Sitemap](https://thebitcoincommons.org/sitemap.xml): HTML page index for crawlers
+- [robots.txt](https://thebitcoincommons.org/robots.txt): Crawler policy (not access control)
+- [Security contact](mailto:security@thebitcoincommons.org): Vulnerability reports
