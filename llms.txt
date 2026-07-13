@@ -16,6 +16,7 @@ For operators: download verified **`blvm`** binaries from the install page. For 
 ## Implementation and downloads
 
 - [Install BLVM](https://btcdecoded.org/install): Current release binaries, checksums, and platform matrix
+- [BTCDecoded llms.txt](https://btcdecoded.org/llms.txt): Machine-readable index for the install/marketing site
 - [blvm (umbrella binary)](https://github.com/BTCDecoded/blvm): Reference node CLI and release artifacts
 - [blvm-consensus](https://github.com/BTCDecoded/blvm-consensus): Consensus rules implementation
 - [blvm-spec-lock](https://github.com/BTCDecoded/blvm-spec-lock): Specification Lock tooling (Z3 proofs on `#[spec_locked]` functions)
