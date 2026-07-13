@@ -8,7 +8,8 @@ Static GitHub Pages site for The Bitcoin Commons at [thebitcoincommons.org](http
 - `whitepaper.html` - Full HTML version of the Bitcoin Commons whitepaper
 - `style.css` - Responsive stylesheet with academic aesthetic and dark mode support
 - `assets/` - PDF files, EPUB, logo, and whitepaper images; **`blvm-release.json`** (and fallback) populated at build time for the version badge
-- `CNAME` - Custom domain configuration for GitHub Pages
+- `robots.txt` - Crawler policy; points to `llms.txt` for LLM agents
+- `llms.txt` / `llm.txt` - Machine-readable site index ([llmstxt.org](https://llmstxt.org/) convention)
 
 ## Build / release badge
 

@@ -9,3 +9,6 @@ Disallow: /index2.html
 Disallow: /spec-viz-project/
 
 Sitemap: https://thebitcoincommons.org/sitemap.xml
+
+# Machine-readable context for LLM agents (llmstxt.org convention)
+# https://thebitcoincommons.org/llms.txt
