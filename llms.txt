@@ -4,7 +4,7 @@
 
 Bitcoin Commons publishes the **normative consensus specification** (Orange Paper) separately from the **BLVM** reference implementation (Rust crates, node, SDK). The Orange Paper is implementation-agnostic mathematical notation; **blvm-consensus** implements and validates against it using tests, differential testing against Bitcoin Core, and BLVM Specification Lock (Z3) on annotated functions.
 
-For operators: download verified **`blvm`** binaries from the install page. For developers and researchers: use the documentation book for APIs, configuration, and verification methodology. Governance rules are forkable and enforced cryptographically when activated.
+For operators: download verified **`blvm`** binaries from the install page. For developers and researchers: use the documentation book for APIs, configuration, and verification methodology. Governance rules are forkable; cryptographic enforcement applies when governance is activated (see system status).
 
 ## Normative specification
 

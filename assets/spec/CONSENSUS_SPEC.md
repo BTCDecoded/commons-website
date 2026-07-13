@@ -1024,8 +1024,8 @@ HDR-008 node wiring; UTX-005 `VerifyUtxoSupply`; BIP54 BLK-012–014; ConnectBlo
 
 | Metric | Count |
 |--------|------:|
-| **Total rules** | **161** |
-| **With Orange Paper backing** | **161** |
+| **Total rules** | **159** |
+| **With Orange Paper backing** | **159** |
 | **UNIMPLEMENTED gaps (all crates)** | **0** |
 | **UNSPECIFIED / partial** | **0** |
 | **Activation height tables** | **4** ([§8 of this register](#8-activation-height-tables)) |
