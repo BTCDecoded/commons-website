@@ -3,14 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'; font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data: https:;">
     <title>The Bitcoin Commons - White Paper</title>
-    <link rel="stylesheet" href="/style.css">
+    <meta name="description" content="Architectural blueprint for coordinated Bitcoin development: modular governance, the Orange Paper formal specification, and cryptographic enforcement—without changing Bitcoin consensus.">
+    <link rel="canonical" href="https://thebitcoincommons.org/whitepaper.html" />
+    <meta property="og:title" content="The Bitcoin Commons — White Paper">
+    <meta property="og:description" content="Modular governance, the Orange Paper specification, and a path to safe alternative implementations and forkable process.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://thebitcoincommons.org/whitepaper.html">
+    <meta property="og:image" content="https://thebitcoincommons.org/assets/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The Bitcoin Commons — White Paper">
+    <meta name="twitter:description" content="Modular governance, the Orange Paper specification, and coordinated development without capture.">
+    <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
+    <link rel="stylesheet" href="style.css?v=12" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="inner.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
+    <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 </head>
 <body>
+    <nav class="site-nav" aria-label="Site">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <img src="assets/brand/wordmark.png" alt="Bitcoin Commons" height="36">
+        </a>
+        <details class="nav-menu">
+          <summary aria-label="Menu">
+            <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </summary>
+          <ul class="nav-links">
+            <li><a href="index.html#spec">Specification</a></li>
+            <li><a href="index.html#implementations">Install</a></li>
+            <li><a href="index.html#spec">Pool</a></li>
+            <li><a href="governance-designer.html">Governance</a></li>
+            <li><a href="index.html#faq">FAQ</a></li>
+            <li><a href="https://docs.thebitcoincommons.org" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+          </ul>
+        </details>
+        <ul class="nav-links">
+          <li><a href="index.html#spec">Specification</a></li>
+          <li><a href="index.html#implementations">Install</a></li>
+          <li><a href="index.html#spec">Pool</a></li>
+          <li><a href="governance-designer.html">Governance</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+          <li><a href="https://docs.thebitcoincommons.org" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+        </ul>
+      </div>
+    </nav>
+
     <div class="whitepaper-container">
         <header class="whitepaper-header">
-            <a href="/"><img src="/assets/bitcoin-commons-logo.png" alt="Bitcoin Commons Logo" class="logo"></a>
+            <a href="/"><img src="assets/brand/wordmark.png" alt="Bitcoin Commons" class="logo"></a>
             <h1>The Bitcoin Commons</h1>
             <h2>Coordination Without Authority: An Architectural Solution</h2>
             <p class="tagline">Applying proven commons management principles to Bitcoin's development layer</p>

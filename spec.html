@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self';">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self';">
     <title>Bitcoin Consensus Specification - Bitcoin Commons</title>
     <meta name="description" content="The BLVM Bitcoin Consensus Specification: numbered consensus rules in RFC 2119 language, mapped to Orange Paper math and blvm-consensus implementation.">
     <link rel="canonical" href="https://thebitcoincommons.org/spec.html" />
@@ -26,7 +26,7 @@
     <meta name="twitter:description" content="Auditable register of Bitcoin consensus rules — what must hold on the network.">
     <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
     
-    <link rel="stylesheet" href="style.css?v=5">
+    <link rel="stylesheet" href="style.css?v=8">
     
     <!-- MathJax for LaTeX rendering -->
     <script>
@@ -39,6 +39,10 @@
             },
             options: {
                 skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            },
+            chtml: {
+                mtextInheritFont: false,
+                scale: 1
             }
         };
     </script>
@@ -54,9 +58,9 @@
             flowchart: { useMaxWidth: true, htmlLabels: true },
             sequence: { useMaxWidth: true },
             themeVariables: {
-                primaryColor: '#f7931a',
+                primaryColor: '#f7761a',
                 primaryTextColor: '#ffffff',
-                primaryBorderColor: '#e6820a',
+                primaryBorderColor: '#c05e12',
                 lineColor: '#666666',
                 secondaryColor: 'rgba(247, 147, 26, 0.2)',
                 tertiaryColor: 'rgba(247, 147, 26, 0.1)',
@@ -96,7 +100,7 @@
         .orange-paper-header h1 {
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
-            color: var(--primary-color, #f7931a);
+            color: var(--primary-color, #f7761a);
         }
         
         .orange-paper-header h2 {
@@ -155,7 +159,7 @@
         .orange-paper-content h4 {
             margin-top: 2rem;
             margin-bottom: 1rem;
-            color: var(--primary-color, #f7931a);
+            color: var(--primary-color, #f7761a);
         }
         
         .orange-paper-content h1 {
@@ -195,7 +199,7 @@
         .orange-paper-content li { margin: 0.5rem 0; }
         
         .orange-paper-content blockquote {
-            border-left: 4px solid var(--primary-color, #f7931a);
+            border-left: 4px solid var(--primary-color, #f7761a);
             padding-left: 1.5rem;
             margin: 1.5rem 0;
             color: var(--text-secondary, #aaa);
@@ -230,8 +234,52 @@
             .orange-paper-content { font-size: 1rem; }
         }
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="inner.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
+    <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 </head>
 <body>
+    <nav class="site-nav" aria-label="Site">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <img src="assets/brand/wordmark.png" alt="Bitcoin Commons" height="36">
+        </a>
+        <details class="nav-menu">
+          <summary aria-label="Menu">
+            <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </summary>
+          <ul class="nav-links">
+            <li><a href="index.html#spec">Specification</a></li>
+            <li><a href="index.html#implementations">Install</a></li>
+            <li><a href="index.html#spec">Pool</a></li>
+            <li><a href="governance-designer.html">Governance</a></li>
+            <li><a href="index.html#faq">FAQ</a></li>
+            <li><a href="https://docs.thebitcoincommons.org" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+          </ul>
+        </details>
+        <ul class="nav-links">
+          <li><a href="index.html#spec">Specification</a></li>
+          <li><a href="index.html#implementations">Install</a></li>
+          <li><a href="index.html#spec">Pool</a></li>
+          <li><a href="governance-designer.html">Governance</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+          <li><a href="https://docs.thebitcoincommons.org" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+        </ul>
+      </div>
+    </nav>
+
     <div class="orange-paper-nav">
         <div class="container">
             <a href="index.html">← Home</a>
@@ -272,6 +320,6 @@
     <script>
         window.BTCC_SPEC_VIEWER = { fileName: 'CONSENSUS_SPEC.md' };
     </script>
-    <script src="spec-markdown-viewer.js?v=12"></script>
+    <script src="spec-markdown-viewer.js?v=16"></script>
 </body>
 </html>

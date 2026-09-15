@@ -32,12 +32,53 @@
             }
         })();
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="inner.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
+    <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 </head>
-<body>
-    <div class="container not-found-page" style="max-width: 640px; margin: 4rem auto; padding: 1.5rem;">
-        <a href="/index.html" class="not-found-mark" aria-label="The Bitcoin Commons home">
-            <img src="assets/bitcoin-commons-icon.png" alt="" width="56" height="56" decoding="async" aria-hidden="true" />
+<body class="inner-404">
+    <nav class="site-nav" aria-label="Site">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <img src="assets/brand/wordmark.png" alt="Bitcoin Commons" height="36">
         </a>
+        <details class="nav-menu">
+          <summary aria-label="Menu">
+            <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </summary>
+          <ul class="nav-links">
+            <li><a href="index.html#spec">Specification</a></li>
+            <li><a href="index.html#implementations">Install</a></li>
+            <li><a href="index.html#spec">Pool</a></li>
+            <li><a href="governance-designer.html">Governance</a></li>
+            <li><a href="index.html#faq">FAQ</a></li>
+            <li><a href="https://docs.thebitcoincommons.org" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+          </ul>
+        </details>
+        <ul class="nav-links">
+          <li><a href="index.html#spec">Specification</a></li>
+          <li><a href="index.html#implementations">Install</a></li>
+          <li><a href="index.html#spec">Pool</a></li>
+          <li><a href="governance-designer.html">Governance</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+          <li><a href="https://docs.thebitcoincommons.org" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="inner-404-wrap">
         <h1>Page not found</h1>
         <p>The page you requested is not on this site.</p>
         <p>Looking for the consensus specification or Orange Paper split?</p>
