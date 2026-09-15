@@ -1,24 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" class="index2">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data: https:; frame-src 'self' https://btccommons.substack.com; font-src 'self' data: https: https://cdnjs.cloudflare.com;"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data:; frame-src 'self' https://btccommons.substack.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self';"
     />
     <title>The Bitcoin Commons</title>
     <meta
       name="description"
-      content="Coordination without authority: formal specification, differential testing, fuzzing, and forkable governance for Bitcoin software."
+      content="A formal specification, a second full node, and forkable governance for Bitcoin. Built on the Orange Paper."
     />
-    <meta
-      property="og:title"
-      content="The Bitcoin Commons: coordination without authority"
-    />
+    <meta property="og:title" content="The Bitcoin Commons" />
     <meta
       property="og:description"
-      content="Coordination without authority: formal specification, differential testing, fuzzing, and forkable governance for Bitcoin software."
+      content="Bitcoin's consensus rules, written down and verified."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://thebitcoincommons.org/" />
@@ -26,38 +23,25 @@
       property="og:image"
       content="https://thebitcoincommons.org/assets/og-image.png"
     />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta
-      property="og:image:alt"
-      content="The Bitcoin Commons: formal specification and forkable governance for Bitcoin software"
-    />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="The Bitcoin Commons: coordination without authority"
-    />
-    <meta
-      name="twitter:description"
-      content="Coordination without authority: formal specification, differential testing, fuzzing, and forkable governance for Bitcoin software."
-    />
-    <meta
-      name="twitter:image"
-      content="https://thebitcoincommons.org/assets/og-image.png"
-    />
     <link rel="canonical" href="https://thebitcoincommons.org/" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png" />
+    <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="icon"
-      type="image/png"
-      href="/assets/bitcoin-commons-icon.png"
-      sizes="128x128"
+      href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
     />
-    <link rel="apple-touch-icon" href="/assets/bitcoin-commons-symbol.png" />
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
-    <link rel="preconnect" href="https://docs.thebitcoincommons.org" />
-    <link rel="stylesheet" href="style.css?v=12" />
-    <link rel="stylesheet" href="index-home.css?v=7" />
+    <link rel="stylesheet" href="landing.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -66,7 +50,7 @@
             "@type": "WebSite",
             "name": "The Bitcoin Commons",
             "url": "https://thebitcoincommons.org/",
-            "description": "Coordination without authority: formal specification, differential testing, fuzzing, and forkable governance for Bitcoin software.",
+            "description": "A formal specification, a second full node, and forkable governance for Bitcoin.",
             "publisher": { "@id": "https://thebitcoincommons.org/#organization" }
           },
           {
@@ -76,16 +60,13 @@
             "url": "https://thebitcoincommons.org/",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://thebitcoincommons.org/assets/bitcoin-commons-logo.png"
-            },
-            "image": {
-              "@type": "ImageObject",
-              "url": "https://thebitcoincommons.org/assets/bitcoin-commons-symbol.png"
+              "url": "https://thebitcoincommons.org/assets/brand/symbol.png"
             },
             "sameAs": [
               "https://github.com/BTCDecoded",
               "https://docs.thebitcoincommons.org/",
-              "https://btccommons.substack.com/"
+              "https://btccommons.substack.com/",
+              "https://x.com/BtcCommons"
             ]
           }
         ]
@@ -93,134 +74,183 @@
     </script>
   </head>
   <body>
-    <a class="i2-skip-link" href="#main-content">Skip to main content</a>
-    <div
-      class="release-banner"
-      aria-live="polite"
-      aria-label="Latest BLVM release"
-    >
-      <span id="release-banner-badge" class="release-banner-badge">v0.1.35</span>
-      <span class="release-banner-text">
-        Latest release.
-        <a href="https://btcdecoded.org/install/">install →</a>
-      </span>
-    </div>
-    <header class="hero">
-      <div class="hero-background">
-        <img
-          src="assets/commons.jpg"
-          alt="Ancient commons with Bitcoin as the sun"
-          class="hero-image"
-          width="1920"
-          height="1080"
-          decoding="async"
-          fetchpriority="high"
-        />
-      </div>
-      <div class="hero-content">
-        <a href="index.html"
-          ><img
-            src="assets/bitcoin-commons-logo.png"
-            alt="Bitcoin Commons"
-            class="logo"
-            width="400"
-            height="160"
-            decoding="async"
-        /></a>
-        <div class="container">
-          <h1 class="lg-screen-text-orange">The Bitcoin Commons</h1>
-          <h2 class="lg-screen-text-orange">Coordination without authority</h2>
-          <p class="tagline lg-screen-text-orange">
-            Formal specification. Forkable governance. No new coin.
-          </p>
-        </div>
-      </div>
-    </header>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
 
-    <main class="i2-wrap i2" id="main-content">
-      <nav class="i2-paths" aria-label="Section shortcuts">
-        <span class="i2-paths-label">Jump to</span>:
-        <ul>
-          <li><a href="#what-weve-built">What we've built</a></li>
-          <li><a href="#path-orange-paper">Specification</a></li>
-          <li><a href="#path-learning">Read next</a></li>
-          <li><a href="#path-implementations">Implementations</a></li>
+    <nav>
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <img
+            src="assets/brand/wordmark.png"
+            alt="Bitcoin Commons"
+            height="36"
+          />
+        </a>
+        <details class="nav-menu">
+          <summary aria-label="Menu">
+            <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </summary>
+          <ul class="nav-links">
+            <li><a href="#spec">Specification</a></li>
+            <li><a href="#implementations">Install</a></li>
+            <li><a href="#spec">Node</a></li>
+            <li><a href="#spec">Pool</a></li>
+            <li><a href="#spec">Governance</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li>
+              <a href="https://docs.thebitcoincommons.org" class="nav-cta"
+                >Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a
+              >
+            </li>
+          </ul>
+        </details>
+        <ul class="nav-links">
+          <li><a href="#spec">Specification</a></li>
+          <li><a href="#implementations">Install</a></li>
+          <li><a href="#spec">Node</a></li>
+          <li><a href="#spec">Pool</a></li>
+          <li><a href="#spec">Governance</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li>
-            <a
-              href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md"
-              target="_blank"
-              rel="noopener"
-              >Project status</a
+            <a href="https://docs.thebitcoincommons.org" class="nav-cta"
+              >Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a
             >
           </li>
         </ul>
-      </nav>
+      </div>
+    </nav>
 
-      <section class="i2-block" id="what-weve-built" aria-labelledby="built-title">
-        <div class="i2-block-head">
-          <span class="i2-eyebrow">What we've built</span>
-          <h2 class="i2-block-title" id="built-title">Spec, node, and governance tools</h2>
-          <p class="i2-block-note">
-            Auditable consensus rules, a differential-tested full node, and
-            forkable governance—each linked below.
+    <header class="hero">
+      <div class="hero-parallax" id="heroParallax"></div>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="hero-eyebrow">Bitcoin Commons · Orange Paper</p>
+          <h1>Bitcoin's consensus rules,<br /><em>written down and verified.</em></h1>
+          <p class="hero-body">
+            A formal specification, a second full node, and forkable governance
+            — so Bitcoin's rules can be audited, implemented, and governed
+            without a single point of capture.
+          </p>
+          <div class="hero-actions">
+            <a href="spec.html" class="btn-primary">Read the Consensus Spec</a>
+            <a href="#spec" class="btn-secondary">Explore the stack</a>
+          </div>
+        </div>
+        <img
+          class="hero-mark"
+          src="assets/brand/symbol.png"
+          alt=""
+          width="280"
+          height="280"
+        />
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section class="implementations" id="implementations">
+        <div class="implementations-copy">
+          <span class="section-tag">Install</span>
+          <h2 class="implementations-title">Run an implementation of the spec.</h2>
+          <p>
+            Commons is the spec. Implementations ship the binaries.
+            More can join the
+            <a
+              href="https://github.com/BTCDecoded/governance/blob/main/IMPLEMENTATIONS_REGISTRY.md"
+              >registry</a
+            >.
           </p>
         </div>
-        <div class="i2-why-grid">
-          <div class="i2-why-card">
-            <h3>Consensus Spec</h3>
-            <p>
-              Numbered Bitcoin consensus rules in RFC&nbsp;2119 language—what must
-              hold on the network. Auditable register mapped to Orange Paper math
-              and <code>blvm-consensus</code> implementation.
-            </p>
-            <div class="i2-why-cta">
-              <a href="spec.html">Read the spec</a>
+        <div class="implementation-row">
+          <div class="implementation-meta">
+            <div class="implementation-name">
+              BLVM
+              <span id="release-banner-badge" class="implementation-version">v0.1.35</span>
             </div>
+            <div class="implementation-note">by BTCDecoded</div>
           </div>
-          <div class="i2-why-card">
-            <h3>Orange Paper</h3>
-            <p>
-              Extended formal specification: PROTOCOL.md and ARCHITECTURE.md with
-              consensus math, invariants, and implementation design—auditable line
-              by line.
-            </p>
-            <div class="i2-why-cta">
-              <a href="orange-paper.html">Read Orange Paper</a>
-            </div>
-          </div>
-          <div class="i2-why-card">
-            <h3>BTCDecoded full node</h3>
-            <p>
-              A second Bitcoin full node, differential-tested against Bitcoin Core
-              on real mainnet history with zero consensus divergence to date.
-              Run it, build on the SDK, or plug in modules for mining, Lightning,
-              and more.
-            </p>
-            <div class="i2-why-cta">
-              <a
-                href="https://btcdecoded.org"
-                target="_blank"
-                rel="noopener"
-                >See BTCDecoded</a
-              >
-            </div>
-          </div>
-          <div class="i2-why-card">
-            <h3>Governance designer</h3>
-            <p>
-              Fork governance rules in the designer: thresholds, review periods,
-              and layer controls. Export signed YAML; cryptographic enforcement
-              when production governance is activated.
-            </p>
-            <div class="i2-why-cta">
-              <a href="governance-designer.html">Open designer</a>
-            </div>
+          <div class="implementation-actions">
+            <a class="btn-primary" href="https://btcdecoded.org/install/"
+              >Install</a
+            >
+            <a class="btn-secondary" href="https://btcdecoded.org">Site</a>
           </div>
         </div>
-        <figure class="i2-chart-embed i2-chart-embed--gov-spectrum">
+      </section>
+
+      <section class="section" id="spec">
+        <div class="section-header">
+          <span class="section-tag">The stack</span>
+          <div>
+            <h2 class="section-title">
+              Spec, node, pool, and governance — each one auditable.
+            </h2>
+            <p class="section-body">
+              None of them ask for your trust; all of them expose their work.
+            </p>
+          </div>
+        </div>
+
+        <div class="features">
+          <div class="feature">
+            <h3>Consensus Spec</h3>
+            <p>
+              Numbered Bitcoin consensus rules — what must hold on the network.
+            </p>
+            <a href="spec.html" class="feature-link">Read the register <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </div>
+
+          <div class="feature">
+            <h3>Orange Paper</h3>
+            <p>
+              Formal math and invariants. The document implementations target.
+            </p>
+            <a href="orange-paper.html" class="feature-link">Open the paper <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </div>
+
+          <div class="feature" id="node">
+            <h3>Node</h3>
+            <p>
+              A second Bitcoin full node for the same chain as Core.
+              Compatibility is checked in layers, not one replay.
+            </p>
+            <a href="https://btcdecoded.org" class="feature-link">Run the node <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </div>
+
+          <div class="feature" id="pool">
+            <h3>Pool</h3>
+            <p>
+              Non-custodial mining: a found block can pay your address. Built,
+              not a live mainnet pool yet.
+            </p>
+            <a href="https://commonspool.org" class="feature-link"
+              >Commons Pool <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a
+            >
+          </div>
+
+          <div class="feature" id="governance">
+            <h3>Governance</h3>
+            <p>
+              Published rules for who can change what, and how long review
+              lasts. Enforcement is off — the designer is not a live gate.
+            </p>
+            <a href="governance-designer.html" class="feature-link"
+              >Open the designer <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a
+            >
+          </div>
+
+          <div class="feature">
+            <h3>Compact</h3>
+            <p>
+              Purpose and principles for Commons governance. The written rules,
+              not a live dashboard.
+            </p>
+            <a href="compact.html" class="feature-link">Read the Compact <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </div>
+        </div>
+
+        <figure class="chart-embed chart-embed--gov-spectrum">
           <iframe
-            id="i2-gov-spectrum"
+            id="gov-spectrum"
             title="Governance spectrum: centralized to decentralized (Bank, Bitcoin now, Modular, Chaos)"
             src="node-charts/governance-spectrum-line.html"
             loading="lazy"
@@ -229,811 +259,716 @@
         </figure>
       </section>
 
-      <section
-        class="i2-block i2-path"
-        id="path-orange-paper"
-        aria-labelledby="spec-title"
-      >
-        <div class="i2-block-head">
-          <span class="i2-eyebrow" id="spec-eyebrow">Specification</span>
-          <h2 class="i2-block-title" id="spec-title">Consensus Spec &amp; Orange Paper</h2>
-          <p class="i2-block-note">
-            <a href="spec.html">CONSENSUS_SPEC.md</a> is the auditable rule register:
-            numbered requirements in RFC&nbsp;2119 language, each tied to Orange Paper
-            §refs and <code>blvm-consensus</code>. The
-            <a href="orange-paper.html">Orange Paper</a> is the extended formal spec
-            (<a href="protocol.html">PROTOCOL.md</a>,
-            <a href="architecture.html">ARCHITECTURE.md</a>, and related definitions).
-            The chart below shows Orange Paper structure; click a slice to preview or
-            jump to the full viewers.
-          </p>
-        </div>
-        <div class="i2-spec-card">
-          <div class="i2-spec-head i2-spec-head--solo">
-            <a href="spec.html">Consensus Spec →</a>
-            <a href="orange-paper.html">Orange Paper →</a>
-            <a href="protocol.html">PROTOCOL →</a>
-            <a href="architecture.html">ARCHITECTURE →</a>
+      <section class="section" id="pipeline">
+        <div class="section-header">
+          <span class="section-tag">Specification</span>
+          <div>
+            <h2 class="section-title">
+              One pipeline, from observation to checkable code.
+            </h2>
+            <p class="section-body">
+              The
+              <a href="spec.html">Consensus Spec</a>
+              is the rule register. The Orange Paper is the formal math.
+              Implementations target both.
+            </p>
           </div>
+        </div>
+
+        <div class="pipeline">
+          <div class="pipeline-step">
+            <div class="pipeline-num">1</div>
+            <div class="pipeline-content">
+              <div class="pipeline-tag">Core consensus</div>
+              <h3>The network's de facto rules, observed</h3>
+              <p>
+                Bitcoin Core defines the rules in practice. Commons writes them
+                down — no single implementation stays the forever source.
+              </p>
+            </div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-num">2</div>
+            <div class="pipeline-content">
+              <div class="pipeline-tag">Spec register</div>
+              <h3>Numbered RFC 2119 requirements</h3>
+              <p>
+                Each rule is a numbered statement in the
+                <a href="spec.html">Consensus Spec</a>, mapped to math in the
+                Orange Paper.
+              </p>
+            </div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-num">3</div>
+            <div class="pipeline-content">
+              <div class="pipeline-tag">Orange Paper</div>
+              <h3>Formal math and invariants</h3>
+              <p>
+                Consensus math and invariants — the document independent
+                implementations target.
+              </p>
+            </div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-num">4</div>
+            <div class="pipeline-content">
+              <div class="pipeline-tag">Implementation</div>
+              <h3>Code bound to the written rules</h3>
+              <p>
+                Implementations lock consensus functions to Orange Paper
+                sections. CI fails if spec and code drift.
+              </p>
+            </div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-num">5</div>
+            <div class="pipeline-content">
+              <div class="pipeline-tag">Testing</div>
+              <h3>Layers of check, not one replay</h3>
+              <p>
+                Property tests, fuzzing, golden vectors, and a Core
+                differential — not one replay.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="spec-viz">
+        <div class="section-header">
+          <span class="section-tag">Orange Paper</span>
+          <div>
+            <h2 class="section-title">Explore the specification structure.</h2>
+            <p class="section-body">
+              The chart maps Orange Paper sections. Open a viewer for the full
+              document.
+            </p>
+            <div class="section-actions">
+              <a href="spec.html" class="btn-secondary">Consensus Spec →</a>
+              <a href="orange-paper.html" class="btn-secondary">Orange Paper →</a>
+              <a href="protocol.html" class="btn-secondary">PROTOCOL →</a>
+              <a href="architecture.html" class="btn-secondary">ARCHITECTURE →</a>
+            </div>
+          </div>
+        </div>
+        <div class="viz-frame">
           <iframe
-            id="i2-sunburst"
+            id="sunburst"
             src="spec-viz/sunburst.html?embed=1"
-            title="Orange Paper structure"
-            height="680"
+            title="Orange Paper specification map"
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
           ></iframe>
         </div>
       </section>
 
-      <section
-        class="i2-block i2-path"
-        id="path-learning"
-        aria-labelledby="path-learn-title"
-      >
-        <div class="i2-block-head">
-          <span class="i2-eyebrow">Read</span>
-          <h2 class="i2-block-title" id="path-learn-title">Read next</h2>
-          <p class="i2-block-note">
-            Documentation, white paper, and FAQ—longer reads beyond the sections
-            above. Essays and updates are in the Substack block below.
-          </p>
+      <div class="philosophy">
+        <div class="philosophy-inner">
+          <span class="philosophy-label">Philosophy</span>
+          <blockquote>
+            "Bitcoin's codebase is a commons. Cypherpunks removed trusted third
+            parties from transactions — Commons pushes the same idea into how
+            software is governed and verified."
+            <footer>
+              — White paper ·
+              <a href="whitepaper.html">Read it</a>
+            </footer>
+          </blockquote>
         </div>
-        <div class="i2-impl-grid i2-learn-grid">
-          <div class="i2-impl-card">
-            <h3>Documentation</h3>
-            <p>
-              Architecture, repositories, verification, and how the pieces fit
-              together on docs.thebitcoincommons.org.
-            </p>
-            <div class="i2-impl-links">
+      </div>
+
+      <div class="subscribe-section" id="stay-informed">
+        <span class="section-tag" style="padding-top: 0">Stay informed</span>
+        <div class="subscribe-grid">
+          <div class="subscribe-card">
+            <h2>Release notes and project updates.</h2>
+            <p>Straight to your inbox — essays, releases, and project notes.</p>
+            <div
+              class="subscribe-embed"
+              role="region"
+              aria-label="Newsletter subscribe"
+            >
+              <div class="subscribe-embed-invert">
+                <iframe
+                  src="https://btccommons.substack.com/embed"
+                  title="Subscribe to Bitcoin Commons on Substack"
+                  width="100%"
+                  height="150"
+                  loading="lazy"
+                  style="border: 0; background: transparent"
+                  frameborder="0"
+                  scrolling="no"
+                ></iframe>
+              </div>
+            </div>
+            <p class="subscribe-pub">
               <a
-                href="https://docs.thebitcoincommons.org"
+                href="https://btccommons.substack.com/"
                 target="_blank"
                 rel="noopener"
-                >Open documentation</a
+                >Open publication →</a
               >
-            </div>
-          </div>
-          <div class="i2-impl-card">
-            <h3>White Paper</h3>
-            <p>
-              Narrative walkthrough: problem framing, modular governance design,
-              economics, and failure modes—with PDF and e-book downloads.
             </p>
-            <div class="i2-impl-links">
-              <a href="whitepaper.html">Read White Paper</a>
-            </div>
           </div>
-          <div class="i2-impl-card">
-            <h3>FAQ</h3>
-            <p>
-              Short answers on governance, status, and how this relates to
-              Bitcoin the network.
+          <div class="subscribe-card book-card">
+            <h2>The Bitcoin Commons book.</h2>
+            <p class="book-card-title">
+              <em>Bitcoin Commons: Decentralizing the Decentralizers</em>
             </p>
-            <div class="i2-impl-links">
-              <a href="#faq">Open FAQ</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="i2-block i2-subscribe" aria-labelledby="subscribe-title">
-        <div class="i2-block-head">
-          <span class="i2-eyebrow">Updates</span>
-          <h2 class="i2-block-title" id="subscribe-title">Stay informed</h2>
-          <p class="i2-block-note">
-            Release notes, essays, and project updates, straight to your inbox.
-          </p>
-        </div>
-        <div class="i2-subscribe-embed-dark" role="region" aria-label="Newsletter subscribe">
-          <iframe
-            src="https://btccommons.substack.com/embed"
-            title="Subscribe to Bitcoin Commons on Substack"
-            width="100%"
-            height="150"
-            loading="lazy"
-            style="border: 0; background: transparent"
-            frameborder="0"
-            scrolling="no"
-          ></iframe>
-        </div>
-        <p class="i2-subscribe-pub">
-          <a
-            class="i2-subscribe-pub-link"
-            href="https://btccommons.substack.com/"
-            target="_blank"
-            rel="noopener"
-          >Open publication →</a>
-        </p>
-      </section>
-
-      <section
-        class="i2-block i2-path"
-        id="path-implementations"
-        aria-labelledby="impl-title"
-      >
-        <div class="i2-block-head">
-          <span class="i2-eyebrow">Ecosystem</span>
-          <h2 class="i2-block-title" id="impl-title">Implementations</h2>
-          <p class="i2-block-note">
-            BTCDecoded ships the reference stack today; other orgs can adopt the
-            same governance model via the designer and registry.
-          </p>
-        </div>
-        <div class="i2-impl-grid">
-          <div class="i2-impl-card">
-            <h3>BTCDecoded</h3>
             <p>
-              Reference stack with governance infrastructure and the Orange Paper
-              extract in-repo.
+              The case for a formal specification and forkable governance —
+              fifteen chapters plus epilogue, for holders, builders, and
+              institutions.
             </p>
-            <div class="i2-impl-links">
-              <a href="https://btcdecoded.org" target="_blank" rel="noopener"
-                >Website</a
-              >
-              <a
-                class="i2-impl-icon"
-                href="https://github.com/BTCDecoded"
-                target="_blank"
-                rel="noopener"
-                aria-label="BTCDecoded on GitHub"
-                ><svg class="i2-icon-github" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.607.069-.607 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.337-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.547 1.376.203 2.394.1 2.646.641.698 1.028 1.591 1.028 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg
-              ></a>
-            </div>
-          </div>
-          <div class="i2-impl-card i2-impl-soon">
-            <h3>Your implementation</h3>
-            <p>
-              Fork the governance model and adapt it to your organization’s
-              release and review culture.
-            </p>
-            <div class="i2-impl-links">
-              <a href="governance-designer.html">Open governance designer</a>
-              <a
-                href="https://github.com/BTCDecoded/governance"
-                target="_blank"
-                rel="noopener"
-                >Governance repo</a
-              >
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="faq"
-        class="faq-section i2-block i2-faq"
-        aria-labelledby="faq-heading"
-      >
-        <h2 id="faq-heading" class="i2-block-title">Frequently Asked Questions</h2>
-        <div class="faq-categories">
-            <div class="faq-category">
-              <h3>Common questions</h3>
-              <div class="faq-accordion">
-                <div class="faq-item" id="faq-what-is-bitcoin-commons">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>What is Bitcoin Commons?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Bitcoin Commons combines <strong>BLVM</strong> (formal spec,
-                      verified consensus, full node) with <strong>forkable
-                      governance</strong> for coordinating software changes.
-                      <strong>BTCDecoded</strong> is the org shipping that stack
-                      today. See the
-                      <a href="whitepaper.html">white paper</a> for the full
-                      argument.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item" id="faq-proof-consensus">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>Proof of consensus compatibility</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      BTCDecoded differential-tests against Bitcoin Core on
-                      mainnet block history with zero consensus divergence to
-                      date. Fuzzing in CI stresses consensus and protocol code
-                      beyond chain replay alone. Current depth and CI status are
-                      in
-                      <a
-                        href="https://docs.thebitcoincommons.org/development/differential-testing.html"
-                        target="_blank"
-                        rel="noopener"
-                        >technical documentation</a
-                      >.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item" id="faq-vs-reference-client">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>How is this different from the reference client?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      The dominant full-node implementation has no formal spec
-                      tied line-for-line to its code. Commons publishes layered
-                      specifications and differential testing so independent
-                      implementations can target written rules and catch drift
-                      early. See
-                      <a href="#faq-proof-consensus">Proof of consensus compatibility</a>
-                      and the
-                      <a href="whitepaper.html">white paper</a>.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item" id="faq-is-this-a-bitcoin-fork">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>Is this a fork of Bitcoin?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      No. Neither BLVM nor Bitcoin Commons forks Bitcoin's
-                      blockchain or consensus rules. BLVM provides mathematical
-                      specification enabling safe alternative implementations.
-                      Bitcoin Commons provides governance framework enabling
-                      coordination. Both maintain full Bitcoin consensus
-                      compatibility.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item" id="faq-production-ready">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>Is the system production ready?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Readiness depends on your deployment: apply your own
-                      security review, RPC hardening, and monitoring. Production
-                      governance is not cryptographically activated yet. See
-                      <a
-                        href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md"
-                        target="_blank"
-                        rel="noopener"
-                        >Project status</a
-                      >.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="faq-category">
-              <h3>BLVM</h3>
-              <div class="faq-accordion">
-                <div class="faq-item" id="faq-what-is-blvm">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>What is BLVM?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      BLVM (Bitcoin Low-Level Virtual Machine) is the technical
-                      stack for rigorous Bitcoin implementations:
-                      <strong>blvm-spec</strong> (consensus rule register +
-                      Orange Paper),
-                      <strong>blvm-consensus</strong>,
-                      <strong>blvm-protocol</strong>,
-                      <strong>blvm-node</strong>, <strong>blvm</strong> (binary
-                      wrapper), and <strong>blvm-sdk</strong>.
-                    </p>
-                    <p>
-                      <a href="spec.html">CONSENSUS_SPEC.md</a> is the numbered rule
-                      register; the Orange Paper (PROTOCOL.md, ARCHITECTURE.md) is
-                      the extended formal specification: the &quot;IR&quot; in a
-                      compiler-like pipeline (Core consensus &rarr; spec register
-                      &rarr; Orange Paper &rarr; blvm-consensus &rarr; blvm-node) so
-                      multiple implementations can target the same written rules.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item" id="faq-blvm-correctness">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>How does BLVM ensure correctness?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Specification locking and formal verification tie
-                      consensus-critical code to the rule register and Orange Paper;
-                      the codebase includes on the order of <strong>200 embedded proofs</strong>
-                      checked continuously. Proofs live with the code so drift
-                      forces updates. A dependency chain routes consensus through
-                      verified functions; spec-drift tooling flags mismatches.
-                    </p>
-                    <p>
-                      Empirical checks complement that: differential testing and
-                      CI fuzzing (see
-                      <a href="#faq-proof-consensus">Proof of consensus compatibility</a>).
-                      BLVM does not replace the reference client; it is a path to
-                      checkable alternatives alongside it.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="faq-category">
-              <h3>Bitcoin Commons governance</h3>
-              <div class="faq-accordion">
-                <div class="faq-item" id="faq-governance-how">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>How does governance work?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Bitcoin Commons applies Ostrom&apos;s commons principles
-                      with forkable rules and transparent multisig decisions.
-                      You can fork <em>governance</em> (not Bitcoin consensus)
-                      if you disagree with how changes ship.
-                    </p>
-                    <p>
-                      The model combines <strong>repository layers</strong>
-                      (which code is affected) and <strong>action tiers</strong>
-                      (how serious the change is), with the most restrictive
-                      rule winning when both apply. Three
-                      <strong>emergency classes</strong> shorten review only for
-                      proportional critical response. Maintainer keyholders
-                      approve via signatures; the blvm-commons GitHub app is
-                      <strong>designed to</strong> enforce merge thresholds when
-                      production governance is activated.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item" id="faq-fork-registry-capture-modular">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>Fork registry, capture, and modular stack</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      The <strong>Fork Registry</strong> is public and
-                      self-service: submit a pull request to list your governance
-                      fork (automated validation; no gatekeeper approval). Use
-                      <a href="governance-designer.html#fork-governance"
-                        >&quot;Fork Your Governance&quot;</a
-                      >
-                      to browse, compare, see genealogy, and start from
-                      templates. If governance is captured, users can exit to
-                      another ruleset. Consensus stays on Bitcoin; the threat of
-                      exit reduces capture pressure.
-                    </p>
-                    <p>
-                      Architecturally: mandatory consensus (BLVM) at the base,
-                      optional loadable modules above. Optional modules are
-                      operational today; the module registry for permissionless
-                      listing is not live yet. Merge mining is an optional
-                      supplement, not the default sustainability story.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item" id="faq-economics-merge-mining">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>Economics and merge mining</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Sustainability is multi-channel: optional module usage
-                      (operational today), registry-based distribution when the
-                      registry is live, Lightning zaps, and optional merge mining
-                      for pools that want it, not a change to Bitcoin consensus
-                      rules.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="faq-category">
-              <h3>Implementation status</h3>
-              <div class="faq-accordion">
-                <div class="faq-item" id="faq-implementation-status">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>Where are BLVM and governance today?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Core BLVM layers and governance infrastructure are public in
-                      the BTCDecoded org; production governance is not activated
-                      yet. What is live, in progress, and planned is in
-                      <a
-                        href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md"
-                        target="_blank"
-                        rel="noopener"
-                        >Project status</a
-                      >.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="faq-category">
-              <h3>Get involved</h3>
-              <div class="faq-accordion">
-                <div class="faq-item" id="faq-contribute">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>How can I contribute or ship my own stack?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Review BLVM and proofs, review governance rules, file
-                      issues and PRs, help test and audit, or participate in
-                      governance discussion. To ship your own Bitcoin-compatible
-                      implementation, adopt BLVM and/or Commons governance, fork
-                      rulesets for your org, and list yourself in the
-                      <a
-                        href="https://github.com/BTCDecoded/governance/blob/main/IMPLEMENTATIONS_REGISTRY.md"
-                        target="_blank"
-                        rel="noopener"
-                        >Implementations Registry</a
-                      >.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="faq-item" id="faq-code-and-docs">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>Where is the code and what should I read?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Open source under
-                      <a
-                        href="https://github.com/BTCDecoded"
-                        target="_blank"
-                        rel="noopener"
-                        >BTCDecoded</a
-                      >
-                      (BLVM repos, governance, blvm-commons). The
-                      <a
-                        href="https://github.com/BTCDecoded/governance/blob/main/fork-registry.yml"
-                        target="_blank"
-                        rel="noopener"
-                        >fork registry</a
-                      >
-                      lives in the governance repo.
-                    </p>
-                    <p>
-                      Start with the
-                      <a href="whitepaper.html">White Paper</a>,
-                      <a
-                        href="https://docs.thebitcoincommons.org"
-                        target="_blank"
-                        rel="noopener"
-                        >technical documentation</a
-                      >, and
-                      <a
-                        href="https://github.com/BTCDecoded/governance"
-                        target="_blank"
-                        rel="noopener"
-                        >governance documentation</a
-                      >.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="faq-category">
-              <h3>Philosophy</h3>
-              <div class="faq-accordion">
-                <div class="faq-item" id="faq-philosophy-commons-cypherpunk">
-                  <button class="faq-question" aria-expanded="false">
-                    <span>Why &quot;commons&quot; and how does this extend cypherpunk ideas?</span>
-                    <span class="faq-icon">+</span>
-                  </button>
-                  <div class="faq-answer">
-                    <p>
-                      Bitcoin&apos;s codebase is a commons: shared, valuable, not
-                      owned by a single party. Ostrom showed how durable commons
-                      are governed; Bitcoin Commons applies that with cryptography
-                      so rules and power stay visible.
-                    </p>
-                    <p>
-                      Cypherpunks removed trusted third parties from
-                      transactions; Commons and BLVM push the same idea into
-                      <em>how software is governed and verified</em>: less informal
-                      trust in a single implementation or maintainer culture, more
-                      auditability and mathematical specification.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-      </section>
-    </main>
-
-    <footer class="i2-footer-outer">
-      <div class="i2-footer-shell">
-        <div class="i2-footer-brand">
-          <a href="index.html" class="i2-footer-brand-mark">
-            <img
-              src="assets/bitcoin-commons-icon.png"
-              alt=""
-              class="i2-footer-symbol"
-              width="28"
-              height="28"
-              decoding="async"
-              aria-hidden="true"
-            />
-            <span class="i2-footer-name">The Bitcoin Commons</span>
-          </a>
-          <span class="i2-footer-tag"
-            >Open-source spec, node stack, and forkable governance rules.</span
-          >
-        </div>
-        <nav class="i2-footer-nav" aria-label="Site links">
-          <div>
-            <span class="i2-footer-col-title">Read</span>
-            <ul class="i2-footer-links">
-              <li><a href="#faq">FAQ</a></li>
-              <li>
-                <a
-                  href="https://docs.thebitcoincommons.org"
-                  target="_blank"
-                  rel="noopener"
-                  >Documentation</a
-                >
-              </li>
-              <li><a href="whitepaper.html">White Paper</a></li>
-            </ul>
-          </div>
-          <div>
-            <span class="i2-footer-col-title">Specification</span>
-            <ul class="i2-footer-links">
-              <li><a href="spec.html">Consensus Spec</a></li>
-              <li><a href="protocol.html">PROTOCOL</a></li>
-              <li><a href="architecture.html">ARCHITECTURE</a></li>
-              <li><a href="orange-paper.html">Orange Paper</a></li>
-              <li><a href="spec-maps.html">Spec maps</a></li>
-            </ul>
-          </div>
-          <div>
-            <span class="i2-footer-col-title">Project</span>
-            <ul class="i2-footer-links">
-              <li>
-                <a href="governance-designer.html">Governance designer</a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md"
-                  target="_blank"
-                  rel="noopener"
-                  >Project status</a
-                >
-              </li>
-              <li>
-                <a
-                  href="https://github.com/BTCDecoded"
-                  target="_blank"
-                  rel="noopener"
-                  >GitHub organization</a
-                >
-              </li>
-            </ul>
-          </div>
-        </nav>
-        <div class="i2-footer-meta">
-          <p class="i2-footer-copy">
-            &copy; 2026 The Bitcoin Commons. All rights reserved.
-          </p>
-          <div class="i2-footer-social">
-            <a
-              href="https://github.com/BTCDecoded"
-              target="_blank"
-              rel="noopener"
-              aria-label="BTCDecoded on GitHub"
-              ><svg class="i2-icon-github" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.607.069-.607 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.337-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.547 1.376.203 2.394.1 2.646.641.698 1.028 1.591 1.028 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg
-            ></a>
+            <span class="btn-primary btn-coming-soon" aria-disabled="true"
+              >Coming Soon</span
+            >
           </div>
         </div>
       </div>
+
+      <div class="subscribe-section" id="fund">
+        <span class="section-tag" style="padding-top: 0">Fund the work</span>
+        <div class="subscribe-content">
+          <h2>Donate through Plebly.</h2>
+          <p>
+            Plebly lists public Bitcoin development work and takes donations
+            into on-chain escrow — not a custodial tip jar. Fund a listed
+            Commons proposal, or donate to Commons directly.
+          </p>
+          <div class="fund-actions">
+            <a
+              class="btn-primary"
+              href="https://plebly.fund/#projects"
+              rel="noopener"
+              >Fund a listed proposal</a
+            >
+            <a
+              class="btn-secondary"
+              href="https://plebly.fund/?type=direct#projects"
+              rel="noopener"
+              >Donate to Commons</a
+            >
+            <a
+              class="btn-secondary"
+              href="https://plebly.fund/about"
+              rel="noopener"
+              >How Plebly works</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <section class="section" id="faq">
+        <div class="section-header">
+          <span class="section-tag">FAQ</span>
+          <div>
+            <h2 class="section-title">Common questions.</h2>
+          </div>
+        </div>
+
+        <div class="faq-list">
+          <div class="faq-category">
+            <h3>Common questions</h3>
+            <div class="faq-item" id="faq-what-is-bitcoin-commons">
+              <button class="faq-q" type="button" aria-expanded="false">
+                What is Bitcoin Commons?
+                <span class="faq-icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+              </button>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <p>
+                    Bitcoin Commons is the umbrella: a
+                    <a href="spec.html">formal specification</a>
+                    and a forkable governance model. BLVM is the first
+                    implementation of that spec, built by BTCDecoded. It is not
+                    part of Commons. Another group could implement the same
+                    written rules later.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="faq-item" id="faq-proof-consensus">
+              <button class="faq-q" type="button" aria-expanded="false">
+                Proof of consensus compatibility
+                <span class="faq-icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+              </button>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <p>
+                    A second implementation has to follow Bitcoin’s rules, not
+                    invent them. Spec-lock binds Rust functions to Orange Paper
+                    sections and checks them in CI. Around that sits a suite:
+                    property tests, coverage-guided fuzz on consensus, protocol,
+                    and node, golden vectors from mainnet wire bytes and Core
+                    script fixtures, and a differential against Bitcoin Core /
+                    libbitcoinkernel. The differential is one of those layers.
+                    See
+                    <a href="https://docs.thebitcoincommons.org/development/testing.html"
+                      >how testing is layered</a
+                    >.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="faq-item" id="faq-vs-reference-client">
+              <button class="faq-q" type="button" aria-expanded="false">
+                How is this different from the reference client?
+                <span class="faq-icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+              </button>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <p>
+                    Bitcoin Core remains the dominant full-node implementation,
+                    with no authoritative formal specification tied
+                    line-for-line to that code and concentrated merge authority.
+                    Redundancy matters: CVE-2018-17144 remained in Bitcoin Core
+                    production releases for nearly two years before the fix. An
+                    independent client that tests the same chain against the
+                    reference node — property tests, fuzzing, golden vectors,
+                    and a Core differential — is the kind of parallel
+                    verification that surfaces those failures earlier. Commons
+                    publishes the written rules that make serious alternatives
+                    practical, and a governance model that can keep them
+                    maintained.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="faq-item" id="faq-is-this-a-bitcoin-fork">
+              <button class="faq-q" type="button" aria-expanded="false">
+                Is this a fork of Bitcoin?
+                <span class="faq-icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+              </button>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <p>
+                    No. Commons validates the same chain and the same consensus
+                    rules. Think browsers, not a new coin. BLVM is a separately
+                    written implementation; Commons is the spec and governance
+                    around it.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="faq-item" id="faq-why-formal-spec">
+              <button class="faq-q" type="button" aria-expanded="false">
+                Why does Bitcoin need a formal specification?
+                <span class="faq-icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+              </button>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <p>
+                    The dominant full-node implementation has no formal spec
+                    tied line-for-line to its code. Consensus rules exist as
+                    implicit behavior in one codebase. That is a single point of
+                    failure. Commons publishes layered specifications so
+                    independent implementations can target written rules.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="faq-item" id="faq-production-ready">
+              <button class="faq-q" type="button" aria-expanded="false">
+                Is the system production ready?
+                <span class="faq-icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+              </button>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <p>
+                    The specification is real. BLVM — the first implementation
+                    — is in active development. Cryptographic merge enforcement
+                    is off — not “activation in progress.” Apply your own
+                    security review before running a node with real funds. See
+                    <a
+                      href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md"
+                      >project status</a
+                    >.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-category">
+            <h3>BLVM</h3>
+            <div class="faq-item" id="faq-what-is-blvm">
+              <button class="faq-q" type="button" aria-expanded="false">
+                What is BLVM?
+                <span class="faq-icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+              </button>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <p>
+                    BLVM (Bitcoin Low-Level Virtual Machine) is the first
+                    implementation of the Commons spec, built by BTCDecoded:
+                    a consensus library, protocol layer, full node, and SDK.
+                  </p>
+                  <p>
+                    The
+                    <a href="spec.html">Consensus Spec</a>
+                    is the numbered rule register. The
+                    <a href="orange-paper.html">Orange Paper</a>
+                    is the extended formal specification — so multiple
+                    implementations can target the same written rules.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="faq-item" id="faq-blvm-correctness">
+              <button class="faq-q" type="button" aria-expanded="false">
+                How does BLVM ensure correctness?
+                <span class="faq-icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+              </button>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <p>
+                    Specification locking ties consensus-critical functions to
+                    Orange Paper sections. Checks in CI fail if the spec and
+                    the code drift apart.
+                  </p>
+                  <p>
+                    Empirical checks sit beside that: property tests, fuzzing,
+                    golden vectors, and a Core differential. See
+                    <a href="#faq-proof-consensus">Proof of consensus compatibility</a>.
+                    BLVM does not replace the reference client; it is a path to
+                    checkable alternatives alongside it.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-category">
+            <h3>Bitcoin Commons governance</h3>
+            <div class="faq-item" id="faq-governance-how">
+              <button class="faq-q" type="button" aria-expanded="false">
+                How does governance work?
+                <span class="faq-icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+              </button>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <p>
+                    Layers (which code is affected) and action tiers (how
+                    serious the change is); most-restrictive-wins. Emergency is
+                    a third dimension, not an action tier. You can fork
+                    <em>governance</em> — not Bitcoin consensus — if you
+                    disagree with how software changes ship.
+                  </p>
+                  <p>
+                    The Compact and YAML are written. Keys are test keys. The
+                    GitHub App is not installed. Almost all current work is
+                    direct push. Do not read the designer as a live merge gate.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="faq-item" id="faq-fork-registry-capture-modular">
+              <button class="faq-q" type="button" aria-expanded="false">
+                Fork registry, capture, and modular stack
+                <span class="faq-icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+              </button>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <p>
+                    Governance forks are meant to be listable without a
+                    gatekeeper. A
+                    <a
+                      href="https://github.com/BTCDecoded/governance/blob/main/fork-registry.yml"
+                      >fork-registry.yml</a
+                    >
+                    lives in the governance repo; the
+                    <a href="governance-designer.html">designer</a> can load
+                    it. That is a file and a UI, not a running public registry
+                    product.
+                  </p>
+                  <p>
+                    If governance is captured, the designed exit is another
+                    ruleset — consensus stays on Bitcoin. Architecturally:
+                    mandatory consensus at the base, optional modules above.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="faq-item" id="faq-economics-merge-mining">
+              <button class="faq-q" type="button" aria-expanded="false">
+                Economics and merge mining
+                <span class="faq-icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+              </button>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <p>
+                    Alignment is supposed to come from usage and the module
+                    layer, not from a new coin. Merge mining — reusing
+                    proof-of-work across chains — is an optional pool-level
+                    supplement, not the main sustainability bet, and it does
+                    not change Bitcoin consensus rules.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-category">
+            <h3>Implementation status</h3>
+            <div class="faq-item" id="faq-implementation-status">
+              <button class="faq-q" type="button" aria-expanded="false">
+                Where are BLVM and governance today?
+                <span class="faq-icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+              </button>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <p>
+                    <strong>BLVM:</strong> Core layers exist (spec register,
+                    Orange Paper, consensus, protocol, node, wrapper, SDK) and
+                    are in active development. Not a battle-tested production
+                    deployment for everyone.
+                  </p>
+                  <p>
+                    <strong>Governance:</strong> Compact and layer×tier YAML
+                    exist. Cryptographic merge enforcement is off. Test keys;
+                    the App is not installed. See
+                    <a
+                      href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md"
+                      >project status</a
+                    >.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-category">
+            <h3>Get involved</h3>
+            <div class="faq-item" id="faq-contribute">
+              <button class="faq-q" type="button" aria-expanded="false">
+                How can I contribute or ship my own stack?
+                <span class="faq-icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+              </button>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <p>
+                    Review the spec and proofs, review governance rules, file
+                    issues and PRs, help test and audit, or join governance
+                    discussion. To ship your own Bitcoin-compatible
+                    implementation, target the written rules and, if you want
+                    the Commons model, fork the governance YAML.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="faq-item" id="faq-code-and-docs">
+              <button class="faq-q" type="button" aria-expanded="false">
+                Where is the code and what should I read?
+                <span class="faq-icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+              </button>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <p>
+                    Open source under
+                    <a href="https://github.com/BTCDecoded">BTCDecoded</a>
+                    (BLVM repos, governance). Start with the
+                    <a href="whitepaper.html">White Paper</a>,
+                    <a href="https://docs.thebitcoincommons.org">technical documentation</a>,
+                    and
+                    <a href="https://github.com/BTCDecoded/governance">governance documentation</a>.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="faq-item" id="faq-fund">
+              <button class="faq-q" type="button" aria-expanded="false">
+                How can I fund the work?
+                <span class="faq-icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+              </button>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <p>
+                    Through
+                    <a href="https://plebly.fund/#projects">Plebly</a>:
+                    on-chain escrow, not a custodial tip jar. Fund a listed
+                    Commons proposal, or donate to Commons directly. Plebly is
+                    the funding venue — not Commons and not the BLVM node.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-category">
+            <h3>Philosophy</h3>
+            <div class="faq-item" id="faq-philosophy-commons-cypherpunk">
+              <button class="faq-q" type="button" aria-expanded="false">
+                Why "commons" and how does this extend cypherpunk ideas?
+                <span class="faq-icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+              </button>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <p>
+                    Bitcoin’s codebase is a commons — shared, valuable, not
+                    owned by a single party. Ostrom showed how durable commons
+                    are governed; Bitcoin Commons applies that so rules and
+                    power stay visible.
+                  </p>
+                  <p>
+                    Cypherpunks removed trusted third parties from transactions.
+                    Commons and BLVM push the same idea into how software is
+                    governed and verified — less informal trust in a single
+                    implementation or maintainer culture, more auditability and
+                    mathematical specification.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img
+          class="wordmark"
+          src="assets/brand/wordmark.png"
+          alt="Commons"
+          height="28"
+        />
+        <p>
+          Formal specification and forkable governance for Bitcoin. Built in the
+          open.
+        </p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Project</h4>
+          <ul>
+            <li><a href="#spec">The stack</a></li>
+            <li><a href="whitepaper.html">White paper</a></li>
+            <li><a href="compact.html">Compact</a></li>
+            <li>
+              <a
+                href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md"
+                >Project status</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul>
+            <li>
+              <a href="https://docs.thebitcoincommons.org">Documentation</a>
+            </li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Ecosystem</h4>
+          <ul>
+            <li><a href="https://btcdecoded.org">BTCDecoded</a></li>
+            <li><a href="https://commonspool.org">Commons Pool</a></li>
+            <li><a href="https://plebly.fund/#projects">Plebly</a></li>
+            <li>
+              <a href="https://github.com/BTCDecoded/governance"
+                >Governance repo</a
+              >
+            </li>
+            <li>
+              <a href="https://btcdecoded.org/install/">Install</a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </footer>
+
+    <div class="footer-bottom">
+      <p>© 2026 Bitcoin Commons</p>
+      <div class="footer-social">
+        <a
+          href="https://x.com/BtcCommons"
+          target="_blank"
+          rel="noopener"
+          aria-label="BtcCommons on X"
+          ><i class="fa-brands fa-x-twitter" aria-hidden="true"></i
+        ></a>
+        <a
+          href="https://github.com/BTCDecoded"
+          target="_blank"
+          rel="noopener"
+          aria-label="BTCDecoded on GitHub"
+          ><i class="fa-brands fa-github" aria-hidden="true"></i
+        ></a>
+        <a
+          href="https://btccommons.substack.com/"
+          target="_blank"
+          rel="noopener"
+          aria-label="Bitcoin Commons on Substack"
+          ><svg
+            class="icon-substack"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            width="16"
+            height="16"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M15 3.604H1v1.891h14v-1.89ZM1 7.208V16l7-3.926L15 16V7.208zM15 0H1v1.89h14z"
+            />
+          </svg
+        ></a>
+      </div>
+    </div>
+
     <script>
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const parallax = document.getElementById("heroParallax");
+        if (parallax) {
+          window.addEventListener(
+            "scroll",
+            () => {
+              const y = window.scrollY;
+              parallax.style.transform = "translateY(" + y * 0.35 + "px)";
+              parallax.style.opacity = String(Math.max(0, 1 - y / 500));
+            },
+            { passive: true }
+          );
+        }
+      }
+
+      document.querySelectorAll(".faq-q").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+          const ans = item.querySelector(".faq-a");
+          const open = item.classList.contains("open");
+          document.querySelectorAll(".faq-item.open").forEach((i) => {
+            i.classList.remove("open");
+            i.querySelector(".faq-a").style.maxHeight = null;
+            i.querySelector(".faq-q").setAttribute("aria-expanded", "false");
+          });
+          if (!open) {
+            item.classList.add("open");
+            ans.style.maxHeight = ans.scrollHeight + "px";
+            btn.setAttribute("aria-expanded", "true");
+          }
+        });
+      });
+
       (function () {
-        var sunburst = document.getElementById("i2-sunburst");
-        var govSpectrum = document.getElementById("i2-gov-spectrum");
-
-        /* ── Sunburst popup modal ─────────────────────────────────── */
-        var sbOverlay = null;
-        var sbModal   = null;
-        var sbCloseBtn = null;
-        var sbTitle   = null;
-        var sbMeta    = null;
-        var sbLinecount = null;
-        var sbPreview = null;
-        var sbPath    = null;
-        var sbOpenBtn = null;
-
-        function buildSbModal() {
-          if (sbOverlay) return;
-
-          /* Lazily inject KaTeX CSS the first time the modal is built. */
-          if (!document.getElementById("katex-css")) {
-            var kl = document.createElement("link");
-            kl.id = "katex-css";
-            kl.rel = "stylesheet";
-            kl.crossOrigin = "anonymous";
-            kl.referrerPolicy = "no-referrer";
-            kl.href = "https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css";
-            document.head.appendChild(kl);
-          }
-
-          sbOverlay = document.createElement("div");
-          sbOverlay.id = "sb-modal-overlay";
-          sbOverlay.setAttribute("role", "presentation");
-          sbOverlay.addEventListener("click", function (e) {
-            if (e.target === sbOverlay) closeSbModal();
-          });
-
-          sbModal = document.createElement("div");
-          sbModal.id = "sb-modal";
-          sbModal.setAttribute("role", "dialog");
-          sbModal.setAttribute("aria-modal", "true");
-          sbModal.setAttribute("aria-labelledby", "sb-modal-title");
-
-          var head = document.createElement("div");
-          head.id = "sb-modal-head";
-
-          var headText = document.createElement("div");
-          headText.id = "sb-modal-head-text";
-
-          sbMeta = document.createElement("div");
-          sbMeta.id = "sb-modal-meta";
-
-          sbTitle = document.createElement("h3");
-          sbTitle.id = "sb-modal-title";
-
-          headText.appendChild(sbMeta);
-          headText.appendChild(sbTitle);
-
-          sbCloseBtn = document.createElement("button");
-          sbCloseBtn.id = "sb-modal-close";
-          sbCloseBtn.type = "button";
-          sbCloseBtn.setAttribute("aria-label", "Close");
-          sbCloseBtn.textContent = "×";
-          sbCloseBtn.addEventListener("click", closeSbModal);
-
-          head.appendChild(headText);
-          head.appendChild(sbCloseBtn);
-
-          var body = document.createElement("div");
-          body.id = "sb-modal-body";
-
-          sbLinecount = document.createElement("p");
-          sbLinecount.id = "sb-modal-linecount";
-
-          sbPreview = document.createElement("p");
-          sbPreview.id = "sb-modal-preview";
-
-          sbPath = document.createElement("p");
-          sbPath.id = "sb-modal-path";
-
-          var actions = document.createElement("div");
-          sbOpenBtn = document.createElement("a");
-          sbOpenBtn.id = "sb-modal-open-btn";
-          sbOpenBtn.target = "_blank";
-          sbOpenBtn.rel = "noopener noreferrer";
-          actions.appendChild(sbOpenBtn);
-
-          body.appendChild(sbLinecount);
-          body.appendChild(sbPreview);
-          body.appendChild(sbPath);
-          body.appendChild(actions);
-
-          sbModal.appendChild(head);
-          sbModal.appendChild(body);
-          sbOverlay.appendChild(sbModal);
-          document.body.appendChild(sbOverlay);
-
-          document.addEventListener("keydown", function (e) {
-            if (e.key === "Escape" && sbOverlay.classList.contains("sb-open")) closeSbModal();
-          });
-        }
-
-        function openSbModal(data) {
-          buildSbModal();
-          var isSection = data.kind === "section";
-          var isDocRoot = data.kind === "doc-root";
-
-          sbMeta.textContent = isSection ? (data.viewerLabel || "SPEC") + " viewer"
-            : (data.doc === "protocol" ? "PROTOCOL viewer" : "ARCHITECTURE viewer");
-
-          sbTitle.textContent = isSection ? data.title
-            : (data.doc === "protocol" ? "PROTOCOL.md" : "ARCHITECTURE.md");
-
-          if (isSection && data.lineCount) {
-            sbLinecount.textContent = "~" + data.lineCount + " prose line(s) under this heading";
-            sbLinecount.style.display = "";
-          } else {
-            sbLinecount.style.display = "none";
-          }
-
-          if (isSection && typeof data.previewHtml === "string" && data.previewHtml.length > 0) {
-            sbPreview.className = "sb-modal-preview--katex";
-            sbPreview.innerHTML = data.previewHtml;
-            sbPreview.style.display = "";
-          } else if (isSection && data.preview) {
-            sbPreview.className = "";
-            sbPreview.textContent = String(data.preview).trim();
-            sbPreview.style.display = "";
-          } else if (isDocRoot) {
-            sbPreview.className = "";
-            sbPreview.textContent = data.doc === "protocol"
-              ? "Full Orange Paper protocol extract: constants, formulas, and definitions with math rendering and heading navigation."
-              : "Full Orange Paper architecture extract: system structure, major components, and how they connect.";
-            sbPreview.style.display = "";
-          } else {
-            sbPreview.className = "";
-            sbPreview.innerHTML = "";
-            sbPreview.style.display = "none";
-          }
-
-          var pathArr = Array.isArray(data.path) ? data.path : [];
-          if (pathArr.length > 0) {
-            sbPath.innerHTML = "<strong>Path:</strong> <code>" + pathArr.join(" → ") + "</code>";
-            sbPath.style.display = "";
-          } else {
-            sbPath.style.display = "none";
-          }
-
-          sbOpenBtn.href = isSection ? data.href : data.docHref;
-          sbOpenBtn.textContent = isSection ? "Open section ↗" : (data.doc === "protocol" ? "Open protocol page ↗" : "Open architecture page ↗");
-
-          document.body.style.overflow = "hidden";
-          sbOverlay.classList.add("sb-open");
-          sbCloseBtn.focus();
-        }
-
-        function closeSbModal() {
-          if (!sbOverlay) return;
-          sbOverlay.classList.remove("sb-open");
-          document.body.style.overflow = "";
-          /* Tell the iframe to clear its focus-ring highlight. */
-          if (sunburst && sunburst.contentWindow) {
-            sunburst.contentWindow.postMessage({ type: "btcc-sunburst-popup-close" }, "*");
-          }
-        }
-
+        const sunburst = document.getElementById("sunburst");
+        const govSpectrum = document.getElementById("gov-spectrum");
         window.addEventListener("message", function (e) {
-          if (!e.data || typeof e.data.type !== "string") return;
+          if (!e.data) return;
           if (
             sunburst &&
             e.source === sunburst.contentWindow &&
             e.data.type === "btcc-sunburst-embed-height"
           ) {
-            var h = e.data.height;
-            if (typeof h !== "number" || !isFinite(h) || h <= 0) return;
-            sunburst.style.height = Math.max(Math.round(h + 12), 300) + "px";
-            return;
-          }
-          if (
-            sunburst &&
-            e.source === sunburst.contentWindow &&
-            e.data.type === "btcc-sunburst-popup-open"
-          ) {
-            openSbModal(e.data);
+            const h = e.data.height;
+            if (typeof h === "number" && isFinite(h) && h > 0) {
+              sunburst.style.height = Math.max(Math.round(h + 12), 300) + "px";
+            }
             return;
           }
           if (
@@ -1041,147 +976,13 @@
             e.source === govSpectrum.contentWindow &&
             e.data.type === "btcc-gov-spectrum-height"
           ) {
-            var hg = e.data.height;
+            const hg = e.data.height;
             if (typeof hg !== "number" || !isFinite(hg) || hg <= 0) return;
             govSpectrum.style.height =
-              Math.min(
-                Math.max(Math.round(hg + 4), 140),
-                340
-              ) + "px";
-            return;
+              Math.min(Math.max(Math.round(hg + 4), 140), 340) + "px";
           }
         });
       })();
-
-      document.addEventListener("DOMContentLoaded", function () {
-        function openFaqItemIfCollapsed(item) {
-          if (!item) return;
-          var btn = item.querySelector(".faq-question");
-          if (!btn || btn.getAttribute("aria-expanded") === "true") return;
-          btn.click();
-        }
-
-        function scrollFaqTargetIntoView(item) {
-          if (!item) return;
-          var behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth";
-          window.setTimeout(function () {
-            item.scrollIntoView({ behavior: behavior, block: "start" });
-          }, 320);
-        }
-
-        function activateFaqItemFromHash() {
-          var h = window.location.hash;
-          if (!h || h.length < 2) return;
-          var id = h.slice(1);
-          var item = document.getElementById(id);
-          if (!item || !item.classList.contains("faq-item")) return;
-          openFaqItemIfCollapsed(item);
-          scrollFaqTargetIntoView(item);
-        }
-
-        var faqQuestions = document.querySelectorAll(".faq-question");
-        faqQuestions.forEach(function (question) {
-          question.addEventListener("click", function () {
-            var isExpanded = this.getAttribute("aria-expanded") === "true";
-            var answer = this.nextElementSibling;
-            var category = this.closest(".faq-category");
-            var allQuestionsInCategory = category.querySelectorAll(
-              ".faq-question"
-            );
-            var allAnswersInCategory = category.querySelectorAll(".faq-answer");
-
-            allQuestionsInCategory.forEach(function (q) {
-              if (q !== question) q.setAttribute("aria-expanded", "false");
-            });
-
-            allAnswersInCategory.forEach(function (a) {
-              if (a !== answer) {
-                a.style.height = "0";
-                a.style.padding = "0 2rem";
-                var q = a.previousElementSibling;
-                if (q) q.setAttribute("aria-expanded", "false");
-              }
-            });
-
-            if (isExpanded) {
-              this.setAttribute("aria-expanded", "false");
-              answer.style.height = "0";
-              answer.style.padding = "0 2rem";
-            } else {
-              this.setAttribute("aria-expanded", "true");
-              answer.style.padding = "1.5rem 2rem 2rem 2rem";
-              var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-              if (reducedMotion) {
-                answer.style.transition = "none";
-                answer.style.height = "auto";
-              } else {
-                var currentTransition = answer.style.transition;
-                answer.style.transition = "none";
-                requestAnimationFrame(function () {
-                  answer.style.height = "auto";
-                  answer.style.maxHeight = "none";
-                  answer.style.minHeight = "0";
-                  void answer.offsetHeight;
-                  var measuredHeight = answer.scrollHeight;
-                  answer.style.height = "0";
-                  answer.style.maxHeight = "";
-                  answer.style.minHeight = "";
-                  answer.style.transition = currentTransition || "";
-                  void answer.offsetHeight;
-                  requestAnimationFrame(function () {
-                    answer.style.height = measuredHeight + "px";
-                  });
-                });
-              }
-            }
-          });
-
-          question.addEventListener("keydown", function (e) {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              question.click();
-            }
-          });
-        });
-
-        document.querySelectorAll('a[href="#faq"]').forEach(function (link) {
-          link.addEventListener("click", function (e) {
-            var faqSection = document.getElementById("faq");
-            if (faqSection) {
-              e.preventDefault();
-              var behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth";
-              faqSection.scrollIntoView({ behavior: behavior, block: "start" });
-            }
-          });
-        });
-
-        document.addEventListener(
-          "click",
-          function (e) {
-            var t = e.target;
-            if (!t || !t.closest) return;
-            var a = t.closest('a[href^="#"]');
-            if (!a || !a.getAttribute("href")) return;
-            var href = a.getAttribute("href");
-            if (href === "#" || href === "#faq") return;
-            var id = href.slice(1);
-            if (!id) return;
-            var item = document.getElementById(id);
-            if (!item || !item.classList.contains("faq-item")) return;
-            e.preventDefault();
-            if (window.location.hash === href) {
-              openFaqItemIfCollapsed(item);
-              scrollFaqTargetIntoView(item);
-              return;
-            }
-            window.location.hash = id;
-          },
-          true
-        );
-
-        window.addEventListener("hashchange", activateFaqItemFromHash);
-        activateFaqItemFromHash();
-      });
     </script>
   </body>
 </html>

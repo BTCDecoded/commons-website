@@ -2088,11 +2088,95 @@ footer .copyright {
   color: var(--text-secondary);
 }
 
-/* Display $$ … $$ blocks must live inside an element or MathJax often skips them */
+/* Display $$ … $$ blocks must live inside an element or MathJax often skips them.
+   overflow-x:auto forces overflow-y:auto and clips stretchy cases braces. */
 .spec-display-math {
   margin: 1.25rem 0;
-  overflow-x: auto;
+  overflow: visible;
   text-align: center;
+  padding: 0.35rem 0.5rem;
+}
+
+/* MathJax 3 (mjx-container). Do not inherit Overpass letter-spacing / line-height. */
+mjx-container {
+  letter-spacing: normal;
+  word-spacing: normal;
+  line-height: normal;
+  overflow: visible;
+}
+
+mjx-container:not([display="true"]) {
+  vertical-align: middle;
+}
+
+.orange-paper-content mjx-container {
+  font-size: 1.05em;
+}
+
+/* F_* witnesses: the $$ body is a Z3 postcondition, not the whole rule. */
+.spec-formula-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+  margin: 1.25rem 0;
+}
+
+.spec-formula {
+  border: 1px solid var(--border-color, #2a2a2f);
+  background: var(--bg-secondary, #17171a);
+  border-radius: 4px;
+  padding: 10px 12px;
+  margin: 0;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+}
+
+.spec-formula-head,
+.spec-formula-post {
+  display: contents;
+}
+
+.spec-formula-kind {
+  font-family: "Overpass Mono", "Courier New", monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary-color, #f7761a);
+}
+
+.spec-formula-id {
+  font-family: "Overpass Mono", "Courier New", monospace;
+  font-size: 13px;
+  color: var(--text-primary, #e8e8ec);
+  background: none;
+  padding: 0;
+}
+
+.spec-formula-post-label {
+  font-size: 11px;
+  color: var(--text-secondary, #888894);
+}
+
+.spec-formula-chip {
+  font-family: "Overpass Mono", "Courier New", monospace;
+  font-size: 13px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  background: var(--bg-primary, #111113);
+  border: 1px solid var(--border-color, #2a2a2f);
+  color: var(--text-primary, #e8e8ec);
+}
+
+.spec-formula-chip--true { color: #9be7b8; }
+.spec-formula-chip--false { color: #f0a8a0; }
+
+.spec-formula-math {
+  margin: 0;
+  padding: 0;
+  text-align: left;
 }
 
 /* Markdown spec viewers + spec-maps / spec-reference: sticky nav (shared with embedded viewers) */

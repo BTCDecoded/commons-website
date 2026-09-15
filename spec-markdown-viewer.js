@@ -135,7 +135,7 @@
      * (latest commit touching this file on the same ref) and skip the large raw download when
      * that revision id is unchanged.
      */
-    var CACHE_VERSION = 'BTCC_SPEC_SESSION_V6';
+    var CACHE_VERSION = 'BTCC_SPEC_SESSION_V9';
     var cacheNamespace = CACHE_VERSION + '::' + SPEC_URL;
 
     function parseGithubRawRef(rawBaseUrl) {
@@ -478,14 +478,142 @@
 
     function unmaskTexMath(htmlStr, chunks) {
         chunks.forEach(function (chunk, idx) {
-            var replacement = chunk;
-            var trimmed = chunk.trim();
+            var replacement = fixTexPunctuation(chunk);
+            var trimmed = replacement.trim();
             if (/^\$\$[\s\S]*\$\$/.test(trimmed)) {
                 replacement = '<div class="spec-display-math">' + trimmed + '</div>';
             }
             htmlStr = htmlStr.split('<!--BTCC-TEX-' + idx + '-->').join(replacement);
         });
         return htmlStr;
+    }
+
+    /* MathJax \text{MAX\_FOO} prints the backslash. Use a real underscore in
+       text macros. h.\text{version} also treats "." as punctuation (extra space). */
+    function fixTexPunctuation(chunk) {
+        chunk = chunk.replace(/\.\\text\{/g, '\\mathord{.}\\text{');
+        return chunk.replace(/\\(text|texttt|textrm|textit|textbf)\{([^}]*)\}/g, function (_, cmd, inner) {
+            return '\\' + cmd + '{' + inner.replace(/\\_/g, '_') + '}';
+        });
+    }
+
+    function nextDisplayMath(el) {
+        var n = el.nextElementSibling;
+        while (n && n.tagName === 'P' && !n.textContent.trim()) {
+            n = n.nextElementSibling;
+        }
+        if (n && n.classList && n.classList.contains('spec-display-math')) {
+            return n;
+        }
+        return null;
+    }
+
+    function classifyFormulaPost(tex) {
+        var t = String(tex || '')
+            .replace(/\$+/g, '')
+            .replace(/\\text\{([^}]*)\}/g, '$1')
+            .replace(/\\mathrm\{([^}]*)\}/g, '$1')
+            .replace(/\s+/g, ' ')
+            .trim();
+        var m = t.match(/^(?:result\s*)?(?:==|=)\s*(.+)$/i);
+        if (m) {
+            t = m[1].trim();
+        }
+        if (/^true$/i.test(t)) {
+            return { kind: 'bool', value: 'true' };
+        }
+        if (/^false$/i.test(t)) {
+            return { kind: 'bool', value: 'false' };
+        }
+        if (/^-?\d+$/.test(t)) {
+            return { kind: 'num', value: t };
+        }
+        return { kind: 'math', value: null };
+    }
+
+    function decorateFormulaBlocks(root) {
+        var paras = Array.prototype.slice.call(root.querySelectorAll('p'));
+        paras.forEach(function (p) {
+            var m = (p.textContent || '').match(/^\s*Formula\s*\(\s*(F_[A-Za-z0-9]+)\s*\)\s*:?\s*$/);
+            if (!m) {
+                return;
+            }
+            var id = m[1];
+            var mathEl = nextDisplayMath(p);
+            if (!mathEl) {
+                return;
+            }
+            var tex = mathEl.textContent || '';
+            var post = classifyFormulaPost(tex);
+            var card = document.createElement('aside');
+            card.className = 'spec-formula';
+            card.id = id;
+            card.setAttribute('aria-label', 'Checked case ' + id);
+
+            var head = document.createElement('div');
+            head.className = 'spec-formula-head';
+            var kind = document.createElement('span');
+            kind.className = 'spec-formula-kind';
+            kind.textContent = 'Checked case';
+            var code = document.createElement('code');
+            code.className = 'spec-formula-id';
+            code.textContent = id;
+            head.appendChild(kind);
+            head.appendChild(code);
+            card.appendChild(head);
+
+            var row = document.createElement('div');
+            row.className = 'spec-formula-post';
+            var lab = document.createElement('span');
+            lab.className = 'spec-formula-post-label';
+            lab.textContent = 'postcondition';
+            row.appendChild(lab);
+
+            if (post.kind === 'math') {
+                mathEl.classList.add('spec-formula-math');
+                row.appendChild(mathEl);
+            } else {
+                var chip = document.createElement('span');
+                chip.className = 'spec-formula-chip';
+                if (post.kind === 'bool') {
+                    chip.classList.add(
+                        post.value === 'true'
+                            ? 'spec-formula-chip--true'
+                            : 'spec-formula-chip--false'
+                    );
+                }
+                chip.textContent = post.value;
+                row.appendChild(chip);
+                mathEl.remove();
+            }
+            card.appendChild(row);
+            p.replaceWith(card);
+        });
+        wrapFormulaGrids(root);
+    }
+
+    function wrapFormulaGrids(root) {
+        var cards = Array.prototype.slice.call(root.querySelectorAll('.spec-formula'));
+        var i = 0;
+        while (i < cards.length) {
+            if (cards[i].closest('.spec-formula-grid')) {
+                i += 1;
+                continue;
+            }
+            var run = [cards[i]];
+            var n = cards[i].nextElementSibling;
+            while (n && n.classList.contains('spec-formula')) {
+                run.push(n);
+                n = n.nextElementSibling;
+            }
+            var grid = document.createElement('div');
+            grid.className = 'spec-formula-grid';
+            run[0].parentNode.insertBefore(grid, run[0]);
+            run.forEach(function (c) {
+                grid.appendChild(c);
+            });
+            i += run.length;
+        }
     }
 
     function rewriteSpecLinks(root) {
@@ -569,6 +697,7 @@
         var contentEl = document.getElementById('content');
         contentEl.innerHTML = html;
         contentEl.style.display = 'block';
+        decorateFormulaBlocks(contentEl);
         rewriteSpecLinks(contentEl);
         requestAnimationFrame(function () {
             requestAnimationFrame(scrollToHash);

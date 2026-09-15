@@ -1,0 +1,236 @@
+/* Inner pages: same tokens and chrome as the landing. Loaded after style.css. */
+
+:root {
+  --bitcoin-orange: #f7761a;
+  --primary-color: #f7761a;
+  --text-primary: #e8e8ec;
+  --text-secondary: #888894;
+  --bg-primary: #111113;
+  --bg-secondary: #17171a;
+  --border-color: #2a2a2f;
+  --bg: #111113;
+  --bg-alt: #17171a;
+  --rule: #2a2a2f;
+  --text: #e8e8ec;
+  --orange: #f7761a;
+  --orange-dim: #c05e12;
+  --white: #f5f5f7;
+  --font-sans: "Overpass", system-ui, sans-serif;
+  --font-mono: "Overpass Mono", "Courier New", monospace;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --text-primary: #e8e8ec;
+    --text-secondary: #888894;
+    --bg-primary: #111113;
+    --bg-secondary: #17171a;
+    --border-color: #2a2a2f;
+  }
+}
+
+html {
+  color-scheme: dark;
+  background: var(--bg-primary);
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  color: var(--white);
+}
+
+a { color: var(--orange); }
+
+/* ── Site nav (landing) ── */
+nav.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 110;
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 2rem;
+}
+
+.site-nav .nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  gap: 1rem;
+}
+
+.site-nav .nav-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.site-nav .nav-logo img {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+
+.site-nav .nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-nav .nav-links a {
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.site-nav .nav-links a:hover { color: var(--text); }
+
+.site-nav .nav-cta {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--bg) !important;
+  background: var(--orange);
+  padding: 6px 14px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.site-nav .nav-cta:hover {
+  background: var(--orange-dim) !important;
+  text-decoration: none !important;
+}
+
+.site-nav .nav-menu { display: none; }
+.site-nav .nav-menu summary {
+  list-style: none;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  color: var(--text);
+  font-size: 20px;
+  border-radius: 3px;
+}
+.site-nav .nav-menu summary:hover { color: var(--white); }
+.site-nav .nav-menu summary::-webkit-details-marker { display: none; }
+.site-nav .nav-menu summary .fa-xmark { display: none; }
+.site-nav .nav-menu[open] summary .fa-bars { display: none; }
+.site-nav .nav-menu[open] summary .fa-xmark { display: block; }
+.site-nav .nav-cta i { font-size: 11px; margin-left: 4px; }
+
+@media (max-width: 768px) {
+  .site-nav .nav-links { display: none; }
+  .site-nav .nav-menu { display: block; }
+  .site-nav .nav-menu[open] .nav-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 64px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
+    padding: 1rem 2rem 1.25rem;
+  }
+}
+
+/* ── Spec family subnav ── */
+.orange-paper-nav {
+  top: 64px !important;
+  background: var(--bg-alt) !important;
+  border-bottom: 1px solid var(--rule);
+  z-index: 100;
+}
+
+.orange-paper-nav a {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.orange-paper-nav a:hover,
+.orange-paper-nav a:focus,
+.orange-paper-nav a strong,
+.orange-paper-nav a:visited {
+  color: var(--orange);
+}
+
+.orange-paper-header h1,
+.spec-maps-hero h1 {
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+
+/* ── Whitepaper ── */
+.whitepaper-header .logo {
+  width: auto;
+  height: 40px;
+  max-width: 220px;
+  margin-bottom: 1.5rem;
+}
+
+.whitepaper-header h1 {
+  font-weight: 300;
+  letter-spacing: -0.01em;
+}
+
+.whitepaper-container .btn,
+.whitepaper-header .btn {
+  border-radius: 3px;
+}
+
+/* ── Designer ── */
+.gov-designer-back { display: none; }
+
+/* ── 404 ── */
+body.inner-404 {
+  margin: 0;
+}
+
+.inner-404-wrap {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 4rem 1.25rem 5rem;
+}
+
+.inner-404-wrap h1 {
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+}
+
+.inner-404-wrap p,
+.inner-404-wrap li {
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.inner-404-wrap ul {
+  margin: 1.25rem 0 2rem 1.25rem;
+}
+
+mjx-container {
+  letter-spacing: normal;
+  word-spacing: normal;
+  line-height: normal;
+  overflow: visible;
+}
+
+mjx-container:not([display="true"]) {
+  vertical-align: middle;
+}
