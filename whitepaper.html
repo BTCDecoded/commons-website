@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'; font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data: https:;">
     <title>The Bitcoin Commons - White Paper</title>
-    <meta name="description" content="Architectural blueprint for coordinated Bitcoin development: modular governance, the Orange Paper formal specification, and cryptographic enforcement—without changing Bitcoin consensus.">
+    <meta name="description" content="Design argument for Bitcoin Commons: Ostrom's principles, a Governance App merge gate, and forkable rules. Cryptographic enforcement is specified, not yet on.">
     <link rel="canonical" href="https://thebitcoincommons.org/whitepaper.html" />
-    <meta property="og:title" content="The Bitcoin Commons — White Paper">
-    <meta property="og:description" content="Modular governance, the Orange Paper specification, and a path to safe alternative implementations and forkable process.">
+    <meta property="og:title" content="The Bitcoin Commons - White Paper">
+    <meta property="og:description" content="Design argument for forkable governance and a cryptographic merge gate. Enforcement is specified, not yet on.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://thebitcoincommons.org/whitepaper.html">
     <meta property="og:image" content="https://thebitcoincommons.org/assets/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="The Bitcoin Commons — White Paper">
-    <meta name="twitter:description" content="Modular governance, the Orange Paper specification, and coordinated development without capture.">
+    <meta name="twitter:title" content="The Bitcoin Commons - White Paper">
+    <meta name="twitter:description" content="Design argument for forkable governance and a cryptographic merge gate.">
     <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
     <link rel="stylesheet" href="style.css?v=12" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -100,7 +100,7 @@
 <h2 id="abstract">Abstract</h2>
 <p>Bitcoin faces a critical governance asymmetry: while its technical consensus layer is cryptographically bulletproof, its development governance relies on informal social coordination. At Bitcoin's multi-trillion dollar scale, this represents an existential vulnerability.</p>
 <p>This whitepaper presents two innovations that enable each other: <strong>BLVM</strong> provides mathematical rigor (proofs locked to code, formal verification, consensus matching); <strong>Bitcoin Commons</strong> provides governance coordination without civil war (Ostrom's principles through cryptographic enforcement). Together they solve Bitcoin's governance asymmetry.</p>
-<p>The work is organized around six core engineering tracks in the public BTCDecoded organization (spec, consensus, protocol, node, SDK, and governance), plus supporting repositories for packaging, <strong>blvm-spec-lock</strong> verification, and the <strong>blvm-commons</strong> enforcement app. Engineering detail lives in <a href="https://docs.thebitcoincommons.org">technical documentation</a>.</p>
+<p>The work is organized around six core engineering tracks in the public BTCDecoded organization (spec, consensus, protocol, node, SDK, and governance), plus supporting repositories for packaging, <strong>blvm-spec-lock</strong> verification, and the <strong>blvm-commons</strong> Governance App. Engineering detail lives in <a href="https://docs.thebitcoincommons.org">technical documentation</a>.</p>
 <h2 id="1-introduction">1. Introduction</h2>
 <p>Bitcoin solved Byzantine consensus between strangers (Nakamoto, 2008) but ignored consensus between developers. The network's substantial market capitalization demands institutional maturity matching its technical excellence.</p>
 <p>The original cypherpunk developers focused on eliminating trusted third parties in transactions but inadvertently created trusted parties in development. Bitcoin Commons addresses Bitcoin's most critical vulnerability: governance asymmetry between technical consensus and development coordination.</p>
@@ -148,7 +148,7 @@
 <h3>Technical Reality</h3>
 <p>Bitcoin's consensus rules are embedded in hundreds of thousands of lines of reference-client C++ without a canonical mathematical specification the ecosystem standardizes on. The dominant reference implementation carries enormous practical weight over how the network evolves. Safe independent implementations and systematic verification remain exceedingly difficult under reference-client-as-spec; Commons publishes layered specifications to address that gap.</p>
 <h3>Governance Reality</h3>
-<p>Bitcoin's development governance relies largely on informal social coordination. At network scale, consequences for violations are rarely systematic, dispute resolution is ad hoc, and authority is difficult to audit. The system is vulnerable to capture through relationships rather than rules. Network analysis reveals structural misalignments between technical development and social infrastructure, creating coordination gaps that prevent effective governance (Hough, 2025). These patterns reflect the paradox of embeddedness in network structures, where relationships can inhibit coordination and reinforce existing power dynamics (Uzzi, 1997). Funding may not flow to projects with strong grassroots activity, and "rich-get-richer" dynamics reinforce existing patterns rather than enabling competition. Commons addresses these gaps through <a href="#5-architectural-solution-modular-governance">cryptographic enforcement of multisig thresholds, mandatory review periods, and transparent accountability mechanisms</a>.</p>
+<p>Bitcoin's development governance relies largely on informal social coordination. At network scale, consequences for violations are rarely systematic, dispute resolution is ad hoc, and authority is difficult to audit. The system is vulnerable to capture through relationships rather than rules. Network analysis reveals structural misalignments between technical development and social infrastructure, creating coordination gaps that prevent effective governance (Hough, 2025). These patterns reflect the paradox of embeddedness in network structures, where relationships can inhibit coordination and reinforce existing power dynamics (Uzzi, 1997). Funding may not flow to projects with strong grassroots activity, and "rich-get-richer" dynamics reinforce existing patterns rather than enabling competition. Commons addresses these gaps through <a href="#6-cryptographic-governance-enforcement">cryptographic enforcement of multisig thresholds, mandatory review periods, and transparent accountability mechanisms</a>.</p>
 <h3>Historical Context</h3>
 <p>Early leadership transitions and public governance disputes showed that developer coordination can fail without institutional enforcement. Andresen (2014) and Hearn (2016) raised governance concerns from inside development; academic researchers documented the structural gap but offered no implementable remedy (De Filippi & Loveluck, 2016).</p>
 <h3>Scale Considerations</h3>
@@ -157,15 +157,16 @@
 <p>Bitcoin Commons synthesizes three distinct theoretical frameworks, each addressing weaknesses in the others to create governance architecture stronger than any single approach alone.</p>
 <h3>Framework 1: Elinor Ostrom - Commons Governance</h3>
 <p>Elinor Ostrom won the 2009 Nobel Prize in Economics for proving that shared resources don't inevitably collapse into chaos or capture (Ostrom, 1990). Her research documented principles for governing commons without central authority across centuries of real-world examples.</p>
-<h4 class="subheading">Ostrom's (1990) Seven Principles.</h4>
+<h4 class="subheading">Ostrom's (1990) Eight Principles.</h4>
 <ol>
-<li><strong>Clear boundaries on who decides what.</strong> Defined decision-making authority.</li>
-<li><strong>Consequences for violations.</strong> Systematic enforcement mechanisms.</li>
-<li><strong>Local dispute resolution.</strong> Formal conflict resolution processes.</li>
-<li><strong>Protection from external interference.</strong> Resistance to outside pressure.</li>
-<li><strong>Collective choice arrangements.</strong> Meaningful participation in rule-making.</li>
-<li><strong>Graduated sanctions.</strong> Proportional consequences for violations.</li>
-<li><strong>Monitoring and accountability.</strong> Transparent oversight mechanisms.</li>
+<li><strong>Clearly defined boundaries.</strong> Who may use the shared resource, and who decides.</li>
+<li><strong>Congruence between rules and local conditions.</strong> Stricter rules where the stakes are higher.</li>
+<li><strong>Collective-choice arrangements.</strong> The people bound by a rule can take part in changing it.</li>
+<li><strong>Monitoring.</strong> Participants can see the conditions and the decisions.</li>
+<li><strong>Graduated sanctions.</strong> Penalties on someone who breaks a rule scale with the violation.</li>
+<li><strong>Conflict-resolution mechanisms.</strong> Disputes have a forum short of leaving the institution.</li>
+<li><strong>Minimal recognition of rights to organize.</strong> Outside authorities do not deny the community's right to make its own rules.</li>
+<li><strong>Nested enterprises.</strong> Each layer governs itself within the constraints of the layer beneath it.</li>
 </ol>
 <p><strong>What This Provides.</strong> Proven institutional design for shared resources, evidence decentralized governance works, and coordination without hierarchy.</p>
 <h3>Framework 2: F.A. Hayek - Spontaneous Order</h3>
@@ -199,59 +200,63 @@
 <p><strong>The Result.</strong> Governance that is proven (Ostrom's research), evolving (Hayek's competition), and enforceable (Bitcoin's cryptography).</p>
 <h3>Cryptographic Polycentrism: The Governance Model</h3>
 <p>Bitcoin Commons implements <strong>Cryptographic Polycentrism</strong>, a governance model that creates multiple centers of power with clear boundaries, enforced through cryptography rather than social pressure. This approach applies Ostrom's proven principles using Bitcoin's cryptographic enforcement tools, enabling competitive discovery through Hayekian market mechanisms while maintaining Ostrom's institutional structure.</p>
-<p>Cryptographic Polycentrism differs from traditional polycentrism (multiple decision centers) by using cryptographic enforcement to make boundaries mathematically verifiable rather than socially negotiated. Where traditional governance relies on trust and reputation, Cryptographic Polycentrism uses multisig thresholds, mandatory review periods, and <a href="#6-cryptographic-governance-enforcement">three-layer verification providing real-time transparency and immutable proof</a> to create enforceable boundaries that cannot be bypassed even by repository administrators.</p>
+<p>Cryptographic Polycentrism differs from traditional polycentrism (multiple decision centers) by using cryptographic enforcement to make boundaries mathematically verifiable rather than socially negotiated. Where traditional governance relies on trust and reputation, Cryptographic Polycentrism uses multisig thresholds, mandatory review periods, and <a href="#6-cryptographic-governance-enforcement">three-layer verification providing real-time transparency and immutable proof</a> to create boundaries designed so that repository administrators cannot bypass them once production governance is on.</p>
 <p>This model enables multiple implementations to compete (Hayek's discovery mechanism) while maintaining clear institutional boundaries (Ostrom's principles) through cryptographic proof (Bitcoin's innovation). The result is governance that is both competitive and accountable, proven and evolving, decentralized and enforceable.</p>
 <p>Informal governance can work at smaller scale and lower complexity; at multi-trillion dollar scale, social enforcement alone struggles to keep pace with coordination demands and accountability expectations. Commons encodes Ostrom's principles through cryptographic enforcement. The mapping below describes how each principle is implemented in this architecture.</p>
 <h3>Mapping The Principles to Implementation</h3>
-<p>The modular architecture implements Ostrom's seven principles through cryptographic enforcement rather than social pressure. The chart below shows how these principles integrate with principles from Hayek, Bitcoin, and Cypherpunk frameworks:</p>
+<p>The modular architecture implements Ostrom's eight principles through cryptographic enforcement rather than social pressure. The chart below places principles from Ostrom, Hayek, Bitcoin, and Cypherpunk side by side. The bullets that follow are the account of each Ostrom principle in this design.</p>
 <figure>
 <img src="/assets/images/principles_matrix_complete.png" alt="Principles of Bitcoin Commons" style="">
 <figcaption>Figure: Integration of four key philosophies: Hayek (spontaneous order), Bitcoin (cryptographic enforcement), Cypherpunk (privacy through technology), and Ostrom (commons governance).</figcaption>
 </figure>
-<h4 class="subheading">Principle 1. Clear Boundaries.</h4>
+<h4 class="subheading">Principle 1. Clearly Defined Boundaries.</h4>
 <ul>
-<li><strong>Layers.</strong> Base (network consensus), Module (user choice).</li>
-<li><strong>Implementation.</strong> Architecture enforces boundaries. Modules cannot modify consensus code paths.</li>
+<li><strong>Layers.</strong> The base consensus layer stays outside the module layer. Modules cannot modify consensus code paths.</li>
+<li><strong>Contributor jurisdiction.</strong> Standing, when the contributor ladder is in force, applies to code a person has a merged record in. Designed, not enforced.</li>
 </ul>
-<h4 class="subheading">Principle 2. Consequences for Violations.</h4>
+<h4 class="subheading">Principle 2. Congruence Between Rules and Local Conditions.</h4>
 <ul>
-<li><strong>Technical/Reputational.</strong> Module quality standards, transparent adoption metrics, cryptographic enforcement.</li>
-<li><strong>Implementation.</strong> Cryptographic enforcement makes consequences automatic, not social.</li>
+<li><strong>Thresholds scale with stakes.</strong> Signature requirements and review periods run from 2-of-3 and 14 days at the extension layer to 6-of-7 and 180 days at the constitutional layers, and 365 days for consensus-rule changes.</li>
+<li><strong>Status.</strong> Those numbers are configured in the governance repository. Cryptographic enforcement of them is designed, not on.</li>
 </ul>
-<h4 class="subheading">Principle 3. Local Dispute Resolution.</h4>
+<h4 class="subheading">Principle 3. Collective-Choice Arrangements.</h4>
 <ul>
-<li><strong>Architecture-based.</strong> Competing modules resolve disputes. User choice determines winners. Module conflicts don't threaten consensus.</li>
-<li><strong>Implementation.</strong> No central arbiter needed. Architecture provides resolution through user configuration.</li>
+<li><strong>Binding rules.</strong> Rules that bind every participant change through the governance tiers.</li>
+<li><strong>Exit, not a tally.</strong> An operator composing a module stack binds only that operator. Hirschman (1970) called this exit. Adoption figures report what operators chose, and no governance decision tallies them.</li>
+<li><strong>Implementation.</strong> Module composition is declarative (node and SDK configuration). Operator-facing UX may include a CLI, config files, RPC, and an optional UI as tools mature.</li>
 </ul>
-<h4 class="subheading">Principle 4. Protection from External Interference.</h4>
+<h4 class="subheading">Principle 4. Monitoring.</h4>
 <ul>
-<li><strong>Self-Funding/Multi-jurisdictional/Fork-Ready.</strong> Module-based revenue, distributed keyholders, governance fork capability.</li>
-<li><strong>Implementation.</strong> Cryptographic multisig ensures no single jurisdiction can compel action.</li>
-</ul>
-<figure>
-<img src="/assets/images/keyholder-diversity-radar.png" alt="Keyholder Diversity" style="">
-<figcaption>Figure: Keyholder diversity across jurisdictions and organizations prevents single-point coercion.</figcaption>
-</figure>
-<h4 class="subheading">Principle 5. Collective Choice Arrangements.</h4>
-<ul>
-<li><strong>User sovereignty via configuration.</strong> Users compose stacks. Adoption metrics function as voting. Participation through choices, not committees.</li>
-<li><strong>Implementation.</strong> Collective choice is expressed through <strong>configuration</strong>: declarative module composition (and node/SDK configuration) rather than a single mandatory GUI; operator-facing UX may include CLI, config files, RPC, and optional UI as tools mature.</li>
-</ul>
-<h4 class="subheading">Principle 6. Graduated Sanctions.</h4>
-<ul>
-<li><strong>Proportional escalation.</strong> Moderate fork to major deprecation to governance fork. Graduated signature requirements (2-of-3 to 6-of-7). Sanctions at module layer, no consensus changes required.</li>
-<li><strong>Implementation.</strong> Multisig thresholds vary by change category (2-of-3 extension to 6-of-7 constitutional).</li>
-</ul>
-<h4 class="subheading">Principle 7. Monitoring and Accountability.</h4>
-<ul>
-<li><strong>Cryptographic transparency.</strong> All governance actions signed and verifiable. Module adoption, revenue flows, decision provenance auditable. <a href="#6-cryptographic-governance-enforcement">Three-layer verification</a> ensures complete audit trails.</li>
-<li><strong>Implementation.</strong> Automated monitoring through cryptographic verification, not social trust.</li>
+<li><strong>Cryptographic transparency.</strong> Governance actions are designed to be signed, published to Nostr, and anchored with OpenTimestamps, so any participant can audit them without trusting a monitor. A merge that lacks its required signatures is designed to be refused at the gate. <a href="#6-cryptographic-governance-enforcement">Three-layer verification</a> is the mechanism. Not enforced today.</li>
 </ul>
 <figure>
 <img src="/assets/images/audit-trail-completeness.png" alt="Audit Trail Completeness" style="">
 <figcaption>Figure: Audit-trail completeness across governance layers: all decisions evidenced and verifiable.</figcaption>
 </figure>
-<p>Commons implements <a href="#3-theoretical-framework-the-triple-foundation">all seven Ostrom principles through Cryptographic Polycentrism</a>, encoding boundaries, consequences, and auditability in architecture rather than social pressure alone.</p>
+<h4 class="subheading">Principle 5. Graduated Sanctions.</h4>
+<ul>
+<li><strong>Penalties on violators.</strong> Sanctions attach to a participant who breaks a contributor obligation, and they scale from formal censure to loss of standing. They are specified with the contributor-standing ladder. Not enforced today.</li>
+<li><strong>Not the signature schedule.</strong> Multisig thresholds are congruence (Principle 2), not sanctions.</li>
+</ul>
+<h4 class="subheading">Principle 6. Conflict-Resolution Mechanisms.</h4>
+<ul>
+<li><strong>Modules.</strong> Conflicts between modules resolve through operator configuration. No central arbiter. Module conflicts do not threaten consensus.</li>
+<li><strong>Shared layers.</strong> A contested change can be paused for inquiry. Inquiry is a pause, not a veto, and it is designed, not enforced. A governance fork is the resolution when a dispute cannot be settled inside the rules.</li>
+</ul>
+<h4 class="subheading">Principle 7. Minimal Recognition of Rights to Organize.</h4>
+<ul>
+<li><strong>What the principle asks.</strong> Outside authorities leave the community's rule-making alone. Commons cannot obtain that recognition in every jurisdiction.</li>
+<li><strong>Substitutes.</strong> Keyholders distributed across jurisdictions, revenue that does not depend on one funder, and a ruleset any participant can fork.</li>
+</ul>
+<figure>
+<img src="/assets/images/keyholder-diversity-radar.png" alt="Keyholder Diversity" style="">
+<figcaption>Figure: Keyholder diversity across jurisdictions and organizations raises the cost of coercing an approving set.</figcaption>
+</figure>
+<h4 class="subheading">Principle 8. Nested Enterprises.</h4>
+<ul>
+<li><strong>Layers inside one ruleset.</strong> Modules operate inside the consensus boundary. The extension, application, implementation, and constitutional layers each carry their own thresholds inside one ruleset.</li>
+</ul>
+<p>Commons implements <a href="#3-theoretical-framework-the-triple-foundation">all eight Ostrom principles through Cryptographic Polycentrism</a>, encoding boundaries, congruence, nesting, and auditability in architecture rather than social pressure alone.</p>
 <h2 id="4-technical-solution-the-orange-paper">4. Technical Solution: The Orange Paper</h2>
 <h3>Problem</h3>
 <p>Bitcoin's consensus rules lacked a canonical mathematical specification industry-wide (<a href="#2-problem-statement">reference-client-as-spec remains the practical default</a>). The consensus-critical denial-of-service vulnerability CVE-2018-17144 existed undetected for years: exactly the class of error formal verification and layered testing aim to prevent.</p>
@@ -298,7 +303,7 @@
 <p>Because every consensus decision flows through <code>blvm-consensus</code>, verification and tests at that layer bound behavior for the whole stack: upper tiers delegate validation and cannot bypass that layer.</p>
 <h2 id="5-architectural-solution-modular-governance">5. Architectural Solution: Modular Governance</h2>
 <p>Two innovations work together: <strong>BLVM</strong> provides the mathematical foundation and compiler-like architecture (Orange Paper as IR, formal verification passes); <strong>Commons</strong> provides the governance framework (coordination without civil war). The modular architecture is where both innovations meet. BLVM ensures correctness through architectural enforcement; Commons ensures coordination through Cryptographic Polycentrism.</p>
-<p>Commons distributes authority through cryptographic multisig requirements and mandatory review periods, preventing single points of control at the merge gate. This <a href="#3-theoretical-framework-the-triple-foundation">Cryptographic Polycentrism model</a> creates multiple decision centers (repository layers, action tiers, emergency tiers) with mathematically enforced boundaries.</p>
+<p>Commons distributes authority through cryptographic multisig requirements and mandatory review periods, designed so that no single keyholder can approve a merge. This <a href="#3-theoretical-framework-the-triple-foundation">Cryptographic Polycentrism model</a> creates multiple decision centers (repository layers, action tiers, emergency tiers) with mathematically enforced boundaries. Approval and blocking are different costs, as <a href="#6-cryptographic-governance-enforcement">Section 6</a> sets out.</p>
 <h3>Two-Layer Architecture</h3>
 <p>The modular architecture consists of two layers that transform governance conflicts from political battles into architectural choices:</p>
 <h4 class="subheading">Layer 1: Mandatory Consensus (Base Node)</h4>
@@ -344,7 +349,7 @@
 <li><strong>"Make Bitcoin Useful" Camp</strong>: Gets optional features through modules</li>
 <li><strong>Miners and pools</strong>: Stratum V2 connectivity to the ecosystem; optional merge mining only where operators enable it, not the primary sustainability bet</li>
 </ul>
-<p><strong>The Module System IS The Governance System:</strong> Instead of governing through committees deciding features, Commons governs through architecture enabling choice. The module system isn't just technical: it's the governance mechanism itself, implementing Ostrom's collective choice arrangements through user configuration, Hayek's competitive discovery through module competition, and Bitcoin's permissionless innovation through fork-ability.</p>
+<p><strong>The Module System IS The Governance System:</strong> Instead of governing through committees deciding features, Commons governs through architecture enabling choice. The module system isn't just technical: it's the governance mechanism itself, implementing exit through user configuration (Hirschman, 1970), Hayek's competitive discovery through module competition, and Bitcoin's permissionless innovation through fork-ability. Collective choice over rules that bind every participant remains with the governance tiers in <a href="#6-cryptographic-governance-enforcement">Section 6</a>.</p>
 <h3>Architecture Diagrams</h3>
 <figure>
 <img src="/assets/images/tier-architecture.png" alt="Tiered Architecture" style="width: 100%; display: block; margin: 0 auto;">
@@ -362,13 +367,13 @@
 <p>Commons implements <a href="#3-theoretical-framework-the-triple-foundation">Cryptographic Polycentrism</a> through three complementary verification layers (distinct from repository layers) that ensure both real-time transparency and immutable historical proof. These verification layers create multiple independent centers of accountability, each enforcing governance boundaries through cryptographic proof:</p>
 <figure>
 <img src="/assets/images/three-layer-verification-arch0.png" alt="Three-Layer Verification Overview" style="width: 100%; display: block; margin: 0 auto;">
-<figcaption>Figure: Three-layer verification approach: GitHub, Nostr, and OpenTimestamps.</figcaption>
+<figcaption>Figure: Three-layer verification: the Governance App at the merge gate, Nostr, and OpenTimestamps. The figure draws GitHub as one host for the merge gate.</figcaption>
 </figure>
-<p><strong>Layer 1: GitHub Enforcement (Merge Control).</strong> <em>Designed to</em>, when production governance is activated, enforce merge policy through the following:</p>
+<p><strong>Layer 1: Governance App (Merge Control).</strong> <em>Designed to</em>, when production governance is activated, enforce merge policy. The Governance App is the merge gate. It checks signatures and review rules and refuses a merge that does not meet them. A GitHub App is one way to run that gate. The requirement is the gate, not the forge.</p>
 <ul>
-<li>Custom GitHub App validates multisig requirements (varies by layer: 2-of-3 to 6-of-7)</li>
-<li>Self-hosted runner behind WireGuard VPN validates signatures using secp256k1</li>
-<li>Even repository admins cannot bypass cryptographic requirements</li>
+<li>The Governance App validates multisig requirements (varies by layer: 2-of-3 to 6-of-7)</li>
+<li>A self-hosted runner behind WireGuard VPN validates signatures using secp256k1. On GitHub, that runner is a GitHub Actions runner. Another forge would use its own hook.</li>
+<li>Whoever administers the repository cannot bypass the cryptographic requirements</li>
 <li>Signature validation happens before merge approval</li>
 <li>Requires explicit cryptographic approval from multiple maintainers before any merge</li>
 <li><strong>No-self-merge:</strong> a contributor cannot cryptographically approve their own pull request; the Governance App rejects self-signed merges</li>
@@ -401,15 +406,17 @@
 <li>Maximum duration: 90 days (2 extensions allowed)</li>
 <li>Examples: Competitive response needs, important bug fixes, performance degradation, ecosystem compatibility issues</li>
 </ul>
-<p>The system scales <strong>response speed and review strictness</strong> to severity, not a single monotonic rule that stricter always means worse. Network-threatening issues get the fastest merge path; important-but-non-critical work uses longer review and higher merge bars. All emergency actions require post-mortem documentation, automatic expiration, and review after expiration.</p>
+<p>The system scales <strong>response speed and review strictness</strong> to severity, not a single monotonic rule that stricter always means worse. Network-threatening issues get the fastest merge path; important-but-non-critical work uses longer review and higher merge bars. All emergency actions require post-mortem documentation and automatic expiration.</p>
+<p>An emergency expires on its own, and the lowered merge rule expires with it. A change already merged under that rule stays merged. The repository does not bind an activation to one patch, does not require later ratification at the ordinary threshold, and does not bar an emergency from covering governance rules or key sets. Five emergency keyholders can therefore turn a constitutional change into a 4-of-7 merge with no review, and the result remains after the emergency ends. Closing that gap is an open design decision.</p>
 <h3>Security Architecture: Push-Only Design</h3>
+<p>The layout below is the GitHub deployment of the Governance App. Another forge would keep the same rule, outbound-only checks before a merge, and would change the host.</p>
 <h4 class="subheading">Security Architecture Details:</h4>
 <ul>
 <li><strong>No HTTP Endpoints</strong>: Governance servers have no incoming HTTP endpoints (minimal exposure surface)</li>
 <li><strong>VPN Isolation</strong>: Servers communicate outbound only through WireGuard VPN</li>
-<li><strong>Self-Hosted Runner</strong>: GitHub runner behind WireGuard VPN for signature validation</li>
-<li><strong>Data Flow</strong>: Server to GitHub (push) to Nostr (publish) to Bitcoin (anchor)</li>
-<li><strong>Public Read Access</strong>: GitHub repo, Nostr relays, Bitcoin blockchain (read-only for public)</li>
+<li><strong>Self-Hosted Runner</strong>: On this host, a GitHub Actions runner behind WireGuard VPN validates signatures</li>
+<li><strong>Data Flow</strong>: Server to the repository host (push) to Nostr (publish) to Bitcoin (anchor)</li>
+<li><strong>Public Read Access</strong>: Repository, Nostr relays, Bitcoin blockchain (read-only for public)</li>
 </ul>
 <h4 class="subheading">Attack Path Protection:</h4>
 <figure>
@@ -418,7 +425,7 @@
 </figure>
 <h3>Multisig Threshold Details</h3>
 <p><strong>Authoritative configuration.</strong> Signature thresholds, repository <strong>layer</strong> definitions, <strong>action tier</strong> names, review periods, and <strong>emergency</strong> parameters described in this section are <strong>illustrative</strong> of the governance <em>design</em>. <strong>Security-class overrides</strong> (for example consensus-critical or cryptographic paths) may impose stricter requirements than the tables below; see <code>action-tiers.yml</code> in the <a href="https://github.com/BTCDecoded/governance">governance repository</a>. <strong>Authoritative numeric requirements and rule text</strong> live in that repository (YAML and related artifacts) and may change as policy evolves. This PDF is not the source of truth for merge policy; when in doubt, consult the repo.</p>
-<p>Commons implements a <strong>5-tier constitutional governance system</strong> that combines two dimensions: <strong>repository layers</strong> (where the change is made) and <strong>action tiers</strong> (what type of change is being made). When both apply, the <strong>most restrictive requirement wins</strong> (highest signature threshold and longest review period).</p>
+<p>Commons implements a <strong>5-tier constitutional governance system</strong> that combines two dimensions: <strong>repository layers</strong> (where the change is made) and <strong>action tiers</strong> (what type of change is being made). When both apply, the repository's combination rule selects the longer review period and the larger signature count. That count is not always the stricter condition when the layer and the tier name different key sets.</p>
 <h4 class="subheading">Repository Layers (Where):</h4>
 <ul>
 <li><strong>Layer 1-2 (Constitutional)</strong>: Orange Paper and Consensus Proof - 6-of-7 signatures, 180-day review (365 days for consensus changes)</li>
@@ -435,21 +442,25 @@
 <li><strong>Tier 5 (Governance Changes)</strong>: Changes to governance rules themselves - 5-of-5 signatures, 180-day review</li>
 </ul>
 <p><strong>Emergency PRs vs emergency activation.</strong> <em>Action Tier 4</em> classifies pull requests for critical security work under normal maintainer multisig. <em>Emergency tier activation</em> (above) is a separate declaration by emergency keyholders that switches merge rules until expiration. Both can apply together; see <code>emergency-tiers.yml</code> and <code>action-tiers.yml</code> in the <a href="https://github.com/BTCDecoded/governance">governance repository</a>.</p>
-<h4 class="subheading">Most Restrictive Wins Rule:</h4>
-<p>When both layer and tier apply, the system takes the highest signature requirement and longest review period. For example:</p>
+<h4 class="subheading">Combination rule:</h4>
+<p>When both a layer requirement and a tier requirement apply, the governance repository takes the longer review period and the larger signature count. For example:</p>
 <ul>
-<li>A routine bug fix (Tier 1) in the Protocol Engine (Layer 3) requires 4-of-5 signatures and 90-day review (Layer 3 wins)</li>
-<li>A new feature (Tier 2) in the SDK (Layer 5) requires 4-of-5 signatures and 30-day review (Tier 2 wins)</li>
-<li>A consensus change (Tier 3) in Orange Paper (Layer 1) requires 6-of-7 signatures and 180-day review (Layer 1 wins)</li>
+<li>A routine bug fix (Tier 1) in the Protocol Engine (Layer 3) takes 4-of-5 signatures and a 90-day review</li>
+<li>A new feature (Tier 2) in the SDK (Layer 5) takes 4-of-5 signatures and a 30-day review</li>
+<li>A consensus-rule change (Tier 3) in the Orange Paper (Layer 1) takes 6-of-7 signatures and a 365-day review</li>
 </ul>
+<p>Six signatures out of seven is a larger count than five out of five and a weaker condition when the five must be unanimous and the sets differ. The repository's combination rule does not yet require both named sets to sign. Whether a change that meets both a layer rule and a tier rule must satisfy each set, rather than a single merged count, is an open design decision. The numbers in this section are illustrative. The YAML is authoritative.</p>
 <figure>
 <img src="/assets/images/governance-signature-thresholds.png" alt="Signature Thresholds" style="width: 100%; display: block; margin: 0 auto;">
 <figcaption>Figure: Governance signature thresholds by change category (constitutional, implementation, application, extension).</figcaption>
 </figure>
-<p>All signatures verified using secp256k1 (same curve as Bitcoin). GitHub App validates signatures before allowing merges. Even repository admins cannot bypass cryptographic requirements.</p>
-<p>Commons requires distributed approval: even the highest-risk changes (constitutional) require 6-of-7 signatures, ensuring no single maintainer or small group can control critical decisions. Mandatory review periods prevent rushed merges; the dual-dimensional system (layers + tiers) ensures even routine changes in critical repositories meet higher approval thresholds.</p>
+<p>All signatures verified using secp256k1 (same curve as Bitcoin). The Governance App is designed, when production governance is activated, to validate signatures before allowing merges, so that repository administrators cannot bypass the cryptographic requirements. A GitHub App is one host for that gate.</p>
+<p>A high threshold makes approval expensive and blocking cheap. Where a missing signature counts as a no, two constitutional keys can stall a 6-of-7 change, and one key can stall a 5-of-5 governance change or a 7-of-7 security-critical change. A stalled change is a capture outcome in its own right.</p>
+<p>The specified remedy separates the two costs. A block is a signed reject of one change, it names a reason, and it expires at the end of that change's review unless the same keyholder renews it. Silence is not a reject. On a consensus-rule change, one explicit reject forces the full review, because a bad merge can split the network and a delay leaves the current rules in place. Two renewed rejects can keep holding that change. On a change to the governance rules or to who holds a key, the bar is a supermajority short of unanimity, and a keyholder whose own seat is the subject is recused. These reject, expiry, and recusal rules are specified. They are not in the governance repository, and they are not enforced.</p>
+<p>Shared-layer decisions are binary, one specific change against the status quo. Arrow (1951), Gibbard (1973), and Satterthwaite (1975) showed that no ranked voting rule over three or more alternatives can be non-dictatorial, Pareto efficient, and independent of irrelevant alternatives, and that every such rule rewards some voter for misreporting. A binary decision falls outside those results. They apply again when two rival changes and the status quo are in play together, which is why a reject attaches to one change and does not become a standing veto over the layer.</p>
+<p>Mandatory review periods prevent rushed merges. The dual-dimensional system (layers and tiers) keeps routine changes in critical repositories at the higher approval threshold.</p>
 <h3>Contributor standing (proposed)</h3>
-<p>Beyond repository-layer multisig, a <strong>contributor-standing ladder</strong> complements merge policy: ledger-derived standing, crate-scoped participation, <strong>no-self-merge</strong> enforcement at the merge gate, and an Inquiry mechanism as a pause, not a veto, for contested changes. Described in a separate specification to be published when cryptographic governance activates. <strong>Not enforced today.</strong> The live governance repository defines maintainer multisig and tiers only.</p>
+<p>Beyond repository-layer multisig, a <strong>contributor-standing ladder</strong> complements merge policy: ledger-derived standing, crate-scoped participation, <strong>no-self-merge</strong> enforcement at the merge gate, and an Inquiry mechanism as a pause, not a veto, for contested changes. Described in a separate specification to be published when cryptographic governance activates. <strong>Not enforced today.</strong> The live governance repository defines maintainer multisig and tiers only. Its maintainer lists are placeholders, one set per layer plus a separate emergency set, and the production roster has not been set. The thresholds above settle how keyholders decide. Who holds the keys settles who decides. Tier 5 at 5-of-5 means any incumbent can veto a change to the key set, including their own removal. Selection, rotation, and recusal are outlined only, and they are not enforced.</p>
 <h2 id="7-economic-sustainability">7. Economic Sustainability</h2>
 <h3>The Funding Gap</h3>
 <p>Only $8.4 million from 13 organizations supported Bitcoin Core development in 2023, while the network reached a $2 trillion market cap (Hough, 2025). That is roughly <strong>0.00042%</strong> of market cap, illustrating systemic under-funding relative to network value.</p>
@@ -463,10 +474,10 @@
 <h2 id="8-failure-modes-mitigations">8. Failure Modes & Mitigations</h2>
 <h3>Governance Capture</h3>
 <p><strong>Risk:</strong> Keyholder collusion or compromise</p>
-<p><strong>Mitigation:</strong> Multi-jurisdictional keyholders, transparent operation, fork-ready design. Informal governance at scale is easier to capture through relationships than architecture with enforced boundaries.</p>
+<p><strong>Mitigation:</strong> Multi-jurisdictional keyholders, transparent operation, fork-ready design. Informal governance at scale is easier to capture through relationships than architecture with enforced boundaries. Capture can also take the form of paralysis. A high threshold makes blocking cheaper than approving. At 6-of-7, two keys can stall a constitutional change. At 5-of-5, one key can stall a governance change.</p>
 <h3>Regulatory Pressure</h3>
 <p><strong>Risk:</strong> Authorities pressure keyholders to implement backdoors</p>
-<p><strong>Mitigation:</strong> Distributed keyholders across jurisdictions (no single jurisdiction can compel 3-of-5 threshold), visible capture attempts, modular containment</p>
+<p><strong>Mitigation:</strong> Keyholders are distributed so that no single jurisdiction holds enough keys to approve a change at any layer. Blocking is a lower bar. A jurisdiction that can compel two constitutional keyholders can stall a 6-of-7 change, and one that can compel a single keyholder can stall a 5-of-5 governance change. A missing signature is not yet distinguishable from a refusal, so the stall is not fully attributable until rejects are signed. A forkable ruleset is the remedy for a stall that persists. Modular containment limits the blast radius of a compelled change that does merge.</p>
 <h3>Technical Risks</h3>
 <p><strong>Risk:</strong> Module consensus bugs, complexity explosion</p>
 <p><strong>Mitigation:</strong> <a href="#5-architectural-solution-modular-governance">Module isolation</a>, <a href="#4-technical-solution-the-orange-paper">formal verification</a>, security audits</p>
@@ -488,6 +499,10 @@
 <li>De Filippi, P., & Loveluck, B. (2016). The Invisible Politics of Bitcoin: Governance Crisis of a Decentralized Infrastructure. <em>Internet Policy Review</em>, 5(3).</li>
 <li>Hough, E. (2025). "Funding the Peer-to-Peer Ethos: A Network Analysis Proposal of Bitcoin's Technical & Social Collectives." Unpublished research proposal, INFO 4360: Communication Networks and Social Capital, Cornell University.</li>
 <li>Uzzi, B. (1997). Social Structure and Competition in Interfirm Networks: The Paradox of Embeddedness. <em>Administrative Science Quarterly</em>, 42(1), 35-67. https://doi.org/10.2307/2393808</li>
+<li>Arrow, K. J. (1951). <em>Social Choice and Individual Values</em>. Wiley.</li>
+<li>Gibbard, A. (1973). Manipulation of Voting Schemes: A General Result. <em>Econometrica</em>, 41(4), 587-601.</li>
+<li>Hirschman, A. O. (1970). <em>Exit, Voice, and Loyalty</em>. Harvard University Press.</li>
+<li>Satterthwaite, M. A. (1975). Strategy-Proofness and Arrow's Conditions. <em>Journal of Economic Theory</em>, 10(2), 187-217.</li>
 </ul>
 <h3>Historical Sources</h3>
 <ul>
@@ -516,7 +531,7 @@
 <li><a href="https://github.com/BTCDecoded/blvm">https://github.com/BTCDecoded/blvm</a> (packaging and release surface)</li>
 <li><a href="https://github.com/BTCDecoded/blvm-sdk">https://github.com/BTCDecoded/blvm-sdk</a></li>
 <li><a href="https://github.com/BTCDecoded/governance">https://github.com/BTCDecoded/governance</a> (governance configuration)</li>
-<li><a href="https://github.com/BTCDecoded/blvm-commons">https://github.com/BTCDecoded/blvm-commons</a> (GitHub App that enforces governance)</li>
+<li><a href="https://github.com/BTCDecoded/blvm-commons">https://github.com/BTCDecoded/blvm-commons</a> (Governance App that enforces merge policy; a GitHub App is one way to run it)</li>
 </ul>
         </article>
     </div>
@@ -524,34 +539,34 @@
     <button class="back-to-top">↑</button>
     <script>
 // Whitepaper page scripts
-(function() {{
+(function() {
     'use strict';
     
     const backToTop = document.querySelector('.back-to-top');
-    if (backToTop) {{
-        backToTop.addEventListener('click', () => {{
-            window.scrollTo({{top: 0, behavior: 'smooth'}});
-        }});
+    if (backToTop) {
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
         
-        window.addEventListener('scroll', () => {{
-            if (window.scrollY > 300) {{
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
                 backToTop.classList.add('visible');
-            }} else {{
+            } else {
                 backToTop.classList.remove('visible');
-            }}
-        }});
-    }}
+            }
+        });
+    }
     
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {{
-        anchor.addEventListener('click', function (e) {{
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
-            if (target) {{
-                target.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
-            }}
-        }});
-    }});
-}})();
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+})();
     </script>
 </body>
 </html>
