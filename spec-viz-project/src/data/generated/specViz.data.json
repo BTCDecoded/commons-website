@@ -12,7 +12,7 @@
       {
         "name": "A Complete Mathematical Description of the Bitcoin Consensus System",
         "value": 6,
-        "preview": "Version 1.0 Consensus specification (implementation-agnostic) Authors: BTCDecoded.org, MyBitcoinFuture.com, @secsovereign ---",
+        "preview": "Version 1.0 Consensus specification (implementation-agnostic) Authors: BTCDecoded.org, @secsovereign ---",
         "children": []
       },
       {
@@ -775,7 +775,7 @@
           {
             "name": "A Complete Mathematical Description of the Bitcoin Consensus System",
             "value": 6,
-            "preview": "Version 1.0 Consensus specification (implementation-agnostic) Authors: BTCDecoded.org, MyBitcoinFuture.com, @secsovereign ---",
+            "preview": "Version 1.0 Consensus specification (implementation-agnostic) Authors: BTCDecoded.org, @secsovereign ---",
             "children": []
           },
           {
