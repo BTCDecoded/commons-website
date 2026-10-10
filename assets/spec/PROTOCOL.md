@@ -3,7 +3,7 @@
 
 **Version 1.0**  
 **Consensus specification (implementation-agnostic)**  
-**Authors: BTCDecoded.org, MyBitcoinFuture.com, @secsovereign**
+**Authors: BTCDecoded.org, @secsovereign**
 ---
 
 ## Abstract
@@ -926,7 +926,7 @@ H08 (parent hash linkage) is enforced by **ValidatePrevBlockHash** in `blvm-cons
 
 Merkle root correctness is *not* part of `ValidBlockHeader`. The `bits` field check (H06) rejects an all-zero `bits` as a structural sanity check; cryptographic verification of the merkle root against the block's transaction list happens inside `connect_block` itself after header validation passes.
 
-H04 and H05 require a time context (network time and recent-header MTP). When no context is available (e.g. headers-first sync), only H01, H03, H06 are enforced.
+H04 and H05 run when a time context is supplied (network time, and the median of the previous headers). Connect supplies that context, including during initial block download. The median window is the headers before this block, at most 11, ending at the parent. A block at height 0 has no parents, so the median is 0. A missing header in that window above height 0 rejects the block. When the caller supplies no time context, H04 and H05 are not applied and only H01, H03, and H06 are enforced.
 
 **Formula** (**F_HeaderVersionFloor**):
 $$result = 0$$
@@ -1125,11 +1125,7 @@ Where:
 - $H_{34}$ is the BIP34 activation height (mainnet: 227,931; testnet: 21,111; regtest: 0)
 - $result$ extracts the block height from coinbase scriptSig using CScriptNum encoding
 
-**Height Encoding**: The block height is encoded in the coinbase scriptSig as a script number:
-
-$$\text{EncodeHeight}(h) = \text{CScriptNum}(h)$$
-
-Where $\text{CScriptNum}$ encodes the height as a variable-length integer in the script format.
+**Height Encoding**: After activation, the coinbase scriptSig must begin with the minimal script-number encoding of $h$. Height 0 is the single byte `OP_0`. Heights 1 through 16 are the single opcodes `OP_1` through `OP_16`. A taller height is one length byte followed by the little-endian magnitude. When the high bit of the last magnitude byte is set, one extra `0x00` byte follows so the number stays non-negative. Bytes after that prefix are ignored. `OP_PUSHDATA` and extra zero bytes are not that prefix, even when they decode to the same integer.
 
 **Mathematical Property**: BIP34 ensures coinbase height consistency:
 
@@ -1718,7 +1714,7 @@ Where $T_N$ is the block header timestamp at height $N$; $T_{N-1}$, $T_{N-2015}$
 
 **BIP54CoinbaseCheck**: $\mathcal{TX} \times \mathbb{N} \rightarrow \{\text{valid}, \text{invalid}\}$
 
-After BIP54 activation, the coinbase transaction must have $\text{lockTime} = height - 13$ and the first input's $\text{sequence} \neq 0xffffffff$.
+After BIP54 activation, the coinbase transaction must have $\text{lockTime} = height - 1$ and the first input's $\text{sequence} \neq 0xffffffff$.
 
 **BIP54 64-byte tx**: Any non-coinbase transaction whose witness-stripped serialized size equals 64 bytes is invalid (Merkle tree ambiguity).
 
@@ -1732,7 +1728,7 @@ After BIP54 activation, the coinbase transaction must have $\text{lockTime} = he
 
 **Activation**: Network-specific (e.g. regtest: 0; mainnet/testnet: configurable or $u64::\text{MAX}$ until set).
 
-**References**: [BIP 54](https://bips.dev/54/), Bitcoin Inquisition PR #99.
+**References**: [BIP 54](https://bips.dev/54/).
 
 **Bip9Deployment for BIP54**: all networks use the same signaling parameters:
 - Signal bit: 15 (out of the 29 available BIP9 version bits)
@@ -1781,7 +1777,7 @@ After BIP54 activation, the coinbase transaction must satisfy both the nLockTime
 **Properties**:
 - Boolean result: $result \in \{\text{true}, \text{false}\}$
 
-**Note**: LockTime necessary: $result = \text{true} \implies coinbase.\text{lockTime} = height - 13$. Sequence necessary: $result = \text{true} \implies coinbase.\text{inputs}[0].\text{sequence} \neq 0\text{xffffffff}$. Non-empty inputs: $result = \text{true} \implies |coinbase.\text{inputs}| > 0$.
+**Note**: LockTime necessary: $result = \text{true} \implies coinbase.\text{lockTime} = height - 1$. Sequence necessary: $result = \text{true} \implies coinbase.\text{inputs}[0].\text{sequence} \neq 0\text{xffffffff}$. Non-empty inputs: $result = \text{true} \implies |coinbase.\text{inputs}| > 0$.
 
 ---
 
@@ -2230,7 +2226,7 @@ The exponent byte extracted from compact bits ($\text{exponent} = (bits \gg 24) 
 
 **CompressTarget**: $\mathbb{U}_{256} \rightarrow \mathbb{N}$
 
-Inverse of **ExpandTarget** (Bitcoin Core `GetCompact`): encodes a full 256-bit PoW target as a compact `bits` word. For valid targets, $\text{ExpandTarget}(\text{CompressTarget}(T)) \leq T$ with significant bits preserved (round-trip property).
+Inverse of **ExpandTarget**: encodes a full 256-bit PoW target as a compact `bits` word. For valid targets, $\text{ExpandTarget}(\text{CompressTarget}(T)) \leq T$ with significant bits preserved (round-trip property).
 
 **GetNextWorkRequired**: $\mathcal{H} \times \mathcal{H}^* \times \text{Network} \rightarrow \mathbb{N}$
 
