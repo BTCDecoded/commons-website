@@ -369,14 +369,13 @@
 <img src="/assets/images/three-layer-verification-arch0.png" alt="Three-Layer Verification Overview" style="width: 100%; display: block; margin: 0 auto;">
 <figcaption>Figure: Three-layer verification: the Governance App at the merge gate, Nostr, and OpenTimestamps. The figure draws GitHub as one host for the merge gate.</figcaption>
 </figure>
-<p><strong>Layer 1: Governance App (Merge Control).</strong> <em>Designed to</em>, when production governance is activated, enforce merge policy. The Governance App is the merge gate. It checks signatures and review rules and refuses a merge that does not meet them. A GitHub App is one way to run that gate. The requirement is the gate, not the forge.</p>
+<p><strong>Layer 1: Governance App (Merge Control).</strong> <em>Designed to</em>, when production governance is activated, enforce merge policy. In this build the app posts a <code>governance/merge</code> status. That status does not stop a merge. Branch protection leaves admin enforcement off, and a failed protection update still returns success.</p>
 <ul>
-<li>The Governance App validates multisig requirements (varies by layer: 2-of-3 to 6-of-7)</li>
-<li>A self-hosted runner behind WireGuard VPN validates signatures using secp256k1. On GitHub, that runner is a GitHub Actions runner. Another forge would use its own hook.</li>
-<li>Whoever administers the repository cannot bypass the cryptographic requirements</li>
-<li>Signature validation happens before merge approval</li>
-<li>Requires explicit cryptographic approval from multiple maintainers before any merge</li>
-<li><strong>No-self-merge:</strong> a contributor cannot cryptographically approve their own pull request; the Governance App rejects self-signed merges</li>
+<li>The written schedule names multisig counts by layer (2-of-3 to 6-of-7). The app counts signatures and posts a status. Those counts are not a live merge gate.</li>
+<li>A self-hosted runner behind WireGuard VPN can validate signatures using secp256k1. On GitHub, that runner is a GitHub Actions runner. Another forge would use its own hook.</li>
+<li>Repository administrators can still bypass the check. Admin enforcement is off.</li>
+<li>The app does not require a signature before GitHub accepts a merge.</li>
+<li>The source has no self-merge rejection. The app does not reject a contributor's own signature.</li>
 </ul>
 <p><strong>Layer 2: Real-Time Transparency (Nostr).</strong> <em>Designed to</em> publish signed status updates (binary hash, config hash, recent merges, health metrics) to Nostr relays so subscribers can verify server integrity. Cadence and alerting are deployment parameters, not guarantees about any particular live deployment.</p>
 <p><strong>Layer 3: Immutable Proof (OpenTimestamps).</strong> <em>Designed to</em> anchor canonical registry snapshots and critical events (key rotations, deployments) to the Bitcoin blockchain for dispute resolution and independent verification. Provides court-admissible evidence where applicable.</p>
