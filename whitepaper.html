@@ -378,7 +378,7 @@
 <li>The source has no self-merge rejection. The app does not reject a contributor's own signature.</li>
 </ul>
 <p><strong>Layer 2: Real-Time Transparency (Nostr).</strong> <em>Designed to</em> publish signed status updates (binary hash, config hash, recent merges, health metrics) to Nostr relays so subscribers can verify server integrity. Cadence and alerting are deployment parameters, not guarantees about any particular live deployment.</p>
-<p><strong>Layer 3: Immutable Proof (OpenTimestamps).</strong> <em>Designed to</em> anchor canonical registry snapshots and critical events (key rotations, deployments) to the Bitcoin blockchain for dispute resolution and independent verification. Provides court-admissible evidence where applicable.</p>
+<p><strong>Layer 3: OpenTimestamps.</strong> <em>Designed to</em> anchor registry snapshots to the Bitcoin blockchain. In this build <code>stamp()</code> writes a mock proof and does not post the hash to a calendar. Verifying that mock returns a fixed block height. A non-mock proof verifies as pending, and <code>upgrade()</code> returns the same bytes. That is not court-admissible Bitcoin evidence.</p>
 <h4 class="subheading">Cross-Layer Verification:</h4>
 <p>Three independent layers verify governance actions and each other. Risk at one layer does not compromise the others. This defense-in-depth approach ensures governance integrity even if one verification method is compromised.</p>
 <h3>Emergency Response</h3>
