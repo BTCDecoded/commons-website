@@ -278,9 +278,9 @@
   </script>
 </head>
 <body>
-  <div class="container" role="img" aria-label="BLVM dependency architecture showing blvm-spec locked to blvm-consensus through 6 verification mechanisms (Z3 proofs, spec drift detection, hash verification, property tests, equivalence proofs, differential testing), with blvm-protocol, blvm-node, and blvm-sdk depending on consensus.">
+  <div class="container" role="img" aria-label="BLVM dependency architecture. Annotated functions are checked with Z3. The mutation gate is 3 of 182. That is not a lock on every consensus path. blvm-protocol, blvm-node, and blvm-sdk depend on consensus.">
     <h1>BLVM Dependency Architecture</h1>
-    <div class="subtitle">Orange Paper (IR) → 6 Verification Mechanisms (Z3 proofs, spec drift detection, hash verification, property tests, equivalence proofs, differential testing) → Consensus Proof (BLVM) → Upper tiers</div>
+    <div class="subtitle">Orange Paper → Z3 on annotated functions (mutation gate 3 of 182) → consensus crate → upper tiers. Not every path is verified.</div>
 
     <div id="chart-viewport" class="chart-viewport">
       <div id="chart-scale-wrap" class="chart-scale-wrap">
@@ -421,7 +421,7 @@
     // Badge offsets are symmetric around center: left side negative, right side positive (same absolute value)
     // Brought in slightly more towards center
     var badges = [
-      { id: 'spec-lock', text: 'Z3 Proofs', class: 'spec-lock', offsetX: -250, offsetY: -180 },
+      { id: 'spec-lock', text: 'Z3 on annotations', class: 'spec-lock', offsetX: -250, offsetY: -180 },
       { id: 'drift', text: 'Spec Drift Detection', class: 'drift', offsetX: -170, offsetY: -140 }, // Left of center, middle row - more space from outer badges
       { id: 'hash', text: 'Hash Verification', class: 'hash', offsetX: 250, offsetY: -180 },
       { id: 'property', text: 'Property Tests', class: 'property', offsetX: -250, offsetY: -100 },
@@ -623,7 +623,7 @@
       // Label showing the locking mechanism - centered between spec and consensus nodes
       var lockLabel = document.createElement('div');
       lockLabel.className = 'arrow-label';
-      lockLabel.textContent = 'verified & locked';
+      lockLabel.textContent = 'mutation gate 3 of 182';
       // Center horizontally between spec and consensus centers, then offset by half label width
       var centerX = (specBounds.centerX + consensusBounds.centerX) / 2;
       lockLabel.style.left = centerX + 'px';
