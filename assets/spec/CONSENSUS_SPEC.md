@@ -9,7 +9,7 @@
 
 ## Introduction
 
-This document is the BLVM Bitcoin Consensus Specification: a structured, numbered register of every Bitcoin consensus rule, invariant, and theorem covered by the Orange Paper and implemented in `blvm-consensus`. Each entry states what **must** hold on the network using RFC 2119 language (MUST, MUST NOT, SHALL, SHALL NOT). It is **implementation-agnostic** — it describes required outcomes, not how any node achieves them. The Orange Paper ([PROTOCOL.md](PROTOCOL.md)) provides the formal mathematical foundation (functions, theorems, and `F_*` formula witnesses) for each rule; `blvm-consensus` is the reference Rust implementation bound via `#[spec_locked]` annotations and Z3 verification through `blvm-spec-lock`.
+This document is the BLVM Bitcoin Consensus Specification: a structured, numbered register of every Bitcoin consensus rule, invariant, and theorem covered by the Orange Paper and implemented in `blvm-consensus`. Each entry states what **must** hold on the network using RFC 2119 language (MUST, MUST NOT, SHALL, SHALL NOT). It is **implementation-agnostic** — it describes required outcomes, not how any node achieves them. The Orange Paper ([PROTOCOL.md](PROTOCOL.md)) provides the formal mathematical foundation (functions, theorems, and `F_*` formula witnesses) for each rule; `blvm-consensus` is a Rust implementation. Annotated functions carry `#[spec_locked]`, and CI runs Z3 on those annotations. Three functions are mutation-validated. That is not Z3 verification of every rule in this register.
 
 **Rule entry format:**
 
