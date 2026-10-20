@@ -377,7 +377,7 @@
 <li>The app does not require a signature before GitHub accepts a merge.</li>
 <li>The source has no self-merge rejection. The app does not reject a contributor's own signature.</li>
 </ul>
-<p><strong>Layer 2: Real-Time Transparency (Nostr).</strong> <em>Designed to</em> publish signed status updates (binary hash, config hash, recent merges, health metrics) to Nostr relays so subscribers can verify server integrity. Cadence and alerting are deployment parameters, not guarantees about any particular live deployment.</p>
+<p><strong>Layer 2: Nostr status.</strong> <em>Designed to</em> publish signed status updates (binary hash, config hash, recent merges, health metrics) to Nostr relays. The default is off, and the publish interval is 3600 seconds. The publisher header calls that hourly. That is not a live feed.</p>
 <p><strong>Layer 3: OpenTimestamps.</strong> <em>Designed to</em> anchor registry snapshots to the Bitcoin blockchain. In this build <code>stamp()</code> writes a mock proof and does not post the hash to a calendar. Verifying that mock returns a fixed block height. A non-mock proof verifies as pending, and <code>upgrade()</code> returns the same bytes. That is not court-admissible Bitcoin evidence.</p>
 <h4 class="subheading">These layers do not check each other</h4>
 <p>The Governance App, Nostr, and OpenTimestamps do not verify one another in this build. Nostr status is off by default. OpenTimestamps stamping writes a mock proof. That combination does not ensure governance integrity.</p>
