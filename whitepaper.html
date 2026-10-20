@@ -296,7 +296,7 @@
 <h3>BLVM Architecture</h3>
 <figure>
 <img src="/assets/images/stack.png" alt="BLVM Stack Architecture" style="">
-<figcaption>Figure: BLVM architecture: blvm-spec (Orange Paper) as foundation, blvm-consensus as verified core, and dependent components (blvm-protocol, blvm-node, blvm-sdk) building on the consensus layer.</figcaption>
+<figcaption>Figure: BLVM architecture: blvm-spec (Orange Paper) as the written spec, blvm-consensus with Z3 on annotated functions (the mutation gate is 3 of 182; that is not a verified core), and dependent components (blvm-protocol, blvm-node, blvm-sdk) building on the consensus layer.</figcaption>
 </figure>
 <p>BLVM (<strong>Bitcoin Low-Level Virtual Machine</strong>) applies a <strong>compiler-like</strong> pipeline to Bitcoin implementations. The Orange Paper acts as an intermediate representation (IR), analogous in role to IRs in compiler toolchains. The Orange Paper serves as that IR, enabling reusable optimizations and multiple implementations. Stack layout and verification methodology: <a href="https://docs.thebitcoincommons.org/architecture/system-overview.html">System Overview</a>, <a href="https://docs.thebitcoincommons.org/consensus/overview.html">Consensus Overview</a>.</p>
 <p><strong>Single Source of Truth.</strong> All consensus logic resides in <code>blvm-consensus</code>. Upper tiers (<code>blvm-protocol</code>, <code>blvm-node</code>) delegate validation calls with no duplicate implementations. Path dependencies ensure changes propagate immediately through Rust's type system.</p>
