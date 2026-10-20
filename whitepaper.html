@@ -364,7 +364,7 @@
 <p><strong>Forking Process:</strong> Governance rulesets can be exported as versioned, signed packages containing action tiers, maintainers, cryptographic proofs, and semantic versioning. This enables users to fork governance while maintaining compatibility and verification.</p>
 <p>Optional <strong>modules</strong> are operational today (loadable processes via ModuleAPI). A <strong>module registry</strong> for permissionless listing and automated validation is part of the distribution model but <strong>not live yet</strong>.</p>
 <h2 id="6-cryptographic-governance-enforcement">6. Cryptographic Governance Enforcement</h2>
-<p>Commons implements <a href="#3-theoretical-framework-the-triple-foundation">Cryptographic Polycentrism</a> through three complementary verification layers (distinct from repository layers) that ensure both real-time transparency and immutable historical proof. These verification layers create multiple independent centers of accountability, each enforcing governance boundaries through cryptographic proof:</p>
+<p>Commons writes a three-layer verification design (distinct from repository layers). This build does not ensure real-time transparency or an immutable historical proof. Nostr status is off by default, and the publish interval is 3600 seconds. OpenTimestamps stamping writes a mock proof. These layers do not enforce governance boundaries today:</p>
 <figure>
 <img src="/assets/images/three-layer-verification-arch0.png" alt="Three-Layer Verification Overview" style="width: 100%; display: block; margin: 0 auto;">
 <figcaption>Figure: Three-layer verification: the Governance App at the merge gate, Nostr, and OpenTimestamps. The figure draws GitHub as one host for the merge gate.</figcaption>
