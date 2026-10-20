@@ -382,8 +382,8 @@
 <h4 class="subheading">These layers do not check each other</h4>
 <p>The Governance App, Nostr, and OpenTimestamps do not verify one another in this build. Nostr status is off by default. OpenTimestamps stamping writes a mock proof. That combination does not ensure governance integrity.</p>
 <h3>Emergency Response</h3>
-<p>Commons implements a three-tier emergency system for critical security and network issues. <strong>Emergency tier activation</strong> is separate from <strong>action tier</strong> classification (see below): emergency keyholders declare the class; merge rules and review periods adjust until automatic expiration.</p>
-<p><strong>Activation (all classes):</strong> 5-of-7 emergency keyholders. <strong>Merge policy while active</strong> varies by class: network-threatening incidents use the fastest path (zero review, lower maintainer merge threshold); less urgent classes use longer review and stricter merge thresholds. Authoritative parameters: <a href="https://github.com/BTCDecoded/governance">governance repository</a> (<code>emergency-tiers.yml</code>).</p>
+<p>Commons writes a three-tier emergency schedule for critical security and network issues. <strong>Emergency tier</strong> classification is separate from <strong>action tier</strong> classification (see below). The merge path does not read an active emergency. It passes <code>emergency_mode: false</code>, so declaring an emergency does not change the merge check in this build.</p>
+<p><strong>Written activation count (all classes):</strong> 5-of-7 emergency keyholders. The lists below are that written schedule. Authoritative parameters in the governance repository: <a href="https://github.com/BTCDecoded/governance">governance repository</a> (<code>emergency-tiers.yml</code>). Production code under <code>src/</code> does not call the emergency validator. Tests do.</p>
 <p><strong>Critical Emergency</strong> (Network-threatening vulnerabilities):</p>
 <ul>
 <li>Merge signatures while active: 4-of-7</li>
