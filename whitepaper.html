@@ -379,8 +379,8 @@
 </ul>
 <p><strong>Layer 2: Real-Time Transparency (Nostr).</strong> <em>Designed to</em> publish signed status updates (binary hash, config hash, recent merges, health metrics) to Nostr relays so subscribers can verify server integrity. Cadence and alerting are deployment parameters, not guarantees about any particular live deployment.</p>
 <p><strong>Layer 3: OpenTimestamps.</strong> <em>Designed to</em> anchor registry snapshots to the Bitcoin blockchain. In this build <code>stamp()</code> writes a mock proof and does not post the hash to a calendar. Verifying that mock returns a fixed block height. A non-mock proof verifies as pending, and <code>upgrade()</code> returns the same bytes. That is not court-admissible Bitcoin evidence.</p>
-<h4 class="subheading">Cross-Layer Verification:</h4>
-<p>Three independent layers verify governance actions and each other. Risk at one layer does not compromise the others. This defense-in-depth approach ensures governance integrity even if one verification method is compromised.</p>
+<h4 class="subheading">These layers do not check each other</h4>
+<p>The Governance App, Nostr, and OpenTimestamps do not verify one another in this build. Nostr status is off by default. OpenTimestamps stamping writes a mock proof. That combination does not ensure governance integrity.</p>
 <h3>Emergency Response</h3>
 <p>Commons implements a three-tier emergency system for critical security and network issues. <strong>Emergency tier activation</strong> is separate from <strong>action tier</strong> classification (see below): emergency keyholders declare the class; merge rules and review periods adjust until automatic expiration.</p>
 <p><strong>Activation (all classes):</strong> 5-of-7 emergency keyholders. <strong>Merge policy while active</strong> varies by class: network-threatening incidents use the fastest path (zero review, lower maintainer merge threshold); less urgent classes use longer review and stricter merge thresholds. Authoritative parameters: <a href="https://github.com/BTCDecoded/governance">governance repository</a> (<code>emergency-tiers.yml</code>).</p>
