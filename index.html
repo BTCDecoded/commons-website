@@ -500,10 +500,12 @@
                     invent them. Spec-lock binds Rust functions to Orange Paper
                     sections and checks them in CI. Around that sits a suite:
                     property tests, coverage-guided fuzz on consensus, protocol,
-                    and node, golden vectors from mainnet wire bytes and Core
-                    script fixtures, and a differential against Bitcoin Core /
-                    libbitcoinkernel. The differential is one of those layers.
-                    See
+                    and node, and golden vectors from mainnet wire bytes and Core
+                    script fixtures. Script verdicts are compared to
+                    libbitcoinconsensus at activation heights. The consensus crate
+                    does not link libbitcoinkernel. A bench tool can compare
+                    connect_block to libbitcoinkernel. That bench is not a CI
+                    layer of the consensus crate. See
                     <a href="https://docs.thebitcoincommons.org/development/testing.html"
                       >how testing is layered</a
                     >.
