@@ -271,8 +271,8 @@
 <h3>Benefits</h3>
 <ul>
 <li><strong>Safe alternative implementations</strong>: Independent implementations can verify against mathematical specification</li>
-<li><strong>Formal verification</strong>: Consensus-critical code is checked against the Orange Paper through <strong>BLVM Specification Lock</strong>, property tests, and CI; see <a href="https://docs.thebitcoincommons.org/consensus/formal-verification.html">Formal Verification</a></li>
-<li><strong>Reduced consensus bugs</strong>: Systematic analysis eliminates entire classes of errors</li>
+<li><strong>Formal verification</strong>: Annotated functions carry <code>#[spec_locked]</code>. CI runs Z3 on those annotations, and property tests exist. The mutation gate is 3 of 182. That is not a check of every consensus-critical path. See <a href="https://docs.thebitcoincommons.org/consensus/formal-verification.html">Formal Verification</a></li>
+<li><strong>Reduced consensus bugs</strong>: That check does not eliminate entire classes of errors. Bitcoin Core 0.16.3 records CVE-2018-17144.</li>
 </ul>
 <h3>AI-Assisted Extraction Methodology</h3>
 <p>The Orange Paper uses AI-assisted extraction from Bitcoin Core's codebase to formalize consensus rules. This approach:</p>
