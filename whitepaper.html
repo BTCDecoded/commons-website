@@ -280,7 +280,7 @@
 <li>Analyzes <a href="#2-problem-statement">Bitcoin Core's codebase</a> to identify consensus-critical code paths</li>
 <li>Extracts mathematical relationships from implementation details</li>
 <li>Creates formal specifications that are independent of specific code structure</li>
-<li>Enables verification that specification matches actual network behavior</li>
+<li>Does not check the specification against live network behavior. <code>blvm-spec-lock</code> runs Z3 on annotated Rust functions. A chain compare, when it is run, compares <code>connect_block</code> with <code>libbitcoinkernel</code> in <code>blvm-bench</code>.</li>
 </ul>
 <h3>Proof Maintenance and Specification Quality</h3>
 <p>The formal verification process includes ongoing maintenance to ensure specification accuracy:</p>
