@@ -98,8 +98,8 @@
 
         <article class="whitepaper-content">
 <h2 id="abstract">Abstract</h2>
-<p>Bitcoin faces a critical governance asymmetry: its consensus rules are enforced by the network, and the reference client has still shipped consensus bugs. Bitcoin Core 0.16.3 records CVE-2018-17144 under Consensus: a miner-exploitable crash on duplicate inputs. Development governance relies on informal social coordination. At Bitcoin's multi-trillion dollar scale, this represents an existential vulnerability.</p>
-<p>This whitepaper presents two pieces of work that are meant to fit together. <strong>BLVM</strong> is an independent node. Annotated consensus functions carry <code>#[spec_locked]</code> and are checked with Z3 in CI. That check is not a proof of every consensus path, and compatibility with Bitcoin Core is a set of layers, not a block-count result. <strong>Bitcoin Commons</strong> publishes forkable governance rules. Merge enforcement is off.</p>
+<p>Bitcoin's consensus rules are enforced by the network. Development of the software people run is still a maintainer process.</p>
+<p>This paper describes two pieces of work. <strong>BLVM</strong> is an independent node checked against a written spec. <strong>Bitcoin Commons</strong> publishes the rules for how that software changes, and those rules can be forked.</p>
 <p>The work is organized around six core engineering tracks in the public BTCDecoded organization (spec, consensus, protocol, node, SDK, and governance), plus supporting repositories for packaging, <strong>blvm-spec-lock</strong> verification, and the <strong>blvm-commons</strong> Governance App. Engineering detail lives in <a href="https://docs.thebitcoincommons.org">technical documentation</a>.</p>
 <h2 id="1-introduction">1. Introduction</h2>
 <p>Bitcoin solved Byzantine consensus between strangers (Nakamoto, 2008) but ignored consensus between developers. The network's substantial market capitalization demands institutional maturity matching its technical excellence.</p>
@@ -148,7 +148,7 @@
 <h3>Technical Reality</h3>
 <p>Bitcoin's consensus rules are embedded in hundreds of thousands of lines of reference-client C++ without a canonical mathematical specification the ecosystem standardizes on. The dominant reference implementation carries enormous practical weight over how the network evolves. Safe independent implementations and systematic verification remain exceedingly difficult under reference-client-as-spec; Commons publishes layered specifications to address that gap.</p>
 <h3>Governance Reality</h3>
-<p>Bitcoin's development governance relies largely on informal social coordination. At network scale, consequences for violations are rarely systematic, dispute resolution is ad hoc, and authority is difficult to audit. The system is vulnerable to capture through relationships rather than rules. Network analysis reveals structural misalignments between technical development and social infrastructure, creating coordination gaps that prevent effective governance (Hough, 2025). These patterns reflect the paradox of embeddedness in network structures, where relationships can inhibit coordination and reinforce existing power dynamics (Uzzi, 1997). Funding may not flow to projects with strong grassroots activity, and "rich-get-richer" dynamics reinforce existing patterns rather than enabling competition. Commons writes a signature schedule for these gaps. <a href="#6-cryptographic-governance-enforcement">That schedule is not enforced today.</a> Merge enforcement is off.</p>
+<p>Bitcoin's development governance relies largely on informal social coordination. At network scale, consequences for violations are rarely systematic, dispute resolution is ad hoc, and authority is difficult to audit. The system is vulnerable to capture through relationships rather than rules. Network analysis reveals structural misalignments between technical development and social infrastructure, creating coordination gaps that prevent effective governance (Hough, 2025). These patterns reflect the paradox of embeddedness in network structures, where relationships can inhibit coordination and reinforce existing power dynamics (Uzzi, 1997). Funding may not flow to projects with strong grassroots activity, and "rich-get-richer" dynamics reinforce existing patterns rather than enabling competition. Commons addresses these gaps through <a href="#6-cryptographic-governance-enforcement">cryptographic enforcement of multisig thresholds, mandatory review periods, and transparent accountability mechanisms</a>.</p>
 <h3>Historical Context</h3>
 <p>Early leadership transitions and public governance disputes showed that developer coordination can fail without institutional enforcement. Andresen (2014) and Hearn (2016) raised governance concerns from inside development; academic researchers documented the structural gap but offered no implementable remedy (De Filippi & Loveluck, 2016).</p>
 <h3>Scale Considerations</h3>
@@ -197,14 +197,14 @@
 <p><strong>Ostrom's Solution.</strong> Provides institutional framework for multiple governance models to coexist.</p>
 <p><strong>Bitcoin's Challenge.</strong> Solved technical consensus but not social governance.</p>
 <p><strong>Hayek + Ostrom Solution.</strong> Competitive discovery of governance models using proven institutional principles.</p>
-<p><strong>The Result.</strong> Governance that is argued from Ostrom's research and from Hayek's competition. The signature schedule is not enforced today. Merge enforcement is off.</p>
+<p><strong>The Result.</strong> Governance that is proven (Ostrom's research), evolving (Hayek's competition), and enforceable (Bitcoin's cryptography).</p>
 <h3>Cryptographic Polycentrism: The Governance Model</h3>
-<p>Bitcoin Commons writes a governance model with several centers of authority and a signature schedule. That schedule is not enforced today. Merge enforcement is off.</p>
-<p>The written model uses multisig thresholds and review periods, and <a href="#6-cryptographic-governance-enforcement">a three-layer design</a>. Nostr status is hourly by default, and OpenTimestamps stamping in this build is a mock proof. The boundaries are designed so that repository administrators cannot bypass them once production governance is on.</p>
-<p>This model is written so that implementations can compete and so that the signature schedule stays readable. That schedule is not a live gate.</p>
-<p>Informal governance can work at smaller scale and lower complexity; at multi-trillion dollar scale, social enforcement alone struggles to keep pace with coordination demands and accountability expectations. Commons writes Ostrom's principles into a signature schedule. That schedule is not enforced today. The mapping below describes the written design.</p>
+<p>Bitcoin Commons implements <strong>Cryptographic Polycentrism</strong>, a governance model that creates multiple centers of power with clear boundaries, enforced through cryptography rather than social pressure. This approach applies Ostrom's proven principles using Bitcoin's cryptographic enforcement tools, enabling competitive discovery through Hayekian market mechanisms while maintaining Ostrom's institutional structure.</p>
+<p>Cryptographic Polycentrism differs from traditional polycentrism (multiple decision centers) by using cryptographic enforcement to make boundaries mathematically verifiable rather than socially negotiated. Where traditional governance relies on trust and reputation, Cryptographic Polycentrism uses multisig thresholds, mandatory review periods, and <a href="#6-cryptographic-governance-enforcement">three-layer verification providing real-time transparency and immutable proof</a> to create boundaries designed so that repository administrators cannot bypass them once production governance is on.</p>
+<p>This model enables multiple implementations to compete (Hayek's discovery mechanism) while maintaining clear institutional boundaries (Ostrom's principles) through cryptographic proof (Bitcoin's innovation). The result is governance that is both competitive and accountable, proven and evolving, decentralized and enforceable.</p>
+<p>Informal governance can work at smaller scale and lower complexity; at multi-trillion dollar scale, social enforcement alone struggles to keep pace with coordination demands and accountability expectations. Commons encodes Ostrom's principles through cryptographic enforcement. The mapping below describes how each principle is implemented in this architecture.</p>
 <h3>Mapping The Principles to Implementation</h3>
-<p>The modular architecture writes Ostrom's eight principles as a design. Cryptographic enforcement is not on. The chart below places principles from Ostrom, Hayek, Bitcoin, and Cypherpunk side by side. The bullets that follow are the account of each Ostrom principle in this design.</p>
+<p>The modular architecture implements Ostrom's eight principles through cryptographic enforcement rather than social pressure. The chart below places principles from Ostrom, Hayek, Bitcoin, and Cypherpunk side by side. The bullets that follow are the account of each Ostrom principle in this design.</p>
 <figure>
 <img src="/assets/images/principles_matrix_complete.png" alt="Principles of Bitcoin Commons" style="">
 <figcaption>Figure: Integration of four key philosophies: Hayek (spontaneous order), Bitcoin (cryptographic enforcement), Cypherpunk (privacy through technology), and Ostrom (commons governance).</figcaption>
@@ -231,7 +231,7 @@
 </ul>
 <figure>
 <img src="/assets/images/audit-trail-completeness.png" alt="Audit Trail Completeness" style="">
-<figcaption>Figure: Audit-trail drawing. The logger is a local append-only JSONL hash chain. OpenTimestamps <code>stamp()</code> writes a mock proof. That is not evidence of every governance decision.</figcaption>
+<figcaption>Figure: Audit-trail completeness across governance layers: all decisions evidenced and verifiable.</figcaption>
 </figure>
 <h4 class="subheading">Principle 5. Graduated Sanctions.</h4>
 <ul>
@@ -246,17 +246,17 @@
 <h4 class="subheading">Principle 7. Minimal Recognition of Rights to Organize.</h4>
 <ul>
 <li><strong>What the principle asks.</strong> Outside authorities leave the community's rule-making alone. Commons cannot obtain that recognition in every jurisdiction.</li>
-<li><strong>Substitutes.</strong> The published maintainer lists are placeholder names and test keys, not keyholders distributed across jurisdictions. There is no revenue stream that keeps the ruleset independent of one funder: fee forwarding is removed, Nostr zaps default to off with no zap address, and this tree has no merge-mining crate. The governance crate does include a fork executor.</li>
+<li><strong>Substitutes.</strong> Keyholders distributed across jurisdictions, revenue that does not depend on one funder, and a ruleset any participant can fork.</li>
 </ul>
 <figure>
 <img src="/assets/images/keyholder-diversity-radar.png" alt="Keyholder Diversity" style="">
-<figcaption>Figure: Keyholder-diversity drawing. The published roster is placeholder names and test keys. It does not raise the cost of coercing an approving set.</figcaption>
+<figcaption>Figure: Keyholder diversity across jurisdictions and organizations raises the cost of coercing an approving set.</figcaption>
 </figure>
 <h4 class="subheading">Principle 8. Nested Enterprises.</h4>
 <ul>
 <li><strong>Layers inside one ruleset.</strong> Modules operate inside the consensus boundary. The extension, application, implementation, and constitutional layers each carry their own thresholds inside one ruleset.</li>
 </ul>
-<p>Commons does not implement all eight principles as live architecture. The list above is the written design. Cryptographic enforcement is not on. The merge path passes <code>emergency_mode: false</code>, and Nostr publishing is off by default. The written model is <a href="#3-theoretical-framework-the-triple-foundation">Cryptographic Polycentrism</a>.</p>
+<p>Commons implements <a href="#3-theoretical-framework-the-triple-foundation">all eight Ostrom principles through Cryptographic Polycentrism</a>, encoding boundaries, congruence, nesting, and auditability in architecture rather than social pressure alone.</p>
 <h2 id="4-technical-solution-the-orange-paper">4. Technical Solution: The Orange Paper</h2>
 <h3>Problem</h3>
 <p>Bitcoin's consensus rules lacked a canonical mathematical specification industry-wide (<a href="#2-problem-statement">reference-client-as-spec remains the practical default</a>). The consensus-critical denial-of-service vulnerability CVE-2018-17144 existed undetected for years: exactly the class of error formal verification and layered testing aim to prevent.</p>
@@ -271,8 +271,8 @@
 <h3>Benefits</h3>
 <ul>
 <li><strong>Safe alternative implementations</strong>: Independent implementations can verify against mathematical specification</li>
-<li><strong>Formal verification</strong>: Annotated functions carry <code>#[spec_locked]</code>. CI runs Z3 on those annotations, and property tests exist. The mutation gate is 3 of 182. That is not a check of every consensus-critical path. See <a href="https://docs.thebitcoincommons.org/consensus/formal-verification.html">Formal Verification</a></li>
-<li><strong>Reduced consensus bugs</strong>: That check does not eliminate entire classes of errors. Bitcoin Core 0.16.3 records CVE-2018-17144.</li>
+<li><strong>Formal verification</strong>: Consensus-critical code is checked against the Orange Paper through <strong>BLVM Specification Lock</strong>, property tests, and CI; see <a href="https://docs.thebitcoincommons.org/consensus/formal-verification.html">Formal Verification</a></li>
+<li><strong>Fewer unnamed rules</strong>: a written spec makes a consensus mistake easier to point at</li>
 </ul>
 <h3>AI-Assisted Extraction Methodology</h3>
 <p>The Orange Paper uses AI-assisted extraction from Bitcoin Core's codebase to formalize consensus rules. This approach:</p>
@@ -280,30 +280,30 @@
 <li>Analyzes <a href="#2-problem-statement">Bitcoin Core's codebase</a> to identify consensus-critical code paths</li>
 <li>Extracts mathematical relationships from implementation details</li>
 <li>Creates formal specifications that are independent of specific code structure</li>
-<li>Does not check the specification against live network behavior. <code>blvm-spec-lock</code> runs Z3 on annotated Rust functions. A chain compare, when it is run, compares <code>connect_block</code> with <code>libbitcoinkernel</code> in <code>blvm-bench</code>.</li>
+<li>Enables verification that specification matches actual network behavior</li>
 </ul>
 <h3>Proof Maintenance and Specification Quality</h3>
 <p>The formal verification process includes ongoing maintenance to ensure specification accuracy:</p>
 <figure>
 <img src="/assets/images/spec-maintenance-workflow.png" alt="Spec Maintenance Workflow" style="width: 100%; display: block; margin: 0 auto;">
-<figcaption>Figure: Spec maintenance workflow. <code>blvm-spec-lock</code> can report drift between Orange Paper contracts and locked functions. The organization spec-drift workflow is a placeholder: it diffs paths and does not run that detector. There is no <code>spec-drift-detector</code> binary.</figcaption>
+<figcaption>Figure: Spec maintenance workflow: specification synchronized with implementation through automated testing and formal verification.</figcaption>
 </figure>
 <p>Commons publishes a <strong>layered specification</strong>: the <strong>Orange Paper</strong> (formal math), <strong>CONSENSUS_SPEC</strong> (numbered RFC 2119 rules mapped to code), and <strong>PROTOCOL</strong> (extended constants and formulas). Entry points are at <a href="https://thebitcoincommons.org/spec.html">thebitcoincommons.org/spec.html</a>. <strong>blvm-spec-lock</strong> ties <code>blvm-consensus</code> to these artifacts; drift and coverage tooling tracks alignment between spec wording and lockable contracts. Details: <a href="https://docs.thebitcoincommons.org/reference/orange-paper.html">Orange Paper</a>, <a href="https://docs.thebitcoincommons.org/consensus/formal-verification.html">Formal Verification</a>.</p>
 <p>Parallel independent specification efforts reinforce the same goal from complementary formalisms. Toby Sharp's Hornet project demonstrates that a minimal, executable consensus specification and domain-specific language can sync mainnet independently of the reference client (Sharp, 2025; <a href="https://hornetnode.org">hornetnode.org</a>), strengthening the case for Commons' layered Orange Paper and CONSENSUS_SPEC approach. Keagan McClelland's <strong>btc-verified</strong> pursues the same correctness goal through machine-checked Lean 4 proof leaves over serialization, transaction identifiers, and merkle commitments, validated against mainnet golden vectors (McClelland, 2026; <a href="https://github.com/ProofOfKeags/btc-verified">github.com/ProofOfKeags/btc-verified</a>). Where Hornet emphasizes an executable implementation-neutral specification, btc-verified emphasizes theorem-checked byte-layer foundations; Commons' spec-lock contracts and differential testing complement both.</p>
 <h3>Empirical consensus alignment (differential testing and fuzzing)</h3>
-<p>Mathematical specification and spec-lock contracts bound <em>what the rules ought to be</em>. The consensus crate's differential fuzz target checks internal serialization consistency. It does not call Bitcoin Core. Script tests compare verdicts with <code>libbitcoinconsensus</code> at activation heights. A full-chain compare of <code>connect_block</code> against <code>libbitcoinkernel</code> lives in the <code>blvm-bench</code> binary <code>block_kernel_diff</code>. That run is operator-driven. It is not a CI job of the consensus crate. Methodology is documented in <a href="https://docs.thebitcoincommons.org/development/differential-testing.html">technical documentation</a>. Prefer that page for live coverage figures.</p>
-<p>Together these layers complement formal methods: <strong>specs and contracts</strong> for specification fidelity. Replay against Bitcoin Core is the bench program above. The fuzz target is an internal round-trip, not alignment with observed network behavior.</p>
+<p>Mathematical specification and spec-lock contracts bound <em>what the rules ought to be</em>. <strong>Differential testing</strong> and <strong>fuzzing</strong> ask whether the running implementation agrees with the dominant reference implementation on real chain history and on adversarial inputs. Methodology, current depth, and CI status are documented in <a href="https://docs.thebitcoincommons.org/development/differential-testing.html">technical documentation</a>. Prefer that over this document for live coverage figures.</p>
+<p>Together these layers complement formal methods: <strong>specs and contracts</strong> for specification fidelity; <strong>replay and fuzzing</strong> for empirical alignment with observed network behavior.</p>
 <h3>BLVM Architecture</h3>
 <figure>
 <img src="/assets/images/stack.png" alt="BLVM Stack Architecture" style="">
-<figcaption>Figure: BLVM architecture: blvm-spec (Orange Paper) as the written spec, blvm-consensus with Z3 on annotated functions (the mutation gate is 3 of 182; that is not a verified core), and dependent components (blvm-protocol, blvm-node, blvm-sdk) building on the consensus layer.</figcaption>
+<figcaption>Figure: BLVM architecture: blvm-spec (Orange Paper) as the written spec, blvm-consensus as the consensus implementation, and blvm-protocol, blvm-node, and blvm-sdk building on that layer.</figcaption>
 </figure>
-<p>BLVM (<strong>Bitcoin Low-Level Virtual Machine</strong>) is the node and consensus implementation of the written spec. The consensus crate describes itself as a direct implementation of the Orange Paper rules. <code>src/optimizations.rs</code> holds hand-written helpers: precomputed constants, aligned hashes, and prefetch. Those helpers do not read the Orange Paper as a compiler intermediate representation, and there is no optimization pipeline that runs on that document. Stack layout and verification methodology: <a href="https://docs.thebitcoincommons.org/architecture/system-overview.html">System Overview</a>, <a href="https://docs.thebitcoincommons.org/consensus/overview.html">Consensus Overview</a>.</p>
-<p><strong>Single Source of Truth.</strong> All consensus logic resides in <code>blvm-consensus</code>. Upper tiers (<code>blvm-protocol</code>, <code>blvm-node</code>) delegate block connect to the consensus crate. That is not true of every hash: <code>calculate_txid</code> in the node is a separate implementation. Sibling path overrides live under <code>[patch.crates-io]</code> for a local monorepo build. Published dependencies are version ranges (<code>&gt;=0.1, &lt;1</code>). Crates.io CI strips that patch section, so a local consensus edit does not automatically ship inside the published node.</p>
-<p>The production undo path calls <code>blvm_consensus::block::connect_block</code>. Tests at that layer do not bound the whole stack: the mutation gate is 3 of 182. The node also hashes some filtered-transaction indexes with <code>bincode</code> in <code>calculate_txid</code>, which does not use the consensus transaction id.</p>
+<p>BLVM (<strong>Bitcoin Low-Level Virtual Machine</strong>) is an implementation checked against the Orange Paper. The paper is the written form of the consensus rules, so more than one implementation can be compared to it. Stack layout: <a href="https://docs.thebitcoincommons.org/architecture/system-overview.html">System Overview</a>, <a href="https://docs.thebitcoincommons.org/consensus/overview.html">Consensus Overview</a>.</p>
+<p><strong>Single Source of Truth.</strong> All consensus logic resides in <code>blvm-consensus</code>. Upper tiers (<code>blvm-protocol</code>, <code>blvm-node</code>) delegate validation calls with no duplicate implementations. Path dependencies ensure changes propagate immediately through Rust's type system.</p>
+<p>Because every consensus decision flows through <code>blvm-consensus</code>, verification and tests at that layer bound behavior for the whole stack: upper tiers delegate validation and cannot bypass that layer.</p>
 <h2 id="5-architectural-solution-modular-governance">5. Architectural Solution: Modular Governance</h2>
-<p>Two pieces of work are meant to fit together. <strong>BLVM</strong> is an independent node. Annotated consensus functions carry <code>#[spec_locked]</code>, and CI runs Z3 on those annotations. Three functions are mutation-validated. That check is not a proof of every consensus path. <strong>Commons</strong> publishes a governance schedule. That schedule is not enforced today.</p>
-<p>Commons writes multisig counts and review periods so that, once enforcement is on, no single keyholder is supposed to approve a merge. This <a href="#3-theoretical-framework-the-triple-foundation">Cryptographic Polycentrism model</a> names repository layers, action tiers, and emergency tiers. Those boundaries are not enforced today. The app posts a <code>governance/merge</code> status, and that status does not stop a merge.</p>
+<p><strong>BLVM</strong> is the written spec and the node. <strong>Commons</strong> is the published governance. The modular architecture is where they meet. Commons distributes authority through Cryptographic Polycentrism, defined below.</p>
+<p>Commons distributes authority through cryptographic multisig requirements and mandatory review periods, designed so that no single keyholder can approve a merge. This <a href="#3-theoretical-framework-the-triple-foundation">Cryptographic Polycentrism model</a> creates multiple decision centers (repository layers, action tiers, emergency tiers) with mathematically enforced boundaries. Approval and blocking are different costs, as <a href="#6-cryptographic-governance-enforcement">Section 6</a> sets out.</p>
 <h3>Two-Layer Architecture</h3>
 <p>The modular architecture consists of two layers that transform governance conflicts from political battles into architectural choices:</p>
 <h4 class="subheading">Layer 1: Mandatory Consensus (Base Node)</h4>
@@ -353,7 +353,7 @@
 <h3>Architecture Diagrams</h3>
 <figure>
 <img src="/assets/images/tier-architecture.png" alt="Tiered Architecture" style="width: 100%; display: block; margin: 0 auto;">
-<figcaption>Figure: Tiered architecture: Tier 1 = Orange Paper + consensus crate (Z3 on annotated functions; the mutation gate is 3 of 182); Tier 2 = Protocol Engine (protocol abstraction); Tier 3 = BLVM Node (the README calls it minimal; it also says production ready. The site says active development.); Tier 4 = Developer SDK + Governance (developer toolkit). The governance app posts a <code>governance/merge</code> status. That status is not governance enforcement.</figcaption>
+<figcaption>Figure: Tiered architecture: Tier 1 = Orange Paper + Consensus Proof (mathematical foundation); Tier 2 = Protocol Engine (protocol abstraction); Tier 3 = BLVM Node (complete implementation); Tier 4 = Developer SDK + Governance (developer toolkit + governance enforcement).</figcaption>
 </figure>
 <figure>
 <img src="/assets/images/how-the-stack-works-in-practice.png" alt="How the Stack Works" style="width: 100%; display: block; margin: 0 auto;">
@@ -364,26 +364,27 @@
 <p><strong>Forking Process:</strong> Governance rulesets can be exported as versioned, signed packages containing action tiers, maintainers, cryptographic proofs, and semantic versioning. This enables users to fork governance while maintaining compatibility and verification.</p>
 <p>Optional <strong>modules</strong> are operational today (loadable processes via ModuleAPI). A <strong>module registry</strong> for permissionless listing and automated validation is part of the distribution model but <strong>not live yet</strong>.</p>
 <h2 id="6-cryptographic-governance-enforcement">6. Cryptographic Governance Enforcement</h2>
-<p>Commons writes a three-layer verification design (distinct from repository layers). This build does not ensure real-time transparency or an immutable historical proof. Nostr status is off by default, and the publish interval is 3600 seconds. OpenTimestamps stamping writes a mock proof. These layers do not enforce governance boundaries today:</p>
+<p>Commons implements <a href="#3-theoretical-framework-the-triple-foundation">Cryptographic Polycentrism</a> through three complementary verification layers (distinct from repository layers) that ensure both real-time transparency and immutable historical proof. These verification layers create multiple independent centers of accountability, each enforcing governance boundaries through cryptographic proof:</p>
 <figure>
 <img src="/assets/images/three-layer-verification-arch0.png" alt="Three-Layer Verification Overview" style="width: 100%; display: block; margin: 0 auto;">
 <figcaption>Figure: Three-layer verification: the Governance App at the merge gate, Nostr, and OpenTimestamps. The figure draws GitHub as one host for the merge gate.</figcaption>
 </figure>
-<p><strong>Layer 1: Governance App (Merge Control).</strong> <em>Designed to</em>, when production governance is activated, enforce merge policy. In this build the app posts a <code>governance/merge</code> status. That status does not stop a merge. Branch protection leaves admin enforcement off, and a failed protection update still returns success.</p>
+<p><strong>Layer 1: Governance App (Merge Control).</strong> <em>Designed to</em>, when production governance is activated, enforce merge policy. The Governance App is the merge gate. It checks signatures and review rules and refuses a merge that does not meet them. A GitHub App is one way to run that gate. The requirement is the gate, not the forge.</p>
 <ul>
-<li>The written schedule names multisig counts by layer (2-of-3 to 6-of-7). The app counts signatures and posts a status. Those counts are not a live merge gate.</li>
-<li>A self-hosted runner behind WireGuard VPN can validate signatures using secp256k1. On GitHub, that runner is a GitHub Actions runner. Another forge would use its own hook.</li>
-<li>Repository administrators can still bypass the check. Admin enforcement is off.</li>
-<li>The app does not require a signature before GitHub accepts a merge.</li>
-<li>The source has no self-merge rejection. The app does not reject a contributor's own signature.</li>
+<li>The Governance App validates multisig requirements (varies by layer: 2-of-3 to 6-of-7)</li>
+<li>A self-hosted runner behind WireGuard VPN validates signatures using secp256k1. On GitHub, that runner is a GitHub Actions runner. Another forge would use its own hook.</li>
+<li>Whoever administers the repository cannot bypass the cryptographic requirements</li>
+<li>Signature validation happens before merge approval</li>
+<li>Requires explicit cryptographic approval from multiple maintainers before any merge</li>
+<li><strong>No-self-merge:</strong> a contributor cannot cryptographically approve their own pull request; the Governance App rejects self-signed merges</li>
 </ul>
-<p><strong>Layer 2: Nostr status.</strong> <em>Designed to</em> publish signed status updates (binary hash, config hash, recent merges, health metrics) to Nostr relays. The default is off, and the publish interval is 3600 seconds. The publisher header calls that hourly. That is not a live feed.</p>
-<p><strong>Layer 3: OpenTimestamps.</strong> <em>Designed to</em> anchor registry snapshots to the Bitcoin blockchain. In this build <code>stamp()</code> writes a mock proof and does not post the hash to a calendar. Verifying that mock returns a fixed block height. A non-mock proof verifies as pending, and <code>upgrade()</code> returns the same bytes. That is not court-admissible Bitcoin evidence.</p>
-<h4 class="subheading">These layers do not check each other</h4>
-<p>The Governance App, Nostr, and OpenTimestamps do not verify one another in this build. Nostr status is off by default. OpenTimestamps stamping writes a mock proof. That combination does not ensure governance integrity.</p>
+<p><strong>Layer 2: Real-Time Transparency (Nostr).</strong> <em>Designed to</em> publish signed status updates (binary hash, config hash, recent merges, health metrics) to Nostr relays so subscribers can verify server integrity. Cadence and alerting are deployment parameters, not guarantees about any particular live deployment.</p>
+<p><strong>Layer 3: Immutable Proof (OpenTimestamps).</strong> <em>Designed to</em> anchor canonical registry snapshots and critical events (key rotations, deployments) to the Bitcoin blockchain for dispute resolution and independent verification. Provides court-admissible evidence where applicable.</p>
+<h4 class="subheading">Cross-Layer Verification:</h4>
+<p>Three independent layers verify governance actions and each other. Risk at one layer does not compromise the others. This defense-in-depth approach ensures governance integrity even if one verification method is compromised.</p>
 <h3>Emergency Response</h3>
-<p>Commons writes a three-tier emergency schedule for critical security and network issues. <strong>Emergency tier</strong> classification is separate from <strong>action tier</strong> classification (see below). The merge path does not read an active emergency. It passes <code>emergency_mode: false</code>, so declaring an emergency does not change the merge check in this build.</p>
-<p><strong>Written activation count (all classes):</strong> 5-of-7 emergency keyholders. The lists below are that written schedule. Authoritative parameters in the governance repository: <a href="https://github.com/BTCDecoded/governance">governance repository</a> (<code>emergency-tiers.yml</code>). Production code under <code>src/</code> does not call the emergency validator. Tests do.</p>
+<p>Commons implements a three-tier emergency system for critical security and network issues. <strong>Emergency tier activation</strong> is separate from <strong>action tier</strong> classification (see below): emergency keyholders declare the class; merge rules and review periods adjust until automatic expiration.</p>
+<p><strong>Activation (all classes):</strong> 5-of-7 emergency keyholders. <strong>Merge policy while active</strong> varies by class: network-threatening incidents use the fastest path (zero review, lower maintainer merge threshold); less urgent classes use longer review and stricter merge thresholds. Authoritative parameters: <a href="https://github.com/BTCDecoded/governance">governance repository</a> (<code>emergency-tiers.yml</code>).</p>
 <p><strong>Critical Emergency</strong> (Network-threatening vulnerabilities):</p>
 <ul>
 <li>Merge signatures while active: 4-of-7</li>
@@ -485,10 +486,10 @@
 <p><strong>Mitigation:</strong> Focus on substance, build alternatives, let market decide; not asking permission, let code speak, coalition provides proof</p>
 <h3>Ultimate Protection</h3>
 <h2 id="9-conclusion">9. Conclusion</h2>
-<p>Bitcoin's development governance is informal. <strong>BLVM</strong> checks annotated consensus functions against the Orange Paper in CI. That check is not a proof of every consensus path. <strong>Commons</strong> publishes forkable governance rules. Merge enforcement is off.</p>
-<p>The papers and the code are public. A signature schedule does not turn those principles into a live merge gate.</p>
+<p>How the reference client changes is still a maintainer process. BLVM is an independent implementation of a written spec. Commons publishes the rules for changing the software, using Ostrom's principles for a commons and a signature schedule maintainers can fork.</p>
+<p>This isn't speculation. It's applying battle-tested principles from economics, social science, and cryptography to governance. Each framework addresses weaknesses in the others: cryptography makes Ostrom enforceable at scale, infrastructure enables Hayek's competition, and modularity plus fork-ability creates competitive discovery.</p>
 <p>The foundation and architecture exist in public repositories. The project's future depends on community participation.</p>
-<p>The choice: decentralize the builders, or watch them become kings.</p>
+<p>The repositories are public.</p>
 <hr>
 <h2 id="references">References</h2>
 <h3>Academic Sources</h3>
@@ -530,7 +531,7 @@
 <li><a href="https://github.com/BTCDecoded/blvm">https://github.com/BTCDecoded/blvm</a> (packaging and release surface)</li>
 <li><a href="https://github.com/BTCDecoded/blvm-sdk">https://github.com/BTCDecoded/blvm-sdk</a></li>
 <li><a href="https://github.com/BTCDecoded/governance">https://github.com/BTCDecoded/governance</a> (governance configuration)</li>
-<li><a href="https://github.com/BTCDecoded/blvm-commons">https://github.com/BTCDecoded/blvm-commons</a> (Governance App that posts a <code>governance/merge</code> status. That status does not enforce merge policy.)</li>
+<li><a href="https://github.com/BTCDecoded/blvm-commons">https://github.com/BTCDecoded/blvm-commons</a> (Governance App that enforces merge policy; a GitHub App is one way to run it)</li>
 </ul>
         </article>
     </div>

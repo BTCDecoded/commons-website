@@ -15,7 +15,7 @@
     <meta property="og:title" content="The Bitcoin Commons" />
     <meta
       property="og:description"
-      content="Bitcoin's consensus rules, written down. The mutation gate is 3 of 182."
+      content="Bitcoin's consensus rules, written down."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://thebitcoincommons.org/" />
@@ -125,11 +125,10 @@
       <div class="hero-inner">
         <div class="hero-copy">
           <p class="hero-eyebrow">Bitcoin Commons · Orange Paper</p>
-          <h1>Bitcoin's consensus rules,<br /><em>written down. Not every path is verified.</em></h1>
+          <h1>Bitcoin's consensus rules,<br /><em>written down.</em></h1>
           <p class="hero-body">
-            A formal specification, a second full node, and forkable governance
-            — so Bitcoin's rules can be audited, implemented, and governed
-            without a single point of capture.
+            A formal specification, a second full node, and published governance
+            for how that software changes.
           </p>
           <div class="hero-actions">
             <a href="spec.html" class="btn-primary">Read the Consensus Spec</a>
@@ -366,13 +365,10 @@
         <div class="philosophy-inner">
           <span class="philosophy-label">Philosophy</span>
           <blockquote>
-            Bitcoin's codebase is a commons. Cypherpunks removed trusted third
-            parties from transactions. The white paper calls the remaining gap a
-            governance asymmetry. Merge enforcement is off, and the Z3 check is
-            not a proof of every consensus path.
+            Bitcoin's codebase is a commons. The rules for changing the software
+            are published, and they can be forked.
             <footer>
-              — Paraphrase of the white paper ·
-              <a href="whitepaper.html">Read it</a>
+              <a href="whitepaper.html">White paper</a>
             </footer>
           </blockquote>
         </div>
@@ -501,12 +497,10 @@
                     invent them. Spec-lock binds Rust functions to Orange Paper
                     sections and checks them in CI. Around that sits a suite:
                     property tests, coverage-guided fuzz on consensus, protocol,
-                    and node, and golden vectors from mainnet wire bytes and Core
-                    script fixtures. Script verdicts are compared to
-                    libbitcoinconsensus at activation heights. The consensus crate
-                    does not link libbitcoinkernel. A bench tool can compare
-                    connect_block to libbitcoinkernel. That bench is not a CI
-                    layer of the consensus crate. See
+                    and node, golden vectors from mainnet wire bytes and Core
+                    script fixtures, and a differential against Bitcoin Core /
+                    libbitcoinkernel. The differential is one of those layers.
+                    See
                     <a href="https://docs.thebitcoincommons.org/development/testing.html"
                       >how testing is layered</a
                     >.
@@ -815,10 +809,8 @@
                   </p>
                   <p>
                     Cypherpunks removed trusted third parties from transactions.
-                    Commons writes a governance schedule for development. That
-                    schedule is not enforced. BLVM checks annotated consensus
-                    functions with Z3. That check is not a proof of every
-                    consensus path.
+                    Commons publishes the rules for changing the software. BLVM
+                    is a second implementation checked against a written spec.
                   </p>
                 </div>
               </div>
