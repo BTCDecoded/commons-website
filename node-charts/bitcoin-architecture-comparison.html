@@ -121,7 +121,7 @@
                 </div>
                 <div class="metric">
                     <span class="metric-label">Governance:</span>
-                    <span class="metric-value">Open contributor model. Maintainers merge pull requests and run the release cycle in doc/release-process.md. That is not a cryptographic merge gate.</span>
+                    <span class="metric-value">Informal social</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Funding:</span>
@@ -129,15 +129,15 @@
                 </div>
                 <div class="metric">
                     <span class="metric-label">Consensus Bugs:</span>
-                    <span class="metric-value">CVE-2018-17144, a duplicate-input crash, is recorded under Consensus in the 0.16.3 notes. Those notes do not say bugs are embedded throughout.</span>
+                    <span class="metric-value">Embedded throughout</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Verification:</span>
-                    <span class="metric-value">Not limited. src/test is about 83,000 lines. test/functional is about 80,000 lines in 307 files.</span>
+                    <span class="metric-value">Limited testing</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Maintenance:</span>
-                    <span class="metric-value">Written release process in doc/release-process.md. CONTRIBUTING.md names maintainers and peer review.</span>
+                    <span class="metric-value">No systematic model</span>
                 </div>
             </div>
             
@@ -145,31 +145,31 @@
                 <div class="card-title">Commons Architecture</div>
                 <div class="metric">
                     <span class="metric-label">Codebase Size:</span>
-                    <span class="metric-value">Not ~50k. blvm-node src is about 212,000 lines. blvm-consensus src is about 48,000.</span>
+                    <span class="metric-value">Modular, ~50K LOC</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Maintainers:</span>
-                    <span class="metric-value">Placeholder names and test keys. No production roster.</span>
+                    <span class="metric-value">Distributed teams</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Governance:</span>
-                    <span class="metric-value">Published rules. Merge enforcement is off.</span>
+                    <span class="metric-value">Cryptographic enforcement</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Funding:</span>
-                    <span class="metric-value">Optional pool-level supplement. No 1% fee in the stratum module.</span>
+                    <span class="metric-value">Merge mining (1% fee)</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Consensus Bugs:</span>
-                    <span class="metric-value">Not ruled out. The mutation gate is 3 of 182.</span>
+                    <span class="metric-value">Architecturally impossible</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Verification:</span>
-                    <span class="metric-value">Z3 on annotated functions. The mutation gate is 3 of 182.</span>
+                    <span class="metric-value">Formal verification</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Maintenance:</span>
-                    <span class="metric-value">No maintainer-payment module. Nostr zaps default to off.</span>
+                    <span class="metric-value">Economic incentives</span>
                 </div>
             </div>
         </div>
@@ -183,10 +183,10 @@
             <ul>
                 <li><strong>Modular Design:</strong> Clean separation of concerns vs monolithic codebase</li>
                 <li><strong>Mathematical Specification:</strong> Orange Paper enables alternative implementations</li>
-                <li><strong>Economic Sustainability:</strong> Optional merge mining does not fund the layers. The stratum module has no 1% fee.</li>
-                <li><strong>Governance:</strong> A written signature schedule. Merge enforcement is off, and admin enforcement is off.</li>
-                <li><strong>Formal Verification:</strong> Z3 checks annotated functions. That is not a mathematical proof of every consensus path. The mutation gate is 3 of 182.</li>
-                <li><strong>Distributed Maintenance:</strong> Fork adoption can record an economic-weight percentage. That is not a payment to maintainers. Nostr is off by default, and the zap address is empty.</li>
+                <li><strong>Economic Sustainability:</strong> Self-funding through merge mining vs donation dependency</li>
+                <li><strong>Governance Enforcement:</strong> Cryptographic signatures vs social pressure</li>
+                <li><strong>Formal Verification:</strong> Mathematical proof of correctness vs "seems right"</li>
+                <li><strong>Distributed Maintenance:</strong> Economic incentives vs volunteer dependency</li>
             </ul>
         </div>
     </div>
