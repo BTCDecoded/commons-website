@@ -243,8 +243,8 @@
             <div class="marketplace-header">
               <h3>Governance Fork Marketplace</h3>
               <p>
-                Discover forks created by the community. See adoption stats,
-                compare features, and fork with one click.
+                Four starter templates from the governance file. Not a census
+                of community forks, and not adoption data.
               </p>
             </div>
 
@@ -256,11 +256,9 @@
                 class="search-input"
               />
               <select id="fork-sort" class="sort-select">
-                <option value="popular">Most Popular</option>
+                <option value="popular">Default first</option>
                 <option value="recent">Recently Created</option>
-                <option value="adoption">Highest Adoption</option>
                 <option value="conservative">Most Conservative</option>
-                <option value="progressive">Most Progressive</option>
               </select>
             </div>
 
@@ -2252,22 +2250,14 @@ Loading preview...</pre
           let html = "";
           forks.forEach((fork) => {
             const isDefault = fork.id === "default";
-            const isTemplate = fork.created_by === "BTCDecoded" && !isDefault;
+            const isTemplate = fork.created_by === "BTCDecoded";
             const cardClass = isDefault
               ? "featured"
               : isTemplate
                 ? "template"
                 : "community";
-            const badgeClass = isDefault
-              ? "default"
-              : isTemplate
-                ? "template"
-                : "community";
-            const badgeText = isDefault
-              ? "Default"
-              : isTemplate
-                ? "Template"
-                : "Community";
+            const badgeClass = isTemplate ? "template" : "community";
+            const badgeText = isTemplate ? "Template" : "Community";
 
             // Clean up name - remove "Governance" and "Default"
             let displayName = fork.name || fork.id;
@@ -2285,16 +2275,6 @@ Loading preview...</pre
                                 ${fork.verified ? '<span class="fork-badge verified">✓ Verified</span>' : ""}
                             </div>
                             <p class="fork-description">${fork.description || "No description available"}</p>
-                            <div class="fork-stats">
-                                <div class="stat">
-                                    <span class="stat-label">Adoption</span>
-                                    <span class="stat-value">${isDefault ? "100%" : "0%"}</span>
-                                </div>
-                                <div class="stat">
-                                    <span class="stat-label">Nodes</span>
-                                    <span class="stat-value">${isDefault ? "All" : "0"}</span>
-                                </div>
-                            </div>
                             <div class="fork-features">
                                 ${fork.tier1 ? `<span class="feature-tag">Tier 1: ${fork.tier1}</span>` : ""}
                                 ${fork.tier2 ? `<span class="feature-tag">Tier 2: ${fork.tier2}</span>` : ""}
@@ -2869,7 +2849,7 @@ Loading preview...</pre
                             
                             <div class="deployment-step">
                                 <h4>2. Edit fork-registry.yml</h4>
-                                <p>Add this entry to <code>governance/fork-registry.yml</code>:</p>
+                                <p>Add this entry to <code>fork-registry.yml</code> at the repository root:</p>
                                 <div class="code-block" style="position: relative;">
                                     <pre style="margin: 0; padding: 1rem; background: var(--bg-secondary); border-radius: 4px; overflow-x: auto; font-size: 0.85rem;"><code>${yamlEntry}</code></pre>
                                     <button class="copy-btn" style="position: absolute; top: 0.5rem; right: 0.5rem;" data-copy="${yamlEntry.replace(/`/g, "\\`")}">Copy</button>
@@ -2880,22 +2860,23 @@ Loading preview...</pre
                             <div class="deployment-step">
                                 <h4>3. Commit and push</h4>
                                 <div class="code-block">
-                                    <code>git add governance/fork-registry.yml
+                                    <code>git checkout -b add-my-fork
+git add fork-registry.yml
 git commit -m "Add my fork: ${rulesetName}"
-git push origin main</code>
-                                    <button class="copy-btn" data-copy="git add governance/fork-registry.yml\ngit commit -m \"Add my fork: ${rulesetName}\"\ngit push origin main">Copy</button>
+git push -u origin HEAD</code>
+                                    <button class="copy-btn" data-copy="git checkout -b add-my-fork\ngit add fork-registry.yml\ngit commit -m \"Add my fork: ${rulesetName}\"\ngit push -u origin HEAD">Copy</button>
                                 </div>
                             </div>
                             
                             <div class="deployment-step">
                                 <h4>4. Create a pull request</h4>
-                                <p>Go to <a href="https://github.com/BTCDecoded/governance/compare" target="_blank">GitHub's compare page</a> and create a PR from your fork.</p>
-                                <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.9rem;">Automated validation will check your entry. If it passes, your PR will be merged automatically!</p>
+                                <p>Open a pull request into <a href="https://github.com/BTCDecoded/governance/compare" target="_blank">BTCDecoded/governance</a>. Do not push it to <code>main</code>.</p>
+                                <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.9rem;">This site does not validate the entry, and nothing here merges the pull request. Cryptographic merge enforcement is off.</p>
                             </div>
                         </div>
                         
                         <div class="deployment-note" style="margin-top: 1.5rem; padding: 1rem; background-color: var(--bg-secondary); border-radius: 6px; border-left: 3px solid var(--bitcoin-orange);">
-                            <p style="margin: 0;"><strong>💡 Remember:</strong> This is a permissionless, self-service registry. No approval is needed; just follow the format and automated validation will handle the rest.</p>
+                            <p style="margin: 0;"><strong>Remember:</strong> These four entries are templates. The file is not a live registry, and a pull request is a proposal. The designer is not a live gate.</p>
                         </div>
                         
                         <div class="deployment-actions" style="margin-top: 1.5rem; display: flex; gap: 1rem;">
