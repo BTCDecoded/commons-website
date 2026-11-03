@@ -18,7 +18,7 @@
     <meta name="twitter:title" content="The Bitcoin Commons - White Paper">
     <meta name="twitter:description" content="Design argument for forkable governance and a cryptographic merge gate.">
     <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
-    <link rel="stylesheet" href="style.css?v=21" />
+    <link rel="stylesheet" href="style.css?v=22" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -297,14 +297,24 @@
 </ul>
 <p><strong>What This Provides.</strong> Tools for enforcing rules without trust, proof decentralized systems work at scale, and a model for implementing Hayek's principles digitally.</p>
 <h3>The Triple Synthesis</h3>
-<p>The three frameworks address each other's weaknesses:</p>
-<p><strong>Ostrom's Challenge.</strong> Commons governance historically relied on social pressure, vulnerable to capture at scale.</p>
-<p><strong>Bitcoin's Solution.</strong> Cryptographic enforcement replaces social pressure with mathematical proof.</p>
-<p><strong>Hayek's Challenge.</strong> Competition discovers optimal solutions but requires actual alternatives to compete.</p>
-<p><strong>Ostrom's Solution.</strong> Provides institutional framework for multiple governance models to coexist.</p>
-<p><strong>Bitcoin's Challenge.</strong> Solved technical consensus but not social governance.</p>
-<p><strong>Hayek + Ostrom Solution.</strong> Competitive discovery of governance models using proven institutional principles.</p>
-<p><strong>The Result.</strong> Governance that is proven (Ostrom's research), evolving (Hayek's competition), and enforceable (Bitcoin's cryptography).</p>
+<p>Each framework covers a hole in the others. Ostrom's commons depended on social pressure, and Bitcoin replaces that pressure with a check anyone can verify. Hayek's competition needs real alternatives, and Ostrom's institutions are how more than one model can exist under rules. Bitcoin settled agreement on the chain and left agreement on the code informal. Hayek's discovery and Ostrom's rules are the design for that layer. The result is a design that is proven, evolving, and enforceable. Enforcement is not on.</p>
+<figure class="wp-chart">
+<div class="chart-heading">Three frameworks. Each one covers a hole in the others.</div>
+<div class="synth" role="img" aria-label="Ostrom supplies proven institutions, Hayek supplies discovery, and Bitcoin supplies enforcement. Each covers a weakness in the others. The result is proven, evolving, and enforceable.">
+<div class="synth-sources">
+<div class="synth-card"><span class="synth-kicker">Ostrom</span><span class="synth-title">Proven institutions</span><span class="synth-line">Boundaries, monitoring, sanctions, and a way to leave.</span></div>
+<div class="synth-card"><span class="synth-kicker">Hayek</span><span class="synth-title">Discovery</span><span class="synth-line">No planner holds the knowledge. Competition is how it surfaces.</span></div>
+<div class="synth-card synth-card-mark"><span class="synth-kicker">Bitcoin</span><span class="synth-title">Enforcement</span><span class="synth-line">A rule can be checked without trusting the person who states it.</span></div>
+</div>
+<div class="synth-repairs">
+<div class="synth-repair"><span class="synth-from">Social pressure does not hold at this scale.</span><span class="synth-join">Ostrom</span><span class="synth-to">A cryptographic check</span></div>
+<div class="synth-repair"><span class="synth-from">Competition needs somewhere to compete.</span><span class="synth-join">Hayek</span><span class="synth-to">Institutions for more than one model</span></div>
+<div class="synth-repair"><span class="synth-from">The chain is settled. The code is not.</span><span class="synth-join">Bitcoin</span><span class="synth-to">Discovery under written rules</span></div>
+</div>
+<div class="synth-result" aria-hidden="true"><span>Proven</span><span>Evolving</span><span>Enforceable</span></div>
+</div>
+<figcaption>The repair runs from the named framework to the one that covers it. Enforceable here is the design. The merge gate is not on.</figcaption>
+</figure>
 <h3>Cryptographic Polycentrism: The Governance Model</h3>
 <p>Bitcoin Commons implements <strong>Cryptographic Polycentrism</strong>, a governance model that creates multiple centers of power with clear boundaries, enforced through cryptography rather than social pressure. This approach applies Ostrom's proven principles using Bitcoin's cryptographic enforcement tools, enabling competitive discovery through Hayekian market mechanisms while maintaining Ostrom's institutional structure.</p>
 <p>Cryptographic Polycentrism differs from traditional polycentrism (multiple decision centers) by using cryptographic enforcement to make boundaries mathematically verifiable rather than socially negotiated. Where traditional governance relies on trust and reputation, Cryptographic Polycentrism uses multisig thresholds, mandatory review periods, and <a href="#6-cryptographic-governance-enforcement">three-layer verification providing real-time transparency and immutable proof</a> to create boundaries designed so that repository administrators cannot bypass them once production governance is on.</p>
@@ -721,6 +731,54 @@
 <figcaption>Protocol-layer grants only. Bitcoin is about $8.4 million in 2023 on about a $2 trillion cap. Ethereum is about $50 million in 2024 on about a $400 billion cap. Snapshots, not a live dashboard.</figcaption>
 </figure>
 <p><em>The funding and market-cap figures are <strong>snapshots</strong> from the cited work (2023 funding year; market cap at the time of that analysis). They illustrate scale mismatch; they are not live dashboards.</em></p>
+<p>In raw dollars, Bitcoin Core's grant year is not the smallest budget in open source. It is larger than the organizations that keep several widely used projects running, and smaller than a protocol treasury's development line or the Ethereum figure above.</p>
+<figure class="wp-chart">
+<div class="chart-heading">A year of stewardship, in the cited snapshot</div>
+<div class="intensity-row">
+<span class="intensity-name">Apache<span class="funnel-sub">FY2024 foundation revenue</span></span>
+<div class="intensity-wrap">
+<div class="intensity-track" aria-hidden="true"><span class="intensity-fill intensity-alt" style="width:4.8%"></span></div>
+<span class="intensity-value">$2.4M</span>
+</div>
+</div>
+<div class="intensity-row">
+<span class="intensity-name">Python<span class="funnel-sub">2024 foundation revenue</span></span>
+<div class="intensity-wrap">
+<div class="intensity-track" aria-hidden="true"><span class="intensity-fill intensity-alt" style="width:8.2%"></span></div>
+<span class="intensity-value">$4.1M</span>
+</div>
+</div>
+<div class="intensity-row">
+<span class="intensity-name">Rust<span class="funnel-sub">2024 foundation revenue</span></span>
+<div class="intensity-wrap">
+<div class="intensity-track" aria-hidden="true"><span class="intensity-fill intensity-alt" style="width:8.6%"></span></div>
+<span class="intensity-value">$4.3M</span>
+</div>
+</div>
+<div class="intensity-row">
+<span class="intensity-name">Bitcoin Core<span class="funnel-sub">2023 development grants</span></span>
+<div class="intensity-wrap">
+<div class="intensity-track" aria-hidden="true"><span class="intensity-fill" style="width:16.8%"></span></div>
+<span class="intensity-value">$8.4M</span>
+</div>
+</div>
+<div class="intensity-row">
+<span class="intensity-name">Zcash<span class="funnel-sub">2024 foundation expenses</span></span>
+<div class="intensity-wrap">
+<div class="intensity-track" aria-hidden="true"><span class="intensity-fill intensity-alt" style="width:16%"></span></div>
+<span class="intensity-value">$8.0M</span>
+</div>
+</div>
+<div class="intensity-row">
+<span class="intensity-name">Ethereum<span class="funnel-sub">2024 protocol funding</span></span>
+<div class="intensity-wrap">
+<div class="intensity-track" aria-hidden="true"><span class="intensity-fill intensity-alt" style="width:100%"></span></div>
+<span class="intensity-value">~$50M</span>
+</div>
+</div>
+<figcaption>Different objects, same order of magnitude question. Apache, Python, and Rust are foundation revenue. Bitcoin is grants to Core development. Zcash is the foundation's total expenses. Ethereum is the protocol-funding figure in the chart above. Bar length is share of $50 million.</figcaption>
+</figure>
+<p>The Apache Software Foundation reported about $2.4 million of revenue in FY2024. The Python Software Foundation reported about $4.1 million of revenue in 2024. The Rust Foundation reported about $4.3 million of revenue in 2024, and about $413,000 of that went out as grants to maintainers. The Zcash Foundation's 2024 expenses were about $8.0 million: about $1.0 million of protocol work and about $5.1 million of community grants. Its block-reward development fund ended at the November 2024 halving. Polkadot's 2024 treasury report counts about $32 million of development spending, of which about $6.7 million was the protocol and SDK. The same report counts about $133 million of treasury spending in total, mostly outreach and business development, so that larger number is not a protocol budget. The Linux Foundation reported about $221 million of revenue in 2024 for the whole foundation. That figure covers many projects, so it is not a kernel budget and it is not on the chart.</p>
 <h3>Self-Sustaining Revenue Models</h3>
 <p>Bitcoin Commons is built to fund operations through optional modules, which are operational today, reducing reliance on grants and donations. Sustainability is <strong>multi-channel</strong>: module revenue, registry-based distribution (when the registry is live), Lightning zaps, and optional mining-side revenue; none is assumed to carry the project alone.</p>
 <p><strong>Module registry and distribution:</strong> Planned permissionless discovery, quality signals, and developer alignment with project revenue; <strong>not live yet</strong>.</p>
@@ -754,6 +812,12 @@
 <li>Hayek, F. A. (1945). The Use of Knowledge in Society. <em>American Economic Review</em>, 35(4), 519-530.</li>
 <li>De Filippi, P., & Loveluck, B. (2016). The Invisible Politics of Bitcoin: Governance Crisis of a Decentralized Infrastructure. <em>Internet Policy Review</em>, 5(3).</li>
 <li>Hough, E. (2025). "Funding the Peer-to-Peer Ethos: A Network Analysis Proposal of Bitcoin's Technical & Social Collectives." Unpublished research proposal, INFO 4360: Communication Networks and Social Capital, Cornell University.</li>
+<li>Apache Software Foundation. FY2024 Annual Report. <a href="https://www.apache.org/foundation/docs/FY2024AnnualReport.pdf">https://www.apache.org/foundation/docs/FY2024AnnualReport.pdf</a></li>
+<li>Python Software Foundation. Form 990, fiscal year ending December 2024. ProPublica Nonprofit Explorer.</li>
+<li>Rust Foundation. Form 990, year ending December 31, 2024. <a href="https://rustfoundation.org/wp-content/uploads/2025/10/form-990-2024.pdf">https://rustfoundation.org/wp-content/uploads/2025/10/form-990-2024.pdf</a></li>
+<li>Zcash Foundation. Financial statements for the year ended December 31, 2024. <a href="https://zfnd.org/wp-content/uploads/2025/11/ZCash-24-FS-Final.pdf">https://zfnd.org/wp-content/uploads/2025/11/ZCash-24-FS-Final.pdf</a></li>
+<li>Polkadot Treasury. 2024 Polkadot Treasury Report. <a href="https://forum.polkadot.network/t/2024-polkadot-treasury-report/11658">https://forum.polkadot.network/t/2024-polkadot-treasury-report/11658</a></li>
+<li>Linux Foundation. Form 990, fiscal year ending December 2024. Revenue about $221 million. ProPublica Nonprofit Explorer.</li>
 <li>Uzzi, B. (1997). Social Structure and Competition in Interfirm Networks: The Paradox of Embeddedness. <em>Administrative Science Quarterly</em>, 42(1), 35-67. https://doi.org/10.2307/2393808</li>
 <li>Arrow, K. J. (1951). <em>Social Choice and Individual Values</em>. Wiley.</li>
 <li>Gibbard, A. (1973). Manipulation of Voting Schemes: A General Result. <em>Econometrica</em>, 41(4), 587-601.</li>
