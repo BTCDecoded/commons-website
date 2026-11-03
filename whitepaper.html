@@ -171,7 +171,7 @@
 </ul>
 <h2 id="2-problem-statement">2. Problem Statement</h2>
 <h3>Technical Reality</h3>
-<p>Bitcoin's consensus rules are embedded in hundreds of thousands of lines of reference-client C++ without a canonical mathematical specification the ecosystem standardizes on. In Core 32.1 the rules that decide whether a block or transaction is valid are 10,122 lines, 7% of 151,004 lines of implementation. The same five merge keys gate the other 93%: the code that applies and relays those rules, and the wallet, interface, and network code. The dominant reference implementation carries enormous practical weight over how the network evolves. In the 2025 to mid-2026 window, about 77% of reachable nodes ran Bitcoin Core and about 22.5% ran Knots. Knots shares about 95% of that codebase, so roughly 98% of those nodes ran one implementation lineage. Safe independent implementations and systematic verification remain exceedingly difficult under reference-client-as-spec; Commons publishes layered specifications to address that gap.</p>
+<p>Bitcoin's consensus rules are embedded in hundreds of thousands of lines of reference-client C++ without a canonical mathematical specification the ecosystem standardizes on. In Core 32.1 the rules that decide whether a block or transaction is valid are 10,122 lines, 7% of 151,004 lines of implementation. The same five merge keys gate the other 93%: the code that applies and relays those rules, and the wallet, interface, and network code. The dominant reference implementation carries enormous practical weight over how the network evolves. On November 3, 2026, reachable crawls of the Bitcoin network showed about 89% running Bitcoin Core and about 10% running Knots, down from about 22.5% Knots in the 2025 to mid-2026 window. Knots still shares about 95% of that codebase, so about 99% of those nodes ran one implementation lineage. The separate BLAKE2b proof-of-work chain is not in this count. Safe independent implementations and systematic verification remain exceedingly difficult under reference-client-as-spec; Commons publishes layered specifications to address that gap.</p>
 <figure class="wp-chart wp-chart-wide">
 <div class="chart-heading">The rules are 7% of the code. Five merge keys gate the other 93% too.</div>
 <div class="stackbar" role="img" aria-label="Consensus rules are 7 percent. Code that applies and relays them is 13 percent. Wallet, interface, network, and RPC are 80 percent. Five merge keys gate all of it.">
@@ -188,22 +188,22 @@
 <figcaption>Bitcoin Core 32.1 implementation code, 151,004 lines. Excludes 154,273 lines of tests.</figcaption>
 </figure>
 <figure class="wp-chart">
-<div class="chart-heading">Effective Core codebase share on reachable nodes (2025 to mid-2026)</div>
-<div class="stackbar" role="img" aria-label="About 98 percent of reachable nodes run Core lineage code">
-<span class="stack-seg stack-major" style="width:77%"></span>
-<span class="stack-seg stack-shared" style="width:21.4%"></span>
-<span class="stack-seg stack-minor" style="width:1.6%"></span>
+<div class="chart-heading">Effective Core codebase share on reachable Bitcoin nodes, November 3, 2026</div>
+<div class="stackbar" role="img" aria-label="About 99 percent of reachable Bitcoin nodes run Core lineage code. Knots is about 10 percent and is striped because it is still mostly Core code.">
+<span class="stack-seg stack-major" style="width:89.3%"></span>
+<span class="stack-seg stack-shared" style="width:10.4%"></span>
+<span class="stack-seg stack-minor" style="width:0.3%"></span>
 </div>
 <div class="stackbar-legend">
-<span><i class="swatch swatch-major"></i>Bitcoin Core</span>
-<span><i class="swatch swatch-shared"></i>Knots, about 95% Core code</span>
-<span><i class="swatch swatch-minor"></i>Everything else</span>
+<span><i class="swatch swatch-major"></i>Bitcoin Core, 89.3%</span>
+<span><i class="swatch swatch-shared"></i>Knots, 10.4%, about 95% Core code</span>
+<span><i class="swatch swatch-minor"></i>Everything else, 0.3%</span>
 </div>
 <dl class="chart-stats">
-<div><dt>Node split</dt><dd>77% Core · 22.5% Knots</dd></div>
-<div><dt>Same lineage</dt><dd>~98%</dd></div>
+<div><dt>Node split</dt><dd>89.3% Core · 10.4% Knots</dd></div>
+<div><dt>Same lineage</dt><dd>~99%</dd></div>
 </dl>
-<figcaption>77% plus 22.5% times 95% shared code is about 98%. A policy fork can share the chain and still be the same codebase.</figcaption>
+<figcaption>89.3% plus 10.4% times 95% shared code is about 99%. Reachable Bitcoin nodes on November 3, 2026. The BLAKE2b chain is not included. A policy fork can share this chain and still be the same codebase.</figcaption>
 </figure>
 <p>Items with broad agreement have still waited for years. Wallet and node separation, UTXO set commitments, and networking upgrades are in that set. The stall is structural.</p>
 <figure class="wp-chart">
