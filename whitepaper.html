@@ -51,7 +51,7 @@
             <li><a href="index.html#spec">Pool</a></li>
             <li><a href="governance-designer.html">Governance</a></li>
             <li><a href="index.html#faq">FAQ</a></li>
-            <li><a href="https://docs.thebitcoincommons.org" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+            <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
           </ul>
         </details>
         <ul class="nav-links">
@@ -60,7 +60,7 @@
           <li><a href="index.html#spec">Pool</a></li>
           <li><a href="governance-designer.html">Governance</a></li>
           <li><a href="index.html#faq">FAQ</a></li>
-          <li><a href="https://docs.thebitcoincommons.org" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+          <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
         </ul>
       </div>
     </nav>
@@ -100,7 +100,7 @@
 <h2 id="abstract">Abstract</h2>
 <p>Bitcoin's consensus rules are enforced by the network. Development of the software people run is still a maintainer process.</p>
 <p>This paper describes two pieces of work. <strong>BLVM</strong> is an independent node checked against a written spec. <strong>Bitcoin Commons</strong> publishes the rules for how that software changes, and those rules can be forked.</p>
-<p>The work is organized around six core engineering tracks in the public BTCDecoded organization (spec, consensus, protocol, node, SDK, and governance), plus supporting repositories for packaging, <strong>blvm-spec-lock</strong> verification, and the <strong>blvm-commons</strong> Governance App. Engineering detail lives in <a href="https://docs.thebitcoincommons.org">technical documentation</a>.</p>
+<p>The work is organized around six core engineering tracks in the public BTCDecoded organization (spec, consensus, protocol, node, SDK, and governance), plus supporting repositories for packaging, <strong>blvm-spec-lock</strong> verification, and the <strong>blvm-commons</strong> Governance App. Engineering detail lives in <a href="https://docs.btcdecoded.org/blvm">technical documentation</a>.</p>
 <h2 id="1-introduction">1. Introduction</h2>
 <p>Bitcoin solved Byzantine consensus between strangers (Nakamoto, 2008) but ignored consensus between developers. The network's substantial market capitalization demands institutional maturity matching its technical excellence.</p>
 <p>The original cypherpunk developers focused on eliminating trusted third parties in transactions but inadvertently created trusted parties in development. Bitcoin Commons addresses Bitcoin's most critical vulnerability: governance asymmetry between technical consensus and development coordination.</p>
@@ -271,7 +271,7 @@
 <h3>Benefits</h3>
 <ul>
 <li><strong>Safe alternative implementations</strong>: Independent implementations can verify against mathematical specification</li>
-<li><strong>Formal verification</strong>: Consensus-critical code is checked against the Orange Paper through <strong>BLVM Specification Lock</strong>, property tests, and CI; see <a href="https://docs.thebitcoincommons.org/consensus/formal-verification.html">Formal Verification</a></li>
+<li><strong>Formal verification</strong>: Consensus-critical code is checked against the Orange Paper through <strong>BLVM Specification Lock</strong>, property tests, and CI; see <a href="https://docs.btcdecoded.org/blvm/consensus/formal-verification.html">Formal Verification</a></li>
 <li><strong>Fewer unnamed rules</strong>: a written spec makes a consensus mistake easier to point at</li>
 </ul>
 <h3>AI-Assisted Extraction Methodology</h3>
@@ -288,17 +288,17 @@
 <img src="/assets/images/spec-maintenance-workflow.png" alt="Spec Maintenance Workflow" style="width: 100%; display: block; margin: 0 auto;">
 <figcaption>Figure: Spec maintenance workflow: specification synchronized with implementation through automated testing and formal verification.</figcaption>
 </figure>
-<p>Commons publishes a <strong>layered specification</strong>: the <strong>Orange Paper</strong> (formal math), <strong>CONSENSUS_SPEC</strong> (numbered RFC 2119 rules mapped to code), and <strong>PROTOCOL</strong> (extended constants and formulas). Entry points are at <a href="https://thebitcoincommons.org/spec.html">thebitcoincommons.org/spec.html</a>. <strong>blvm-spec-lock</strong> ties <code>blvm-consensus</code> to these artifacts; drift and coverage tooling tracks alignment between spec wording and lockable contracts. Details: <a href="https://docs.thebitcoincommons.org/reference/orange-paper.html">Orange Paper</a>, <a href="https://docs.thebitcoincommons.org/consensus/formal-verification.html">Formal Verification</a>.</p>
+<p>Commons publishes a <strong>layered specification</strong>: the <strong>Orange Paper</strong> (formal math), <strong>CONSENSUS_SPEC</strong> (numbered RFC 2119 rules mapped to code), and <strong>PROTOCOL</strong> (extended constants and formulas). Entry points are at <a href="https://thebitcoincommons.org/spec.html">thebitcoincommons.org/spec.html</a>. <strong>blvm-spec-lock</strong> ties <code>blvm-consensus</code> to these artifacts; drift and coverage tooling tracks alignment between spec wording and lockable contracts. Details: <a href="https://docs.btcdecoded.org/blvm/reference/orange-paper.html">Orange Paper</a>, <a href="https://docs.btcdecoded.org/blvm/consensus/formal-verification.html">Formal Verification</a>.</p>
 <p>Parallel independent specification efforts reinforce the same goal from complementary formalisms. Toby Sharp's Hornet project demonstrates that a minimal, executable consensus specification and domain-specific language can sync mainnet independently of the reference client (Sharp, 2025; <a href="https://hornetnode.org">hornetnode.org</a>), strengthening the case for Commons' layered Orange Paper and CONSENSUS_SPEC approach. Keagan McClelland's <strong>btc-verified</strong> pursues the same correctness goal through machine-checked Lean 4 proof leaves over serialization, transaction identifiers, and merkle commitments, validated against mainnet golden vectors (McClelland, 2026; <a href="https://github.com/ProofOfKeags/btc-verified">github.com/ProofOfKeags/btc-verified</a>). Where Hornet emphasizes an executable implementation-neutral specification, btc-verified emphasizes theorem-checked byte-layer foundations; Commons' spec-lock contracts and differential testing complement both.</p>
 <h3>Empirical consensus alignment (differential testing and fuzzing)</h3>
-<p>Mathematical specification and spec-lock contracts bound <em>what the rules ought to be</em>. <strong>Differential testing</strong> and <strong>fuzzing</strong> ask whether the running implementation agrees with the dominant reference implementation on real chain history and on adversarial inputs. Methodology, current depth, and CI status are documented in <a href="https://docs.thebitcoincommons.org/development/differential-testing.html">technical documentation</a>. Prefer that over this document for live coverage figures.</p>
+<p>Mathematical specification and spec-lock contracts bound <em>what the rules ought to be</em>. <strong>Differential testing</strong> and <strong>fuzzing</strong> ask whether the running implementation agrees with the dominant reference implementation on real chain history and on adversarial inputs. Methodology, current depth, and CI status are documented in <a href="https://docs.btcdecoded.org/blvm/development/differential-testing.html">technical documentation</a>. Prefer that over this document for live coverage figures.</p>
 <p>Together these layers complement formal methods: <strong>specs and contracts</strong> for specification fidelity; <strong>replay and fuzzing</strong> for empirical alignment with observed network behavior.</p>
 <h3>BLVM Architecture</h3>
 <figure>
 <img src="/assets/images/stack.png" alt="BLVM Stack Architecture" style="">
 <figcaption>Figure: BLVM architecture: blvm-spec (Orange Paper) as the written spec, blvm-consensus as the consensus implementation, and blvm-protocol, blvm-node, and blvm-sdk building on that layer.</figcaption>
 </figure>
-<p>BLVM (<strong>Bitcoin Low-Level Virtual Machine</strong>) is an implementation checked against the Orange Paper. The paper is the written form of the consensus rules, so more than one implementation can be compared to it. Stack layout: <a href="https://docs.thebitcoincommons.org/architecture/system-overview.html">System Overview</a>, <a href="https://docs.thebitcoincommons.org/consensus/overview.html">Consensus Overview</a>.</p>
+<p>BLVM (<strong>Bitcoin Low-Level Virtual Machine</strong>) is an implementation checked against the Orange Paper. The paper is the written form of the consensus rules, so more than one implementation can be compared to it. Stack layout: <a href="https://docs.btcdecoded.org/blvm/architecture/system-overview.html">System Overview</a>, <a href="https://docs.btcdecoded.org/blvm/consensus/overview.html">Consensus Overview</a>.</p>
 <p><strong>Single Source of Truth.</strong> All consensus logic resides in <code>blvm-consensus</code>. Upper tiers (<code>blvm-protocol</code>, <code>blvm-node</code>) delegate validation calls with no duplicate implementations. Path dependencies ensure changes propagate immediately through Rust's type system.</p>
 <p>Because every consensus decision flows through <code>blvm-consensus</code>, verification and tests at that layer bound behavior for the whole stack: upper tiers delegate validation and cannot bypass that layer.</p>
 <h2 id="5-architectural-solution-modular-governance">5. Architectural Solution: Modular Governance</h2>

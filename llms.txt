@@ -23,10 +23,10 @@ For operators: download verified **`blvm`** binaries from the install page. For 
 
 ## Documentation book
 
-- [BLVM documentation (full book)](https://docs.thebitcoincommons.org/introduction.html): Operators, developers, consensus, node, SDK, governance
-- [Formal verification](https://docs.thebitcoincommons.org/consensus/formal-verification.html): Spec-lock methodology, CI gates, coverage
-- [Deployment posture](https://docs.thebitcoincommons.org/security/deployment-posture.html): Security before exposing RPC on mainnet
-- [Book llms.txt](https://docs.thebitcoincommons.org/llms.txt): Machine-readable index of documentation chapters
+- [BLVM documentation (full book)](https://docs.btcdecoded.org/blvm/introduction.html): Operators, developers, consensus, node, SDK, governance
+- [Formal verification](https://docs.btcdecoded.org/blvm/consensus/formal-verification.html): Spec-lock methodology, CI gates, coverage
+- [Deployment posture](https://docs.btcdecoded.org/blvm/security/deployment-posture.html): Security before exposing RPC on mainnet
+- [Docs index](https://docs.btcdecoded.org/llms.txt): BTCDecoded documentation host
 
 ## Governance
 
