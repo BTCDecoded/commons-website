@@ -2752,6 +2752,62 @@ body.spec-maps-body {
   color: #e8e8ec;
 }
 
+.whitepaper-content .scale-ladder {
+  display: flex;
+  flex-direction: column;
+}
+
+.whitepaper-content .scale-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(8.75rem, auto);
+  gap: 0.35rem 1.25rem;
+  align-items: baseline;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid #2a2a2f;
+}
+
+.whitepaper-content .scale-row:last-child {
+  border-bottom: none;
+}
+
+.whitepaper-content .scale-name {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #e8e8ec;
+  line-height: 1.3;
+}
+
+.whitepaper-content .scale-range {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: #888894;
+}
+
+.whitepaper-content .scale-ratio {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #888894;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.whitepaper-content .scale-count {
+  font-variant-numeric: tabular-nums;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-align: right;
+  color: #e8e8ec;
+  white-space: nowrap;
+}
+
+.whitepaper-content .scale-row-key .scale-count,
+.whitepaper-content .scale-row-key .scale-ratio {
+  color: #f7761a;
+}
+
 .whitepaper-content .compare-col {
   padding: 0.55rem 0.65rem;
   border-radius: 4px;
@@ -2917,6 +2973,18 @@ body.spec-maps-body {
       "name value"
       "track track";
   }
+
+  .whitepaper-content .scale-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "name count"
+      "ratio count";
+    align-items: center;
+  }
+
+  .whitepaper-content .scale-name { grid-area: name; }
+  .whitepaper-content .scale-ratio { grid-area: ratio; text-align: left; }
+  .whitepaper-content .scale-count { grid-area: count; }
 
   .whitepaper-content .funnel-name { grid-area: name; }
   .whitepaper-content .funnel-value { grid-area: value; }
