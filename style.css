@@ -2412,38 +2412,25 @@ body.spec-maps-body {
 }
 
 .whitepaper-content img {
-  max-width: 100%;
+  max-width: min(100%, 820px);
   height: auto;
   display: block;
-  margin: 2rem auto;
-  border: 1.5px solid rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  transition: filter 0.3s ease;
+  margin: 1.5rem auto;
+  background: #f7f7f8;
+  padding: 1rem;
+  border: 1px solid var(--border-color, #2a2a2f);
+  border-radius: 8px;
 }
 
 .whitepaper-content figure {
   margin: 2rem 0;
   text-align: center;
+  background: transparent;
+  padding: 0;
 }
 
 .whitepaper-content figure img {
-  margin-bottom: 0.5rem;
-}
-
-/* Dark mode: Add white background to images and gray card background to figures */
-@media (prefers-color-scheme: dark) {
-  .whitepaper-content img {
-    background-color: #ffffff;
-    padding: 0.75rem;
-    border-radius: 6px;
-  }
-
-  .whitepaper-content figure {
-    background-color: rgba(255, 255, 255, 0.15);
-    padding: 1.5rem;
-    border-radius: 8px;
-  }
+  margin-bottom: 0.75rem;
 }
 
 .whitepaper-content figcaption {
@@ -2451,6 +2438,349 @@ body.spec-maps-body {
   color: var(--text-secondary);
   font-size: 0.95rem;
   margin-top: 0.5rem;
+}
+
+/* Dark charts ported from the articles. Colors are fixed so a light OS theme cannot wash them out. */
+.whitepaper-content figure.wp-chart img,
+.whitepaper-content img.chart-dark {
+  background: transparent;
+  padding: 0;
+  border: none;
+  max-width: 100%;
+}
+
+.whitepaper-content figure.wp-chart {
+  margin: 1.5rem auto;
+  padding: 0.8rem 0.95rem 0.9rem;
+  max-width: 680px;
+  background: #17171a;
+  border: 1px solid #2a2a2f;
+  border-radius: 8px;
+  text-align: left;
+  color: #e8e8ec;
+  overflow-x: auto;
+}
+
+.whitepaper-content figure.wp-chart.wp-chart-wide {
+  max-width: 980px;
+}
+
+.whitepaper-content .layer-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 28rem;
+  margin: 0 auto;
+}
+
+.whitepaper-content .layer-box {
+  width: 100%;
+  text-align: center;
+  padding: 0.55rem 0.7rem;
+  border-radius: 4px;
+  border: 1px solid #2a2a2f;
+  background: #111113;
+  color: #e8e8ec;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.whitepaper-content .layer-core {
+  border-color: #f7761a;
+}
+
+.whitepaper-content .layer-spec {
+  border-color: #c05e12;
+}
+
+.whitepaper-content .layer-link {
+  font-size: 0.72rem;
+  color: #888894;
+}
+
+.whitepaper-content figure.wp-chart .chart-heading {
+  font-size: 0.82rem;
+  color: #888894;
+  margin: 0 0 0.55rem;
+  text-align: center;
+}
+
+.whitepaper-content .stackbar {
+  display: flex;
+  height: 2rem;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #2a2a2f;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.whitepaper-content .stack-seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.2rem;
+  white-space: nowrap;
+}
+
+.whitepaper-content .stack-major {
+  background: #f7761a;
+  color: #111113;
+}
+
+.whitepaper-content .stack-minor {
+  background: #2a2a2f;
+  color: #888894;
+}
+
+.whitepaper-content .stack-knots {
+  background: #3a4a55;
+  color: #e8e8ec;
+}
+
+.whitepaper-content .stack-active {
+  background: #2a6a4a;
+  color: #e8e8ec;
+}
+
+.whitepaper-content .stackbar-legend,
+.whitepaper-content .chart-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem 1.1rem;
+  margin: 0.55rem 0 0;
+  font-size: 0.75rem;
+  color: #888894;
+}
+
+.whitepaper-content .chart-stats div {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.whitepaper-content .chart-stats dt {
+  font-weight: 400;
+}
+
+.whitepaper-content .chart-stats dd {
+  margin: 0;
+  color: #e8e8ec;
+  font-weight: 600;
+}
+
+.whitepaper-content .swatch {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-right: 0.3rem;
+  border-radius: 2px;
+  vertical-align: -0.05rem;
+}
+
+.whitepaper-content .swatch-major { background: #f7761a; }
+.whitepaper-content .swatch-minor { background: #2a2a2f; border: 1px solid #3a3a42; }
+.whitepaper-content .swatch-knots { background: #3a4a55; }
+.whitepaper-content .swatch-active { background: #2a6a4a; }
+
+.whitepaper-content .intensity-row {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.45rem;
+}
+
+.whitepaper-content .intensity-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #e8e8ec;
+}
+
+.whitepaper-content .intensity-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.whitepaper-content .intensity-track {
+  flex: 1;
+  background: #111113;
+  border-radius: 3px;
+  border: 1px solid #2a2a2f;
+  height: 1.5rem;
+  overflow: hidden;
+}
+
+.whitepaper-content .intensity-fill {
+  display: block;
+  height: 100%;
+  min-width: 2px;
+  background: #f7761a;
+}
+
+.whitepaper-content .intensity-fill.intensity-alt { background: #3a6a8a; }
+.whitepaper-content .intensity-fill.intensity-review { background: #c05e12; }
+
+.whitepaper-content .intensity-value {
+  font-size: 0.75rem;
+  color: #e8e8ec;
+  white-space: nowrap;
+  min-width: 4.5rem;
+  text-align: right;
+}
+
+.whitepaper-content .compare-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+}
+
+.whitepaper-content .compare-cols.cols-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.whitepaper-content .gate-line {
+  margin: 0.45rem 0 0;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #e8e8ec;
+}
+
+.whitepaper-content .funnel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.whitepaper-content .funnel-row {
+  display: grid;
+  grid-template-columns: 12.5rem 1fr auto;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.whitepaper-content .funnel-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #e8e8ec;
+  line-height: 1.25;
+}
+
+.whitepaper-content .funnel-sub {
+  display: block;
+  font-weight: 400;
+  font-size: 0.68rem;
+  color: #888894;
+}
+
+.whitepaper-content .funnel-track {
+  height: 1.15rem;
+  background: #111113;
+  border: 1px solid #2a2a2f;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.whitepaper-content .funnel-fill {
+  display: block;
+  height: 100%;
+  background: #3a6a8a;
+}
+
+.whitepaper-content .funnel-fill-key {
+  background: #f7761a;
+}
+
+.whitepaper-content .funnel-value {
+  min-width: 3.2rem;
+  text-align: right;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #e8e8ec;
+}
+
+.whitepaper-content .compare-col {
+  padding: 0.55rem 0.65rem;
+  border-radius: 4px;
+  border: 1px solid #2a2a2f;
+  background: #111113;
+}
+
+.whitepaper-content .compare-open { border-color: #f7761a; }
+.whitepaper-content .compare-gated { border-color: #c45c4a; }
+
+.whitepaper-content .compare-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #e8e8ec;
+  margin-bottom: 0.35rem;
+}
+
+.whitepaper-content .compare-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.78rem;
+  color: #888894;
+  line-height: 1.45;
+}
+
+.whitepaper-content figure.wp-chart table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  font-size: 0.84rem;
+  color: #e8e8ec;
+  background: transparent;
+}
+
+.whitepaper-content figure.wp-chart th,
+.whitepaper-content figure.wp-chart td {
+  border-bottom: 1px solid #2a2a2f;
+  padding: 0.45rem 0.5rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.whitepaper-content figure.wp-chart th {
+  color: #888894;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.whitepaper-content figure.wp-chart td:first-child {
+  font-weight: 600;
+}
+
+.whitepaper-content figure.wp-chart figcaption {
+  margin-top: 0.7rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: #888894;
+}
+
+.whitepaper-content figure.wp-chart figcaption a {
+  color: #f7761a;
+}
+
+@media (max-width: 600px) {
+  .whitepaper-content .compare-cols,
+  .whitepaper-content .compare-cols.cols-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .whitepaper-content .funnel-row {
+    grid-template-columns: 8.5rem 1fr auto;
+  }
+
+  .whitepaper-content .intensity-row {
+    grid-template-columns: 6.25rem 1fr;
+  }
 }
 
 .whitepaper-content code {
