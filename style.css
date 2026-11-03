@@ -2588,6 +2588,14 @@ body.spec-maps-body {
   color: #e8e8ec;
 }
 
+.whitepaper-content .stack-shared {
+  background: repeating-linear-gradient(
+    -45deg,
+    #f7761a 0 7px,
+    #3a4a55 7px 14px
+  );
+}
+
 .whitepaper-content .stack-active {
   background: #2a6a4a;
   color: #e8e8ec;
@@ -2631,6 +2639,13 @@ body.spec-maps-body {
 .whitepaper-content .swatch-major { background: #f7761a; }
 .whitepaper-content .swatch-minor { background: #2a2a2f; border: 1px solid #3a3a42; }
 .whitepaper-content .swatch-knots { background: #3a4a55; }
+.whitepaper-content .swatch-shared {
+  background: repeating-linear-gradient(
+    -45deg,
+    #f7761a 0 3px,
+    #3a4a55 3px 6px
+  );
+}
 .whitepaper-content .swatch-active { background: #2a6a4a; }
 
 .whitepaper-content .intensity-row {
