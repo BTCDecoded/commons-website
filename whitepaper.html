@@ -18,7 +18,7 @@
     <meta name="twitter:title" content="The Bitcoin Commons - White Paper">
     <meta name="twitter:description" content="Design argument for forkable governance and a cryptographic merge gate.">
     <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
-    <link rel="stylesheet" href="style.css?v=16" />
+    <link rel="stylesheet" href="style.css?v=17" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -127,6 +127,21 @@
 <li>Communication/reliability under public scrutiny: 30%-50% → 24-2.5k</li>
 <li>Availability/alignment to work on Bitcoin: 10%-30% → ~2-750</li>
 </ul>
+<figure class="wp-chart">
+<div class="chart-heading">The talent bottleneck. Each bar is an indicative midpoint of the range above.</div>
+<div class="funnel" role="img" aria-label="Indicative talent funnel from about 300 million people with strong math down to about 200 people available to work on Bitcoin">
+<div class="funnel-row"><span class="funnel-name">Strong math<span class="funnel-sub">240M to 400M</span></span><span class="funnel-track"><span class="funnel-fill" style="width:100%"></span></span><span class="funnel-value">300M</span></div>
+<div class="funnel-row"><span class="funnel-name">C++ and systems<span class="funnel-sub">4.5M to 11.8M</span></span><span class="funnel-track"><span class="funnel-fill" style="width:82%"></span></span><span class="funnel-value">9M</span></div>
+<div class="funnel-row"><span class="funnel-name">Crypto and Bitcoin<span class="funnel-sub">45k to 236k</span></span><span class="funnel-track"><span class="funnel-fill" style="width:60%"></span></span><span class="funnel-value">120k</span></div>
+<div class="funnel-row"><span class="funnel-name">Distributed systems<span class="funnel-sub">13.5k to 118k</span></span><span class="funnel-track"><span class="funnel-fill" style="width:56%"></span></span><span class="funnel-value">60k</span></div>
+<div class="funnel-row"><span class="funnel-name">Security engineering<span class="funnel-sub">2.7k to 35k</span></span><span class="funnel-track"><span class="funnel-fill" style="width:51%"></span></span><span class="funnel-value">20k</span></div>
+<div class="funnel-row"><span class="funnel-name">Economics and game theory<span class="funnel-sub">0.8k to 17.5k</span></span><span class="funnel-track"><span class="funnel-fill" style="width:47%"></span></span><span class="funnel-value">10k</span></div>
+<div class="funnel-row"><span class="funnel-name">Open-source governance<span class="funnel-sub">80 to 5k</span></span><span class="funnel-track"><span class="funnel-fill" style="width:41%"></span></span><span class="funnel-value">3k</span></div>
+<div class="funnel-row"><span class="funnel-name">Communication and reliability<span class="funnel-sub">24 to 2.5k</span></span><span class="funnel-track"><span class="funnel-fill" style="width:37%"></span></span><span class="funnel-value">1.5k</span></div>
+<div class="funnel-row"><span class="funnel-name">Available for Bitcoin<span class="funnel-sub">about 2 to 750</span></span><span class="funnel-track"><span class="funnel-fill funnel-fill-key" style="width:27%"></span></span><span class="funnel-value">200</span></div>
+</div>
+<figcaption>Indicative midpoints of the ranges above, not a census. Bar length is logarithmic, so the count is the label. The steps overlap, and they are not a strict filter.</figcaption>
+</figure>
 <h4 class="subheading">Interpretation:</h4>
 <ul>
 <li>Even with generous ranges, the intersection yields on the order of dozens to a few hundred globally available individuals with the full stack to work reliably on Bitcoin's most sensitive layers.</li>
@@ -160,9 +175,9 @@
 <figure class="wp-chart wp-chart-wide">
 <div class="chart-heading">The rules are 7% of the code. Five merge keys gate the other 93% too.</div>
 <div class="stackbar" role="img" aria-label="Consensus rules are 7 percent. Code that applies and relays them is 13 percent. Wallet, interface, network, and RPC are 80 percent. Five merge keys gate all of it.">
-<span class="stack-seg stack-major" style="width:7%">7%</span>
-<span class="stack-seg stack-knots" style="width:13%">13%</span>
-<span class="stack-seg stack-minor" style="width:80%">80%</span>
+<span class="stack-seg stack-major" style="width:7%"></span>
+<span class="stack-seg stack-knots" style="width:13%"></span>
+<span class="stack-seg stack-minor" style="width:80%"></span>
 </div>
 <div class="stackbar-legend">
 <span><i class="swatch swatch-major"></i>Consensus rules, 10,122 lines</span>
@@ -175,9 +190,9 @@
 <figure class="wp-chart">
 <div class="chart-heading">Effective Core codebase share on reachable nodes (2025 to mid-2026)</div>
 <div class="stackbar" role="img" aria-label="About 98 percent of reachable nodes run Core lineage code">
-<span class="stack-seg stack-major" style="width:77%">Core 77%</span>
-<span class="stack-seg stack-knots" style="width:21.4%">Knots 21%</span>
-<span class="stack-seg stack-minor" style="width:1.6%">~1%</span>
+<span class="stack-seg stack-major" style="width:77%"></span>
+<span class="stack-seg stack-knots" style="width:21.4%"></span>
+<span class="stack-seg stack-minor" style="width:1.6%"></span>
 </div>
 <div class="stackbar-legend">
 <span><i class="swatch swatch-major"></i>Bitcoin Core</span>
@@ -380,6 +395,16 @@
 </ul>
 <h3>Proof Maintenance and Specification Quality</h3>
 <p>The formal verification process includes ongoing maintenance so the specification stays aligned with the implementation. A code change is checked for drift against the Orange Paper, the spec is updated when the wording and the code diverge, and the lock is run again.</p>
+<figure class="wp-chart">
+<div class="chart-heading">How the written spec stays with the code</div>
+<ol class="step-flow">
+<li><span class="step-num">1</span><span class="step-title">Code change</span><span class="step-sub">A change lands in the implementation</span></li>
+<li><span class="step-num">2</span><span class="step-title">Drift check</span><span class="step-sub">The change is compared with the Orange Paper</span></li>
+<li><span class="step-num">3</span><span class="step-title">Spec update</span><span class="step-sub">The wording moves when the two diverge</span></li>
+<li><span class="step-num">4</span><span class="step-title">Lock again</span><span class="step-sub">blvm-spec-lock is run on the new pair</span></li>
+</ol>
+<figcaption>Maintenance of the spec. It is not a claim that every merge already runs this check.</figcaption>
+</figure>
 <p>Commons publishes a <strong>layered specification</strong>: the <strong>Orange Paper</strong> (formal math), <strong>CONSENSUS_SPEC</strong> (numbered RFC 2119 rules mapped to code), and <strong>PROTOCOL</strong> (extended constants and formulas). Entry points are at <a href="https://thebitcoincommons.org/spec.html">thebitcoincommons.org/spec.html</a>. <strong>blvm-spec-lock</strong> ties <code>blvm-consensus</code> to these artifacts; drift and coverage tooling tracks alignment between spec wording and lockable contracts. Details: <a href="https://docs.btcdecoded.org/blvm/reference/orange-paper.html">Orange Paper</a>, <a href="https://docs.btcdecoded.org/blvm/consensus/formal-verification.html">Formal Verification</a>.</p>
 <p>Parallel independent specification efforts reinforce the same goal from complementary formalisms. Toby Sharp's Hornet project demonstrates that a minimal, executable consensus specification and domain-specific language can sync mainnet independently of the reference client (Sharp, 2025; <a href="https://hornetnode.org">hornetnode.org</a>), strengthening the case for Commons' layered Orange Paper and CONSENSUS_SPEC approach. Keagan McClelland's <strong>btc-verified</strong> pursues the same correctness goal through machine-checked Lean 4 proof leaves over serialization, transaction identifiers, and merkle commitments, validated against mainnet golden vectors (McClelland, 2026; <a href="https://github.com/ProofOfKeags/btc-verified">github.com/ProofOfKeags/btc-verified</a>). Where Hornet emphasizes an executable implementation-neutral specification, btc-verified emphasizes theorem-checked byte-layer foundations; Commons' spec-lock contracts and differential testing complement both. The choice of notation is a governance choice. A reader of the Orange Paper needs the mathematics and the domain. A reader of a Lean proof needs Lean. A reader of a custom language needs that language.</p>
 <figure class="wp-chart wp-chart-wide">
@@ -417,6 +442,16 @@
 <p>Together these layers complement formal methods: <strong>specs and contracts</strong> for specification fidelity; <strong>replay and fuzzing</strong> for empirical alignment with observed network behavior.</p>
 <h3>BLVM Architecture</h3>
 <figure class="wp-chart">
+<div class="chart-heading">Four tiers, from the written rules to the governance gate</div>
+<div class="tier-grid" role="img" aria-label="Tier 1 is the mathematical specification. Tier 2 is the protocol engine. Tier 3 is the node. Tier 4 is the SDK and governance.">
+<div class="tier-card"><span class="tier-badge">1</span><div><div class="tier-title">Mathematical foundation</div><p>The Orange Paper states the consensus rules. The consensus crate is checked against that statement.</p></div></div>
+<div class="tier-card"><span class="tier-badge">2</span><div><div class="tier-title">Protocol abstraction</div><p>blvm-protocol separates protocol handling from the consensus rules.</p></div></div>
+<div class="tier-card"><span class="tier-badge">3</span><div><div class="tier-title">Reference node</div><p>blvm-node is the full node. It delegates validation. It does not keep a second copy of the rules.</p></div></div>
+<div class="tier-card"><span class="tier-badge">4</span><div><div class="tier-title">SDK and governance</div><p>blvm-sdk is the developer surface. The Governance App is the merge gate, and it is not on.</p></div></div>
+</div>
+<figcaption>The tiers name where code lives. They are not a claim that every verification arrow in an older diagram is running.</figcaption>
+</figure>
+<figure class="wp-chart">
 <div class="chart-heading">One consensus implementation, checked against the written spec</div>
 <div class="layer-stack" role="img" aria-label="blvm-protocol, blvm-node, and blvm-sdk depend on blvm-consensus, which is checked against the Orange Paper">
 <div class="layer-box">blvm-protocol · blvm-node · blvm-sdk</div>
@@ -426,6 +461,17 @@
 <div class="layer-box layer-spec">Orange Paper · blvm-spec</div>
 </div>
 <figcaption>Upper layers do not carry a second copy of the consensus rules.</figcaption>
+</figure>
+<figure class="wp-chart">
+<div class="chart-heading">What happens when a block arrives</div>
+<ol class="step-flow">
+<li><span class="step-num">1</span><span class="step-title">Block arrives</span><span class="step-sub">blvm-node receives it</span></li>
+<li><span class="step-num">2</span><span class="step-title">Protocol checks</span><span class="step-sub">blvm-protocol</span></li>
+<li><span class="step-num">3</span><span class="step-title">Consensus checks</span><span class="step-sub">blvm-consensus</span></li>
+<li><span class="step-num">4</span><span class="step-title">State update</span><span class="step-sub">The UTXO set moves</span></li>
+<li><span class="step-num">5</span><span class="step-title">Optional modules</span><span class="step-sub">They cannot change the verdict</span></li>
+</ol>
+<figcaption>A block does not write a governance record. Governance is a separate gate on how the software changes.</figcaption>
 </figure>
 <p>BLVM (<strong>Bitcoin Low-Level Virtual Machine</strong>) is an implementation checked against the Orange Paper. The paper is the written form of the consensus rules, so more than one implementation can be compared to it. Stack layout: <a href="https://docs.btcdecoded.org/blvm/architecture/system-overview.html">System Overview</a>, <a href="https://docs.btcdecoded.org/blvm/consensus/overview.html">Consensus Overview</a>.</p>
 <p><strong>Single Source of Truth.</strong> All consensus logic resides in <code>blvm-consensus</code>. Upper tiers (<code>blvm-protocol</code>, <code>blvm-node</code>) delegate validation calls with no duplicate implementations. Path dependencies ensure changes propagate immediately through Rust's type system.</p>
@@ -498,6 +544,36 @@
 <p><strong>Layer 3: Immutable Proof (OpenTimestamps).</strong> <em>Designed to</em> anchor canonical registry snapshots and critical events (key rotations, deployments) to the Bitcoin blockchain for dispute resolution and independent verification. Provides court-admissible evidence where applicable.</p>
 <h4 class="subheading">Cross-Layer Verification:</h4>
 <p>Three independent layers verify governance actions and each other. Risk at one layer does not compromise the others. This defense-in-depth approach ensures governance integrity even if one verification method is compromised.</p>
+<figure class="wp-chart">
+<div class="chart-heading">Three checks, each designed, none of them on</div>
+<div class="compare-cols cols-3" role="img" aria-label="The Governance App is the merge gate. Nostr carries signed status. OpenTimestamps anchors the record.">
+<div class="compare-col compare-open">
+<div class="compare-label">1. Governance App</div>
+<ul class="compare-list">
+<li>The merge gate</li>
+<li>Designed to check signatures before a merge</li>
+<li>A GitHub App is one host</li>
+</ul>
+</div>
+<div class="compare-col">
+<div class="compare-label">2. Nostr</div>
+<ul class="compare-list">
+<li>Signed status</li>
+<li>A subscriber can check the server</li>
+<li>Cadence is a deployment choice</li>
+</ul>
+</div>
+<div class="compare-col">
+<div class="compare-label">3. OpenTimestamps</div>
+<ul class="compare-list">
+<li>Anchors a snapshot to Bitcoin</li>
+<li>For later dispute, not live monitoring</li>
+<li>Designed, not a monthly guarantee</li>
+</ul>
+</div>
+</div>
+<figcaption>The three layers in this section. Cryptographic merge enforcement is off today.</figcaption>
+</figure>
 <h3>Emergency Response</h3>
 <p>Commons implements a three-tier emergency system for critical security and network issues. <strong>Emergency tier activation</strong> is separate from <strong>action tier</strong> classification (see below): emergency keyholders declare the class; merge rules and review periods adjust until automatic expiration.</p>
 <p><strong>Activation (all classes):</strong> 5-of-7 emergency keyholders. <strong>Merge policy while active</strong> varies by class: network-threatening incidents use the fastest path (zero review, lower maintainer merge threshold); less urgent classes use longer review and stricter merge thresholds. Authoritative parameters: <a href="https://github.com/BTCDecoded/governance">governance repository</a> (<code>emergency-tiers.yml</code>).</p>
@@ -552,6 +628,26 @@
 <li><strong>Tier 4 (Emergency Actions)</strong>: Critical security patches, network-threatening bugs - 4-of-5 signatures, 0-day review (with post-mortem required)</li>
 <li><strong>Tier 5 (Governance Changes)</strong>: Changes to governance rules themselves - 5-of-5 signatures, 180-day review</li>
 </ul>
+<figure class="wp-chart wp-chart-wide">
+<div class="chart-heading">Signature thresholds in the design</div>
+<table>
+<thead>
+<tr><th>Scope</th><th>What it covers</th><th>Signatures</th><th>Review</th></tr>
+</thead>
+<tbody>
+<tr><td>Layer 1-2</td><td>Orange Paper and consensus proof</td><td>6-of-7</td><td>180 days, 365 for consensus changes</td></tr>
+<tr><td>Layer 3</td><td>Protocol engine</td><td>4-of-5</td><td>90 days</td></tr>
+<tr><td>Layer 4</td><td>Node</td><td>3-of-5</td><td>60 days</td></tr>
+<tr><td>Layer 5</td><td>SDK and modules</td><td>2-of-3</td><td>14 days</td></tr>
+<tr><td>Tier 1</td><td>Routine maintenance</td><td>3-of-5</td><td>7 days</td></tr>
+<tr><td>Tier 2</td><td>Feature changes</td><td>4-of-5</td><td>30 days</td></tr>
+<tr><td>Tier 3</td><td>Consensus-adjacent</td><td>5-of-5</td><td>90 days</td></tr>
+<tr><td>Tier 4</td><td>Emergency pull requests</td><td>4-of-5</td><td>None, with a post-mortem</td></tr>
+<tr><td>Tier 5</td><td>Governance changes</td><td>5-of-5</td><td>180 days</td></tr>
+</tbody>
+</table>
+<figcaption>Design numbers from this section. The governance repository YAML is authoritative. These rules are not the live configuration. When a layer and a tier both apply, the longer review and the larger signature count are what the repository currently takes.</figcaption>
+</figure>
 <p><strong>Emergency PRs vs emergency activation.</strong> <em>Action Tier 4</em> classifies pull requests for critical security work under normal maintainer multisig. <em>Emergency tier activation</em> (above) is a separate declaration by emergency keyholders that switches merge rules until expiration. Both can apply together; see <code>emergency-tiers.yml</code> and <code>action-tiers.yml</code> in the <a href="https://github.com/BTCDecoded/governance">governance repository</a>.</p>
 <h4 class="subheading">Combination rule:</h4>
 <p>When both a layer requirement and a tier requirement apply, the governance repository takes the longer review period and the larger signature count. For example:</p>
