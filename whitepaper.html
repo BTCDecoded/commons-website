@@ -311,6 +311,37 @@
 <p>This model enables multiple implementations to compete (Hayek's discovery mechanism) while maintaining clear institutional boundaries (Ostrom's principles) through cryptographic proof (Bitcoin's innovation). The result is governance that is both competitive and accountable, proven and evolving, decentralized and enforceable.</p>
 <p>Informal governance can work at smaller scale and lower complexity; at multi-trillion dollar scale, social enforcement alone struggles to keep pace with coordination demands and accountability expectations. Commons encodes Ostrom's principles through cryptographic enforcement. The mapping below describes how each principle is implemented in this architecture.</p>
 <h3>Mapping The Principles to Implementation</h3>
+<p>The table is the four-source map from the principles figure: Ostrom, Hayek, Bitcoin, and Cypherpunk. The bullets after it are Ostrom's eight, including congruence and nested enterprises, which that figure did not list as their own rows. Signature checks, Nostr publication, timestamp anchors, and the contributor ladder are designed. They are not on.</p>
+<figure class="wp-chart wp-chart-wide">
+<div class="chart-heading">Four sources, and what this design does with each</div>
+<table>
+<thead>
+<tr><th>Principle</th><th>Source</th><th>In this design</th></tr>
+</thead>
+<tbody>
+<tr><td>Clear boundaries</td><td>Ostrom</td><td>Repository layers run from 6-of-7 at the constitutional layers to 2-of-3 at the extension layer. Modules cannot change consensus paths.</td></tr>
+<tr><td>Proportional benefits</td><td>Ostrom</td><td>Optional-module revenue follows use. Optional merge mining is a pool's choice. Adoption is not a vote.</td></tr>
+<tr><td>Collective choice</td><td>Ostrom</td><td>Rules that bind every participant change through the tiers. An operator's module stack binds only that operator.</td></tr>
+<tr><td>Monitoring</td><td>Ostrom</td><td>Governance actions are designed to be signed, published to Nostr, and anchored with OpenTimestamps. Cadence is a deployment choice.</td></tr>
+<tr><td>Graduated sanctions</td><td>Ostrom</td><td>A contributor ladder runs from censure to loss of standing. Multisig thresholds are congruence, not sanctions.</td></tr>
+<tr><td>Conflict resolution</td><td>Ostrom</td><td>Module conflicts resolve by what the operator runs. A shared-layer dispute can pause for inquiry. A fork is the exit when the rules cannot settle it.</td></tr>
+<tr><td>Minimal recognition</td><td>Ostrom</td><td>The ruleset can be forked. Revenue is not designed to depend on one funder. Keyholders can sit in more than one jurisdiction. The roster is not set.</td></tr>
+<tr><td>Spontaneous order</td><td>Hayek</td><td>No committee chooses which modules exist. Operators choose what to run.</td></tr>
+<tr><td>Knowledge problem</td><td>Hayek</td><td>A module can carry knowledge the base node does not. No central list decides which problems get a module.</td></tr>
+<tr><td>Price discovery</td><td>Hayek</td><td>Use is the signal. A registry that would list modules and take a fee is not live.</td></tr>
+<tr><td>Market process</td><td>Hayek</td><td>The Orange Paper lets more than one implementation be checked against the same rules.</td></tr>
+<tr><td>Permissionless</td><td>Bitcoin</td><td>The repositories are public. Anyone can propose, fork, or run a module. A merge to a governed branch is what the gate is designed to check.</td></tr>
+<tr><td>Trust minimization</td><td>Bitcoin</td><td>The Governance App is designed to refuse a merge that lacks the signatures for that layer and tier. A GitHub App is one host.</td></tr>
+<tr><td>Decentralization</td><td>Bitcoin</td><td>Layers name different key sets. Another implementation can validate the same chain when it follows the same rules.</td></tr>
+<tr><td>Censorship resistance</td><td>Bitcoin</td><td>The ruleset can be forked. The design does not depend on one funder or one jurisdiction.</td></tr>
+<tr><td>Immutability</td><td>Bitcoin</td><td>OpenTimestamps is designed to anchor a snapshot a later reader can check. An anchor does not unmerge a change.</td></tr>
+<tr><td>Privacy by default</td><td>Cypherpunk</td><td>Module choice is local configuration. Governance signatures name maintainers. An anchor is a hash.</td></tr>
+<tr><td>Technical enforcement</td><td>Cypherpunk</td><td>The design is that code checks signatures before a merge. The people who hold the keys still sign.</td></tr>
+<tr><td>Anti-surveillance</td><td>Cypherpunk</td><td>Status publication uses Nostr relays. Anchors use Bitcoin. The GitHub deployment uses an outbound runner.</td></tr>
+</tbody>
+</table>
+<figcaption>Ostrom, Hayek, Bitcoin, and Cypherpunk, as rows in the design. The merge gate, the contributor ladder, and the public anchors are not on.</figcaption>
+</figure>
 <p>The modular architecture implements Ostrom's eight principles through cryptographic enforcement rather than social pressure. The bullets below are the account of each principle in this design.</p>
 <h4 class="subheading">Principle 1. Clearly Defined Boundaries.</h4>
 <ul>
