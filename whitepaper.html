@@ -18,7 +18,7 @@
     <meta name="twitter:title" content="The Bitcoin Commons - White Paper">
     <meta name="twitter:description" content="Design argument for forkable governance and a cryptographic merge gate.">
     <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
-    <link rel="stylesheet" href="style.css?v=18" />
+    <link rel="stylesheet" href="style.css?v=19" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -453,12 +453,16 @@
 </figure>
 <figure class="wp-chart">
 <div class="chart-heading">One consensus implementation, checked against the written spec</div>
-<div class="layer-stack" role="img" aria-label="blvm-protocol, blvm-node, and blvm-sdk depend on blvm-consensus, which is checked against the Orange Paper">
-<div class="layer-box">blvm-protocol · blvm-node · blvm-sdk</div>
-<div class="layer-link">depend on</div>
-<div class="layer-box layer-core">blvm-consensus</div>
-<div class="layer-link">checked against</div>
-<div class="layer-box layer-spec">Orange Paper · blvm-spec</div>
+<div class="crate-dep" role="img" aria-label="blvm-protocol, blvm-node, and blvm-sdk each depend on blvm-consensus, which is checked against the Orange Paper">
+<div class="crate-row">
+<div class="crate"><span class="crate-name">blvm-protocol</span><span class="crate-role">Protocol engine</span></div>
+<div class="crate"><span class="crate-name">blvm-node</span><span class="crate-role">Reference node</span></div>
+<div class="crate"><span class="crate-name">blvm-sdk</span><span class="crate-role">Developer surface</span></div>
+</div>
+<div class="crate-via">depend on</div>
+<div class="crate crate-core"><span class="crate-name">blvm-consensus</span><span class="crate-role">The only implementation of the consensus rules</span></div>
+<div class="crate-via">checked against</div>
+<div class="crate crate-spec"><span class="crate-name">Orange Paper</span><span class="crate-role">blvm-spec, the written rules</span></div>
 </div>
 <figcaption>Upper layers do not carry a second copy of the consensus rules.</figcaption>
 </figure>
