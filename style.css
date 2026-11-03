@@ -2369,6 +2369,12 @@ body.spec-maps-body {
   line-height: 1.8;
 }
 
+.whitepaper-content h2,
+.whitepaper-content h3,
+.whitepaper-content h4 {
+  scroll-margin-top: 5rem;
+}
+
 .whitepaper-content p {
   margin-bottom: 1.25rem;
 }
