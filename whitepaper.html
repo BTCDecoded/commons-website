@@ -171,7 +171,7 @@
 </ul>
 <h2 id="2-problem-statement">2. Problem Statement</h2>
 <h3>Technical Reality</h3>
-<p>Bitcoin's consensus rules are embedded in hundreds of thousands of lines of reference-client C++ without a canonical mathematical specification the ecosystem standardizes on. In Core 32.1 the rules that decide whether a block or transaction is valid are 10,122 lines, 7% of 151,004 lines of implementation. The same five merge keys gate the other 93%: the code that applies and relays those rules, and the wallet, interface, and network code. The dominant reference implementation carries enormous practical weight over how the network evolves. On November 3, 2026, reachable crawls of the Bitcoin network showed about 89% running Bitcoin Core and about 10% running Knots, down from about 22.5% Knots in the 2025 to mid-2026 window. Knots still shares about 95% of that codebase, so about 99% of those nodes ran one implementation lineage. The separate BLAKE2b proof-of-work chain is not in this count. Safe independent implementations and systematic verification remain exceedingly difficult under reference-client-as-spec; Commons publishes layered specifications to address that gap.</p>
+<p>Bitcoin's consensus rules are embedded in hundreds of thousands of lines of reference-client C++ without a canonical mathematical specification the ecosystem standardizes on. In Core 32.1 the rules that decide whether a block or transaction is valid are 10,122 lines, 7% of 151,004 lines of implementation. The same five merge keys gate the other 93%: the code that applies and relays those rules, and the wallet, interface, and network code. The dominant reference implementation carries enormous practical weight over how the network evolves. On November 3, 2026, reachable crawls of the Bitcoin network showed about 89% running Bitcoin Core and about 10% running Knots, down from about 22.5% Knots in the 2025 to mid-2026 window. Knots still shares about 95% of that codebase, so about 99% of those nodes ran one implementation lineage. Safe independent implementations and systematic verification remain exceedingly difficult under reference-client-as-spec; Commons publishes layered specifications to address that gap.</p>
 <figure class="wp-chart wp-chart-wide">
 <div class="chart-heading">The rules are 7% of the code. Five merge keys gate the other 93% too.</div>
 <div class="stackbar" role="img" aria-label="Consensus rules are 7 percent. Code that applies and relays them is 13 percent. Wallet, interface, network, and RPC are 80 percent. Five merge keys gate all of it.">
@@ -203,7 +203,7 @@
 <div><dt>Node split</dt><dd>89.3% Core · 10.4% Knots</dd></div>
 <div><dt>Same lineage</dt><dd>~99%</dd></div>
 </dl>
-<figcaption>89.3% plus 10.4% times 95% shared code is about 99%. Reachable Bitcoin nodes on November 3, 2026. The BLAKE2b chain is not included. A policy fork can share this chain and still be the same codebase.</figcaption>
+<figcaption>89.3% plus 10.4% times 95% shared code is about 99%. Reachable Bitcoin nodes on November 3, 2026. A policy fork can share this chain and still be the same codebase.</figcaption>
 </figure>
 <p>Items with broad agreement have still waited for years. Wallet and node separation, UTXO set commitments, and networking upgrades are in that set. The stall is structural.</p>
 <figure class="wp-chart">
