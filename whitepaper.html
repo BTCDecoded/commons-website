@@ -18,7 +18,7 @@
     <meta name="twitter:title" content="The Bitcoin Commons - White Paper">
     <meta name="twitter:description" content="Design argument for forkable governance and a cryptographic merge gate.">
     <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
-    <link rel="stylesheet" href="style.css?v=22" />
+    <link rel="stylesheet" href="style.css?v=24" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -300,20 +300,33 @@
 <p>Each framework covers a hole in the others. Ostrom's commons depended on social pressure, and Bitcoin replaces that pressure with a check anyone can verify. Hayek's competition needs real alternatives, and Ostrom's institutions are how more than one model can exist under rules. Bitcoin settled agreement on the chain and left agreement on the code informal. Hayek's discovery and Ostrom's rules are the design for that layer. The result is a design that is proven, evolving, and enforceable. Enforcement is not on.</p>
 <figure class="wp-chart">
 <div class="chart-heading">Three frameworks. Each one covers a hole in the others.</div>
-<div class="synth" role="img" aria-label="Ostrom supplies proven institutions, Hayek supplies discovery, and Bitcoin supplies enforcement. Each covers a weakness in the others. The result is proven, evolving, and enforceable.">
-<div class="synth-sources">
-<div class="synth-card"><span class="synth-kicker">Ostrom</span><span class="synth-title">Proven institutions</span><span class="synth-line">Boundaries, monitoring, sanctions, and a way to leave.</span></div>
-<div class="synth-card"><span class="synth-kicker">Hayek</span><span class="synth-title">Discovery</span><span class="synth-line">No planner holds the knowledge. Competition is how it surfaces.</span></div>
-<div class="synth-card synth-card-mark"><span class="synth-kicker">Bitcoin</span><span class="synth-title">Enforcement</span><span class="synth-line">A rule can be checked without trusting the person who states it.</span></div>
+<div class="synth" role="img" aria-label="Ostrom supplies proven institutions. Hayek supplies discovery. Bitcoin supplies enforcement. Each column names the hole in that framework and what covers it. The result is proven, evolving, and enforceable.">
+<div class="synth-col">
+<span class="synth-kicker">Ostrom</span>
+<span class="synth-title">Proven institutions</span>
+<span class="synth-line">Boundaries, monitoring, sanctions, and a way to leave.</span>
+<span class="synth-hole">Social pressure does not hold at this scale.</span>
+<span class="synth-cover">Covered by a cryptographic check.</span>
 </div>
-<div class="synth-repairs">
-<div class="synth-repair"><span class="synth-from">Social pressure does not hold at this scale.</span><span class="synth-join">Ostrom</span><span class="synth-to">A cryptographic check</span></div>
-<div class="synth-repair"><span class="synth-from">Competition needs somewhere to compete.</span><span class="synth-join">Hayek</span><span class="synth-to">Institutions for more than one model</span></div>
-<div class="synth-repair"><span class="synth-from">The chain is settled. The code is not.</span><span class="synth-join">Bitcoin</span><span class="synth-to">Discovery under written rules</span></div>
+<div class="synth-col">
+<span class="synth-kicker">Hayek</span>
+<span class="synth-title">Discovery</span>
+<span class="synth-line">No planner holds the knowledge. Competition is how it surfaces.</span>
+<span class="synth-hole">Competition needs somewhere to compete.</span>
+<span class="synth-cover">Covered by institutions for more than one model.</span>
 </div>
-<div class="synth-result" aria-hidden="true"><span>Proven</span><span>Evolving</span><span>Enforceable</span></div>
+<div class="synth-col">
+<span class="synth-kicker">Bitcoin</span>
+<span class="synth-title">Enforcement</span>
+<span class="synth-line">A rule can be checked without trusting the person who states it.</span>
+<span class="synth-hole">The chain is settled. The code is not.</span>
+<span class="synth-cover">Covered by discovery under written rules.</span>
 </div>
-<figcaption>The repair runs from the named framework to the one that covers it. Enforceable here is the design. The merge gate is not on.</figcaption>
+</div>
+<dl class="chart-stats">
+<div><dt>Result</dt><dd>Proven, evolving, enforceable</dd></div>
+</dl>
+<figcaption>Each column is one framework, the hole in it, and what covers that hole. The merge gate is not on.</figcaption>
 </figure>
 <h3>Cryptographic Polycentrism: The Governance Model</h3>
 <p>Bitcoin Commons implements <strong>Cryptographic Polycentrism</strong>, a governance model that creates multiple centers of power with clear boundaries, enforced through cryptography rather than social pressure. This approach applies Ostrom's proven principles using Bitcoin's cryptographic enforcement tools, enabling competitive discovery through Hayekian market mechanisms while maintaining Ostrom's institutional structure.</p>
