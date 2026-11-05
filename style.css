@@ -2611,6 +2611,48 @@ body.spec-maps-body {
   border-top: 1px solid #2a2a2f;
 }
 
+.whitepaper-content .crate-scale {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.whitepaper-content .crate-scale-row {
+  display: grid;
+  grid-template-columns: minmax(9.5rem, 14rem) minmax(0, 1fr) 4.75rem;
+  gap: 0.45rem 0.75rem;
+  align-items: center;
+}
+
+.whitepaper-content .crate-track {
+  height: 2.35rem;
+}
+
+.whitepaper-content .crate-fill {
+  display: block;
+  height: 100%;
+  min-width: 2px;
+  border-radius: 4px;
+  background: #3a6a8a;
+}
+
+.whitepaper-content .crate-fill-core {
+  background: #f7761a;
+}
+
+.whitepaper-content .crate-fill-spec {
+  background: #c05e12;
+}
+
+.whitepaper-content .crate-lines {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #e8e8ec;
+  white-space: nowrap;
+}
+
 .whitepaper-content figure.wp-chart .chart-heading {
   font-size: 0.95rem;
   font-weight: 600;
@@ -3044,6 +3086,25 @@ body.spec-maps-body {
   .whitepaper-content .tier-grid,
   .whitepaper-content .crate-row {
     grid-template-columns: 1fr;
+  }
+
+  .whitepaper-content .crate-scale-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "name lines"
+      "track track";
+  }
+
+  .whitepaper-content .crate-scale-row .crate-name {
+    grid-area: name;
+  }
+
+  .whitepaper-content .crate-scale-row .crate-lines {
+    grid-area: lines;
+  }
+
+  .whitepaper-content .crate-scale-row .crate-track {
+    grid-area: track;
   }
 
   .whitepaper-content .synth {
