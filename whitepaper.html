@@ -551,7 +551,6 @@
 </div>
 <figcaption>Bar length is approximate size, relative to blvm-node. Code counts are Rust lines under src/, tests excluded: node about 120,000, consensus about 38,000, protocol about 16,000, SDK about 9,000. The Orange Paper count is PROTOCOL.md, ARCHITECTURE.md, and CONSENSUS_SPEC.md, about 5,000 lines, so that bar is a document rather than a Rust crate. Upper layers do not carry a second copy of the consensus rules.</figcaption>
 </figure>
-<p>In the current crates, <code>blvm-node</code> is about 120,000 lines of Rust under <code>src/</code>. <code>blvm-consensus</code> is about 38,000, <code>blvm-protocol</code> about 16,000, and <code>blvm-sdk</code> about 9,000. Tests are excluded. <code>PROTOCOL.md</code>, <code>ARCHITECTURE.md</code>, and <code>CONSENSUS_SPEC.md</code> together are about 5,000 lines. The upper crates depend on <code>blvm-consensus</code>, and that crate is checked against those written rules.</p>
 <figure class="wp-chart">
 <div class="chart-heading">What happens when a block arrives</div>
 <ol class="step-flow">
