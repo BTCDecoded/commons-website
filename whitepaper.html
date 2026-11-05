@@ -18,7 +18,7 @@
     <meta name="twitter:title" content="The Bitcoin Commons - White Paper">
     <meta name="twitter:description" content="Design argument for forkable governance and a cryptographic merge gate.">
     <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
-    <link rel="stylesheet" href="style.css?v=24" />
+    <link rel="stylesheet" href="style.css?v=25" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -343,27 +343,27 @@
 </thead>
 <tbody>
 <tr><td>Clear boundaries</td><td>Ostrom</td><td>Repository layers run from 6-of-7 at the constitutional layers to 2-of-3 at the extension layer. Modules cannot change consensus paths.</td></tr>
-<tr><td>Proportional benefits</td><td>Ostrom</td><td>Optional-module revenue follows use. Optional merge mining is a pool's choice. Adoption is not a vote.</td></tr>
-<tr><td>Collective choice</td><td>Ostrom</td><td>Rules that bind every participant change through the tiers. An operator's module stack binds only that operator.</td></tr>
-<tr><td>Monitoring</td><td>Ostrom</td><td>Governance actions are designed to be signed, published to Nostr, and anchored with OpenTimestamps. Cadence is a deployment choice.</td></tr>
-<tr><td>Graduated sanctions</td><td>Ostrom</td><td>A contributor ladder runs from censure to loss of standing. Multisig thresholds are congruence, not sanctions.</td></tr>
-<tr><td>Conflict resolution</td><td>Ostrom</td><td>Module conflicts resolve by what the operator runs. A shared-layer dispute can pause for inquiry. A fork is the exit when the rules cannot settle it.</td></tr>
+<tr><td>Proportional benefits</td><td>Ostrom</td><td>Optional-module revenue follows use. Commons Pool, a separate product, is the non-custodial mining path, and using it is a pool's choice. A Plebly donation bears cost at a public address. Adoption is not a vote, and a donation is not a vote.</td></tr>
+<tr><td>Collective choice</td><td>Ostrom</td><td>Rules that bind every participant change through the tiers. A donation does not. A reading from BTCDecoded Intelligence does not. An operator's module stack binds only that operator.</td></tr>
+<tr><td>Monitoring</td><td>Ostrom</td><td>BTCDecoded Intelligence, a separate product, searches the public coordination record and cites the source. Governance actions are designed to be signed, published to Nostr, and anchored with OpenTimestamps. That monitor is not on.</td></tr>
+<tr><td>Graduated sanctions</td><td>Ostrom</td><td>A contributor ladder runs from censure to loss of standing. A profile drawn from the public record is not a sanction. Multisig thresholds are congruence, not sanctions.</td></tr>
+<tr><td>Conflict resolution</td><td>Ostrom</td><td>Module conflicts resolve by what the operator runs. Intelligence can restate a public argument and its source. It cannot close the dispute. A shared-layer dispute can pause for inquiry. A fork is the exit when the rules cannot settle it.</td></tr>
 <tr><td>Minimal recognition</td><td>Ostrom</td><td>The ruleset can be forked. Revenue is not designed to depend on one funder. Keyholders can sit in more than one jurisdiction. The roster is not set.</td></tr>
 <tr><td>Spontaneous order</td><td>Hayek</td><td>No committee chooses which modules exist. Operators choose what to run.</td></tr>
-<tr><td>Knowledge problem</td><td>Hayek</td><td>A module can carry knowledge the base node does not. No central list decides which problems get a module.</td></tr>
+<tr><td>Knowledge problem</td><td>Hayek</td><td>A module can carry knowledge the base node does not. BTCDecoded Intelligence searches a public record no planner holds. The Orange Paper stays the normative layer.</td></tr>
 <tr><td>Price discovery</td><td>Hayek</td><td>Use is the signal. A registry that would list modules and take a fee is not live.</td></tr>
 <tr><td>Market process</td><td>Hayek</td><td>The Orange Paper lets more than one implementation be checked against the same rules.</td></tr>
 <tr><td>Permissionless</td><td>Bitcoin</td><td>The repositories are public. Anyone can propose, fork, or run a module. A merge to a governed branch is what the gate is designed to check.</td></tr>
-<tr><td>Trust minimization</td><td>Bitcoin</td><td>The Governance App is designed to refuse a merge that lacks the signatures for that layer and tier. A GitHub App is one host.</td></tr>
+<tr><td>Trust minimization</td><td>Bitcoin</td><td>The Governance App is designed to refuse a merge that lacks the signatures for that layer and tier. A GitHub App is one host. Intelligence is not on that path.</td></tr>
 <tr><td>Decentralization</td><td>Bitcoin</td><td>Layers name different key sets. Another implementation can validate the same chain when it follows the same rules.</td></tr>
 <tr><td>Censorship resistance</td><td>Bitcoin</td><td>The ruleset can be forked. The design does not depend on one funder or one jurisdiction.</td></tr>
 <tr><td>Immutability</td><td>Bitcoin</td><td>OpenTimestamps is designed to anchor a snapshot a later reader can check. An anchor does not unmerge a change.</td></tr>
-<tr><td>Privacy by default</td><td>Cypherpunk</td><td>Module choice is local configuration. Governance signatures name maintainers. An anchor is a hash.</td></tr>
+<tr><td>Privacy by default</td><td>Cypherpunk</td><td>Module choice is local configuration. Governance signatures name maintainers. An anchor is a hash. Intelligence reads public material. It is not a place for a seed or a wallet.</td></tr>
 <tr><td>Technical enforcement</td><td>Cypherpunk</td><td>The design is that code checks signatures before a merge. The people who hold the keys still sign.</td></tr>
 <tr><td>Anti-surveillance</td><td>Cypherpunk</td><td>Status publication uses Nostr relays. Anchors use Bitcoin. The GitHub deployment uses an outbound runner.</td></tr>
 </tbody>
 </table>
-<figcaption>Ostrom, Hayek, Bitcoin, and Cypherpunk, as rows in the design. The merge gate, the contributor ladder, and the public anchors are not on.</figcaption>
+<figcaption>Ostrom, Hayek, Bitcoin, and Cypherpunk, as rows in the design. Plebly, BTCDecoded Intelligence, and Commons Pool are separate products and appear only where a principle uses them. The merge gate, the contributor ladder, and the public anchors are not on.</figcaption>
 </figure>
 <p>The modular architecture implements Ostrom's eight principles through cryptographic enforcement rather than social pressure. The bullets below are the account of each principle in this design.</p>
 <h4 class="subheading">Principle 1. Clearly Defined Boundaries.</h4>
@@ -384,6 +384,7 @@
 </ul>
 <h4 class="subheading">Principle 4. Monitoring.</h4>
 <ul>
+<li><strong>The public record.</strong> BTCDecoded Intelligence is a separate product for this job. It searches the public coordination record and returns an answer with its source. Sign-in is GitHub or Nostr. Payment is Lightning. The source is what a reader checks.</li>
 <li><strong>Cryptographic transparency.</strong> Governance actions are designed to be signed, published to Nostr, and anchored with OpenTimestamps, so any participant can audit them without trusting a monitor. A merge that lacks its required signatures is designed to be refused at the gate. <a href="#6-cryptographic-governance-enforcement">Three-layer verification</a> is the mechanism. Not enforced today.</li>
 </ul>
 <h4 class="subheading">Principle 5. Graduated Sanctions.</h4>
@@ -404,8 +405,14 @@
 <h4 class="subheading">Principle 8. Nested Enterprises.</h4>
 <ul>
 <li><strong>Layers inside one ruleset.</strong> Modules operate inside the consensus boundary. The extension, application, implementation, and constitutional layers each carry their own thresholds inside one ruleset.</li>
+<li><strong>Neighboring products.</strong> Plebly, BTCDecoded Intelligence, and Commons Pool are not layers of Commons. Each governs its own work, outside the merge set. None of them changes consensus rules, and none of them counts toward a signature.</li>
 </ul>
-<p>Commons implements <a href="#3-theoretical-framework-the-triple-foundation">all eight Ostrom principles through Cryptographic Polycentrism</a>, encoding boundaries, congruence, nesting, and auditability in architecture rather than social pressure alone.</p>
+<p>The eight principles are the account of this design. <a href="#3-theoretical-framework-the-triple-foundation">Cryptographic Polycentrism</a> is how Commons encodes boundaries, congruence, nesting, and auditability. Plebly, BTCDecoded Intelligence, and Commons Pool are separate products, purpose-built so funding, reading the public record, and non-custodial mining can follow those principles. They do not replace the ruleset. Enforcement of the merge gate is not on.</p>
+<h3>Related products</h3>
+<p>These products sit beside Commons. They were built so a principle has somewhere to operate. They are not the ruleset, and they are not the node.</p>
+<p><strong>Plebly</strong> lists public Bitcoin development work and takes donations into on-chain escrow. The coins sit at an address a donor can check. Plebly's keys are its own. A donation is a way to bear cost. It does not change a tier, and it is not standing.</p>
+<p><strong>BTCDecoded Intelligence</strong> is cited search over Bitcoin's public coordination record: IRC, mailing lists, GitHub, forums, specs, and papers. An answer comes back with its source. Access is GitHub or Nostr, paid in Lightning, and connected over MCP. The Orange Paper remains the normative layer. A note on a public pull request is an argument a person can check. It is not a signature, and it is not on the merge path.</p>
+<p><strong>Commons Pool</strong> is non-custodial mining: a found block can pay the miner's address. It is built. It is not a live mainnet pool. Using it is a pool's choice, and that choice is not a vote.</p>
 <h2 id="4-technical-solution-the-orange-paper">4. Technical Solution: The Orange Paper</h2>
 <h3>Problem</h3>
 <p>Bitcoin's consensus rules lacked a canonical mathematical specification industry-wide (<a href="#2-problem-statement">reference-client-as-spec remains the practical default</a>). The consensus-critical denial-of-service vulnerability CVE-2018-17144 existed undetected for years: exactly the class of error formal verification and layered testing aim to prevent. Forking the reference client keeps its codebase and its merge process. Independent clients that dropped the UTXO set, or that stopped active development, do not give operators a second consensus implementation.</p>
@@ -507,19 +514,44 @@
 </figure>
 <figure class="wp-chart">
 <div class="chart-heading">One consensus implementation, checked against the written spec</div>
-<div class="crate-dep" role="img" aria-label="blvm-protocol, blvm-node, and blvm-sdk each depend on blvm-consensus, which is checked against the Orange Paper">
-<div class="crate-row">
-<div class="crate"><span class="crate-name">blvm-protocol</span><span class="crate-role">Protocol engine</span></div>
-<div class="crate"><span class="crate-name">blvm-node</span><span class="crate-role">Reference node</span></div>
-<div class="crate"><span class="crate-name">blvm-sdk</span><span class="crate-role">Developer surface</span></div>
+<div class="crate-dep" role="img" aria-label="Approximate size. blvm-node about 120,000 lines, blvm-consensus about 38,000, blvm-protocol about 16,000, blvm-sdk about 9,000, and the written spec about 5,000. The upper crates depend on blvm-consensus, which is checked against the Orange Paper.">
+<div class="crate-scale">
+<div class="crate-scale-row">
+<span class="crate-name">blvm-protocol<span class="crate-role">Protocol engine</span></span>
+<span class="crate-track"><span class="crate-fill" style="width:13.3%"></span></span>
+<span class="crate-lines">~16,000</span>
+</div>
+<div class="crate-scale-row">
+<span class="crate-name">blvm-node<span class="crate-role">Reference node</span></span>
+<span class="crate-track"><span class="crate-fill" style="width:100%"></span></span>
+<span class="crate-lines">~120,000</span>
+</div>
+<div class="crate-scale-row">
+<span class="crate-name">blvm-sdk<span class="crate-role">Developer surface</span></span>
+<span class="crate-track"><span class="crate-fill" style="width:7.5%"></span></span>
+<span class="crate-lines">~9,000</span>
+</div>
 </div>
 <div class="crate-via">depend on</div>
-<div class="crate crate-core"><span class="crate-name">blvm-consensus</span><span class="crate-role">The only implementation of the consensus rules</span></div>
-<div class="crate-via">checked against</div>
-<div class="crate crate-spec"><span class="crate-name">Orange Paper</span><span class="crate-role">blvm-spec, the written rules</span></div>
+<div class="crate-scale">
+<div class="crate-scale-row">
+<span class="crate-name">blvm-consensus<span class="crate-role">The only implementation of the consensus rules</span></span>
+<span class="crate-track"><span class="crate-fill crate-fill-core" style="width:31.7%"></span></span>
+<span class="crate-lines">~38,000</span>
 </div>
-<figcaption>Upper layers do not carry a second copy of the consensus rules.</figcaption>
+</div>
+<div class="crate-via">checked against</div>
+<div class="crate-scale">
+<div class="crate-scale-row">
+<span class="crate-name">Orange Paper<span class="crate-role">blvm-spec, the written rules</span></span>
+<span class="crate-track"><span class="crate-fill crate-fill-spec" style="width:4.2%"></span></span>
+<span class="crate-lines">~5,000</span>
+</div>
+</div>
+</div>
+<figcaption>Bar length is approximate size, relative to blvm-node. Code counts are Rust lines under src/, tests excluded: node about 120,000, consensus about 38,000, protocol about 16,000, SDK about 9,000. The Orange Paper count is PROTOCOL.md, ARCHITECTURE.md, and CONSENSUS_SPEC.md, about 5,000 lines, so that bar is a document rather than a Rust crate. Upper layers do not carry a second copy of the consensus rules.</figcaption>
 </figure>
+<p>In the current crates, <code>blvm-node</code> is about 120,000 lines of Rust under <code>src/</code>. <code>blvm-consensus</code> is about 38,000, <code>blvm-protocol</code> about 16,000, and <code>blvm-sdk</code> about 9,000. Tests are excluded. <code>PROTOCOL.md</code>, <code>ARCHITECTURE.md</code>, and <code>CONSENSUS_SPEC.md</code> together are about 5,000 lines. The upper crates depend on <code>blvm-consensus</code>, and that crate is checked against those written rules.</p>
 <figure class="wp-chart">
 <div class="chart-heading">What happens when a block arrives</div>
 <ol class="step-flow">
@@ -554,9 +586,9 @@
 <h4 class="subheading">Revenue Model</h4>
 <ul>
 <li>Self-sustaining development through optional modules</li>
-<li>Three complementary channels; no single stream is required: <strong>optional modules</strong> (operational today), <strong>module registry and distribution</strong> (not live yet; discovery and fees when deployed), <strong>governance announcement zaps</strong> (Lightning), and <strong>optional merge mining</strong> for pools that choose secondary-chain revenue</li>
-<li>Reduces reliance on grants, donations, or external funding</li>
-<li>Aligns incentives with usage and adoption, reducing capture risk</li>
+<li>Channels inside Commons, with no single stream required: <strong>optional modules</strong> (operational today), <strong>module registry and distribution</strong> (not live yet; discovery and fees when deployed), <strong>governance announcement zaps</strong> (Lightning), and <strong>optional merge mining</strong> for pools that choose it. Commons Pool is the separate product for that mining path. It is built. It is not a live mainnet pool.</li>
+<li>Plebly is separate as well. Donations go to on-chain escrow for listed work. A donation bears cost. It is not a module fee, and it is not a vote.</li>
+<li>Use-based revenue tracks who benefits. A checkable donation is a different object from a grant concentrated in one funder.</li>
 </ul>
 <h3>Module Isolation</h3>
 <p>Optional features load as <strong>modules</strong>: separate processes with strict boundaries, not compile-time features baked into the base node:</p>
@@ -793,10 +825,11 @@
 </figure>
 <p>The Apache Software Foundation reported about $2.4 million of revenue in FY2024. The Python Software Foundation reported about $4.1 million of revenue in 2024. The Rust Foundation reported about $4.3 million of revenue in 2024, and about $413,000 of that went out as grants to maintainers. The Zcash Foundation's 2024 expenses were about $8.0 million: about $1.0 million of protocol work and about $5.1 million of community grants. Its block-reward development fund ended at the November 2024 halving. Polkadot's 2024 treasury report counts about $32 million of development spending, of which about $6.7 million was the protocol and SDK. The same report counts about $133 million of treasury spending in total, mostly outreach and business development, so that larger number is not a protocol budget. The Linux Foundation reported about $221 million of revenue in 2024 for the whole foundation. That figure covers many projects, so it is not a kernel budget and it is not on the chart.</p>
 <h3>Self-Sustaining Revenue Models</h3>
-<p>Bitcoin Commons is built to fund operations through optional modules, which are operational today, reducing reliance on grants and donations. Sustainability is <strong>multi-channel</strong>: module revenue, registry-based distribution (when the registry is live), Lightning zaps, and optional mining-side revenue; none is assumed to carry the project alone.</p>
+<p>Use-based module revenue is the Commons channel that tracks who benefits. Optional modules are operational today. Sustainability is <strong>multi-channel</strong>: module revenue, registry-based distribution (when the registry is live), Lightning zaps, and optional mining-side revenue. None is assumed to carry the project alone. Plebly is the separate product a donor uses. A foundation grant is the concentration the charts above measure.</p>
 <p><strong>Module registry and distribution:</strong> Planned permissionless discovery, quality signals, and developer alignment with project revenue; <strong>not live yet</strong>.</p>
 <p><strong>Governance announcement zaps:</strong> Lightning zaps attached to governance announcements fund governance operations directly and tie community support to transparent announcements.</p>
-<p><strong>Optional merge mining:</strong> For pools that enable it, coordinates merge mining for secondary chains as <strong>supplemental</strong> revenue, not a prerequisite for the economic model.</p>
+<p><strong>Plebly:</strong> A separate product. It lists public development work and takes donations into on-chain escrow. The address is public. A donation does not buy a tier.</p>
+<p><strong>Optional merge mining:</strong> Commons Pool is the separate non-custodial mining product. It is built, and it is not a live mainnet pool. For pools that enable merge mining, that revenue is <strong>supplemental</strong>, not a prerequisite for the economic model.</p>
 <p>These self-sustaining models align incentives with usage and adoption, making the system less vulnerable to capture than grant-dependent funding models. Commons positions as <strong>infrastructure for multiple implementations</strong>, not a reference-client replacement: success is measured by ecosystem health and adoption of the model, not market share.</p>
 <h2 id="8-failure-modes-mitigations">8. Failure Modes & Mitigations</h2>
 <h3>Governance Capture</h3>
