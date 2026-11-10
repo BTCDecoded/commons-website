@@ -289,6 +289,61 @@ export function SectionSunburst({ hideCaption = false }: SectionSunburstProps) {
 
     const nodes = root.descendants().filter((d) => d.depth > 0) as PartNode[];
 
+    function openSlice(
+      ev: { preventDefault(): void; stopPropagation(): void; clientX: number; clientY: number },
+      node: PartNode,
+    ) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      const path = node.ancestors().map((a) => a.data.name).reverse();
+      setFocusPath(path);
+      const name = node.data.name;
+      const embedded = isEmbedded();
+
+      if (name === "PROTOCOL.md") {
+        if (embedded) {
+          postParent({ type: "btcc-sunburst-popup-open", kind: "doc-root", doc: "protocol",
+            docHref: getProtocolViewerBaseUrl(), path });
+        } else {
+          setDetail({ kind: "doc-root", doc: "protocol", path, clientX: ev.clientX, clientY: ev.clientY });
+        }
+        return;
+      }
+      if (name === "ARCHITECTURE.md") {
+        if (embedded) {
+          postParent({ type: "btcc-sunburst-popup-open", kind: "doc-root", doc: "architecture",
+            docHref: getArchitectureViewerBaseUrl(), path });
+        } else {
+          setDetail({ kind: "doc-root", doc: "architecture", path, clientX: ev.clientX, clientY: ev.clientY });
+        }
+        return;
+      }
+      const meta = sectionViewerMeta(node);
+      if (!meta) {
+        setDetail(null);
+        setFocusPath([]);
+        return;
+      }
+      if (embedded) {
+        postParent({
+          type: "btcc-sunburst-popup-open",
+          kind: "section",
+          title: meta.title,
+          previewHtml: renderPreviewToHtml(meta.preview),
+          href: meta.href,
+          viewerLabel: meta.viewerLabel,
+          lineCount: meta.lineCount,
+          path,
+        });
+      } else {
+        setDetail({ kind: "section", meta, path, clientX: ev.clientX, clientY: ev.clientY });
+      }
+    }
+
+    /* d3-zoom swallows the click that follows a touch. A short pointer
+       gesture on a slice is a tap and opens the same preview. */
+    const tapOrigin = new Map<number, { x: number; y: number; node: PartNode }>();
+
     const slicePaths = g
       .selectAll<SVGPathElement, PartNode>("path.slice")
       .data(nodes)
@@ -300,54 +355,28 @@ export function SectionSunburst({ hideCaption = false }: SectionSunburstProps) {
       .attr("stroke-width", 1)
       .attr("d", (d) => arc(d as d3.HierarchyRectangularNode<OutlineNode>)!)
       .style("cursor", "pointer")
+      .on("pointerdown", (ev: PointerEvent, d) => {
+        if (ev.pointerType === "mouse") return;
+        tapOrigin.set(ev.pointerId, { x: ev.clientX, y: ev.clientY, node: d as PartNode });
+      })
       .on("click", (ev, d) => {
-        ev.preventDefault();
-        ev.stopPropagation();
-        const node = d as PartNode;
-        const path = node.ancestors().map((a) => a.data.name).reverse();
-        setFocusPath(path);
-        const name = node.data.name;
-        const embedded = isEmbedded();
-
-        if (name === "PROTOCOL.md") {
-          if (embedded) {
-            postParent({ type: "btcc-sunburst-popup-open", kind: "doc-root", doc: "protocol",
-              docHref: getProtocolViewerBaseUrl(), path });
-          } else {
-            setDetail({ kind: "doc-root", doc: "protocol", path, clientX: ev.clientX, clientY: ev.clientY });
-          }
-          return;
-        }
-        if (name === "ARCHITECTURE.md") {
-          if (embedded) {
-            postParent({ type: "btcc-sunburst-popup-open", kind: "doc-root", doc: "architecture",
-              docHref: getArchitectureViewerBaseUrl(), path });
-          } else {
-            setDetail({ kind: "doc-root", doc: "architecture", path, clientX: ev.clientX, clientY: ev.clientY });
-          }
-          return;
-        }
-        const meta = sectionViewerMeta(node);
-        if (!meta) {
-          setDetail(null);
-          setFocusPath([]);
-          return;
-        }
-        if (embedded) {
-          postParent({
-            type: "btcc-sunburst-popup-open",
-            kind: "section",
-            title: meta.title,
-            previewHtml: renderPreviewToHtml(meta.preview),
-            href: meta.href,
-            viewerLabel: meta.viewerLabel,
-            lineCount: meta.lineCount,
-            path,
-          });
-        } else {
-          setDetail({ kind: "section", meta, path, clientX: ev.clientX, clientY: ev.clientY });
-        }
+        const pointerType = "pointerType" in ev ? String((ev as PointerEvent).pointerType) : "mouse";
+        if (pointerType !== "mouse") return;
+        openSlice(ev, d as PartNode);
       });
+
+    svg.on("pointerup.suntap", (ev: PointerEvent) => {
+      const origin = tapOrigin.get(ev.pointerId);
+      tapOrigin.delete(ev.pointerId);
+      if (!origin || ev.pointerType === "mouse") return;
+      const dx = ev.clientX - origin.x;
+      const dy = ev.clientY - origin.y;
+      if (dx * dx + dy * dy > 64) return;
+      openSlice(ev, origin.node);
+    });
+    svg.on("pointercancel.suntap", (ev: PointerEvent) => {
+      tapOrigin.delete(ev.pointerId);
+    });
 
     slicePaths.append("title").text((d) => {
       const label = truncateFriendlyHeading(d.data.name, 200);
@@ -537,6 +566,7 @@ export function SectionSunburst({ hideCaption = false }: SectionSunburstProps) {
     return () => {
       d3.select(svgEl).selectAll("*").remove();
       d3.select(svgEl).on(".zoom", null);
+      d3.select(svgEl).on(".suntap", null);
       zoomBehaviorRef.current = null;
     };
   }, [layout]);

@@ -813,6 +813,124 @@ blockquote footer {
   font-family: var(--font-mono);
 }
 
+/* Spec-map preview. The chart lives in an iframe and asks the page to open this. */
+#sb-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(8, 12, 24, 0.72);
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+#sb-modal-overlay.sb-open { display: flex; }
+#sb-modal {
+  background: var(--bg-alt);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  box-shadow: 0 28px 56px rgba(0, 0, 0, 0.6);
+  width: min(30rem, calc(100vw - 2rem));
+  max-height: min(88vh, 640px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+#sb-modal-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.1rem 0.85rem;
+  border-bottom: 1px solid var(--rule);
+}
+#sb-modal-head-text { flex: 1; min-width: 0; }
+#sb-modal-meta {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.3rem;
+}
+#sb-modal-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--white);
+  line-height: 1.35;
+  word-break: break-word;
+}
+#sb-modal-close {
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+#sb-modal-body {
+  padding: 0.9rem 1.1rem 1.1rem;
+  overflow-y: auto;
+  min-height: 0;
+}
+#sb-modal-linecount,
+#sb-modal-path {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin: 0 0 0.7rem;
+}
+#sb-modal-preview {
+  margin: 0 0 0.75rem;
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+#sb-modal-preview.sb-modal-preview--katex { white-space: normal; }
+#sb-modal-preview .sunburst-preview-math-block {
+  display: block;
+  margin: 0.45rem 0;
+  overflow-x: auto;
+  text-align: center;
+}
+#sb-modal-path code {
+  font-size: 0.73em;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+#sb-modal-open-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.45rem 0.95rem;
+  background: rgba(247, 118, 26, 0.13);
+  border: 1px solid rgba(247, 118, 26, 0.5);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--orange);
+  text-decoration: none;
+}
+@media (max-width: 480px) {
+  #sb-modal-overlay { align-items: flex-end; padding: 0; }
+  #sb-modal {
+    border-radius: 12px 12px 0 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: 80dvh;
+  }
+}
+
 @media (max-width: 768px) {
   .hero {
     padding: 48px 1.25rem 40px;
