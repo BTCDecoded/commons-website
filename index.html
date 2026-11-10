@@ -950,8 +950,130 @@
       (function () {
         const sunburst = document.getElementById("sunburst");
         const govSpectrum = document.getElementById("gov-spectrum");
+        let sbOverlay = null;
+        let sbMeta, sbTitle, sbLinecount, sbPreview, sbPath, sbOpenBtn, sbCloseBtn;
+
+        function closeSbModal() {
+          if (!sbOverlay) return;
+          sbOverlay.classList.remove("sb-open");
+          document.body.style.overflow = "";
+          if (sunburst && sunburst.contentWindow) {
+            sunburst.contentWindow.postMessage({ type: "btcc-sunburst-popup-close" }, "*");
+          }
+        }
+
+        function buildSbModal() {
+          if (sbOverlay) return;
+          sbOverlay = document.createElement("div");
+          sbOverlay.id = "sb-modal-overlay";
+          const sbModal = document.createElement("div");
+          sbModal.id = "sb-modal";
+          sbModal.setAttribute("role", "dialog");
+          sbModal.setAttribute("aria-modal", "true");
+          sbModal.setAttribute("aria-labelledby", "sb-modal-title");
+
+          const head = document.createElement("div");
+          head.id = "sb-modal-head";
+          const headText = document.createElement("div");
+          headText.id = "sb-modal-head-text";
+          sbMeta = document.createElement("div");
+          sbMeta.id = "sb-modal-meta";
+          sbTitle = document.createElement("h3");
+          sbTitle.id = "sb-modal-title";
+          headText.appendChild(sbMeta);
+          headText.appendChild(sbTitle);
+          sbCloseBtn = document.createElement("button");
+          sbCloseBtn.id = "sb-modal-close";
+          sbCloseBtn.type = "button";
+          sbCloseBtn.setAttribute("aria-label", "Close");
+          sbCloseBtn.textContent = "×";
+          sbCloseBtn.addEventListener("click", closeSbModal);
+          head.appendChild(headText);
+          head.appendChild(sbCloseBtn);
+
+          const body = document.createElement("div");
+          body.id = "sb-modal-body";
+          sbLinecount = document.createElement("p");
+          sbLinecount.id = "sb-modal-linecount";
+          sbPreview = document.createElement("p");
+          sbPreview.id = "sb-modal-preview";
+          sbPath = document.createElement("p");
+          sbPath.id = "sb-modal-path";
+          const actions = document.createElement("div");
+          sbOpenBtn = document.createElement("a");
+          sbOpenBtn.id = "sb-modal-open-btn";
+          sbOpenBtn.target = "_blank";
+          sbOpenBtn.rel = "noopener noreferrer";
+          actions.appendChild(sbOpenBtn);
+          body.appendChild(sbLinecount);
+          body.appendChild(sbPreview);
+          body.appendChild(sbPath);
+          body.appendChild(actions);
+          sbModal.appendChild(head);
+          sbModal.appendChild(body);
+          sbOverlay.appendChild(sbModal);
+          document.body.appendChild(sbOverlay);
+          sbOverlay.addEventListener("click", function (e) {
+            if (e.target === sbOverlay) closeSbModal();
+          });
+          document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape" && sbOverlay.classList.contains("sb-open")) closeSbModal();
+          });
+        }
+
+        function openSbModal(data) {
+          buildSbModal();
+          const isSection = data.kind === "section";
+          const isDocRoot = data.kind === "doc-root";
+          sbMeta.textContent = isSection
+            ? (data.viewerLabel || "SPEC") + " viewer"
+            : data.doc === "protocol" ? "PROTOCOL viewer" : "ARCHITECTURE viewer";
+          sbTitle.textContent = isSection
+            ? data.title
+            : data.doc === "protocol" ? "PROTOCOL.md" : "ARCHITECTURE.md";
+          if (isSection && data.lineCount) {
+            sbLinecount.textContent = "~" + data.lineCount + " prose line(s) under this heading";
+            sbLinecount.style.display = "";
+          } else {
+            sbLinecount.style.display = "none";
+          }
+          if (isSection && typeof data.previewHtml === "string" && data.previewHtml.length > 0) {
+            sbPreview.className = "sb-modal-preview--katex";
+            sbPreview.innerHTML = data.previewHtml;
+            sbPreview.style.display = "";
+          } else if (isSection && data.preview) {
+            sbPreview.className = "";
+            sbPreview.textContent = String(data.preview).trim();
+            sbPreview.style.display = "";
+          } else if (isDocRoot) {
+            sbPreview.className = "";
+            sbPreview.textContent = data.doc === "protocol"
+              ? "Full Orange Paper protocol extract: constants, formulas, and definitions with math rendering and heading navigation."
+              : "Full Orange Paper architecture extract: system structure, major components, and how they connect.";
+            sbPreview.style.display = "";
+          } else {
+            sbPreview.className = "";
+            sbPreview.textContent = "";
+            sbPreview.style.display = "none";
+          }
+          const pathArr = Array.isArray(data.path) ? data.path : [];
+          if (pathArr.length > 0) {
+            sbPath.innerHTML = "<strong>Path:</strong> <code>" + pathArr.join(" → ") + "</code>";
+            sbPath.style.display = "";
+          } else {
+            sbPath.style.display = "none";
+          }
+          sbOpenBtn.href = isSection ? data.href : data.docHref;
+          sbOpenBtn.textContent = isSection
+            ? "Open section ↗"
+            : data.doc === "protocol" ? "Open protocol page ↗" : "Open architecture page ↗";
+          document.body.style.overflow = "hidden";
+          sbOverlay.classList.add("sb-open");
+          sbCloseBtn.focus();
+        }
+
         window.addEventListener("message", function (e) {
-          if (!e.data) return;
+          if (!e.data || typeof e.data.type !== "string") return;
           if (
             sunburst &&
             e.source === sunburst.contentWindow &&
@@ -961,6 +1083,14 @@
             if (typeof h === "number" && isFinite(h) && h > 0) {
               sunburst.style.height = Math.max(Math.round(h + 12), 300) + "px";
             }
+            return;
+          }
+          if (
+            sunburst &&
+            e.source === sunburst.contentWindow &&
+            e.data.type === "btcc-sunburst-popup-open"
+          ) {
+            openSbModal(e.data);
             return;
           }
           if (
