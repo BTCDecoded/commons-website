@@ -1,0 +1,1081 @@
+{
+  "schema_version": 1,
+  "measured_at": "2026-11-11",
+  "internal_slug": "blvm",
+  "internal_name": "commons",
+  "class": "Bitcoin full-node source trees already compared on this machine, plus Bitcoin Core as the secsov baseline and Knots because that checkout uses Core's src layout. GridPool is outside this class. The 2026-10-01 Commons Pool note is a reward-network request.",
+  "tree_methods": [
+    {
+      "id": "implementation_code",
+      "name": "Implementation code",
+      "unit": "lines",
+      "compare": "same-counter",
+      "why": "Size of the program the rules sit in. tokei code lines, one bucket per file."
+    },
+    {
+      "id": "program_code",
+      "name": "Program code",
+      "unit": "lines",
+      "compare": "same-counter",
+      "why": "Implementation code minus tooling."
+    },
+    {
+      "id": "tooling_code",
+      "name": "Tooling",
+      "unit": "lines",
+      "compare": "same-counter",
+      "why": "Files the role map marks as tooling. Spec lock lives here on commons."
+    },
+    {
+      "id": "rules_share",
+      "name": "Rules share",
+      "unit": "percent of implementation",
+      "compare": "same-profile",
+      "why": "Share of implementation on the rules side of that tree's cut. The Core file cut, the crate-role cut, and the repository-role cut are separate instruments."
+    },
+    {
+      "id": "mixed_share",
+      "name": "Left mixed",
+      "unit": "percent of implementation",
+      "compare": "same-profile",
+      "why": "Share left in a crate or library the cut did not split."
+    },
+    {
+      "id": "test_per_implementation",
+      "name": "Tests per implementation line",
+      "unit": "ratio",
+      "compare": "same-counter",
+      "why": "Test-bucket code lines divided by implementation code lines."
+    },
+    {
+      "id": "vendored_code",
+      "name": "Vendored code",
+      "unit": "lines",
+      "compare": "same-counter",
+      "why": "Bundled libraries. Outside first-party code."
+    },
+    {
+      "id": "locale_code",
+      "name": "Locale",
+      "unit": "lines",
+      "compare": "same-counter",
+      "why": "Translation files. Outside first-party code."
+    },
+    {
+      "id": "share_lines_ge_1000",
+      "name": "Lines in files of 1,000 or more",
+      "unit": "percent of implementation files' code",
+      "compare": "same-counter",
+      "why": "How much of the implementation sits in large files."
+    },
+    {
+      "id": "files_holding_half",
+      "name": "Files holding half the implementation",
+      "unit": "files",
+      "compare": "same-counter",
+      "why": "Smallest set of implementation files whose code lines reach half the implementation."
+    }
+  ],
+  "trees": [
+    {
+      "slug": "blvm",
+      "name": "commons",
+      "side": "internal",
+      "profile": "rust-workspace",
+      "instrument": "crate-role cut",
+      "commit": "70b8562522b53dce01ba0435211252a44f156a91",
+      "shallow": false,
+      "values": {
+        "implementation_code": {
+          "value": 397862,
+          "text": "397,862",
+          "status": "measured"
+        },
+        "program_code": {
+          "value": 273510,
+          "text": "273,510",
+          "status": "measured"
+        },
+        "tooling_code": {
+          "value": 124352,
+          "text": "124,352",
+          "status": "measured"
+        },
+        "rules_share": {
+          "value": 11.3,
+          "text": "11.3%",
+          "status": "measured"
+        },
+        "mixed_share": {
+          "value": 52.4,
+          "text": "52.4%",
+          "status": "measured"
+        },
+        "test_per_implementation": {
+          "value": 0.27,
+          "text": "0.27",
+          "status": "measured"
+        },
+        "vendored_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "locale_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "share_lines_ge_1000": {
+          "value": 71.7,
+          "text": "71.7%",
+          "status": "measured"
+        },
+        "files_holding_half": {
+          "value": 36,
+          "text": "36",
+          "status": "measured"
+        }
+      }
+    },
+    {
+      "slug": "bitcoin-core",
+      "name": "Bitcoin Core",
+      "side": "external",
+      "profile": "bitcoin-core",
+      "instrument": "Core file cut",
+      "commit": "f0de87f040621468b956f01f526a43a010310501",
+      "shallow": false,
+      "values": {
+        "implementation_code": {
+          "value": 151004,
+          "text": "151,004",
+          "status": "measured"
+        },
+        "program_code": {
+          "value": 151004,
+          "text": "151,004",
+          "status": "measured"
+        },
+        "tooling_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "rules_share": {
+          "value": 6.3,
+          "text": "6.3%",
+          "status": "measured"
+        },
+        "mixed_share": {
+          "value": 0,
+          "text": "0.0%",
+          "status": "measured"
+        },
+        "test_per_implementation": {
+          "value": 1.02,
+          "text": "1.02",
+          "status": "measured"
+        },
+        "vendored_code": {
+          "value": 112703,
+          "text": "112,703",
+          "status": "measured"
+        },
+        "locale_code": {
+          "value": 286741,
+          "text": "286,741",
+          "status": "measured"
+        },
+        "share_lines_ge_1000": {
+          "value": 38.9,
+          "text": "38.9%",
+          "status": "measured"
+        },
+        "files_holding_half": {
+          "value": 54,
+          "text": "54",
+          "status": "measured"
+        }
+      }
+    },
+    {
+      "slug": "knots",
+      "name": "Bitcoin Knots",
+      "side": "external",
+      "profile": "bitcoin-core",
+      "instrument": "Core file cut",
+      "commit": "5811235e3f5da687de1ac8ca731331a2fc24a350",
+      "shallow": true,
+      "values": {
+        "implementation_code": {
+          "value": 155194,
+          "text": "155,194",
+          "status": "measured"
+        },
+        "program_code": {
+          "value": 155194,
+          "text": "155,194",
+          "status": "measured"
+        },
+        "tooling_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "rules_share": {
+          "value": 7,
+          "text": "7.0%",
+          "status": "measured"
+        },
+        "mixed_share": {
+          "value": 0,
+          "text": "0.0%",
+          "status": "measured"
+        },
+        "test_per_implementation": {
+          "value": 0.97,
+          "text": "0.97",
+          "status": "measured"
+        },
+        "vendored_code": {
+          "value": 83466,
+          "text": "83,466",
+          "status": "measured"
+        },
+        "locale_code": {
+          "value": 330453,
+          "text": "330,453",
+          "status": "measured"
+        },
+        "share_lines_ge_1000": {
+          "value": 38.6,
+          "text": "38.6%",
+          "status": "measured"
+        },
+        "files_holding_half": {
+          "value": 57,
+          "text": "57",
+          "status": "measured"
+        }
+      }
+    },
+    {
+      "slug": "bitcoin-rs",
+      "name": "bitcoin-rs",
+      "side": "external",
+      "profile": "rust-workspace",
+      "instrument": "crate-role cut",
+      "commit": "9b8e91ae1aadfaad08e7fccbfa895bcbf41c6620",
+      "shallow": false,
+      "values": {
+        "implementation_code": {
+          "value": 271469,
+          "text": "271,469",
+          "status": "measured"
+        },
+        "program_code": {
+          "value": 271469,
+          "text": "271,469",
+          "status": "measured"
+        },
+        "tooling_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "rules_share": {
+          "value": 5.6,
+          "text": "5.6%",
+          "status": "measured"
+        },
+        "mixed_share": {
+          "value": 0,
+          "text": "0.0%",
+          "status": "measured"
+        },
+        "test_per_implementation": {
+          "value": 0.5,
+          "text": "0.50",
+          "status": "measured"
+        },
+        "vendored_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "locale_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "share_lines_ge_1000": {
+          "value": 42.1,
+          "text": "42.1%",
+          "status": "measured"
+        },
+        "files_holding_half": {
+          "value": 94,
+          "text": "94",
+          "status": "measured"
+        }
+      }
+    },
+    {
+      "slug": "satd",
+      "name": "satd",
+      "side": "external",
+      "profile": "rust-workspace",
+      "instrument": "crate-role cut",
+      "commit": "f0ea0e5dfa8446d9cb63fef0a22eaf5f976216ce",
+      "shallow": true,
+      "values": {
+        "implementation_code": {
+          "value": 291203,
+          "text": "291,203",
+          "status": "measured"
+        },
+        "program_code": {
+          "value": 291203,
+          "text": "291,203",
+          "status": "measured"
+        },
+        "tooling_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "rules_share": {
+          "value": 7.9,
+          "text": "7.9%",
+          "status": "measured"
+        },
+        "mixed_share": {
+          "value": 59.4,
+          "text": "59.4%",
+          "status": "measured"
+        },
+        "test_per_implementation": {
+          "value": 0.23,
+          "text": "0.23",
+          "status": "measured"
+        },
+        "vendored_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "locale_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "share_lines_ge_1000": {
+          "value": 51.8,
+          "text": "51.8%",
+          "status": "measured"
+        },
+        "files_holding_half": {
+          "value": 38,
+          "text": "38",
+          "status": "measured"
+        }
+      }
+    },
+    {
+      "slug": "libbitcoin",
+      "name": "libbitcoin",
+      "side": "external",
+      "profile": "generic",
+      "instrument": "repository-role cut",
+      "commit": "9f9cce3086074840951cedf1d381f08112275bfd",
+      "shallow": true,
+      "values": {
+        "implementation_code": {
+          "value": 314326,
+          "text": "314,326",
+          "status": "measured"
+        },
+        "program_code": {
+          "value": 302339,
+          "text": "302,339",
+          "status": "measured"
+        },
+        "tooling_code": {
+          "value": 11987,
+          "text": "11,987",
+          "status": "measured"
+        },
+        "rules_share": {
+          "value": 4.9,
+          "text": "4.9%",
+          "status": "measured"
+        },
+        "mixed_share": {
+          "value": 37.4,
+          "text": "37.4%",
+          "status": "measured"
+        },
+        "test_per_implementation": {
+          "value": 0.71,
+          "text": "0.71",
+          "status": "measured"
+        },
+        "vendored_code": {
+          "value": 58669,
+          "text": "58,669",
+          "status": "measured"
+        },
+        "locale_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "share_lines_ge_1000": {
+          "value": 17.1,
+          "text": "17.1%",
+          "status": "measured"
+        },
+        "files_holding_half": {
+          "value": 259,
+          "text": "259",
+          "status": "measured"
+        }
+      }
+    },
+    {
+      "slug": "hornet",
+      "name": "Hornet",
+      "side": "external",
+      "profile": "generic",
+      "instrument": "no rules cut",
+      "commit": "151462fa5ceece39c159674886dcfa6cfe9b1234",
+      "shallow": false,
+      "values": {
+        "implementation_code": {
+          "value": 14200,
+          "text": "14,200",
+          "status": "measured"
+        },
+        "program_code": {
+          "value": 14200,
+          "text": "14,200",
+          "status": "measured"
+        },
+        "tooling_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "rules_share": {
+          "value": null,
+          "text": "no cut",
+          "status": "no-cut"
+        },
+        "mixed_share": {
+          "value": null,
+          "text": "no cut",
+          "status": "no-cut"
+        },
+        "test_per_implementation": {
+          "value": 0.52,
+          "text": "0.52",
+          "status": "measured"
+        },
+        "vendored_code": {
+          "value": 81041,
+          "text": "81,041",
+          "status": "measured"
+        },
+        "locale_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "share_lines_ge_1000": {
+          "value": 0,
+          "text": "0.0%",
+          "status": "measured"
+        },
+        "files_holding_half": {
+          "value": 38,
+          "text": "38",
+          "status": "measured"
+        }
+      }
+    }
+  ],
+  "process_methods": [
+    {
+      "id": "top1_merge_share_2022",
+      "name": "Top-1 merge share",
+      "why": "Share of merged pull requests done by the single busiest merger. Cite the 2022+ window for the current bar.",
+      "source": "findings/GOVERNANCE_FRAMES.md",
+      "window": "2022+, 5,747 merged pull requests",
+      "cells": [
+        {
+          "slug": "blvm",
+          "side": "internal",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-core",
+          "side": "external",
+          "text": "50.2% (fanquake)",
+          "status": "recorded"
+        },
+        {
+          "slug": "knots",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-rs",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "satd",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "libbitcoin",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "hornet",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        }
+      ]
+    },
+    {
+      "id": "top3_merge_share_2022",
+      "name": "Top-3 merge share",
+      "why": "Share of merged pull requests done by the three busiest mergers. Same window as the top-1 figure.",
+      "source": "findings/GOVERNANCE_FRAMES.md",
+      "window": "2022+, 5,747 merged pull requests",
+      "cells": [
+        {
+          "slug": "blvm",
+          "side": "internal",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-core",
+          "side": "external",
+          "text": "82.2%",
+          "status": "recorded"
+        },
+        {
+          "slug": "knots",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-rs",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "satd",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "libbitcoin",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "hornet",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        }
+      ]
+    },
+    {
+      "id": "self_merge_rate",
+      "name": "Maintainer self-merge rate",
+      "why": "Merged pull requests whose author and merged_by are the same person, among maintainer-authored merges. A missing merged_by is not a self-merge.",
+      "source": "findings/RESEARCH_METHODOLOGY.md",
+      "window": "roster artifact 2026-09-10, all-time",
+      "cells": [
+        {
+          "slug": "blvm",
+          "side": "internal",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-core",
+          "side": "external",
+          "text": "25.5% (2,501 of 9,793)",
+          "status": "recorded"
+        },
+        {
+          "slug": "knots",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-rs",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "satd",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "libbitcoin",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "hornet",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        }
+      ]
+    },
+    {
+      "id": "zero_review_self_merge",
+      "name": "Zero-review share of self-merges",
+      "why": "Self-merges with no GitHub review object in approved, changes requested, or commented. This is the roster artifact, not the partial-2026 rate.",
+      "source": "findings/RESEARCH_METHODOLOGY.md",
+      "window": "roster artifact 2026-09-10, all-time",
+      "cells": [
+        {
+          "slug": "blvm",
+          "side": "internal",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-core",
+          "side": "external",
+          "text": "45.1% (1,129 of 2,501)",
+          "status": "recorded"
+        },
+        {
+          "slug": "knots",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-rs",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "satd",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "libbitcoin",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "hornet",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        }
+      ]
+    },
+    {
+      "id": "authorship_gini",
+      "name": "Authorship Gini",
+      "why": "Concentration of pull-request authorship. The period names are the temporal report's.",
+      "source": "findings/TEMPORAL_ANALYSIS_REPORT.md",
+      "window": "report dated 2026-09-20",
+      "cells": [
+        {
+          "slug": "blvm",
+          "side": "internal",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-core",
+          "side": "external",
+          "text": "0.851 historical, 0.834 recent",
+          "status": "recorded"
+        },
+        {
+          "slug": "knots",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-rs",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "satd",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "libbitcoin",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "hornet",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        }
+      ]
+    },
+    {
+      "id": "review_gini",
+      "name": "Review Gini",
+      "why": "Concentration of review objects. Needs those objects. The period names are the temporal report's.",
+      "source": "findings/TEMPORAL_ANALYSIS_REPORT.md",
+      "window": "report dated 2026-09-20",
+      "cells": [
+        {
+          "slug": "blvm",
+          "side": "internal",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-core",
+          "side": "external",
+          "text": "0.922 historical, 0.929 recent",
+          "status": "recorded"
+        },
+        {
+          "slug": "knots",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-rs",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "satd",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "libbitcoin",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "hornet",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        }
+      ]
+    },
+    {
+      "id": "h4_merger_gini",
+      "name": "Merger Gini (H4)",
+      "why": "Author-basis H4 is the indicator whose Spearman interval with log pull-request volume excludes zero (0.860, interval 0.588 to 0.970, n=17, 2026-10-11). Merger Gini from merged_by replaced that basis afterward. Neither number is copied into a cell.",
+      "source": "findings/SIZE_ADJUSTED_COMPARISON.md",
+      "window": "not scored this week",
+      "cells": [
+        {
+          "slug": "blvm",
+          "side": "internal",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-core",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "knots",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-rs",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "satd",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "libbitcoin",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "hornet",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        }
+      ]
+    },
+    {
+      "id": "h5_bus_factor",
+      "name": "Bus factor (H5)",
+      "why": "Fewest people accounting for half of that year's merges. Computed from open and close timestamps, author, and merged state.",
+      "source": "findings/data/commons_dynamics_analysis.json",
+      "window": "not scored this week",
+      "cells": [
+        {
+          "slug": "blvm",
+          "side": "internal",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-core",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "knots",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-rs",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "satd",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "libbitcoin",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "hornet",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        }
+      ]
+    },
+    {
+      "id": "h2_open_stock",
+      "name": "Open stock (H2)",
+      "why": "Pull requests still open at year end, per pull request opened that year. The volume interval does not exclude zero.",
+      "source": "findings/SIZE_ADJUSTED_COMPARISON.md",
+      "window": "not scored this week",
+      "cells": [
+        {
+          "slug": "blvm",
+          "side": "internal",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-core",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "knots",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-rs",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "satd",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "libbitcoin",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "hornet",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        }
+      ]
+    },
+    {
+      "id": "h3_retention_24m",
+      "name": "24-month retention (H3)",
+      "why": "Share of an entry cohort with activity on or after the 24-month mark. The volume interval does not exclude zero.",
+      "source": "findings/SIZE_ADJUSTED_COMPARISON.md",
+      "window": "not scored this week",
+      "cells": [
+        {
+          "slug": "blvm",
+          "side": "internal",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-core",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "knots",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-rs",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "satd",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "libbitcoin",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "hornet",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        }
+      ]
+    },
+    {
+      "id": "h6_days_to_decision",
+      "name": "Median days to decision (H6)",
+      "why": "Median days from open to merge or close among decided pull requests. The volume interval is bound near zero and is not treated as excluding zero.",
+      "source": "findings/SIZE_ADJUSTED_COMPARISON.md",
+      "window": "not scored this week",
+      "cells": [
+        {
+          "slug": "blvm",
+          "side": "internal",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-core",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "knots",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-rs",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "satd",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "libbitcoin",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "hornet",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        }
+      ]
+    }
+  ],
+  "written_rule": {
+    "layer": "layer_1_constitutional",
+    "signatures_required": 6,
+    "signatures_total": 7,
+    "review_period_days": 180,
+    "consensus_review_period_days": 365,
+    "source": "governance/config/repository-layers.yml",
+    "text": "6 of 7 signatures, 180-day review, 365-day consensus review"
+  },
+  "omitted": "Left off this page: attention effects E2, E3, E5, E7, and E12, and the size-adjusted residual. Comparison dumps do not host those effects the same way, and the residual intervals cover zero. They are not a weekly score."
+}
