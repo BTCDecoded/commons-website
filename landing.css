@@ -878,8 +878,9 @@ blockquote footer {
 }
 #sb-modal-body {
   padding: 0.9rem 1.1rem 1.1rem;
-  overflow-y: auto;
+  overflow: auto;
   min-height: 0;
+  min-width: 0;
 }
 #sb-modal-linecount,
 #sb-modal-path {
@@ -895,12 +896,20 @@ blockquote footer {
   white-space: pre-wrap;
   word-break: break-word;
 }
-#sb-modal-preview.sb-modal-preview--katex { white-space: normal; }
+#sb-modal-preview.sb-modal-preview--katex {
+  white-space: normal;
+  max-width: 100%;
+  min-width: 0;
+}
 #sb-modal-preview .sunburst-preview-math-block {
   display: block;
+  width: 100%;
+  max-width: 100%;
   margin: 0.45rem 0;
   overflow-x: auto;
+  overflow-y: hidden;
   text-align: center;
+  -webkit-overflow-scrolling: touch;
 }
 #sb-modal-path code {
   font-size: 0.73em;

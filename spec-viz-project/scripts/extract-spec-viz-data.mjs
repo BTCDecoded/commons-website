@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 /**
  * Extracts Orange Paper outline + blvm-consensus #[spec_locked] usage for spec-viz.
- * Run from repo: node docs/diagrams/spec-viz/scripts/extract-spec-viz-data.mjs
- * Or: npm run extract-data (from docs/diagrams/spec-viz)
+ * Run: npm run extract-data (from commons-website/spec-viz-project)
  */
 import fs from "fs";
 import path from "path";
@@ -10,8 +9,8 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SPEC_VIZ = path.join(__dirname, "..");
-/** spec-viz → diagrams → docs → btc-commons root */
-const REPO = path.join(SPEC_VIZ, "../../..");
+/** spec-viz-project → commons-website → blvm workspace root */
+const REPO = path.join(SPEC_VIZ, "../..");
 
 const PROTOCOL = path.join(REPO, "blvm-spec/PROTOCOL.md");
 const ARCHITECTURE = path.join(REPO, "blvm-spec/ARCHITECTURE.md");
@@ -23,6 +22,38 @@ function readIfExists(p) {
   } catch {
     return null;
   }
+}
+
+/** Index just past the $ or $$ span that contains `index`, or -1 if `index` is outside math. */
+function mathSpanEnd(t, index) {
+  let i = 0;
+  while (i < t.length) {
+    const d = t.indexOf("$", i);
+    if (d === -1 || d > index) return -1;
+    const display = t.startsWith("$$", d);
+    const openEnd = d + (display ? 2 : 1);
+    const close = t.indexOf(display ? "$$" : "$", openEnd);
+    const end = close === -1 ? t.length : close + (display ? 2 : 1);
+    if (index < end) return end;
+    i = end;
+  }
+  return -1;
+}
+
+/** Cut at maxLen, but never inside $...$ or $$...$$. */
+function cutPreviewAt(t, maxLen) {
+  if (t.length <= maxLen) return t;
+  let cutAt = maxLen;
+  const spanAtLimit = mathSpanEnd(t, maxLen);
+  if (spanAtLimit > cutAt) cutAt = spanAtLimit;
+  else {
+    const sp = t.lastIndexOf(" ", maxLen);
+    if (sp > maxLen * 0.55) cutAt = sp;
+    const spanAtCut = cutAt > 0 ? mathSpanEnd(t, cutAt - 1) : -1;
+    if (spanAtCut > cutAt) cutAt = spanAtCut;
+  }
+  if (cutAt >= t.length) return t;
+  return `${t.slice(0, cutAt).trimEnd()}…`;
 }
 
 /** Plain-text preview of prose under a heading (for sunburst tooltips). */
@@ -43,14 +74,10 @@ function makePreviewFromLines(lines, start, endExcl, maxLen) {
   t = t.replace(/`([^`]+)`/g, "$1");
   t = t.replace(/\*\*([^*]+)\*\*/g, "$1");
   t = t.replace(/^[-*]\s+/, "");
-  if (t.length <= maxLen) return t;
-  let cut = t.slice(0, maxLen);
-  const sp = cut.lastIndexOf(" ");
-  if (sp > maxLen * 0.55) cut = cut.slice(0, sp);
-  return `${cut.trimEnd()}…`;
+  return cutPreviewAt(t, maxLen);
 }
 
-function parseMarkdownOutline(md, rootLabel) {
+export function parseMarkdownOutline(md, rootLabel) {
   if (!md) return { name: rootLabel, value: 0, children: [] };
   const lines = md.split(/\r?\n/);
   /** @type {{ line: number; level: number; title: string; lineCount: number }[]} */
@@ -113,12 +140,12 @@ function extractProtocolSupplement(protocolMd) {
     if (!b) return;
     const maxLatex = 12000;
     const latex = b.length > maxLatex ? `${b.slice(0, maxLatex)}\n\\text{[truncated]}` : b;
-    const preview = b.replace(/\s+/g, " ");
+    const oneLine = b.replace(/\s+/g, " ");
     mathBlocks.push({
       line: lineNum,
       heading: lastHeading,
       latex,
-      preview: preview.slice(0, 200) + (preview.length > 200 ? "…" : ""),
+      preview: cutPreviewAt(oneLine, 200),
     });
   }
 
@@ -321,4 +348,6 @@ function main() {
   console.log(`  PROTOCOL supplement: ${protocolSupplement.stats.displayMathBlockCount} math blocks`);
 }
 
-main();
+const isDirectRun =
+  process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (isDirectRun) main();
