@@ -147,7 +147,7 @@
               {
                 "name": "5.2.1 P2SH Push-Only Validation",
                 "value": 43,
-                "preview": "P2SHPushOnlyCheck: $\\mathbb{S} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Push-only validation: $\\text{P2SHPushOnlyCheck}(ss) = \\text{valid} \\iff \\forall op \\in ss : \\text{IsPushOpcode}(op)$ - Boolean result: $\\text{P2SHPushOnlyCheck}(ss) \\in \\{\\text{valid}, \\text{invalid}\\}$ - Deterministic: $\\text{P2SHPushOnlyCheck}(ss_1) =…",
+                "preview": "P2SHPushOnlyCheck: $\\mathbb{S} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Push-only validation: $\\text{P2SHPushOnlyCheck}(ss) = \\text{valid} \\iff \\forall op \\in ss : \\text{IsPushOpcode}(op)$ - Boolean result: $\\text{P2SHPushOnlyCheck}(ss) \\in \\{\\text{valid}, \\text{invalid}\\}$ - Empty script: $\\text{P2SHPushOnlyCheck}(\\emptyset) = \\text{valid}$…",
                 "children": []
               },
               {
@@ -171,7 +171,7 @@
               {
                 "name": "5.2.5 Script Verification Flags",
                 "value": 57,
-                "preview": "CalculateScriptFlags: $\\mathcal{TX} \\times \\mathcal{W}^? \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\mathbb{N}_{32}$ Properties: - Flag activation: $\\text{CalculateScriptFlags}(tx, w, h, n) = f \\implies \\forall flag \\in f: h \\geq H_{flag}(n)$ - Per-transaction calculation: $\\text{CalculateScriptFlags}(tx_1, w_1, h, n) \\neq…",
+                "preview": "CalculateScriptFlags: $\\mathcal{TX} \\times \\mathcal{W}^? \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\mathbb{N}_{32}$ Properties: - Flag activation: $result = f \\implies \\forall flag \\in f: h \\geq H_{flag}(n)$ - Connect uses one mask per block. CalculateScriptFlags can still differ per transaction; that result is not the block mask. - Non-negative…",
                 "children": []
               },
               {
@@ -185,7 +185,7 @@
           {
             "name": "5.3 Block Validation",
             "value": 127,
-            "preview": "ConnectBlock: $\\mathcal{B} \\times \\mathcal{US} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\} \\times \\mathcal{US}$ Properties: - Block structure: $\\text{ConnectBlock}(b, us, height) = \\text{valid} \\implies |b.transactions| > 0$ (block must have transactions) - Coinbase requirement: $\\text{ConnectBlock}(b, us, height) = \\text{valid} \\implies…",
+            "preview": "*Intuition.* A block is accepted only if its header satisfies proof-of-work, version, and time rules relative to chain context (§5.3.1, detailed with PoW in §7) and its body applies cleanly to the UTXO set at the connecting height. Concretely, transactions are checked in order: each must pass structural checks and input/value rules against the evolving UTXO…",
             "children": [
               {
                 "name": "5.3.1 Transaction Application Equivalence",
@@ -198,18 +198,18 @@
           {
             "name": "5.4 BIP Validation Rules",
             "value": 640,
-            "preview": "This section specifies the mathematical properties of critical Bitcoin Improvement Proposals (BIPs) that enforce consensus rules for block and transaction validation. BIP30Check: $\\mathcal{B} \\times \\mathcal{US} \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Deactivation height: $\\text{BIP30Check}(b, us,…",
+            "preview": "This section specifies the mathematical properties of critical Bitcoin Improvement Proposals (BIPs) that enforce consensus rules for block and transaction validation. BIP30Check: $\\mathcal{B} \\times \\mathcal{US} \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$…",
             "children": [
               {
                 "name": "5.4.1 BIP30: Duplicate Coinbase Prevention",
                 "value": 41,
-                "preview": "BIP30Check: $\\mathcal{B} \\times \\mathcal{US} \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Deactivation height: $\\text{BIP30Check}(b, us, h, n) = \\text{valid} \\implies h > H_{30\\_deact}(n)$ (after deactivation, always valid) - Duplicate coinbase prevention: $\\text{BIP30Check}(b, us, h, n) =…",
+                "preview": "BIP30Check: $\\mathcal{B} \\times \\mathcal{US} \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$ Note: A block is invalid when its coinbase transaction id already has an unspent output. Two mainnet blocks are exempt, and only when the block hash is the…",
                 "children": []
               },
               {
                 "name": "5.4.2 BIP34: Block Height in Coinbase",
                 "value": 40,
-                "preview": "BIP34Check: $\\mathcal{B} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Height requirement: $\\text{BIP34Check}(b, h) = \\text{valid} \\implies h < H_{34} \\lor (\\forall tx \\in b.transactions : \\text{IsCoinbase}(tx) \\implies \\text{ExtractHeight}(tx) = h)$ - Coinbase height: $\\text{BIP34Check}(b, h) = \\text{invalid} \\implies h \\geq…",
+                "preview": "BIP34Check: $\\mathcal{B} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Pre-activation pass: $h < H_{34} \\implies \\text{result} = \\text{true}$ - Height requirement: $\\text{BIP34Check}(b, h) = \\text{valid} \\implies h < H_{34} \\lor (\\forall tx \\in b.transactions : \\text{IsCoinbase}(tx) \\implies \\text{ExtractHeight}(tx) = h)$ -…",
                 "children": []
               },
               {
@@ -239,13 +239,13 @@
               {
                 "name": "5.4.7 BIP65: OP_CHECKLOCKTIMEVERIFY (CLTV)",
                 "value": 70,
-                "preview": "BIP65Check: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathbb{N} \\times \\mathbb{H} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Zero locktime rejection: $\\text{BIP65Check}(tx, i, lt, h) = \\text{invalid} \\iff tx.\\text{lockTime} = 0$ (zero locktime always invalid) - Type consistency: $\\text{BIP65Check}(tx, i, lt, h) = \\text{valid} \\implies…",
+                "preview": "BIP65Check: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathbb{N} \\times \\mathbb{H} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$ - Type consistency: $\\text{BIP65Check}(tx, i, lt, h) = \\text{valid} \\implies \\text{LocktimeType}(tx.\\text{lockTime}) = \\text{LocktimeType}(lt)$ (types must…",
                 "children": []
               },
               {
                 "name": "5.4.8 BIP348: OP_CHECKSIGFROMSTACK (CSFS)",
                 "value": 187,
-                "preview": "BIP348Check: $\\mathbb{S} \\times \\mathbb{S} \\times \\mathbb{S} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Tapscript-only: $\\text{BIP348Check}(msg, pk, sig, h) = \\text{valid} \\implies \\text{SigVersion} = \\text{Tapscript}$ (only available in Tapscript) - Zero pubkey rejection: $|pk| = 0 \\implies \\text{BIP348Check}(msg, pk,…",
+                "preview": "BIP348Check: $\\mathbb{S} \\times \\mathbb{S} \\times \\mathbb{S} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$ Note: Tapscript-only. Zero pubkey → invalid. Empty sig → valid (pushes empty). Unknown pubkey type ($|pk| \\neq 32 \\land |pk| > 0$) → valid. Valid Schnorr sig →…",
                 "children": []
               },
               {
@@ -267,12 +267,12 @@
       {
         "name": "6. Economic Model",
         "value": 210,
-        "preview": "GetBlockSubsidy: $\\mathbb{N} \\rightarrow \\mathbb{Z}$ Properties: - Non-negative: $\\text{GetBlockSubsidy}(h) \\geq 0$ for all $h \\in \\mathbb{N}$ - Upper bound: $\\text{GetBlockSubsidy}(h) \\leq \\text{INITIAL\\_SUBSIDY}$ for all $h \\in \\mathbb{N}$ - Genesis block: $h = 0 \\implies \\text{GetBlockSubsidy}(h) = \\text{INITIAL\\_SUBSIDY}$ - After 64 halvings: $h \\geq…",
+        "preview": "GetBlockSubsidy: $\\mathbb{N} \\rightarrow \\mathbb{Z}$ $$\\text{GetBlockSubsidy}(h) = \\begin{cases} 0 & \\text{if } \\lfloor h/H \\rfloor \\geq 64 \\\\ \\text{INITIAL\\_SUBSIDY} \\gg \\lfloor h/H \\rfloor & \\text{otherwise} \\end{cases}$$ Where $\\lfloor h/H \\rfloor$ is the halving index $k$, $\\text{INITIAL\\_SUBSIDY} = 50 \\times C = 5{,}000{,}000{,}000$, and $\\gg$ is…",
         "children": [
           {
             "name": "6.1 Block Subsidy",
             "value": 55,
-            "preview": "GetBlockSubsidy: $\\mathbb{N} \\rightarrow \\mathbb{Z}$ Properties: - Non-negative: $\\text{GetBlockSubsidy}(h) \\geq 0$ for all $h \\in \\mathbb{N}$ - Upper bound: $\\text{GetBlockSubsidy}(h) \\leq \\text{INITIAL\\_SUBSIDY}$ for all $h \\in \\mathbb{N}$ - Genesis block: $h = 0 \\implies \\text{GetBlockSubsidy}(h) = \\text{INITIAL\\_SUBSIDY}$ - After 64 halvings: $h \\geq…",
+            "preview": "GetBlockSubsidy: $\\mathbb{N} \\rightarrow \\mathbb{Z}$ $$\\text{GetBlockSubsidy}(h) = \\begin{cases} 0 & \\text{if } \\lfloor h/H \\rfloor \\geq 64 \\\\ \\text{INITIAL\\_SUBSIDY} \\gg \\lfloor h/H \\rfloor & \\text{otherwise} \\end{cases}$$ Where $\\lfloor h/H \\rfloor$ is the halving index $k$, $\\text{INITIAL\\_SUBSIDY} = 50 \\times C = 5{,}000{,}000{,}000$, and $\\gg$ is…",
             "children": []
           },
           {
@@ -290,13 +290,13 @@
           {
             "name": "6.4 Coinbase Detection",
             "value": 31,
-            "preview": "IsCoinbase: $\\mathcal{TX} \\rightarrow \\{\\text{true}, \\text{false}\\}$ A transaction $tx = (v, ins, outs, lt)$ is a coinbase transaction if and only if: $$\\text{IsCoinbase}(tx) = \\begin{cases} \\text{true} & \\text{if } |ins| = 1 \\land ins[0].\\text{prevout}.\\text{hash} = 0^{32} \\land ins[0].\\text{prevout}.\\text{index} = 2^{32} - 1 \\\\ \\text{false} &…",
+            "preview": "IsCoinbase: $\\mathcal{TX} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$ A transaction $tx = (v, ins, outs, lt)$ is a coinbase transaction if and only if: $$\\text{IsCoinbase}(tx) = \\begin{cases} \\text{true} & \\text{if } |ins| = 1 \\land ins[0].\\text{prevout}.\\text{hash} = 0^{32} \\land ins[0].\\text{prevout}.\\text{index} = 2^{32} - 1 \\\\ \\text{false} & \\text{otherwise} \\end{cases}$$…",
             "children": []
           },
           {
             "name": "6.5 Fee Market",
             "value": 55,
-            "preview": "Transaction Fee: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\mathbb{Z}$ Properties: - Fee formula: $\\text{Fee}(tx, us) = \\sum_{i \\in tx.\\text{inputs}} us(i.\\text{prevout}).\\text{value} - \\sum_{o \\in tx.\\text{outputs}} o.\\text{value}$ - Coinbase fee: $\\text{IsCoinbase}(tx) = \\text{true} \\implies \\text{Fee}(tx, us) = 0$ - Non-negative fee: $\\text{Fee}(tx,…",
+            "preview": "CalculateFee: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\mathbb{Z}$ The fee is the difference between total input value and total output value. Coinbase transactions have fee zero by definition. Properties: - Fee formula: $result = \\sum_{i \\in tx.\\text{inputs}} us(i.\\text{prevout}).\\text{value} - \\sum_{o \\in tx.\\text{outputs}} o.\\text{value}$ - Coinbase…",
             "children": []
           }
         ]
@@ -304,12 +304,12 @@
       {
         "name": "7. Proof of Work",
         "value": 124,
-        "preview": "ExpandTarget: $\\mathbb{N} \\rightarrow \\mathbb{U256}$ Properties: - Positive bits: $\\text{ExpandTarget}(bits)$ requires $bits > 0$ (bits must be positive) - Target expansion: $\\text{ExpandTarget}(bits)$ expands compact difficulty representation to full 256-bit target - Formula correctness: $\\text{ExpandTarget}(bits) = \\text{mantissa} \\times 2^{8 \\times…",
+        "preview": "ExpandTarget: $\\mathbb{N} \\rightarrow \\mathbb{U256}$ Properties: - Positive bits: $bits > 0$ is required (bits must be positive) - Target expansion: $result$ expands compact difficulty representation to full 256-bit target - Formula correctness: $result = \\text{mantissa} \\times 2^{8 \\times (\\text{exponent} - 3)}$ where exponent and mantissa extracted from…",
         "children": [
           {
             "name": "7.1 Difficulty Adjustment",
             "value": 106,
-            "preview": "ExpandTarget: $\\mathbb{N} \\rightarrow \\mathbb{U256}$ Properties: - Positive bits: $\\text{ExpandTarget}(bits)$ requires $bits > 0$ (bits must be positive) - Target expansion: $\\text{ExpandTarget}(bits)$ expands compact difficulty representation to full 256-bit target - Formula correctness: $\\text{ExpandTarget}(bits) = \\text{mantissa} \\times 2^{8 \\times…",
+            "preview": "ExpandTarget: $\\mathbb{N} \\rightarrow \\mathbb{U256}$ Properties: - Positive bits: $bits > 0$ is required (bits must be positive) - Target expansion: $result$ expands compact difficulty representation to full 256-bit target - Formula correctness: $result = \\text{mantissa} \\times 2^{8 \\times (\\text{exponent} - 3)}$ where exponent and mantissa extracted from…",
             "children": []
           },
           {
@@ -334,12 +334,12 @@
           {
             "name": "8.2 Integration and Round-Trip Properties",
             "value": 54,
-            "preview": "Integration properties verify that multiple functions work together correctly in multi-function workflows. Property (Economic Block Integration): For valid blocks, economic rules are consistently enforced: $$\\forall b \\in \\mathcal{B}, h \\in \\mathbb{N}: \\text{ConnectBlock}(b, us, h) = \\text{valid} \\implies$$ $$\\text{GetBlockSubsidy}(h) + \\sum_{tx \\in…",
+            "preview": "Integration properties verify that multiple functions work together correctly in multi-function workflows. Property (Economic Block Integration): For valid blocks, economic rules are consistently enforced: $$\\forall b \\in \\mathcal{B}, h \\in \\mathbb{N}: \\text{ConnectBlock}(b, us, h) = \\text{valid} \\implies$$ $$\\text{GetBlockSubsidy}(h) + \\sum_{tx \\in b.transactions} \\text{Fee}(tx, us) \\geq \\sum_{o \\in b.transactions[0].outputs} o.value$$…",
             "children": [
               {
                 "name": "8.2.1 Integration Properties",
                 "value": 28,
-                "preview": "Integration properties verify that multiple functions work together correctly in multi-function workflows. Property (Economic Block Integration): For valid blocks, economic rules are consistently enforced: $$\\forall b \\in \\mathcal{B}, h \\in \\mathbb{N}: \\text{ConnectBlock}(b, us, h) = \\text{valid} \\implies$$ $$\\text{GetBlockSubsidy}(h) + \\sum_{tx \\in…",
+                "preview": "Integration properties verify that multiple functions work together correctly in multi-function workflows. Property (Economic Block Integration): For valid blocks, economic rules are consistently enforced: $$\\forall b \\in \\mathcal{B}, h \\in \\mathbb{N}: \\text{ConnectBlock}(b, us, h) = \\text{valid} \\implies$$ $$\\text{GetBlockSubsidy}(h) + \\sum_{tx \\in b.transactions} \\text{Fee}(tx, us) \\geq \\sum_{o \\in b.transactions[0].outputs} o.value$$…",
                 "children": []
               },
               {
@@ -359,12 +359,12 @@
           {
             "name": "8.4 Merkle Tree Security",
             "value": 38,
-            "preview": "ComputeMerkleRoot: $\\mathcal{H}^+ \\rightarrow \\mathbb{H}$ (non-empty sequence of 32-byte hashes to 32-byte root hash) Properties: - Deterministic: $\\text{ComputeMerkleRoot}(H) = \\text{ComputeMerkleRoot}(H)$ for all $H$ - Single element: $|H| = 1 \\implies \\text{ComputeMerkleRoot}(H) = H[0]$ - Collision resistance: $\\text{ComputeMerkleRoot}(H_1) =…",
+            "preview": "ComputeMerkleRoot: $\\mathcal{H}^+ \\rightarrow \\mathbb{H}$ (non-empty sequence of 32-byte hashes to 32-byte root hash) Properties: - Deterministic: $result(H) = result(H)$ for all $H$ (same inputs always produce same root) - Single element: $|H| = 1 \\implies result = H[0]$ - Collision resistance: $result(H_1) = result(H_2) \\implies H_1 = H_2$ (assuming…",
             "children": [
               {
                 "name": "8.4.1 ComputeMerkleRoot",
                 "value": 36,
-                "preview": "ComputeMerkleRoot: $\\mathcal{H}^+ \\rightarrow \\mathbb{H}$ (non-empty sequence of 32-byte hashes to 32-byte root hash) Properties: - Deterministic: $\\text{ComputeMerkleRoot}(H) = \\text{ComputeMerkleRoot}(H)$ for all $H$ - Single element: $|H| = 1 \\implies \\text{ComputeMerkleRoot}(H) = H[0]$ - Collision resistance: $\\text{ComputeMerkleRoot}(H_1) =…",
+                "preview": "ComputeMerkleRoot: $\\mathcal{H}^+ \\rightarrow \\mathbb{H}$ (non-empty sequence of 32-byte hashes to 32-byte root hash) Properties: - Deterministic: $result(H) = result(H)$ for all $H$ (same inputs always produce same root) - Single element: $|H| = 1 \\implies result = H[0]$ - Collision resistance: $result(H_1) = result(H_2) \\implies H_1 = H_2$ (assuming…",
                 "children": []
               }
             ]
@@ -380,17 +380,17 @@
       {
         "name": "9. Mempool Protocol",
         "value": 70,
-        "preview": "AcceptToMemoryPool: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\{\\text{accepted}, \\text{rejected}\\}$ Properties: - Acceptance correctness: $\\text{AcceptToMemoryPool}(tx, us) = \\text{accepted} \\implies \\text{CheckTransaction}(tx) = \\text{valid} \\land \\neg \\text{IsCoinbase}(tx)$ - Coinbase rejection: $\\text{IsCoinbase}(tx) = \\text{true} \\implies…",
+        "preview": "AcceptToMemoryPool: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\{\\text{accepted}, \\text{rejected}\\}$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$ Note: Acceptance correctness: $result = \\text{accepted} \\implies \\text{CheckTransaction}(tx) = \\text{valid} \\land \\neg \\text{IsCoinbase}(tx)$. Coinbase is always rejected. $\\text{CheckFinalTxAtTip}(tx)$…",
         "children": [
           {
             "name": "9.1 Mempool Validation",
             "value": 22,
-            "preview": "AcceptToMemoryPool: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\{\\text{accepted}, \\text{rejected}\\}$ Properties: - Acceptance correctness: $\\text{AcceptToMemoryPool}(tx, us) = \\text{accepted} \\implies \\text{CheckTransaction}(tx) = \\text{valid} \\land \\neg \\text{IsCoinbase}(tx)$ - Coinbase rejection: $\\text{IsCoinbase}(tx) = \\text{true} \\implies…",
+            "preview": "AcceptToMemoryPool: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\{\\text{accepted}, \\text{rejected}\\}$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$ Note: Acceptance correctness: $result = \\text{accepted} \\implies \\text{CheckTransaction}(tx) = \\text{valid} \\land \\neg \\text{IsCoinbase}(tx)$. Coinbase is always rejected. $\\text{CheckFinalTxAtTip}(tx)$…",
             "children": [
               {
                 "name": "9.1.1 Transaction Finality",
                 "value": 13,
-                "preview": "$\\text{CheckFinalTxAtTip}(tx)$ requires that absolute lock time ($nLockTime$) and input sequence locks (BIP68/BIP112) are satisfied at the current chain tip so the transaction is not treated as non-final for relay. A transaction $tx$ is accepted to the mempool if and only if: 1. Basic Validation: $tx$ passes CheckTransaction 2. Non-Coinbase: $\\neg…",
+                "preview": "$\\text{CheckFinalTxAtTip}(tx)$ requires that absolute lock time ($nLockTime$) and input sequence locks (BIP68/BIP112) are satisfied at the current chain tip so the transaction is not treated as non-final for relay. CheckFinalTxAtTip: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathbb{N} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Let $h$ be the current chain…",
                 "children": []
               }
             ]
@@ -404,7 +404,7 @@
           {
             "name": "9.3 Replace-By-Fee (RBF)",
             "value": 20,
-            "preview": "ReplacementChecks: $\\mathcal{TX} \\times \\mathcal{TX} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - RBF requirement: $\\text{ReplacementChecks}(tx_1, tx_2) = \\text{true} \\implies \\exists i \\in tx_1.inputs : i.sequence < \\text{SEQUENCE\\_FINAL}$ (RBF signaling required) - Fee bump requirement: $\\text{ReplacementChecks}(tx_1, tx_2) = \\text{true}…",
+            "preview": "ReplacementChecks: $\\mathcal{TX} \\times \\mathcal{TX} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Conservative RBF requirement: $result = \\text{true} \\implies \\exists i \\in tx_1.inputs : i.sequence < \\text{SEQUENCE\\_FINAL}$. Standard mode may replace an original that does not signal. - Fee bump requirement: $result = \\text{true} \\implies \\text{FeeRate}(tx_2) > \\text{FeeRate}(tx_1)$…",
             "children": []
           }
         ]
@@ -412,7 +412,7 @@
       {
         "name": "10. Network Protocol",
         "value": 118,
-        "preview": "The Bitcoin network protocol enables nodes to synchronize the blockchain and relay transactions. The protocol operates over TCP connections and uses a message-based communication system. NetworkMessage: $\\mathcal{M} = \\{\\text{version}, \\text{verack}, \\text{addr}, \\text{inv}, \\text{getdata}, \\text{tx}, \\text{block}, \\text{headers}, \\text{getheaders},…",
+        "preview": "The Bitcoin network protocol enables nodes to synchronize the blockchain and relay transactions. The protocol operates over TCP connections and uses a message-based communication system. NetworkMessage: $\\mathcal{M} = \\{\\text{version}, \\text{verack}, \\text{addr}, \\text{inv}, \\text{getdata}, \\text{tx}, \\text{block}, \\text{headers}, \\text{getheaders}, \\text{ping}, \\text{pong}\\}$…",
         "children": [
           {
             "name": "10.1 Message Types",
@@ -484,7 +484,7 @@
               {
                 "name": "11.1.4 Witness Merkle Root",
                 "value": 15,
-                "preview": "ComputeWitnessMerkleRoot: $\\mathcal{B} \\times \\mathcal{W}^* \\rightarrow \\mathbb{H}$ Definition (BIP141 wtxid tree): For each transaction index $i$, define the leaf hash $L_i$: - $L_0 = 0^{32}$ (coinbase wtxid is fixed to zero). - For $i > 0$: let $w^{(i)}$ be the witness data for transaction $i$ (per-input stacks). If no witness element is non-empty, $L_i =…",
+                "preview": "ComputeWitnessMerkleRoot: $\\mathcal{B} \\times \\mathcal{W}^* \\rightarrow \\mathbb{H}$ Definition (BIP141 wtxid tree): For each transaction index $i$, define the leaf hash $L_i$: - $L_0 = 0^{32}$ (coinbase wtxid is fixed to zero). - For $i > 0$: let $w^{(i)}$ be the witness data for transaction $i$ (per-input stacks). If no witness element is non-empty, $L_i = \\text{txid}(b.\\text{transactions}[i])$…",
                 "children": []
               },
               {
@@ -522,12 +522,12 @@
           {
             "name": "11.2 Taproot",
             "value": 239,
-            "preview": "Taproot Output: P2TR script OP_1 <32-byte-hash> P2TR Script Format: $\\text{P2TR} = [0x51, 0x20, h_{32}]$ where $h_{32} \\in \\{0,1\\}^{256}$ P2TR Detection: $\\text{IsP2TR}(spk) = (|spk| = 34) \\land (spk[0] = 0x51) \\land (spk[1] = 0x20)$ Empty ScriptSig Requirement: For Taproot transactions, scriptSig must be empty: $$\\forall tx \\in \\mathcal{TX}, i \\in…",
+            "preview": "Taproot Output: P2TR script OP_1 <32-byte-hash> P2TR Script Format: $\\text{P2TR} = [0x51, 0x20, h_{32}]$ where $h_{32} \\in \\{0,1\\}^{256}$ P2TR Detection: $\\text{IsP2TR}(spk) = (|spk| = 34) \\land (spk[0] = 0x51) \\land (spk[1] = 0x20)$ Empty ScriptSig Requirement: For Taproot transactions, scriptSig must be empty: $$\\forall tx \\in \\mathcal{TX}, i \\in \\mathbb{N} : \\text{IsP2TR}(tx.\\text{outputs}[j].\\text{scriptPubkey}) \\land tx.\\text{inputs}[i].\\text{prevout} = (txid, j) \\implies tx.\\text{inputs}[i].\\text{scriptSig} = \\emptyset$$…",
             "children": [
               {
                 "name": "11.2.1 Taproot Script Validation",
                 "value": 37,
-                "preview": "ValidateTaprootScript: $\\mathbb{S} \\rightarrow \\{\\text{true}, \\text{false}\\}$ For script $s$: $$\\text{ValidateTaprootScript}(s) = (|s| = 34) \\land (s[0] = 0x51) \\land (s[1] = 0x20)$$ Properties: - Length validation: $\\text{ValidateTaprootScript}(s) = \\text{true} \\iff |s| = 34$ - Format correctness: $\\text{ValidateTaprootScript}(s) = \\text{true} \\implies…",
+                "preview": "ValidateTaprootScript: $\\mathbb{S} \\rightarrow \\{\\text{true}, \\text{false}\\}$ For script $s$: $$\\text{ValidateTaprootScript}(s) = (|s| = 34) \\land (s[0] = 0x51) \\land (s[1] = 0x20)$$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$ Note: $result = \\text{true} \\iff |s| = 34 \\land s[0] = 0x51 \\land s[1] = 0x20$. Scripts of other lengths…",
                 "children": []
               },
               {
@@ -539,13 +539,13 @@
               {
                 "name": "11.2.3 Taproot Script Path",
                 "value": 50,
-                "preview": "ValidateTaprootScriptPath: $\\mathbb{S} \\times [\\mathbb{H}]^* \\times [0,1]^{256} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Merkle proof validation: $\\text{ValidateTaprootScriptPath}(s, proof, root) = \\text{true} \\iff \\text{ComputeScriptMerkleRoot}(s, proof, v) = root$ - Boolean result: $\\text{ValidateTaprootScriptPath}(s, proof, root) \\in…",
+                "preview": "ValidateTaprootScriptPath: $\\mathbb{S} \\times [\\mathbb{H}]^* \\times [0,1]^{256} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Merkle proof validation: $result = \\text{true} \\iff \\text{ComputeScriptMerkleRoot}(s, proof, v) = root$ - Script path correctness: $result$ validates script is in Taproot merkle tree For script $s$, merkle proof $proof$,…",
                 "children": []
               },
               {
                 "name": "11.2.4 Taproot Witness Structure",
                 "value": 15,
-                "preview": "ValidateTaprootWitnessStructure: $\\mathcal{W} \\times \\{\\text{true}, \\text{false}\\} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Key path structure: $\\text{ValidateTaprootWitnessStructure}(w, \\text{false}) = \\text{true} \\iff |w| = 1 \\land |w[0]| = 64$ (single 64-byte signature) - Script path structure: $\\text{ValidateTaprootWitnessStructure}(w,…",
+                "preview": "ValidateTaprootWitnessStructure: $\\mathcal{W} \\times \\{\\text{true}, \\text{false}\\} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$ StripTaprootAnnex: $\\mathcal{W} \\rightarrow \\mathcal{W} \\times \\mathbb{H}^?$ Properties: - Boolean tuple: $result = (w', h) \\implies |w'| \\leq |w|$ Optional…",
                 "children": []
               },
               {
@@ -557,7 +557,7 @@
               {
                 "name": "11.2.6 Taproot Signature Hash",
                 "value": 12,
-                "preview": "ComputeTaprootSignatureHash: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathcal{US} \\times \\mathbb{N}_{32} \\times \\mathbb{H}^? \\rightarrow \\mathbb{H}$ Properties: - Hash length: $\\text{ComputeTaprootSignatureHash}(tx, i, us, type, leaf) = h \\implies |h| = 32$ (32-byte hash) - Deterministic: $\\text{ComputeTaprootSignatureHash}(tx_1, i_1, us_1, type_1, leaf_1) =…",
+                "preview": "TryParseTaprootSchnorrWitnessSig: $\\mathbb{S} \\rightarrow [0,1]^{512} \\times \\mathbb{N}_8^?$ Properties: - Length: $|sig| \\in \\{64, 65\\} \\implies result \\neq \\bot$ Parses a Taproot witness Schnorr signature element: 64 bytes → implicit SIGHASH_DEFAULT ($0x00$); 65 bytes → last byte is explicit sighash type (explicit $0x00$ suffix is invalid).…",
                 "children": []
               },
               {
@@ -569,7 +569,7 @@
               {
                 "name": "11.2.8 Tapscript Opcodes and SigOp Counting (BIP 342)",
                 "value": 27,
-                "preview": "OP_CHECKSIGADD (opcode 0xba): Tapscript-only opcode for signature aggregation. Stack semantics: Pops $(pk, n, sig)$ where $pk \\in \\mathbb{B}^{32}$, $n \\in \\mathbb{N}_{32}$, $sig \\in \\mathbb{B}^{64}$. Verifies BIP 340 Schnorr signature $(pk, sig)$ against the tapscript sighash. If valid: push $(n+1)$; else: fail. $$\\text{OP\\_CHECKSIGADD}(pk, n, sig) =…",
+                "preview": "OP_CHECKSIGADD (opcode 0xba): Tapscript-only opcode for signature aggregation. Stack semantics: Pops $(pk, n, sig)$ where $pk \\in \\mathbb{B}^{32}$, $n \\in \\mathbb{N}_{32}$, $sig \\in \\mathbb{B}^{64}$. An empty signature pushes $n$ and continues. A non-empty signature that fails verification aborts. A successful Schnorr check pushes $n+1$. $$\\text{OP\\_CHECKSIGADD}(pk, n, sig) = \\begin{cases} n+1 & \\text{if } sig \\neq \\epsilon \\land \\text{VerifySchnorr}(pk, sig, \\text{ComputeTapscriptSignatureHash}(\\ldots)) = \\text{true} \\\\ n & \\text{if } sig = \\epsilon \\\\ \\text{fail} & \\text{otherwise} \\end{cases}$$…",
                 "children": []
               }
             ]
@@ -691,7 +691,7 @@
       {
         "name": "12.3 Mining Process",
         "value": 64,
-        "preview": "*One valid algorithm. Protocol requires CheckProofOfWork(block) = true; this section describes one mining loop.* MineBlock: $\\mathcal{B} \\times \\mathbb{N} \\rightarrow \\mathcal{B} \\times \\{\\text{success}, \\text{failure}\\}$ Properties: - PoW success: $\\text{MineBlock}(block, maxTries) = (block', \\text{success}) \\implies \\text{CheckProofOfWork}(block') =…",
+        "preview": "*One valid algorithm. Protocol requires CheckProofOfWork(block) = true; this section describes one mining loop.* MineBlock: $\\mathcal{B} \\times \\mathbb{N} \\rightarrow \\mathcal{B} \\times \\{\\text{success}, \\text{failure}\\}$ Properties: - PoW success: $\\text{MineBlock}(block, maxTries) = (block', \\text{success}) \\implies \\text{CheckProofOfWork}(block') = \\text{true}$…",
         "children": []
       },
       {
@@ -910,7 +910,7 @@
                   {
                     "name": "5.2.1 P2SH Push-Only Validation",
                     "value": 43,
-                    "preview": "P2SHPushOnlyCheck: $\\mathbb{S} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Push-only validation: $\\text{P2SHPushOnlyCheck}(ss) = \\text{valid} \\iff \\forall op \\in ss : \\text{IsPushOpcode}(op)$ - Boolean result: $\\text{P2SHPushOnlyCheck}(ss) \\in \\{\\text{valid}, \\text{invalid}\\}$ - Deterministic: $\\text{P2SHPushOnlyCheck}(ss_1) =…",
+                    "preview": "P2SHPushOnlyCheck: $\\mathbb{S} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Push-only validation: $\\text{P2SHPushOnlyCheck}(ss) = \\text{valid} \\iff \\forall op \\in ss : \\text{IsPushOpcode}(op)$ - Boolean result: $\\text{P2SHPushOnlyCheck}(ss) \\in \\{\\text{valid}, \\text{invalid}\\}$ - Empty script: $\\text{P2SHPushOnlyCheck}(\\emptyset) = \\text{valid}$…",
                     "children": []
                   },
                   {
@@ -934,7 +934,7 @@
                   {
                     "name": "5.2.5 Script Verification Flags",
                     "value": 57,
-                    "preview": "CalculateScriptFlags: $\\mathcal{TX} \\times \\mathcal{W}^? \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\mathbb{N}_{32}$ Properties: - Flag activation: $\\text{CalculateScriptFlags}(tx, w, h, n) = f \\implies \\forall flag \\in f: h \\geq H_{flag}(n)$ - Per-transaction calculation: $\\text{CalculateScriptFlags}(tx_1, w_1, h, n) \\neq…",
+                    "preview": "CalculateScriptFlags: $\\mathcal{TX} \\times \\mathcal{W}^? \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\mathbb{N}_{32}$ Properties: - Flag activation: $result = f \\implies \\forall flag \\in f: h \\geq H_{flag}(n)$ - Connect uses one mask per block. CalculateScriptFlags can still differ per transaction; that result is not the block mask. - Non-negative…",
                     "children": []
                   },
                   {
@@ -948,7 +948,7 @@
               {
                 "name": "5.3 Block Validation",
                 "value": 127,
-                "preview": "ConnectBlock: $\\mathcal{B} \\times \\mathcal{US} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\} \\times \\mathcal{US}$ Properties: - Block structure: $\\text{ConnectBlock}(b, us, height) = \\text{valid} \\implies |b.transactions| > 0$ (block must have transactions) - Coinbase requirement: $\\text{ConnectBlock}(b, us, height) = \\text{valid} \\implies…",
+                "preview": "*Intuition.* A block is accepted only if its header satisfies proof-of-work, version, and time rules relative to chain context (§5.3.1, detailed with PoW in §7) and its body applies cleanly to the UTXO set at the connecting height. Concretely, transactions are checked in order: each must pass structural checks and input/value rules against the evolving UTXO…",
                 "children": [
                   {
                     "name": "5.3.1 Transaction Application Equivalence",
@@ -961,18 +961,18 @@
               {
                 "name": "5.4 BIP Validation Rules",
                 "value": 640,
-                "preview": "This section specifies the mathematical properties of critical Bitcoin Improvement Proposals (BIPs) that enforce consensus rules for block and transaction validation. BIP30Check: $\\mathcal{B} \\times \\mathcal{US} \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Deactivation height: $\\text{BIP30Check}(b, us,…",
+                "preview": "This section specifies the mathematical properties of critical Bitcoin Improvement Proposals (BIPs) that enforce consensus rules for block and transaction validation. BIP30Check: $\\mathcal{B} \\times \\mathcal{US} \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$…",
                 "children": [
                   {
                     "name": "5.4.1 BIP30: Duplicate Coinbase Prevention",
                     "value": 41,
-                    "preview": "BIP30Check: $\\mathcal{B} \\times \\mathcal{US} \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Deactivation height: $\\text{BIP30Check}(b, us, h, n) = \\text{valid} \\implies h > H_{30\\_deact}(n)$ (after deactivation, always valid) - Duplicate coinbase prevention: $\\text{BIP30Check}(b, us, h, n) =…",
+                    "preview": "BIP30Check: $\\mathcal{B} \\times \\mathcal{US} \\times \\mathbb{N} \\times \\text{Network} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$ Note: A block is invalid when its coinbase transaction id already has an unspent output. Two mainnet blocks are exempt, and only when the block hash is the…",
                     "children": []
                   },
                   {
                     "name": "5.4.2 BIP34: Block Height in Coinbase",
                     "value": 40,
-                    "preview": "BIP34Check: $\\mathcal{B} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Height requirement: $\\text{BIP34Check}(b, h) = \\text{valid} \\implies h < H_{34} \\lor (\\forall tx \\in b.transactions : \\text{IsCoinbase}(tx) \\implies \\text{ExtractHeight}(tx) = h)$ - Coinbase height: $\\text{BIP34Check}(b, h) = \\text{invalid} \\implies h \\geq…",
+                    "preview": "BIP34Check: $\\mathcal{B} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Pre-activation pass: $h < H_{34} \\implies \\text{result} = \\text{true}$ - Height requirement: $\\text{BIP34Check}(b, h) = \\text{valid} \\implies h < H_{34} \\lor (\\forall tx \\in b.transactions : \\text{IsCoinbase}(tx) \\implies \\text{ExtractHeight}(tx) = h)$ -…",
                     "children": []
                   },
                   {
@@ -1002,13 +1002,13 @@
                   {
                     "name": "5.4.7 BIP65: OP_CHECKLOCKTIMEVERIFY (CLTV)",
                     "value": 70,
-                    "preview": "BIP65Check: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathbb{N} \\times \\mathbb{H} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Zero locktime rejection: $\\text{BIP65Check}(tx, i, lt, h) = \\text{invalid} \\iff tx.\\text{lockTime} = 0$ (zero locktime always invalid) - Type consistency: $\\text{BIP65Check}(tx, i, lt, h) = \\text{valid} \\implies…",
+                    "preview": "BIP65Check: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathbb{N} \\times \\mathbb{H} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$ - Type consistency: $\\text{BIP65Check}(tx, i, lt, h) = \\text{valid} \\implies \\text{LocktimeType}(tx.\\text{lockTime}) = \\text{LocktimeType}(lt)$ (types must…",
                     "children": []
                   },
                   {
                     "name": "5.4.8 BIP348: OP_CHECKSIGFROMSTACK (CSFS)",
                     "value": 187,
-                    "preview": "BIP348Check: $\\mathbb{S} \\times \\mathbb{S} \\times \\mathbb{S} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Tapscript-only: $\\text{BIP348Check}(msg, pk, sig, h) = \\text{valid} \\implies \\text{SigVersion} = \\text{Tapscript}$ (only available in Tapscript) - Zero pubkey rejection: $|pk| = 0 \\implies \\text{BIP348Check}(msg, pk,…",
+                    "preview": "BIP348Check: $\\mathbb{S} \\times \\mathbb{S} \\times \\mathbb{S} \\times \\mathbb{N} \\rightarrow \\{\\text{valid}, \\text{invalid}\\}$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$ Note: Tapscript-only. Zero pubkey → invalid. Empty sig → valid (pushes empty). Unknown pubkey type ($|pk| \\neq 32 \\land |pk| > 0$) → valid. Valid Schnorr sig →…",
                     "children": []
                   },
                   {
@@ -1030,12 +1030,12 @@
           {
             "name": "6. Economic Model",
             "value": 210,
-            "preview": "GetBlockSubsidy: $\\mathbb{N} \\rightarrow \\mathbb{Z}$ Properties: - Non-negative: $\\text{GetBlockSubsidy}(h) \\geq 0$ for all $h \\in \\mathbb{N}$ - Upper bound: $\\text{GetBlockSubsidy}(h) \\leq \\text{INITIAL\\_SUBSIDY}$ for all $h \\in \\mathbb{N}$ - Genesis block: $h = 0 \\implies \\text{GetBlockSubsidy}(h) = \\text{INITIAL\\_SUBSIDY}$ - After 64 halvings: $h \\geq…",
+            "preview": "GetBlockSubsidy: $\\mathbb{N} \\rightarrow \\mathbb{Z}$ $$\\text{GetBlockSubsidy}(h) = \\begin{cases} 0 & \\text{if } \\lfloor h/H \\rfloor \\geq 64 \\\\ \\text{INITIAL\\_SUBSIDY} \\gg \\lfloor h/H \\rfloor & \\text{otherwise} \\end{cases}$$ Where $\\lfloor h/H \\rfloor$ is the halving index $k$, $\\text{INITIAL\\_SUBSIDY} = 50 \\times C = 5{,}000{,}000{,}000$, and $\\gg$ is…",
             "children": [
               {
                 "name": "6.1 Block Subsidy",
                 "value": 55,
-                "preview": "GetBlockSubsidy: $\\mathbb{N} \\rightarrow \\mathbb{Z}$ Properties: - Non-negative: $\\text{GetBlockSubsidy}(h) \\geq 0$ for all $h \\in \\mathbb{N}$ - Upper bound: $\\text{GetBlockSubsidy}(h) \\leq \\text{INITIAL\\_SUBSIDY}$ for all $h \\in \\mathbb{N}$ - Genesis block: $h = 0 \\implies \\text{GetBlockSubsidy}(h) = \\text{INITIAL\\_SUBSIDY}$ - After 64 halvings: $h \\geq…",
+                "preview": "GetBlockSubsidy: $\\mathbb{N} \\rightarrow \\mathbb{Z}$ $$\\text{GetBlockSubsidy}(h) = \\begin{cases} 0 & \\text{if } \\lfloor h/H \\rfloor \\geq 64 \\\\ \\text{INITIAL\\_SUBSIDY} \\gg \\lfloor h/H \\rfloor & \\text{otherwise} \\end{cases}$$ Where $\\lfloor h/H \\rfloor$ is the halving index $k$, $\\text{INITIAL\\_SUBSIDY} = 50 \\times C = 5{,}000{,}000{,}000$, and $\\gg$ is…",
                 "children": []
               },
               {
@@ -1053,13 +1053,13 @@
               {
                 "name": "6.4 Coinbase Detection",
                 "value": 31,
-                "preview": "IsCoinbase: $\\mathcal{TX} \\rightarrow \\{\\text{true}, \\text{false}\\}$ A transaction $tx = (v, ins, outs, lt)$ is a coinbase transaction if and only if: $$\\text{IsCoinbase}(tx) = \\begin{cases} \\text{true} & \\text{if } |ins| = 1 \\land ins[0].\\text{prevout}.\\text{hash} = 0^{32} \\land ins[0].\\text{prevout}.\\text{index} = 2^{32} - 1 \\\\ \\text{false} &…",
+                "preview": "IsCoinbase: $\\mathcal{TX} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$ A transaction $tx = (v, ins, outs, lt)$ is a coinbase transaction if and only if: $$\\text{IsCoinbase}(tx) = \\begin{cases} \\text{true} & \\text{if } |ins| = 1 \\land ins[0].\\text{prevout}.\\text{hash} = 0^{32} \\land ins[0].\\text{prevout}.\\text{index} = 2^{32} - 1 \\\\ \\text{false} & \\text{otherwise} \\end{cases}$$…",
                 "children": []
               },
               {
                 "name": "6.5 Fee Market",
                 "value": 55,
-                "preview": "Transaction Fee: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\mathbb{Z}$ Properties: - Fee formula: $\\text{Fee}(tx, us) = \\sum_{i \\in tx.\\text{inputs}} us(i.\\text{prevout}).\\text{value} - \\sum_{o \\in tx.\\text{outputs}} o.\\text{value}$ - Coinbase fee: $\\text{IsCoinbase}(tx) = \\text{true} \\implies \\text{Fee}(tx, us) = 0$ - Non-negative fee: $\\text{Fee}(tx,…",
+                "preview": "CalculateFee: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\mathbb{Z}$ The fee is the difference between total input value and total output value. Coinbase transactions have fee zero by definition. Properties: - Fee formula: $result = \\sum_{i \\in tx.\\text{inputs}} us(i.\\text{prevout}).\\text{value} - \\sum_{o \\in tx.\\text{outputs}} o.\\text{value}$ - Coinbase…",
                 "children": []
               }
             ]
@@ -1067,12 +1067,12 @@
           {
             "name": "7. Proof of Work",
             "value": 124,
-            "preview": "ExpandTarget: $\\mathbb{N} \\rightarrow \\mathbb{U256}$ Properties: - Positive bits: $\\text{ExpandTarget}(bits)$ requires $bits > 0$ (bits must be positive) - Target expansion: $\\text{ExpandTarget}(bits)$ expands compact difficulty representation to full 256-bit target - Formula correctness: $\\text{ExpandTarget}(bits) = \\text{mantissa} \\times 2^{8 \\times…",
+            "preview": "ExpandTarget: $\\mathbb{N} \\rightarrow \\mathbb{U256}$ Properties: - Positive bits: $bits > 0$ is required (bits must be positive) - Target expansion: $result$ expands compact difficulty representation to full 256-bit target - Formula correctness: $result = \\text{mantissa} \\times 2^{8 \\times (\\text{exponent} - 3)}$ where exponent and mantissa extracted from…",
             "children": [
               {
                 "name": "7.1 Difficulty Adjustment",
                 "value": 106,
-                "preview": "ExpandTarget: $\\mathbb{N} \\rightarrow \\mathbb{U256}$ Properties: - Positive bits: $\\text{ExpandTarget}(bits)$ requires $bits > 0$ (bits must be positive) - Target expansion: $\\text{ExpandTarget}(bits)$ expands compact difficulty representation to full 256-bit target - Formula correctness: $\\text{ExpandTarget}(bits) = \\text{mantissa} \\times 2^{8 \\times…",
+                "preview": "ExpandTarget: $\\mathbb{N} \\rightarrow \\mathbb{U256}$ Properties: - Positive bits: $bits > 0$ is required (bits must be positive) - Target expansion: $result$ expands compact difficulty representation to full 256-bit target - Formula correctness: $result = \\text{mantissa} \\times 2^{8 \\times (\\text{exponent} - 3)}$ where exponent and mantissa extracted from…",
                 "children": []
               },
               {
@@ -1097,12 +1097,12 @@
               {
                 "name": "8.2 Integration and Round-Trip Properties",
                 "value": 54,
-                "preview": "Integration properties verify that multiple functions work together correctly in multi-function workflows. Property (Economic Block Integration): For valid blocks, economic rules are consistently enforced: $$\\forall b \\in \\mathcal{B}, h \\in \\mathbb{N}: \\text{ConnectBlock}(b, us, h) = \\text{valid} \\implies$$ $$\\text{GetBlockSubsidy}(h) + \\sum_{tx \\in…",
+                "preview": "Integration properties verify that multiple functions work together correctly in multi-function workflows. Property (Economic Block Integration): For valid blocks, economic rules are consistently enforced: $$\\forall b \\in \\mathcal{B}, h \\in \\mathbb{N}: \\text{ConnectBlock}(b, us, h) = \\text{valid} \\implies$$ $$\\text{GetBlockSubsidy}(h) + \\sum_{tx \\in b.transactions} \\text{Fee}(tx, us) \\geq \\sum_{o \\in b.transactions[0].outputs} o.value$$…",
                 "children": [
                   {
                     "name": "8.2.1 Integration Properties",
                     "value": 28,
-                    "preview": "Integration properties verify that multiple functions work together correctly in multi-function workflows. Property (Economic Block Integration): For valid blocks, economic rules are consistently enforced: $$\\forall b \\in \\mathcal{B}, h \\in \\mathbb{N}: \\text{ConnectBlock}(b, us, h) = \\text{valid} \\implies$$ $$\\text{GetBlockSubsidy}(h) + \\sum_{tx \\in…",
+                    "preview": "Integration properties verify that multiple functions work together correctly in multi-function workflows. Property (Economic Block Integration): For valid blocks, economic rules are consistently enforced: $$\\forall b \\in \\mathcal{B}, h \\in \\mathbb{N}: \\text{ConnectBlock}(b, us, h) = \\text{valid} \\implies$$ $$\\text{GetBlockSubsidy}(h) + \\sum_{tx \\in b.transactions} \\text{Fee}(tx, us) \\geq \\sum_{o \\in b.transactions[0].outputs} o.value$$…",
                     "children": []
                   },
                   {
@@ -1122,12 +1122,12 @@
               {
                 "name": "8.4 Merkle Tree Security",
                 "value": 38,
-                "preview": "ComputeMerkleRoot: $\\mathcal{H}^+ \\rightarrow \\mathbb{H}$ (non-empty sequence of 32-byte hashes to 32-byte root hash) Properties: - Deterministic: $\\text{ComputeMerkleRoot}(H) = \\text{ComputeMerkleRoot}(H)$ for all $H$ - Single element: $|H| = 1 \\implies \\text{ComputeMerkleRoot}(H) = H[0]$ - Collision resistance: $\\text{ComputeMerkleRoot}(H_1) =…",
+                "preview": "ComputeMerkleRoot: $\\mathcal{H}^+ \\rightarrow \\mathbb{H}$ (non-empty sequence of 32-byte hashes to 32-byte root hash) Properties: - Deterministic: $result(H) = result(H)$ for all $H$ (same inputs always produce same root) - Single element: $|H| = 1 \\implies result = H[0]$ - Collision resistance: $result(H_1) = result(H_2) \\implies H_1 = H_2$ (assuming…",
                 "children": [
                   {
                     "name": "8.4.1 ComputeMerkleRoot",
                     "value": 36,
-                    "preview": "ComputeMerkleRoot: $\\mathcal{H}^+ \\rightarrow \\mathbb{H}$ (non-empty sequence of 32-byte hashes to 32-byte root hash) Properties: - Deterministic: $\\text{ComputeMerkleRoot}(H) = \\text{ComputeMerkleRoot}(H)$ for all $H$ - Single element: $|H| = 1 \\implies \\text{ComputeMerkleRoot}(H) = H[0]$ - Collision resistance: $\\text{ComputeMerkleRoot}(H_1) =…",
+                    "preview": "ComputeMerkleRoot: $\\mathcal{H}^+ \\rightarrow \\mathbb{H}$ (non-empty sequence of 32-byte hashes to 32-byte root hash) Properties: - Deterministic: $result(H) = result(H)$ for all $H$ (same inputs always produce same root) - Single element: $|H| = 1 \\implies result = H[0]$ - Collision resistance: $result(H_1) = result(H_2) \\implies H_1 = H_2$ (assuming…",
                     "children": []
                   }
                 ]
@@ -1143,17 +1143,17 @@
           {
             "name": "9. Mempool Protocol",
             "value": 70,
-            "preview": "AcceptToMemoryPool: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\{\\text{accepted}, \\text{rejected}\\}$ Properties: - Acceptance correctness: $\\text{AcceptToMemoryPool}(tx, us) = \\text{accepted} \\implies \\text{CheckTransaction}(tx) = \\text{valid} \\land \\neg \\text{IsCoinbase}(tx)$ - Coinbase rejection: $\\text{IsCoinbase}(tx) = \\text{true} \\implies…",
+            "preview": "AcceptToMemoryPool: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\{\\text{accepted}, \\text{rejected}\\}$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$ Note: Acceptance correctness: $result = \\text{accepted} \\implies \\text{CheckTransaction}(tx) = \\text{valid} \\land \\neg \\text{IsCoinbase}(tx)$. Coinbase is always rejected. $\\text{CheckFinalTxAtTip}(tx)$…",
             "children": [
               {
                 "name": "9.1 Mempool Validation",
                 "value": 22,
-                "preview": "AcceptToMemoryPool: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\{\\text{accepted}, \\text{rejected}\\}$ Properties: - Acceptance correctness: $\\text{AcceptToMemoryPool}(tx, us) = \\text{accepted} \\implies \\text{CheckTransaction}(tx) = \\text{valid} \\land \\neg \\text{IsCoinbase}(tx)$ - Coinbase rejection: $\\text{IsCoinbase}(tx) = \\text{true} \\implies…",
+                "preview": "AcceptToMemoryPool: $\\mathcal{TX} \\times \\mathcal{US} \\rightarrow \\{\\text{accepted}, \\text{rejected}\\}$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$ Note: Acceptance correctness: $result = \\text{accepted} \\implies \\text{CheckTransaction}(tx) = \\text{valid} \\land \\neg \\text{IsCoinbase}(tx)$. Coinbase is always rejected. $\\text{CheckFinalTxAtTip}(tx)$…",
                 "children": [
                   {
                     "name": "9.1.1 Transaction Finality",
                     "value": 13,
-                    "preview": "$\\text{CheckFinalTxAtTip}(tx)$ requires that absolute lock time ($nLockTime$) and input sequence locks (BIP68/BIP112) are satisfied at the current chain tip so the transaction is not treated as non-final for relay. A transaction $tx$ is accepted to the mempool if and only if: 1. Basic Validation: $tx$ passes CheckTransaction 2. Non-Coinbase: $\\neg…",
+                    "preview": "$\\text{CheckFinalTxAtTip}(tx)$ requires that absolute lock time ($nLockTime$) and input sequence locks (BIP68/BIP112) are satisfied at the current chain tip so the transaction is not treated as non-final for relay. CheckFinalTxAtTip: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathbb{N} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Let $h$ be the current chain…",
                     "children": []
                   }
                 ]
@@ -1167,7 +1167,7 @@
               {
                 "name": "9.3 Replace-By-Fee (RBF)",
                 "value": 20,
-                "preview": "ReplacementChecks: $\\mathcal{TX} \\times \\mathcal{TX} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - RBF requirement: $\\text{ReplacementChecks}(tx_1, tx_2) = \\text{true} \\implies \\exists i \\in tx_1.inputs : i.sequence < \\text{SEQUENCE\\_FINAL}$ (RBF signaling required) - Fee bump requirement: $\\text{ReplacementChecks}(tx_1, tx_2) = \\text{true}…",
+                "preview": "ReplacementChecks: $\\mathcal{TX} \\times \\mathcal{TX} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Conservative RBF requirement: $result = \\text{true} \\implies \\exists i \\in tx_1.inputs : i.sequence < \\text{SEQUENCE\\_FINAL}$. Standard mode may replace an original that does not signal. - Fee bump requirement: $result = \\text{true} \\implies \\text{FeeRate}(tx_2) > \\text{FeeRate}(tx_1)$…",
                 "children": []
               }
             ]
@@ -1175,7 +1175,7 @@
           {
             "name": "10. Network Protocol",
             "value": 118,
-            "preview": "The Bitcoin network protocol enables nodes to synchronize the blockchain and relay transactions. The protocol operates over TCP connections and uses a message-based communication system. NetworkMessage: $\\mathcal{M} = \\{\\text{version}, \\text{verack}, \\text{addr}, \\text{inv}, \\text{getdata}, \\text{tx}, \\text{block}, \\text{headers}, \\text{getheaders},…",
+            "preview": "The Bitcoin network protocol enables nodes to synchronize the blockchain and relay transactions. The protocol operates over TCP connections and uses a message-based communication system. NetworkMessage: $\\mathcal{M} = \\{\\text{version}, \\text{verack}, \\text{addr}, \\text{inv}, \\text{getdata}, \\text{tx}, \\text{block}, \\text{headers}, \\text{getheaders}, \\text{ping}, \\text{pong}\\}$…",
             "children": [
               {
                 "name": "10.1 Message Types",
@@ -1247,7 +1247,7 @@
                   {
                     "name": "11.1.4 Witness Merkle Root",
                     "value": 15,
-                    "preview": "ComputeWitnessMerkleRoot: $\\mathcal{B} \\times \\mathcal{W}^* \\rightarrow \\mathbb{H}$ Definition (BIP141 wtxid tree): For each transaction index $i$, define the leaf hash $L_i$: - $L_0 = 0^{32}$ (coinbase wtxid is fixed to zero). - For $i > 0$: let $w^{(i)}$ be the witness data for transaction $i$ (per-input stacks). If no witness element is non-empty, $L_i =…",
+                    "preview": "ComputeWitnessMerkleRoot: $\\mathcal{B} \\times \\mathcal{W}^* \\rightarrow \\mathbb{H}$ Definition (BIP141 wtxid tree): For each transaction index $i$, define the leaf hash $L_i$: - $L_0 = 0^{32}$ (coinbase wtxid is fixed to zero). - For $i > 0$: let $w^{(i)}$ be the witness data for transaction $i$ (per-input stacks). If no witness element is non-empty, $L_i = \\text{txid}(b.\\text{transactions}[i])$…",
                     "children": []
                   },
                   {
@@ -1285,12 +1285,12 @@
               {
                 "name": "11.2 Taproot",
                 "value": 239,
-                "preview": "Taproot Output: P2TR script OP_1 <32-byte-hash> P2TR Script Format: $\\text{P2TR} = [0x51, 0x20, h_{32}]$ where $h_{32} \\in \\{0,1\\}^{256}$ P2TR Detection: $\\text{IsP2TR}(spk) = (|spk| = 34) \\land (spk[0] = 0x51) \\land (spk[1] = 0x20)$ Empty ScriptSig Requirement: For Taproot transactions, scriptSig must be empty: $$\\forall tx \\in \\mathcal{TX}, i \\in…",
+                "preview": "Taproot Output: P2TR script OP_1 <32-byte-hash> P2TR Script Format: $\\text{P2TR} = [0x51, 0x20, h_{32}]$ where $h_{32} \\in \\{0,1\\}^{256}$ P2TR Detection: $\\text{IsP2TR}(spk) = (|spk| = 34) \\land (spk[0] = 0x51) \\land (spk[1] = 0x20)$ Empty ScriptSig Requirement: For Taproot transactions, scriptSig must be empty: $$\\forall tx \\in \\mathcal{TX}, i \\in \\mathbb{N} : \\text{IsP2TR}(tx.\\text{outputs}[j].\\text{scriptPubkey}) \\land tx.\\text{inputs}[i].\\text{prevout} = (txid, j) \\implies tx.\\text{inputs}[i].\\text{scriptSig} = \\emptyset$$…",
                 "children": [
                   {
                     "name": "11.2.1 Taproot Script Validation",
                     "value": 37,
-                    "preview": "ValidateTaprootScript: $\\mathbb{S} \\rightarrow \\{\\text{true}, \\text{false}\\}$ For script $s$: $$\\text{ValidateTaprootScript}(s) = (|s| = 34) \\land (s[0] = 0x51) \\land (s[1] = 0x20)$$ Properties: - Length validation: $\\text{ValidateTaprootScript}(s) = \\text{true} \\iff |s| = 34$ - Format correctness: $\\text{ValidateTaprootScript}(s) = \\text{true} \\implies…",
+                    "preview": "ValidateTaprootScript: $\\mathbb{S} \\rightarrow \\{\\text{true}, \\text{false}\\}$ For script $s$: $$\\text{ValidateTaprootScript}(s) = (|s| = 34) \\land (s[0] = 0x51) \\land (s[1] = 0x20)$$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$ Note: $result = \\text{true} \\iff |s| = 34 \\land s[0] = 0x51 \\land s[1] = 0x20$. Scripts of other lengths…",
                     "children": []
                   },
                   {
@@ -1302,13 +1302,13 @@
                   {
                     "name": "11.2.3 Taproot Script Path",
                     "value": 50,
-                    "preview": "ValidateTaprootScriptPath: $\\mathbb{S} \\times [\\mathbb{H}]^* \\times [0,1]^{256} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Merkle proof validation: $\\text{ValidateTaprootScriptPath}(s, proof, root) = \\text{true} \\iff \\text{ComputeScriptMerkleRoot}(s, proof, v) = root$ - Boolean result: $\\text{ValidateTaprootScriptPath}(s, proof, root) \\in…",
+                    "preview": "ValidateTaprootScriptPath: $\\mathbb{S} \\times [\\mathbb{H}]^* \\times [0,1]^{256} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Merkle proof validation: $result = \\text{true} \\iff \\text{ComputeScriptMerkleRoot}(s, proof, v) = root$ - Script path correctness: $result$ validates script is in Taproot merkle tree For script $s$, merkle proof $proof$,…",
                     "children": []
                   },
                   {
                     "name": "11.2.4 Taproot Witness Structure",
                     "value": 15,
-                    "preview": "ValidateTaprootWitnessStructure: $\\mathcal{W} \\times \\{\\text{true}, \\text{false}\\} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Key path structure: $\\text{ValidateTaprootWitnessStructure}(w, \\text{false}) = \\text{true} \\iff |w| = 1 \\land |w[0]| = 64$ (single 64-byte signature) - Script path structure: $\\text{ValidateTaprootWitnessStructure}(w,…",
+                    "preview": "ValidateTaprootWitnessStructure: $\\mathcal{W} \\times \\{\\text{true}, \\text{false}\\} \\rightarrow \\{\\text{true}, \\text{false}\\}$ Properties: - Boolean result: $result \\in \\{\\text{true}, \\text{false}\\}$ StripTaprootAnnex: $\\mathcal{W} \\rightarrow \\mathcal{W} \\times \\mathbb{H}^?$ Properties: - Boolean tuple: $result = (w', h) \\implies |w'| \\leq |w|$ Optional…",
                     "children": []
                   },
                   {
@@ -1320,7 +1320,7 @@
                   {
                     "name": "11.2.6 Taproot Signature Hash",
                     "value": 12,
-                    "preview": "ComputeTaprootSignatureHash: $\\mathcal{TX} \\times \\mathbb{N} \\times \\mathcal{US} \\times \\mathbb{N}_{32} \\times \\mathbb{H}^? \\rightarrow \\mathbb{H}$ Properties: - Hash length: $\\text{ComputeTaprootSignatureHash}(tx, i, us, type, leaf) = h \\implies |h| = 32$ (32-byte hash) - Deterministic: $\\text{ComputeTaprootSignatureHash}(tx_1, i_1, us_1, type_1, leaf_1) =…",
+                    "preview": "TryParseTaprootSchnorrWitnessSig: $\\mathbb{S} \\rightarrow [0,1]^{512} \\times \\mathbb{N}_8^?$ Properties: - Length: $|sig| \\in \\{64, 65\\} \\implies result \\neq \\bot$ Parses a Taproot witness Schnorr signature element: 64 bytes → implicit SIGHASH_DEFAULT ($0x00$); 65 bytes → last byte is explicit sighash type (explicit $0x00$ suffix is invalid).…",
                     "children": []
                   },
                   {
@@ -1332,7 +1332,7 @@
                   {
                     "name": "11.2.8 Tapscript Opcodes and SigOp Counting (BIP 342)",
                     "value": 27,
-                    "preview": "OP_CHECKSIGADD (opcode 0xba): Tapscript-only opcode for signature aggregation. Stack semantics: Pops $(pk, n, sig)$ where $pk \\in \\mathbb{B}^{32}$, $n \\in \\mathbb{N}_{32}$, $sig \\in \\mathbb{B}^{64}$. Verifies BIP 340 Schnorr signature $(pk, sig)$ against the tapscript sighash. If valid: push $(n+1)$; else: fail. $$\\text{OP\\_CHECKSIGADD}(pk, n, sig) =…",
+                    "preview": "OP_CHECKSIGADD (opcode 0xba): Tapscript-only opcode for signature aggregation. Stack semantics: Pops $(pk, n, sig)$ where $pk \\in \\mathbb{B}^{32}$, $n \\in \\mathbb{N}_{32}$, $sig \\in \\mathbb{B}^{64}$. An empty signature pushes $n$ and continues. A non-empty signature that fails verification aborts. A successful Schnorr check pushes $n+1$. $$\\text{OP\\_CHECKSIGADD}(pk, n, sig) = \\begin{cases} n+1 & \\text{if } sig \\neq \\epsilon \\land \\text{VerifySchnorr}(pk, sig, \\text{ComputeTapscriptSignatureHash}(\\ldots)) = \\text{true} \\\\ n & \\text{if } sig = \\epsilon \\\\ \\text{fail} & \\text{otherwise} \\end{cases}$$…",
                     "children": []
                   }
                 ]
@@ -1454,7 +1454,7 @@
           {
             "name": "12.3 Mining Process",
             "value": 64,
-            "preview": "*One valid algorithm. Protocol requires CheckProofOfWork(block) = true; this section describes one mining loop.* MineBlock: $\\mathcal{B} \\times \\mathbb{N} \\rightarrow \\mathcal{B} \\times \\{\\text{success}, \\text{failure}\\}$ Properties: - PoW success: $\\text{MineBlock}(block, maxTries) = (block', \\text{success}) \\implies \\text{CheckProofOfWork}(block') =…",
+            "preview": "*One valid algorithm. Protocol requires CheckProofOfWork(block) = true; this section describes one mining loop.* MineBlock: $\\mathcal{B} \\times \\mathbb{N} \\rightarrow \\mathcal{B} \\times \\{\\text{success}, \\text{failure}\\}$ Properties: - PoW success: $\\text{MineBlock}(block, maxTries) = (block', \\text{success}) \\implies \\text{CheckProofOfWork}(block') = \\text{true}$…",
             "children": []
           },
           {

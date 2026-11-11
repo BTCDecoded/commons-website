@@ -625,9 +625,10 @@ code {
 
 .sunburst-detail-body {
   padding: 0.75rem 1rem 1rem;
-  overflow-y: auto;
+  overflow: auto;
   flex: 1;
   min-height: 0;
+  min-width: 0;
 }
 
 .sunburst-doc-root-lead {
@@ -651,9 +652,13 @@ code {
 
 .sunburst-preview-math-block {
   display: block;
+  width: 100%;
+  max-width: 100%;
   margin: 0.5rem 0;
   overflow-x: auto;
+  overflow-y: hidden;
   text-align: center;
+  -webkit-overflow-scrolling: touch;
 }
 
 .sunburst-preview-math-block .katex-display {
