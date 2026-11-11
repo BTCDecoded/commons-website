@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self';">
-    <title>ecosystem</title>
+    <title>Ecosystem</title>
     <meta name="description" content="A weekly count of full-node trees, with commons in the first column.">
     <link rel="canonical" href="https://thebitcoincommons.org/ecosystem.html" />
-    <meta property="og:title" content="ecosystem">
+    <meta property="og:title" content="Ecosystem">
     <meta property="og:description" content="A weekly count of full-node trees, with commons in the first column.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://thebitcoincommons.org/ecosystem.html">
     <meta property="og:image" content="https://thebitcoincommons.org/assets/og-image.png">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="ecosystem">
+    <meta name="twitter:title" content="Ecosystem">
     <meta name="twitter:description" content="A weekly count of full-node trees, with commons in the first column.">
     <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
     <link rel="stylesheet" href="style.css?v=25" />
@@ -91,13 +91,145 @@
             caption-side: bottom;
             text-align: left;
             padding: 0.6rem 0.2rem 0;
-            color: var(--text-secondary);
+            color: #c4c4cc;
             font-family: var(--font-sans);
-            font-size: 13px;
+            font-size: 0.9rem;
+            white-space: normal;
+        }
+        .eco-scroll {
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-x: contain;
+        }
+        .eco-scroll:focus-visible {
+            outline: 2px solid var(--orange);
+            outline-offset: 2px;
+        }
+        .eco th:first-child {
+            white-space: normal;
+            min-width: 7.5rem;
+            max-width: 10rem;
+            z-index: 2;
+            box-shadow: 1px 0 0 var(--rule);
+        }
+        .eco td:first-child,
+        .eco th[scope="row"] {
+            white-space: normal;
+            min-width: 7.5rem;
+            max-width: 10rem;
+            z-index: 1;
+            box-shadow: 1px 0 0 var(--rule);
+        }
+        .eco-scroll-hint {
+            margin: 0.35rem 0 0;
+            font-size: 0.9rem;
+            color: #c4c4cc;
+        }
+        @media (min-width: 1100px) {
+            .eco-scroll-hint { display: none; }
+        }
+        .skip {
+            position: absolute;
+            left: 1rem;
+            top: -3rem;
+            z-index: 200;
+            background: var(--orange);
+            color: var(--bg);
+            padding: 0.5rem 0.75rem;
+            text-decoration: none;
+        }
+        .skip:focus {
+            top: 0.5rem;
+        }
+        .site-nav a:focus-visible,
+        .site-footer a:focus-visible,
+        .eco a:focus-visible,
+        .nav-menu summary:focus-visible {
+            outline: 2px solid var(--orange);
+            outline-offset: 3px;
+        }
+        .site-nav .nav-menu summary {
+            width: 44px;
+            height: 44px;
+        }
+        .site-footer {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 1.5rem;
+            display: grid;
+            grid-template-columns: 14rem 1fr;
+            gap: 2rem;
+            border-top: 1px solid var(--rule);
+        }
+        .footer-brand .wordmark {
+            height: 28px;
+            width: auto;
+            display: block;
+            margin-bottom: 0.75rem;
+        }
+        .footer-brand p {
+            font-size: 0.9rem;
+            color: #c4c4cc;
+            line-height: 1.6;
+            max-width: 16rem;
+        }
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .footer-col h4 {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: #c4c4cc;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin: 0 0 0.75rem;
+        }
+        .footer-col ul { list-style: none; margin: 0; padding: 0; }
+        .footer-col li { margin: 0; }
+        .footer-col a {
+            display: inline-block;
+            padding: 0.4rem 0;
+            font-size: 1rem;
+            color: #c4c4cc;
+            text-decoration: none;
+        }
+        .footer-col a:hover { color: var(--text); }
+        .footer-bottom {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 1rem 1.5rem 2rem;
+            border-top: 1px solid var(--rule);
+        }
+        .footer-bottom p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #c4c4cc;
+        }
+        @media (max-width: 768px) {
+            nav.site-nav { padding: 0 1rem; }
+            .eco { padding: 1.5rem 1rem 3rem; }
+            .eco table { font-size: 0.9rem; }
+            .site-nav .nav-menu[open] .nav-links a {
+                display: inline-block;
+                padding: 0.55rem 0;
+                font-size: 1rem;
+            }
+            .site-footer {
+                grid-template-columns: 1fr;
+                padding: 2rem 1rem 1rem;
+            }
+            .footer-links { grid-template-columns: 1fr 1fr; }
+            .footer-bottom { padding: 1rem; }
+            .eco-pin { display: none; }
+        }
+        @media (max-width: 420px) {
+            .footer-links { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
+    <a class="skip" href="#content">Skip to the counts</a>
     <nav class="site-nav" aria-label="Site">
       <div class="nav-inner">
         <a href="index.html" class="nav-logo">
@@ -113,7 +245,7 @@
             <li><a href="index.html#implementations">Install</a></li>
             <li><a href="whitepaper.html">White paper</a></li>
             <li><a href="governance-designer.html">Governance</a></li>
-            <li><a href="ecosystem.html">Ecosystem</a></li>
+            <li><a href="ecosystem.html" aria-current="page">Ecosystem</a></li>
             <li><a href="index.html#faq">FAQ</a></li>
             <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
           </ul>
@@ -123,36 +255,36 @@
           <li><a href="index.html#implementations">Install</a></li>
           <li><a href="whitepaper.html">White paper</a></li>
           <li><a href="governance-designer.html">Governance</a></li>
-          <li><a href="ecosystem.html">Ecosystem</a></li>
+          <li><a href="ecosystem.html" aria-current="page">Ecosystem</a></li>
           <li><a href="index.html#faq">FAQ</a></li>
           <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
         </ul>
       </div>
     </nav>
 
-    <main class="eco">
-        <h1>ecosystem</h1>
+    <main class="eco" id="content">
+        <h1>Ecosystem</h1>
         <p>
             A weekly count of full-node trees, with commons in the first column.
             The same counters run on commons and on the other checkouts.
         </p>
-        <p id="eco-status">Loading this week's file.</p>
+        <p id="eco-status" role="status">Loading this week's file.</p>
 
         <h2>This week</h2>
-        <div class="eco-scroll">
-            <table id="eco-trees">
-                <caption id="eco-tree-note"></caption>
-            </table>
+        <div class="eco-scroll" tabindex="0" aria-label="This week's counts. Scroll sideways. The method name stays put.">
+            <table id="eco-trees"></table>
         </div>
+        <p class="eco-scroll-hint">Scroll the numbers sideways. The method name stays put.</p>
 
         <h2>Pull requests</h2>
         <p>
             These are the process counts the governance findings treat as worth keeping.
             A cell is filled only from a named finding. “not measured” means this week’s job had no dump for that tree.
         </p>
-        <div class="eco-scroll">
+        <div class="eco-scroll" tabindex="0" aria-label="Pull request counts. Scroll sideways. The method name stays put.">
             <table id="eco-process"></table>
         </div>
+        <p class="eco-scroll-hint">Scroll the numbers sideways. The method name stays put.</p>
 
         <h2>Written rule</h2>
         <p id="eco-rule">
@@ -205,14 +337,15 @@
             });
         }
         function head(trees) {
-            return "<tr><th>Method</th>" + trees.map(function (t) {
+            return "<tr><th scope=\"col\">Method</th>" + trees.map(function (t) {
                 var pin = t.commit ? t.commit.slice(0, 9) : "";
                 var shallow = t.shallow ? ", shallow" : "";
-                return "<th>" + esc(t.name) + "<small>" + esc(t.instrument) + (pin ? "<br>" + esc(pin + shallow) : "") + "</small></th>";
+                var pinHtml = pin ? "<br><span class=\"eco-pin\">" + esc(pin + shallow) + "</span>" : "";
+                return "<th scope=\"col\">" + esc(t.name) + "<small>" + esc(t.instrument) + pinHtml + "</small></th>";
             }).join("") + "</tr>";
         }
         function row(label, trees, textFor) {
-            return "<tr><td>" + esc(label) + "</td>" + trees.map(function (t) {
+            return "<tr><th scope=\"row\">" + esc(label) + "</th>" + trees.map(function (t) {
                 var cls = t.side === "internal" ? " class=\"internal\"" : "";
                 return "<td" + cls + ">" + esc(textFor(t)) + "</td>";
             }).join("") + "</tr>";
@@ -223,16 +356,16 @@
                 document.getElementById("eco-status").textContent = "Measured " + data.measured_at + ".";
                 var trees = data.trees || [];
                 var treeTable = document.getElementById("eco-trees");
-                treeTable.innerHTML = head(trees) + (data.tree_methods || []).map(function (m) {
+                var rules = (data.tree_methods || []).find(function (m) { return m.id === "rules_share"; });
+                var treeNote = rules && rules.why ? rules.why : "Size of each full-node tree.";
+                treeTable.innerHTML = "<caption>" + esc(treeNote) + "</caption>" + head(trees) + (data.tree_methods || []).map(function (m) {
                     return row(m.name, trees, function (t) {
                         var cell = t.values && t.values[m.id];
                         return cell ? cell.text : "not measured";
                     });
                 }).join("");
-                var rules = (data.tree_methods || []).find(function (m) { return m.id === "rules_share"; });
-                document.getElementById("eco-tree-note").textContent = rules ? rules.why : "";
                 var process = document.getElementById("eco-process");
-                process.innerHTML = head(trees) + (data.process_methods || []).map(function (m) {
+                process.innerHTML = "<caption>Process counts filled only from a named finding.</caption>" + head(trees) + (data.process_methods || []).map(function (m) {
                     return row(m.name, trees, function (t) {
                         var cell = (m.cells || []).find(function (c) { return c.slug === t.slug; });
                         return cell ? cell.text : "not measured";
