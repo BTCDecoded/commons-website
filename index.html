@@ -96,6 +96,7 @@
             <li><a href="#node">Node</a></li>
             <li><a href="#whitepaper">White paper</a></li>
             <li><a href="#governance">Governance</a></li>
+            <li><a href="ecosystem.html">Ecosystem</a></li>
             <li><a href="#faq">FAQ</a></li>
             <li>
               <a href="https://docs.btcdecoded.org/blvm" class="nav-cta"
@@ -110,6 +111,7 @@
           <li><a href="#node">Node</a></li>
           <li><a href="#whitepaper">White paper</a></li>
           <li><a href="#governance">Governance</a></li>
+          <li><a href="ecosystem.html">Ecosystem</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li>
             <a href="https://docs.btcdecoded.org/blvm" class="nav-cta"
@@ -210,7 +212,7 @@
             <h3>Node</h3>
             <p>
               A second Bitcoin full node for the same chain as Core.
-              Compatibility is checked in layers, not one replay.
+              Compatibility is checked in layers.
             </p>
             <a href="https://btcdecoded.org" class="feature-link">Run the node <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
           </div>
@@ -230,18 +232,21 @@
             <h3>Governance</h3>
             <p>
               Published rules for who can change what, and how long review
-              lasts. Enforcement is off — the designer is not a live gate.
+              lasts. Enforcement is off. The designer is not a live gate. A
+              weekly count of the programs sits beside that.
             </p>
             <a href="governance-designer.html" class="feature-link"
               >Open the designer <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a
+            >
+            <a href="ecosystem.html" class="feature-link"
+              >Ecosystem <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a
             >
           </div>
 
           <div class="feature">
             <h3>Compact</h3>
             <p>
-              Purpose and principles for Commons governance. The written rules,
-              not a live dashboard.
+              Purpose and principles for Commons governance. The written rules.
             </p>
             <a href="compact.html" class="feature-link">Read the Compact <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
           </div>
@@ -324,10 +329,10 @@
             <div class="pipeline-num">5</div>
             <div class="pipeline-content">
               <div class="pipeline-tag">Testing</div>
-              <h3>Layers of check, not one replay</h3>
+              <h3>Layers of check</h3>
               <p>
                 Property tests, fuzzing, golden vectors, and a Core
-                differential — not one replay.
+                differential.
               </p>
             </div>
           </div>
@@ -428,8 +433,8 @@
           <h2>Donate through Plebly.</h2>
           <p>
             Plebly lists public Bitcoin development work and takes donations
-            into on-chain escrow — not a custodial tip jar. Fund a listed
-            Commons proposal, or donate to Commons directly.
+            into on-chain escrow. Fund a listed Commons proposal, or donate
+            to Commons directly.
           </p>
           <div class="fund-actions">
             <a
@@ -571,10 +576,10 @@
               <div class="faq-a">
                 <div class="faq-a-inner">
                   <p>
-                    The specification is real. BLVM — the first implementation
-                    — is in active development. Cryptographic merge enforcement
-                    is off — not “activation in progress.” Apply your own
-                    security review before running a node with real funds. See
+                    The specification is published. BLVM, the first
+                    implementation, is in active development. Enforcement is
+                    off and the keys are test keys. Review the software before
+                    you run a node with real funds. See
                     <a
                       href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md"
                       >project status</a
@@ -626,8 +631,8 @@
                     Empirical checks sit beside that: property tests, fuzzing,
                     golden vectors, and a Core differential. See
                     <a href="#faq-proof-consensus">Proof of consensus compatibility</a>.
-                    BLVM does not replace the reference client; it is a path to
-                    checkable alternatives alongside it.
+                    BLVM is a path to checkable alternatives alongside the
+                    reference client.
                   </p>
                 </div>
               </div>
@@ -648,12 +653,9 @@
                     serious the change is); most-restrictive-wins. Emergency is
                     a third dimension, not an action tier. You can fork
                     <em>governance</em> — not Bitcoin consensus — if you
-                    disagree with how software changes ship.
-                  </p>
-                  <p>
-                    The Compact and YAML are written. Keys are test keys. The
-                    GitHub App is not installed. Almost all current work is
-                    direct push. Do not read the designer as a live merge gate.
+                    disagree with how software changes ship. Phase 1 is current.
+                    Enforcement is off and the keys are test keys. The designer
+                    is not a live merge gate.
                   </p>
                 </div>
               </div>
@@ -666,21 +668,19 @@
               <div class="faq-a">
                 <div class="faq-a-inner">
                   <p>
-                    Governance forks are meant to be listable without a
-                    gatekeeper. A
+                    Governance forks are listable without a gatekeeper. A
                     <a
                       href="https://github.com/BTCDecoded/governance/blob/main/fork-registry.yml"
                       >fork-registry.yml</a
                     >
                     lives in the governance repo; the
                     <a href="governance-designer.html">designer</a> can load
-                    it. That is a file and a UI, not a running public registry
-                    product.
+                    it.
                   </p>
                   <p>
-                    If governance is captured, the designed exit is another
-                    ruleset — consensus stays on Bitcoin. Architecturally:
-                    mandatory consensus at the base, optional modules above.
+                    If governance is captured, the exit is another ruleset.
+                    Consensus stays on Bitcoin. Architecturally: mandatory
+                    consensus at the base, optional modules above.
                   </p>
                 </div>
               </div>
@@ -693,11 +693,10 @@
               <div class="faq-a">
                 <div class="faq-a-inner">
                   <p>
-                    Alignment is supposed to come from usage and the module
-                    layer, not from a new coin. Merge mining — reusing
-                    proof-of-work across chains — is an optional pool-level
-                    supplement, not the main sustainability bet, and it does
-                    not change Bitcoin consensus rules.
+                    Alignment comes from usage and the module layer. Merge
+                    mining — reusing proof-of-work across chains — is an
+                    optional supplement for a pool that wants it. It leaves
+                    Bitcoin consensus rules unchanged.
                   </p>
                 </div>
               </div>
@@ -716,13 +715,12 @@
                   <p>
                     <strong>BLVM:</strong> Core layers exist (spec register,
                     Orange Paper, consensus, protocol, node, wrapper, SDK) and
-                    are in active development. Not a battle-tested production
-                    deployment for everyone.
+                    are in active development.
                   </p>
                   <p>
-                    <strong>Governance:</strong> Compact and layer×tier YAML
-                    exist. Cryptographic merge enforcement is off. Test keys;
-                    the App is not installed. See
+                    <strong>Governance:</strong> The Compact and the layer×tier
+                    YAML are published. Enforcement is off and the keys are
+                    test keys. See
                     <a
                       href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md"
                       >project status</a
@@ -781,9 +779,8 @@
                   <p>
                     Through
                     <a href="https://plebly.fund/#projects">Plebly</a>:
-                    on-chain escrow, not a custodial tip jar. Fund a listed
-                    Commons proposal, or donate to Commons directly. Plebly is
-                    the funding venue — not Commons and not the BLVM node.
+                    on-chain escrow. Fund a listed Commons proposal, or donate
+                    to Commons directly.
                   </p>
                 </div>
               </div>
@@ -859,6 +856,9 @@
         <div class="footer-col">
           <h4>Ecosystem</h4>
           <ul>
+            <li>
+              <a href="https://thebitcoincommons.org/ecosystem.html">Ecosystem</a>
+            </li>
             <li><a href="https://btcdecoded.org">BTCDecoded</a></li>
             <li><a href="https://plebly.fund/#projects">Plebly</a></li>
             <li>
