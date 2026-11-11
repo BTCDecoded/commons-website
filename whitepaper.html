@@ -644,7 +644,7 @@
 <ul>
 <li>The Governance App is designed to validate multisig requirements (varies by layer: 2-of-3 to 6-of-7)</li>
 <li>A self-hosted runner behind WireGuard VPN is designed to validate signatures using secp256k1. On GitHub, that runner is a GitHub Actions runner. Another forge would use its own hook.</li>
-<li>Once production governance is on, whoever administers the repository cannot bypass the cryptographic requirements</li>
+<li>Once production governance is on, governance bots hold administrator access and human repository administrators are shut out of governance-relevant actions. Two of three governance nodes in a written set must each conclude that an action conforms, or that a reversal conforms, before it stands. A non-conforming action, including one by a human administrator, is reversed. Anyone may run a node. Only the written set binds. This is Designed. Enforcement is not on today.</li>
 <li>Signature validation is designed to happen before merge approval</li>
 <li>Designed to require explicit cryptographic approval from multiple maintainers before any merge</li>
 <li><strong>No-self-merge:</strong> a contributor cannot cryptographically approve their own pull request; the Governance App is designed to reject self-signed merges. Not enforced today.</li>
