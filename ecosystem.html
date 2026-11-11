@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self';">
+    <title>ecosystem</title>
+    <meta name="description" content="A weekly count of full-node trees, with commons in the first column.">
+    <link rel="canonical" href="https://thebitcoincommons.org/ecosystem.html" />
+    <meta property="og:title" content="ecosystem">
+    <meta property="og:description" content="A weekly count of full-node trees, with commons in the first column.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://thebitcoincommons.org/ecosystem.html">
+    <meta property="og:image" content="https://thebitcoincommons.org/assets/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ecosystem">
+    <meta name="twitter:description" content="A weekly count of full-node trees, with commons in the first column.">
+    <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
+    <link rel="stylesheet" href="style.css?v=25" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="inner.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
+    <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+    <style>
+        .eco {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 5rem;
+        }
+        .eco h1 {
+            font-weight: 300;
+            letter-spacing: -0.01em;
+            color: var(--white);
+            margin-bottom: 0.75rem;
+        }
+        .eco h2 {
+            font-weight: 400;
+            font-size: 1.25rem;
+            margin: 2.5rem 0 0.75rem;
+            color: var(--white);
+        }
+        .eco p, .eco li {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 42rem;
+        }
+        .eco a { color: var(--orange); }
+        .eco-scroll {
+            overflow-x: auto;
+            margin: 1rem 0 0.5rem;
+            border: 1px solid var(--rule);
+        }
+        .eco table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            font-family: var(--font-mono);
+        }
+        .eco th, .eco td {
+            text-align: right;
+            padding: 0.55rem 0.7rem;
+            border-bottom: 1px solid var(--rule);
+            white-space: nowrap;
+            color: var(--text);
+            vertical-align: bottom;
+        }
+        .eco th:first-child, .eco td:first-child {
+            text-align: left;
+            position: sticky;
+            left: 0;
+            background: var(--bg);
+        }
+        .eco th small {
+            display: block;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-top: 0.2rem;
+        }
+        .eco td.internal { color: var(--white); }
+        .eco caption {
+            caption-side: bottom;
+            text-align: left;
+            padding: 0.6rem 0.2rem 0;
+            color: var(--text-secondary);
+            font-family: var(--font-sans);
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="site-nav" aria-label="Site">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <img src="assets/brand/wordmark.png" alt="Bitcoin Commons" height="36">
+        </a>
+        <details class="nav-menu">
+          <summary aria-label="Menu">
+            <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </summary>
+          <ul class="nav-links">
+            <li><a href="index.html#spec">Specification</a></li>
+            <li><a href="index.html#implementations">Install</a></li>
+            <li><a href="whitepaper.html">White paper</a></li>
+            <li><a href="governance-designer.html">Governance</a></li>
+            <li><a href="ecosystem.html">Ecosystem</a></li>
+            <li><a href="index.html#faq">FAQ</a></li>
+            <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+          </ul>
+        </details>
+        <ul class="nav-links">
+          <li><a href="index.html#spec">Specification</a></li>
+          <li><a href="index.html#implementations">Install</a></li>
+          <li><a href="whitepaper.html">White paper</a></li>
+          <li><a href="governance-designer.html">Governance</a></li>
+          <li><a href="ecosystem.html">Ecosystem</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+          <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="eco">
+        <h1>ecosystem</h1>
+        <p>
+            A weekly count of full-node trees, with commons in the first column.
+            The same counters run on commons and on the other checkouts.
+        </p>
+        <p id="eco-status">Loading this week's file.</p>
+
+        <h2>This week</h2>
+        <div class="eco-scroll">
+            <table id="eco-trees">
+                <caption id="eco-tree-note"></caption>
+            </table>
+        </div>
+
+        <h2>Pull requests</h2>
+        <p>
+            These are the process counts the governance findings treat as worth keeping.
+            A cell is filled only from a named finding. “not measured” means this week’s job had no dump for that tree.
+        </p>
+        <div class="eco-scroll">
+            <table id="eco-process"></table>
+        </div>
+
+        <h2>Written rule</h2>
+        <p id="eco-rule">
+            The count is the size of each program. The approach is the written rule for who may change the specification, and how long review lasts.
+            <a href="compact.html">The written rules</a> and <a href="whitepaper.html">the design argument</a> are the longer form.
+        </p>
+        <p id="eco-omitted"></p>
+    </main>
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img class="wordmark" src="assets/brand/wordmark.png" alt="Commons" height="28" />
+        <p>Formal specification and forkable governance for Bitcoin. Built in the open.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Project</h4>
+          <ul>
+            <li><a href="index.html#spec">The stack</a></li>
+            <li><a href="whitepaper.html">White paper</a></li>
+            <li><a href="compact.html">Compact</a></li>
+            <li><a href="https://github.com/BTCDecoded/.github/blob/main/SYSTEM_STATUS.md">Project status</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="https://docs.btcdecoded.org/blvm">Documentation</a></li>
+            <li><a href="index.html#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Ecosystem</h4>
+          <ul>
+            <li><a href="https://thebitcoincommons.org/ecosystem.html">Ecosystem</a></li>
+            <li><a href="https://btcdecoded.org">BTCDecoded</a></li>
+            <li><a href="https://plebly.fund/#projects">Plebly</a></li>
+            <li><a href="https://github.com/BTCDecoded/governance">Governance repo</a></li>
+            <li><a href="https://btcdecoded.org/install/">Install</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+    <div class="footer-bottom">
+      <p>© 2026 Bitcoin Commons</p>
+    </div>
+    <script>
+        function esc(s) {
+            return String(s).replace(/[&<>"]/g, function (c) {
+                return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+            });
+        }
+        function head(trees) {
+            return "<tr><th>Method</th>" + trees.map(function (t) {
+                var pin = t.commit ? t.commit.slice(0, 9) : "";
+                var shallow = t.shallow ? ", shallow" : "";
+                return "<th>" + esc(t.name) + "<small>" + esc(t.instrument) + (pin ? "<br>" + esc(pin + shallow) : "") + "</small></th>";
+            }).join("") + "</tr>";
+        }
+        function row(label, trees, textFor) {
+            return "<tr><td>" + esc(label) + "</td>" + trees.map(function (t) {
+                var cls = t.side === "internal" ? " class=\"internal\"" : "";
+                return "<td" + cls + ">" + esc(textFor(t)) + "</td>";
+            }).join("") + "</tr>";
+        }
+        fetch("data/implementations.json")
+            .then(function (res) { if (!res.ok) throw new Error(String(res.status)); return res.json(); })
+            .then(function (data) {
+                document.getElementById("eco-status").textContent = "Measured " + data.measured_at + ".";
+                var trees = data.trees || [];
+                var treeTable = document.getElementById("eco-trees");
+                treeTable.innerHTML = head(trees) + (data.tree_methods || []).map(function (m) {
+                    return row(m.name, trees, function (t) {
+                        var cell = t.values && t.values[m.id];
+                        return cell ? cell.text : "not measured";
+                    });
+                }).join("");
+                var rules = (data.tree_methods || []).find(function (m) { return m.id === "rules_share"; });
+                document.getElementById("eco-tree-note").textContent = rules ? rules.why : "";
+                var process = document.getElementById("eco-process");
+                process.innerHTML = head(trees) + (data.process_methods || []).map(function (m) {
+                    return row(m.name, trees, function (t) {
+                        var cell = (m.cells || []).find(function (c) { return c.slug === t.slug; });
+                        return cell ? cell.text : "not measured";
+                    });
+                }).join("");
+                var rule = document.getElementById("eco-rule");
+                if (data.written_rule && data.written_rule.text) {
+                    var extra = document.createElement("span");
+                    extra.textContent = " On the constitutional layer, commons is " + data.written_rule.text + ". The other trees are not measured on this clock.";
+                    rule.appendChild(extra);
+                }
+                document.getElementById("eco-omitted").textContent = data.omitted || "";
+            })
+            .catch(function () {
+                document.getElementById("eco-status").textContent = "This week's file is not on the site yet.";
+            });
+    </script>
+</body>
+</html>
