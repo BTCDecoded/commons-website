@@ -705,7 +705,7 @@
 <li>Merge signatures while active: 6-of-7</li>
 <li>Review period: 30 days</li>
 <li>Maximum duration: 90 days (2 extensions allowed)</li>
-<li>Examples: Competitive response needs, important bug fixes, performance degradation, ecosystem compatibility issues</li>
+<li>Examples: important bug fixes that are not security issues, and performance degradation of a running node. Competitive response, ecosystem compatibility, and user-experience work stay on the ordinary tier. A policy default and a governance-rule change cannot use this tier.</li>
 </ul>
 <p>The system scales <strong>response speed and review strictness</strong> to severity, not a single monotonic rule that stricter always means worse. Network-threatening issues get the fastest merge path; important-but-non-critical work uses longer review and higher merge bars. All emergency actions require post-mortem documentation and automatic expiration.</p>
 <p>An emergency expires on its own, and the lowered merge rule expires with it. A change already merged under that rule stays merged. The repository does not bind an activation to one patch, does not require later ratification at the ordinary threshold, and does not bar an emergency from covering governance rules or key sets. Five emergency keyholders can therefore turn a constitutional change into a 4-of-7 merge with no review, and the result remains after the emergency ends. Closing that gap is an open design decision.</p>
