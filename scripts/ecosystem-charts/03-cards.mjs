@@ -20,7 +20,11 @@ function stabMeter(st) {
     }).join("") : "<span class=\"eco-stab-seg s-not_measured s-all\">not measured</span>";
     return "<div class=\"eco-stab\"><p class=\"eco-stab-h\"><b>Release stability</b> <span" + (st.measured ? "" : " class=\"nm\"") + ">" + esc(st.text) + "</span></p>" +
         "<div class=\"eco-stab-meter\" aria-hidden=\"true\">" + segs + "</div>" +
-        st.tags.map(function (t) { return "<p class=\"eco-stab-tag\"><b>" + esc(t.label) + ":</b> " + (t.tag ? esc(t.tag) + (t.evidence_url ? " <a href=\"" + esc(t.evidence_url) + "\">Source</a>" : "") : "not measured") + "</p>"; }).join("") + "</div>";
+        (st.total ? ["met", "not_met", "not_measured"].map(function (k) {
+            const xs = st.cells.filter(function (c) { return c.status === k; });
+            return xs.length ? "<p class=\"eco-stab-list s-" + k + "\"><b>" + STAB_GLYPH[k] + " " + ({ met: "Met", not_met: "Not met", not_measured: "Not measured" })[k] + ":</b> " + esc(xs.map(function (c) { return c.label; }).join(", ")) + "</p>" : "";
+        }).join("") : "") +
+        st.tags.filter(function (t) { return t.status !== "n/a"; }).map(function (t) { return "<p class=\"eco-stab-tag\"><b>" + esc(t.label) + ":</b> " + (t.tag ? esc(t.tag) + "" : "not measured") + "</p>"; }).join("") + "</div>";
 }
 
 // Research's card takeaway, with every clause computed from the cells.
