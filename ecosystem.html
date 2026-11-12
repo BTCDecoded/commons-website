@@ -483,6 +483,210 @@
             .site-footer { padding: 1.5rem 0.75rem 0.5rem; }
             .footer-bottom { padding: 0.75rem; }
         }
+        /* Compact layout: one comparison table, sticky jump bar. */
+        .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        .eco .eco-jump {
+            position: sticky;
+            top: 64px;
+            z-index: 50;
+            max-width: none;
+            margin: 1rem -0.25rem 0;
+            padding: 0.5rem 0.25rem;
+            background: var(--bg);
+            border-bottom: 1px solid var(--rule);
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            gap: 0.4rem;
+        }
+        .eco .eco-jump a { white-space: nowrap; flex: none; min-height: 36px; padding: 0.3rem 0.75rem; }
+        .eco .eco-jump a[aria-current] { border-color: var(--orange); color: var(--white); }
+        .eco-block { scroll-margin-top: 8.5rem; }
+        .eco-key > div { scroll-margin-top: 8.5rem; }
+        .eco-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.75rem; margin: 0.85rem 0 0.85rem; }
+        .eco-tools[hidden] { display: none; }
+        .eco .eco-tools-label { margin: 0; font-size: 0.85rem; color: #c4c4cc; }
+        .eco-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .eco-chip, .eco-sort {
+            font: inherit;
+            cursor: pointer;
+            color: var(--text);
+        }
+        .eco-chip {
+            font-size: 0.85rem;
+            min-height: 36px;
+            padding: 0.25rem 0.7rem;
+            border-radius: 999px;
+            border: 1px solid var(--rule);
+            background: #111113;
+        }
+        .eco-chip[aria-pressed="true"] { border-color: #8a8a94; color: var(--white); background: #222227; }
+        .eco-chip[aria-pressed="false"] { color: #c4c4cc; text-decoration: line-through; }
+        .eco-chip-reset { border-style: dashed; }
+        .eco-chip:focus-visible, .eco-sort:focus-visible, .eco-board summary:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+        .eco-sort {
+            background: none;
+            border: 0;
+            padding: 0.25rem 0;
+            min-height: 32px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            text-align: right;
+            text-decoration: underline dotted #8a8a94;
+            text-underline-offset: 3px;
+        }
+        .eco-sort::after { content: " \2195"; color: #8a8a94; }
+        th[aria-sort] .eco-sort { color: var(--white); text-decoration-color: var(--orange); }
+        th[aria-sort] .eco-sort::after { content: " \2193"; color: var(--orange); }
+        .eco-cmp td, .eco .eco-cmp th[scope="row"] { vertical-align: top; min-width: 7.5rem; }
+        .eco-board .eco-open-row td { padding-top: 0; padding-bottom: 0.2rem; }
+        .eco-board .eco-open-row details > summary { min-height: 32px; }
+        .eco-cmp td .num { display: block; }
+        .eco-cmp td small { display: block; color: #c4c4cc; font-size: 0.75rem; margin-top: 0.2rem; font-family: var(--font-sans); }
+        .eco-cmp th.internal, .eco-board th.internal { color: var(--orange); }
+        .mini { display: flex; height: 8px; margin-top: 0.3rem; background: #111113; border-radius: 2px; overflow: hidden; }
+        .mini-fill { display: block; height: 100%; background: #b9b9c2; flex: none; }
+        .mini-fill.internal { background: var(--orange); }
+        .eco-key {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+            gap: 0.75rem 1.5rem;
+            margin: 1rem 0 0;
+        }
+        .eco-key dt { color: var(--white); font-weight: 500; }
+        .eco-key dd { margin: 0.15rem 0 0; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; }
+        .eco-key > div:target dt { color: var(--orange); }
+        .eco-board .eco-open-row td { padding-top: 0; }
+        .eco-board details > summary { font-size: 0.9rem; color: #c4c4cc; }
+        .eco-board details > summary::before { content: "+ "; color: var(--orange); }
+        .eco-board details[open] > summary::before { content: "\2212 "; }
+        .eco .tag { display: inline-block; margin-left: 0.35rem; font-size: 0.7rem; font-family: var(--font-sans); color: #c4c4cc; border: 1px solid var(--rule); border-radius: 999px; padding: 0 0.4rem; }
+        .eco-measures { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0 1.5rem; }
+        .eco-pair th:first-child { white-space: normal; }
+        .eco-forms td:nth-child(2), .eco-forms td:nth-child(3) { white-space: nowrap; }
+        .eco-block.wide > p { max-width: 48rem; }
+        .eco .eco-dir { grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); }
+        @media (max-width: 768px) {
+            .eco .eco-jump { top: 64px; }
+            .eco-cmp thead { display: none; }
+            .eco-cmp, .eco-cmp tbody, .eco-cmp tr, .eco-cmp th, .eco-cmp td { display: block; width: auto; max-width: none; min-width: 0; box-shadow: none; position: static; }
+            .eco-cmp caption { display: block; }
+            .eco-cmp tr { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem 1rem; padding: 0.75rem 0.75rem; border-bottom: 1px solid var(--rule); }
+            .eco-cmp tr[hidden] { display: none; }
+            .eco-cmp th[scope="row"] { grid-column: 1 / -1; border: 0; padding: 0; font-size: 1rem; }
+            .eco-cmp td { border: 0; padding: 0; text-align: left; white-space: normal; }
+            .eco-cmp td[data-label]::before {
+                content: attr(data-label);
+                display: block;
+                color: #c4c4cc;
+                font-family: var(--font-sans);
+                font-size: 0.7rem;
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+            }
+            .eco-scroll { border-left: 0; border-right: 0; }
+            .eco-board .eco-open-row { padding-top: 0; border-bottom: 1px solid var(--rule); }
+            .eco-board tr:not(.eco-open-row) { border-bottom: 0; padding-bottom: 0; }
+            .eco-board tr[hidden] { display: none; }
+            .eco-board caption, .eco-cmp caption { display: block; width: auto; padding: 0.6rem 0.75rem; }
+            .eco-board tr, .eco .eco-board tr { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem 1rem; padding: 0.75rem; }
+            .eco-board th[scope="row"], .eco-board td.m-full { grid-column: 1 / -1; }
+            .eco-board .eco-open-row { padding: 0 0.75rem 0.5rem; }
+            .eco-cmp tr { grid-template-columns: 1fr 1fr 1fr; }
+            .eco .eco-dir { grid-template-columns: 1fr 1fr; }
+            .eco-pair th, .eco-pair td { padding: 0.45rem 0.5rem; }
+            .eco .eco-board th, .eco .eco-board td, .eco .eco-cmp th, .eco .eco-cmp td { max-width: none; min-width: 0; background: none; box-shadow: none; }
+            .eco-board td.m-full { order: 2; }
+            .eco-board td { font-size: 0.85rem; }
+            .eco-board .eco-open-row td { font-family: var(--font-sans); }
+            .eco .eco-board td { font-family: var(--font-sans); font-size: 0.9rem; line-height: 1.45; }
+            .eco .eco-board td[data-label]::before { display: inline; margin: 0 0.4rem 0 0; }
+            .eco .eco-board tr { gap: 0.25rem 1rem; padding: 0.6rem 0.75rem; }
+            .eco-forms tr { grid-template-columns: 1fr auto auto; }
+            .eco-forms th[scope="row"] { grid-column: auto; }
+            .eco .eco-forms td[data-label="Total"]::before, .eco .eco-forms td[data-label="Confidence"]::before, .eco .eco-forms td.m-full::before { content: none; }
+            .eco .eco-forms td[data-label="Confidence"]::after { content: " confidence"; color: #c4c4cc; }
+            .eco .eco-forms td.eco-dash[data-label="Confidence"]::after { content: none; }
+            .eco-layers-table tr { grid-template-columns: auto 1fr; }
+            #chart-inst .eco-board tr { grid-template-columns: 1fr; }
+            #chart-inst .eco-board td.m-full { order: 0; }
+            #chart-inst .eco-board tr:not(.eco-open-row) { padding-bottom: 0; }
+            .eco .eco-board .eco-open-row { padding: 0 0.75rem 0.35rem; }
+            .eco-board .eco-open-row td.eco-open { padding: 0; }
+            .eco-board details > summary { min-height: 40px; }
+        }
+        /* Governance and verification at a glance. */
+        .eco-why h3 { color: var(--white); font-size: 0.95rem; font-weight: 500; margin: 1.1rem 0 0.3rem; }
+        .eco-why h2 + h3 { margin-top: 0.6rem; }
+        .eco-frame { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 0.6rem 1.5rem; margin: 0.75rem 0 0; }
+        .eco-frame > div { border-left: 2px solid var(--rule); padding-left: 0.85rem; }
+        .eco-frame dt { color: var(--white); font-weight: 500; }
+        .eco-frame dd { margin: 0.15rem 0 0; color: var(--text); line-height: 1.5; max-width: 34rem; }
+        .eco-glance th, .eco-glance td { vertical-align: top; }
+        .eco-glance thead th { white-space: normal; text-align: left; vertical-align: bottom; }
+        .eco-glance th, .eco-glance td { padding: 0.55rem 0.5rem; }
+        .eco-glance td.st { text-align: left; font-family: var(--font-sans); font-size: 0.85rem; }
+        .eco-glance .st-mark { display: inline-block; width: 0.6rem; height: 0.6rem; margin-right: 0.4rem; border-radius: 50%; border: 1.5px solid currentColor; vertical-align: 0; }
+        .eco-glance .st-yes { color: var(--white); }
+        .eco-glance .st-yes .st-mark { background: currentColor; }
+        .eco-glance .st-partial .st-mark { background: linear-gradient(90deg, currentColor 50%, transparent 50%); }
+        .eco-glance .st-nf, .eco-glance .st-na { color: #c4c4cc; }
+        .eco-glance .st-na .st-mark { border-radius: 0; height: 0; border-width: 1px 0 0; width: 0.6rem; vertical-align: 0.2rem; }
+        .eco-glance td.gov { text-align: left; white-space: normal; min-width: 10rem; max-width: 13rem; font-family: var(--font-sans); }
+        .eco-glance td.gov small { display: block; color: #c4c4cc; font-size: 0.75rem; margin-top: 0.15rem; }
+        .eco-glance .gov-label.internal { color: var(--orange); }
+        .eco-glance th.internal { color: var(--orange); }
+        .eco-glance .eco-open-row td { padding-top: 0; padding-bottom: 0.2rem; text-align: left; white-space: normal; font-family: var(--font-sans); }
+        .eco-glance details > summary { cursor: pointer; min-height: 32px; display: flex; align-items: center; font-size: 0.9rem; color: #c4c4cc; list-style: none; }
+        .eco-glance details > summary::-webkit-details-marker { display: none; }
+        .eco-glance details > summary::before { content: "+ "; color: var(--orange); white-space: pre; }
+        .eco-glance details[open] > summary::before { content: "\2212 "; }
+        .eco-glance summary:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+        .eco-glance details ul { margin: 0.25rem 0 0; padding-left: 1.1rem; }
+        .eco-glance details li, .eco-glance details p { max-width: 60rem; font-size: 0.85rem; margin: 0.2rem 0 0; }
+        .eco-glance .eco-open-row td.eco-open { position: static; box-shadow: none; max-width: none; }
+        .eco-deps td { text-align: left; white-space: normal; font-family: var(--font-sans); font-size: 0.9rem; }
+        .eco-deps td[data-label="Vendored"] { min-width: 14rem; }
+        @media (max-width: 768px) {
+            .eco-glance thead { display: none; }
+            .eco-glance, .eco-glance tbody, .eco-glance tr, .eco-glance th, .eco-glance td { display: block; width: auto; max-width: none; min-width: 0; box-shadow: none; position: static; background: none; }
+            .eco-glance caption { display: block; width: auto; padding: 0.6rem 0.75rem; }
+            .eco-glance tr { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.35rem 0.75rem; padding: 0.75rem 0.75rem 0; }
+            .eco-glance tr[hidden] { display: none; }
+            .eco-glance th[scope="row"], .eco-glance td.gov, .eco-glance td.eco-open { grid-column: 1 / -1; }
+            .eco-deps td[data-label="Vendored"] { grid-column: 1 / -1; min-width: 0; }
+            .eco-glance th[scope="row"] { border: 0; padding: 0; font-size: 1rem; }
+            .eco .eco-glance td { border: 0; padding: 0; white-space: normal; min-width: 0; }
+            .eco .eco-glance th, .eco .eco-glance td, .eco .eco-glance td.gov { max-width: none; min-width: 0; background: none; box-shadow: none; position: static; }
+            .eco-glance td[data-label]::before { content: attr(data-label); display: block; color: #c4c4cc; font-family: var(--font-sans); font-size: 0.7rem; letter-spacing: 0.04em; text-transform: uppercase; }
+            .eco-glance .eco-open-row { padding: 0 0.75rem 0.5rem; border-bottom: 1px solid var(--rule); }
+        }
+        .eco-fold > summary {
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            column-gap: 0.75rem;
+            min-height: 44px;
+            padding: 0.2rem 0;
+        }
+        .eco-fold > summary::-webkit-details-marker { display: none; }
+        .eco-fold > summary::before {
+            content: "";
+            align-self: center;
+            width: 0.5rem;
+            height: 0.5rem;
+            border-right: 2px solid var(--orange);
+            border-bottom: 2px solid var(--orange);
+            transform: rotate(-45deg);
+        }
+        .eco-fold[open] > summary::before { transform: rotate(45deg); }
+        .eco-fold > summary h2 { display: inline; margin: 0; }
+        .eco-fold-hint { color: #c4c4cc; font-size: 0.9rem; }
+        .eco-fold > summary:hover h2 { color: var(--orange); }
+        .eco-fold > summary:focus-visible { outline: 2px solid var(--orange); outline-offset: 4px; border-radius: 4px; }
+        .eco-fold[open] > summary { margin-bottom: 0.5rem; }
     </style>
 </head>
 <body>
@@ -519,72 +723,162 @@
       </div>
     </nav>
 
-    <main class="eco" id="content">
+        <main class="eco" id="content">
         <header class="eco-head">
             <h1>Ecosystem</h1>
-            <p class="eco-lead" id="eco-lead">Three comparisons. Size and tests use one counter. Who lands the work uses each tree's own record.</p>
-            <p id="eco-status" role="status">Loading this week's file.</p>
-            <nav class="eco-jump" aria-label="On this page">
-                <a href="#size">Size</a>
-                <a href="#checkout">Checkout</a>
-                <a href="#files">Large files</a>
-                <a href="#tests">Tests</a>
-                <a href="#rules">Rules share</a>
-                <a href="#institution">Institution</a>
-                <a href="#forms">Forms</a>
-                <a href="#directory">Directory</a>
-            </nav>
+            <p class="eco-lead" id="eco-lead"><!--slot:lead-->Bitcoin node implementations: who governs each one, how far each has got in showing it follows Bitcoin's rules, and what its code looks like. Bitcoin Core is the reference.<!--/slot:lead--></p>
+            <p id="eco-status"><!--slot:status-->Measured 2026-11-12.<!--/slot:status--></p>
         </header>
+        <nav class="eco-jump" aria-label="On this page">
+            <a href="#why">Why</a>
+            <a href="#commons">Verification</a>
+            <a href="#stack">Stack</a>
+            <a href="#size">Size</a>
+            <a href="#checkout">Checkout</a>
+            <a href="#files">Large files</a>
+            <a href="#tests">Tests</a>
+            <a href="#rules">Rules share</a>
+            <a href="#institution">Institution</a>
+            <a href="#forms">Forms</a>
+            <a href="#directory">Directory</a>
+            <a href="#counts">Every count</a>
+        </nav>
 
-        <section class="eco-block" id="size">
-            <h2>Size</h2>
-            <p id="eco-size-caption">Program lines. Implementation minus tooling. The same counter on every tree.</p>
-            <div id="chart-size"></div>
+        <section class="eco-block wide eco-why" id="why" aria-labelledby="why-h">
+            <h2 id="why-h">Why the ecosystem matters</h2>
+            <h3>Bitcoin is a commons</h3>
+            <p>Anyone can run a node, transact, or mine. The code most of the network runs is a commons too: many depend on it and no one owns it. Elinor Ostrom found that commons last when their rules are visible, the people bound by the rules take part in changing them, those who decide answer to the people affected, and exit is real rather than theoretical. A commons without those properties runs down.</p>
+            <h3>One lineage runs the network</h3>
+            <p>On November 12, 2026, about 90% of reachable nodes advertised Bitcoin Core and about 9.5% advertised Bitcoin Knots (<a href="https://coin.dance/nodes">Coin Dance</a>, <a href="https://21btc.cc/nodes">Bitnodes via 21btc</a>). That Knots count is one user-agent family that mixes releases from before and after the split, and no crawler reports Knots Legacy, Bit-Block, or Bitcoin Roots on its own. Clients in the Knots line share about 95% of Core&rsquo;s code, so about 99% of reachable nodes ran one code lineage. A flaw travels with the lineage that carries it: the 2018 inflation bug hit Core and Knots alike. Moving to a Core-derived client changes policy, not the code underneath, so it shows demand for an alternative rather than diversity. The structural fix is several independent implementations, each proven to enforce the same rules, under different governance models.</p>
+            <h3>What this page measures</h3>
+            <p>An independent node only helps if it can show it enforces the same rules as everyone else. Without a written consensus spec, an alternative has to copy Core&rsquo;s behavior from Core, which keeps it tied to Core. The engineering answer is a stack: a spec to check against, then formal verification, fuzzing, differential testing against Core, and property tests. The table below tracks that stack, plus shared test vectors, for each implementation, next to who governs it. The sections after it count the code and read each project&rsquo;s written rules. Every reading is dated and redone periodically. Governance labels and the rules share are qualitative readings.</p>
+            <dl class="eco-frame">
+                <div><dt>commons</dt><dd>Every node implementation built for Bitcoin only and roughly compatible with the Bitcoin network, whether written from scratch or forked from Core. No altcoins. Its health is what this page measures.</dd></div>
+                <div><dt>Commons governance</dt><dd>Written rules for how node software changes, published by Bitcoin Commons following Ostrom&rsquo;s principles: signatures by repository layer, review periods, and a governance-node quorum. The rules are built into BLVM and can be forked or adopted by other projects. BLVM is the only implementation here that uses them, and enforcement is not on yet.</dd></div>
+            </dl>
+            <p class="eco-meta eco-follow">Further reading: the Bitcoin Commons <a href="whitepaper.html#2-problem-statement">white paper</a>, <a href="https://secsov.com/articles/who-governs-bitcoins-code/#bitcoin-s-code-is-a-commons-and-a-commons-without-rules-runs-down">Who Governs Bitcoin&rsquo;s Code</a>, <a href="https://secsov.com/articles/making-core-irrelevant/#iv-the-two-tracks-and-why-both-are-required">Making Core Irrelevant</a>, and <a href="https://secsov.com/articles/why-bitcoin-needs-a-specification/">Why Bitcoin Needs a Specification</a>.</p>
         </section>
 
-        <section class="eco-block" id="checkout">
-            <h2>Checkout</h2>
-            <p id="eco-comp-caption">Implementation, vendored libraries, and locale files. The same counter on every tree.</p>
-            <p class="chart-legend"><span><i class="swatch other"></i>implementation</span><span><i class="swatch internal"></i>commons implementation</span><span><i class="swatch vend"></i>vendored</span><span><i class="swatch loc"></i>locale</span></p>
-            <div id="chart-comp"></div>
+        <section class="eco-block wide" id="commons" aria-labelledby="commons-h">
+            <h2 id="commons-h">Governance and verification</h2>
+            <div class="eco-tools" id="eco-tools" hidden>
+                <p class="eco-tools-label" id="eco-show-label">Show</p>
+                <div class="eco-chips" role="group" aria-labelledby="eco-show-label" id="eco-chips"></div>
+            </div>
+            <div class="eco-scroll" tabindex="0" role="region" aria-label="Governance and verification table">
+                <table class="eco-glance" id="eco-glance">
+                    <caption><!--slot:glance-caption-->Governance labels as of 2026-11-12. Labels are read from the institution board and the commit and merge shares on this page. They are redone with each reading. Verification statuses as of 2026-11-12. Each row's sources open under it.<!--/slot:glance-caption--></caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Implementation</th>
+                            <th scope="col">Governance model</th>
+                            <th scope="col">Formal spec</th>
+                            <th scope="col">Test vectors</th>
+                            <th scope="col">Property tests</th>
+                            <th scope="col">Fuzzing</th>
+                            <th scope="col">Formal verification</th>
+                            <th scope="col">Differential vs Core</th>
+                        </tr>
+                    </thead>
+                    <tbody><!--slot:glance--><tr data-slug="blvm"><th scope="row" class="internal">BLVM</th><td class="gov m-full" data-label="Governance model"><span class="gov-label internal">Commons governance</span><small>Written rule. Enforcement is off (Phase 1).</small></td><td data-label="Formal spec" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Vectors" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Property" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Fuzzing" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Formal proofs" class="st st-partial"><span class="st-mark" aria-hidden="true"></span>partial</td><td data-label="Diff vs Core" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td></tr><tr data-slug="blvm" class="eco-open-row"><td class="eco-open m-full" colspan="8"><details><summary>Sources<span class="visually-hidden"> for BLVM</span></summary><ul><li><span class="eco-meta">Formal spec, yes.</span> The Orange Paper, with a Lean model of part of it. <a href="https://github.com/BTCDecoded/blvm-spec/blob/afc5b491282ce2da12e5c177745711bcd5c118a0/THE_ORANGE_PAPER.md">Source<span class="visually-hidden">: BLVM, Formal spec</span></a></li><li><span class="eco-meta">Test vectors, yes.</span> Core tx_valid, tx_invalid, sighash and script_tests JSON; script_tests runs as a subset. <a href="https://github.com/BTCDecoded/blvm-consensus/tree/f63c32856a2da874296524f40b8cbd35518d8096/tests/core_test_vectors">Source<span class="visually-hidden">: BLVM, Test vectors</span></a></li><li><span class="eco-meta">Property tests, yes.</span> proptest suites, including Orange Paper properties. <a href="https://github.com/BTCDecoded/blvm-consensus/blob/f63c32856a2da874296524f40b8cbd35518d8096/tests/orange_paper_property_tests.rs">Source<span class="visually-hidden">: BLVM, Property tests</span></a></li><li><span class="eco-meta">Fuzzing, yes.</span> 63 fuzz target files (cargo-fuzz). <a href="https://github.com/BTCDecoded/blvm-consensus/tree/f63c32856a2da874296524f40b8cbd35518d8096/fuzz/fuzz_targets">Source<span class="visually-hidden">: BLVM, Fuzzing</span></a></li><li><span class="eco-meta">Formal verification, partial.</span> Z3 proves 13 functions from the body. Of 274 Orange Paper sentences, 1 is proved in Rust and Lean, 16 in Lean only, 257 not yet. <a href="https://github.com/BTCDecoded/blvm-spec-lock/blob/bddfae4ac8063f78bf654d7a2245c810d89f98d1/README.md">Source<span class="visually-hidden">: BLVM, Formal verification</span></a></li><li><span class="eco-meta">Differential vs Core, yes.</span> Script verdicts against libbitcoinconsensus; block accept or reject against libbitcoinkernel in blvm-bench. No full-chain result is claimed here. <a href="https://github.com/BTCDecoded/blvm-bench/blob/3d5cd92371d497bb3ae7807a5f07cd4ca8c9b762/README_DIFFERENTIAL_TESTING.md">Source<span class="visually-hidden">: BLVM, Differential vs Core</span></a></li></ul><p class="eco-meta">BTCDecoded repositories at blvm-spec afc5b49, blvm-spec-lock bddfae4, blvm-consensus f63c328, blvm-bench 3d5cd92.</p></details></td></tr><tr data-slug="bitcoin-core"><th scope="row">Bitcoin Core</th><td class="gov m-full" data-label="Governance model"><span class="gov-label">Maintainer group with merge rights</span><small>Three people merged 82.2% since 2022.</small></td><td data-label="Formal spec" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Vectors" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Property" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Fuzzing" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Formal proofs" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Diff vs Core" class="st st-na"><span class="st-mark" aria-hidden="true"></span>n/a</td></tr><tr data-slug="bitcoin-core" class="eco-open-row"><td class="eco-open m-full" colspan="8"><details><summary>Sources<span class="visually-hidden"> for Bitcoin Core</span></summary><ul><li><span class="eco-meta">Test vectors, yes.</span> Source of the shared JSON vectors. <a href="https://github.com/bitcoin/bitcoin/tree/9183edd25e60aa410bc3e4728989a1d75c309a09/src/test/data">Source<span class="visually-hidden">: Bitcoin Core, Test vectors</span></a></li><li><span class="eco-meta">Fuzzing, yes.</span> Fuzz harnesses and fuzz CI jobs. <a href="https://github.com/bitcoin/bitcoin/tree/9183edd25e60aa410bc3e4728989a1d75c309a09/src/test/fuzz">Source<span class="visually-hidden">: Bitcoin Core, Fuzzing</span></a></li><li><span class="eco-meta">Differential vs Core, n/a.</span> The reference the others are tested against.</li></ul><p class="eco-meta">bitcoin/bitcoin at 9183edd25e.</p></details></td></tr><tr data-slug="knots-legacy"><th scope="row">Knots Legacy</th><td class="gov m-full" data-label="Governance model"><span class="gov-label">Single maintainer</span><small>One account, all 39 commits since its Knots base.</small></td><td data-label="Formal spec" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Vectors" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Property" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Fuzzing" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Formal proofs" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Diff vs Core" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td></tr><tr data-slug="knots-legacy" class="eco-open-row"><td class="eco-open m-full" colspan="8"><details><summary>Sources<span class="visually-hidden"> for Knots Legacy</span></summary><ul><li><span class="eco-meta">Test vectors, yes.</span> Core's JSON vectors, carried in the tree. <a href="https://github.com/DimiH2025/KnotsLegacy/tree/7936c49b6739640eb71e55eb2b5f720179b9c3b4/src/test/data">Source<span class="visually-hidden">: Knots Legacy, Test vectors</span></a></li><li><span class="eco-meta">Fuzzing, yes.</span> Core's fuzz harnesses, carried in the tree. <a href="https://github.com/DimiH2025/KnotsLegacy/tree/7936c49b6739640eb71e55eb2b5f720179b9c3b4/src/test/fuzz">Source<span class="visually-hidden">: Knots Legacy, Fuzzing</span></a></li></ul><p class="eco-meta">DimiH2025/KnotsLegacy (tag V29.3.0.20260920) at 7936c49b67.</p></details></td></tr><tr data-slug="bit-block"><th scope="row">Bit-Block</th><td class="gov m-full" data-label="Governance model"><span class="gov-label">Single maintainer</span><small>One account, 121 of 146 commits.</small></td><td data-label="Formal spec" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Vectors" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Property" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Fuzzing" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Formal proofs" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Diff vs Core" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td></tr><tr data-slug="bit-block" class="eco-open-row"><td class="eco-open m-full" colspan="8"><details><summary>Sources<span class="visually-hidden"> for Bit-Block</span></summary><ul><li><span class="eco-meta">Test vectors, yes.</span> Core's JSON vectors, carried in the tree. <a href="https://github.com/DimiH2025/Bit-Block/tree/c52f1161349e6a76463156fea39bce191951b915/src/test/data">Source<span class="visually-hidden">: Bit-Block, Test vectors</span></a></li><li><span class="eco-meta">Fuzzing, yes.</span> Core's fuzz harnesses, carried in the tree. <a href="https://github.com/DimiH2025/Bit-Block/tree/c52f1161349e6a76463156fea39bce191951b915/src/test/fuzz">Source<span class="visually-hidden">: Bit-Block, Fuzzing</span></a></li></ul><p class="eco-meta">DimiH2025/Bit-Block (tag V3.1) at c52f116134.</p></details></td></tr><tr data-slug="bitcoin-roots"><th scope="row">Bitcoin Roots</th><td class="gov m-full" data-label="Governance model"><span class="gov-label">Foundation, one signing key</span><small>Plan B Foundation. Every new commit is signed with one key.</small></td><td data-label="Formal spec" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Vectors" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Property" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Fuzzing" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Formal proofs" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Diff vs Core" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td></tr><tr data-slug="bitcoin-roots" class="eco-open-row"><td class="eco-open m-full" colspan="8"><details><summary>Sources<span class="visually-hidden"> for Bitcoin Roots</span></summary><ul><li><span class="eco-meta">Test vectors, yes.</span> Core's JSON vectors, carried in the tree. <a href="https://github.com/LuganoPlanB/bitcoin-roots/tree/f0393f2688656ba544b40fe508db909152201c18/src/test/data">Source<span class="visually-hidden">: Bitcoin Roots, Test vectors</span></a></li><li><span class="eco-meta">Fuzzing, yes.</span> Core's fuzz harnesses, carried in the tree. <a href="https://github.com/LuganoPlanB/bitcoin-roots/tree/f0393f2688656ba544b40fe508db909152201c18/src/test/fuzz">Source<span class="visually-hidden">: Bitcoin Roots, Fuzzing</span></a></li></ul><p class="eco-meta">LuganoPlanB/bitcoin-roots (release v32.1-roots.1, untagged) at f0393f2688.</p></details></td></tr><tr data-slug="bitcoin-rs"><th scope="row">bitcoin-rs</th><td class="gov m-full" data-label="Governance model"><span class="gov-label">Single maintainer</span><small>One account, 75.3% of commits on dev.</small></td><td data-label="Formal spec" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Vectors" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Property" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Fuzzing" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Formal proofs" class="st st-partial"><span class="st-mark" aria-hidden="true"></span>partial</td><td data-label="Diff vs Core" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td></tr><tr data-slug="bitcoin-rs" class="eco-open-row"><td class="eco-open m-full" colspan="8"><details><summary>Sources<span class="visually-hidden"> for bitcoin-rs</span></summary><ul><li><span class="eco-meta">Test vectors, yes.</span> Core script, tx and sighash JSON, plus BIP143 and BIP341 vectors. <a href="https://github.com/gosuda/bitcoin-rs/tree/60b33f6be7c55eb27e6892cdb7770687a8e40276/crates/consensus/tests/vectors">Source<span class="visually-hidden">: bitcoin-rs, Test vectors</span></a></li><li><span class="eco-meta">Property tests, yes.</span> proptest across crates, including script. <a href="https://github.com/gosuda/bitcoin-rs/blob/60b33f6be7c55eb27e6892cdb7770687a8e40276/crates/consensus/tests/script_proptest.rs">Source<span class="visually-hidden">: bitcoin-rs, Property tests</span></a></li><li><span class="eco-meta">Fuzzing, yes.</span> cargo-fuzz targets and a daily fuzz workflow. <a href="https://github.com/gosuda/bitcoin-rs/tree/60b33f6be7c55eb27e6892cdb7770687a8e40276/fuzz">Source<span class="visually-hidden">: bitcoin-rs, Fuzzing</span></a></li><li><span class="eco-meta">Formal verification, partial.</span> Kani proofs on primitives including script and sighash; TLA+ models of components. CI runners do not run Kani. <a href="https://github.com/gosuda/bitcoin-rs/blob/60b33f6be7c55eb27e6892cdb7770687a8e40276/docs/contracts/formal-verification.md">Source<span class="visually-hidden">: bitcoin-rs, Formal verification</span></a></li><li><span class="eco-meta">Differential vs Core, yes.</span> Vector, boundary and block parity tests against libbitcoinkernel. <a href="https://github.com/gosuda/bitcoin-rs/blob/60b33f6be7c55eb27e6892cdb7770687a8e40276/crates/consensus/tests/kernel_block_parity.rs">Source<span class="visually-hidden">: bitcoin-rs, Differential vs Core</span></a></li></ul><p class="eco-meta">gosuda/bitcoin-rs (dev) at 60b33f6be7.</p></details></td></tr><tr data-slug="satd"><th scope="row">satd</th><td class="gov m-full" data-label="Governance model"><span class="gov-label">Single maintainer</span><small>One account, 97.2% of commits.</small></td><td data-label="Formal spec" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Vectors" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Property" class="st st-partial"><span class="st-mark" aria-hidden="true"></span>partial</td><td data-label="Fuzzing" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Formal proofs" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Diff vs Core" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td></tr><tr data-slug="satd" class="eco-open-row"><td class="eco-open m-full" colspan="8"><details><summary>Sources<span class="visually-hidden"> for satd</span></summary><ul><li><span class="eco-meta">Test vectors, yes.</span> Core script, tx and sighash JSON, BIP341 vectors and a script-assets subset. <a href="https://github.com/epochbtc/satd/tree/d2dc5cf78c086db7d8de555050ae52539cd82d5a/consensus/test-data">Source<span class="visually-hidden">: satd, Test vectors</span></a></li><li><span class="eco-meta">Property tests, partial.</span> proptest in the node and policy crates; none found in the consensus crate. <a href="https://github.com/epochbtc/satd/blob/d2dc5cf78c086db7d8de555050ae52539cd82d5a/satd-policy/Cargo.toml">Source<span class="visually-hidden">: satd, Property tests</span></a></li><li><span class="eco-meta">Fuzzing, yes.</span> cargo-fuzz targets and a nightly fuzz workflow. <a href="https://github.com/epochbtc/satd/tree/d2dc5cf78c086db7d8de555050ae52539cd82d5a/fuzz">Source<span class="visually-hidden">: satd, Fuzzing</span></a></li><li><span class="eco-meta">Differential vs Core, yes.</span> Script shadow validation against libbitcoinkernel and a block differential fuzz workflow. <a href="https://github.com/epochbtc/satd/blob/d2dc5cf78c086db7d8de555050ae52539cd82d5a/.github/workflows/core_block_differential_fuzz.yml">Source<span class="visually-hidden">: satd, Differential vs Core</span></a></li></ul><p class="eco-meta">epochbtc/satd at d2dc5cf78c.</p></details></td></tr><tr data-slug="libbitcoin"><th scope="row">libbitcoin</th><td class="gov m-full" data-label="Governance model"><span class="gov-label">Single maintainer</span><small>One maintainer, 77.7% of commits.</small></td><td data-label="Formal spec" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Vectors" class="st st-partial"><span class="st-mark" aria-hidden="true"></span>partial</td><td data-label="Property" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Fuzzing" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Formal proofs" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Diff vs Core" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td></tr><tr data-slug="libbitcoin" class="eco-open-row"><td class="eco-open m-full" colspan="8"><details><summary>Sources<span class="visually-hidden"> for libbitcoin</span></summary><ul><li><span class="eco-meta">Test vectors, partial.</span> In-tree script test lists by BIP; Core's JSON files not found. <a href="https://github.com/libbitcoin/libbitcoin-system/blob/b243223933c6cdb38eb59e32d6110f60743aa9c8/test/chain/script.hpp">Source<span class="visually-hidden">: libbitcoin, Test vectors</span></a></li></ul><p class="eco-meta">libbitcoin/libbitcoin-system at b243223933.</p></details></td></tr><tr data-slug="hornet"><th scope="row">Hornet</th><td class="gov m-full" data-label="Governance model"><span class="gov-label">Single maintainer</span><small>One author, every commit.</small></td><td data-label="Formal spec" class="st st-partial"><span class="st-mark" aria-hidden="true"></span>partial</td><td data-label="Vectors" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Property" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Fuzzing" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Formal proofs" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Diff vs Core" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td></tr><tr data-slug="hornet" class="eco-open-row"><td class="eco-open m-full" colspan="8"><details><summary>Sources<span class="visually-hidden"> for Hornet</span></summary><ul><li><span class="eco-meta">Formal spec, partial.</span> Executable declarative spec of block validation rules, in C++ and a DSL. <a href="https://github.com/tobysharp/hornet/blob/151462fa5ceece39c159674886dcfa6cfe9b1234/docs/spec.md">Source<span class="visually-hidden">: Hornet, Formal spec</span></a></li></ul><p class="eco-meta">tobysharp/hornet at 151462fa5c.</p></details></td></tr><tr data-slug="floresta"><th scope="row">Floresta</th><td class="gov m-full" data-label="Governance model"><span class="gov-label">Not classified</span><small>Largest share under half. No rule file read.</small></td><td data-label="Formal spec" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Vectors" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Property" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Fuzzing" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Formal proofs" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Diff vs Core" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td></tr><tr data-slug="floresta" class="eco-open-row"><td class="eco-open m-full" colspan="8"><details><summary>Sources<span class="visually-hidden"> for Floresta</span></summary><ul><li><span class="eco-meta">Test vectors, yes.</span> Core script, tx and sighash JSON and BIP341 vectors. <a href="https://github.com/getfloresta/Floresta/tree/cdbcf5a13cba2b0aab505977ba413f707bc06290/crates/floresta-chain/testdata/bitcoin-core/data">Source<span class="visually-hidden">: Floresta, Test vectors</span></a></li><li><span class="eco-meta">Fuzzing, yes.</span> cargo-fuzz targets and a fuzz workflow. <a href="https://github.com/getfloresta/Floresta/tree/cdbcf5a13cba2b0aab505977ba413f707bc06290/fuzz">Source<span class="visually-hidden">: Floresta, Fuzzing</span></a></li><li><span class="eco-meta">Differential vs Core, not found.</span> Validates with libbitcoinkernel, Core's engine. <a href="https://github.com/getfloresta/Floresta/blob/cdbcf5a13cba2b0aab505977ba413f707bc06290/README.md">Source<span class="visually-hidden">: Floresta, Differential vs Core</span></a></li></ul><p class="eco-meta">getfloresta/Floresta at cdbcf5a13c.</p></details></td></tr><tr data-slug="rbitcoin"><th scope="row">rbitcoin</th><td class="gov m-full" data-label="Governance model"><span class="gov-label">Not classified</span><small>Largest share under half. No rule file read.</small></td><td data-label="Formal spec" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Vectors" class="st st-partial"><span class="st-mark" aria-hidden="true"></span>partial</td><td data-label="Property" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Fuzzing" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Formal proofs" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Diff vs Core" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td></tr><tr data-slug="rbitcoin" class="eco-open-row"><td class="eco-open m-full" colspan="8"><details><summary>Sources<span class="visually-hidden"> for rbitcoin</span></summary><ul><li><span class="eco-meta">Test vectors, partial.</span> Core script_tests JSON; tx and sighash JSON not found. <a href="https://github.com/reardencode/rbitcoin/blob/ca7bf804ed44d7efdca3da219ead6e644d35fd9e/crates/rbitcoin-consensus/tests/fixtures/script_corpus/script_tests.json">Source<span class="visually-hidden">: rbitcoin, Test vectors</span></a></li><li><span class="eco-meta">Fuzzing, yes.</span> cargo-fuzz targets and a fuzz workflow. <a href="https://github.com/reardencode/rbitcoin/tree/ca7bf804ed44d7efdca3da219ead6e644d35fd9e/fuzz/fuzz_targets">Source<span class="visually-hidden">: rbitcoin, Fuzzing</span></a></li><li><span class="eco-meta">Differential vs Core, yes.</span> Script and block differential fuzz targets against libbitcoinconsensus and a Core oracle. <a href="https://github.com/reardencode/rbitcoin/blob/ca7bf804ed44d7efdca3da219ead6e644d35fd9e/fuzz/fuzz_targets/script_verify_differential.rs">Source<span class="visually-hidden">: rbitcoin, Differential vs Core</span></a></li></ul><p class="eco-meta">reardencode/rbitcoin at ca7bf804ed.</p></details></td></tr><tr data-slug="btcd"><th scope="row">btcd</th><td class="gov m-full" data-label="Governance model"><span class="gov-label">Not classified</span><small>Largest share under half. No rule file read.</small></td><td data-label="Formal spec" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Vectors" class="st st-yes"><span class="st-mark" aria-hidden="true"></span>yes</td><td data-label="Property" class="st st-partial"><span class="st-mark" aria-hidden="true"></span>partial</td><td data-label="Fuzzing" class="st st-partial"><span class="st-mark" aria-hidden="true"></span>partial</td><td data-label="Formal proofs" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td><td data-label="Diff vs Core" class="st st-nf"><span class="st-mark" aria-hidden="true"></span>not found</td></tr><tr data-slug="btcd" class="eco-open-row"><td class="eco-open m-full" colspan="8"><details><summary>Sources<span class="visually-hidden"> for btcd</span></summary><ul><li><span class="eco-meta">Test vectors, yes.</span> Core script, tx and sighash JSON. <a href="https://github.com/btcsuite/btcd/tree/dd169fe0c32a56087d28b92fff3b8cf4fb43477a/txscript/data">Source<span class="visually-hidden">: btcd, Test vectors</span></a></li><li><span class="eco-meta">Property tests, partial.</span> testing/quick in two test files (taproot, schnorr). <a href="https://github.com/btcsuite/btcd/blob/dd169fe0c32a56087d28b92fff3b8cf4fb43477a/txscript/taproot_test.go">Source<span class="visually-hidden">: btcd, Property tests</span></a></li><li><span class="eco-meta">Fuzzing, partial.</span> Go fuzz tests in wire and btcec only. <a href="https://github.com/btcsuite/btcd/blob/dd169fe0c32a56087d28b92fff3b8cf4fb43477a/wire/fuzz_test.go">Source<span class="visually-hidden">: btcd, Fuzzing</span></a></li></ul><p class="eco-meta">btcsuite/btcd at dd169fe0c3.</p></details></td></tr><!--/slot:glance--></tbody>
+                </table>
+            </div>
+            <p class="eco-meta eco-follow" id="eco-verify-note"><!--slot:verify-note-->Statuses come from each project's public repository as of 2026-11-12. “Not found” means no public source turned up; it does not mean the project lacks it.<!--/slot:verify-note--></p>
+            <details class="eco-more">
+                <summary>What each column and status means</summary>
+                <dl class="eco-key" id="eco-verify-key"><!--slot:verify-key--><div><dt>Formal spec</dt><dd>A written, formal consensus specification separate from the code.</dd></div><div><dt>Test vectors</dt><dd>Conformance against shared test vectors, such as Bitcoin Core's JSON vectors.</dd></div><div><dt>Property tests</dt><dd>Property-based tests (proptest, quickcheck and similar).</dd></div><div><dt>Fuzzing</dt><dd>Fuzz targets in the tree.</dd></div><div><dt>Formal verification</dt><dd>Machine-checked proofs or model checking of code.</dd></div><div><dt>Differential vs Core</dt><dd>Tests that compare verdicts with Bitcoin Core or its libraries.</dd></div><div><dt>yes</dt><dd>Found in the repository.</dd></div><div><dt>partial</dt><dd>Found for part of the scope.</dd></div><div><dt>not found</dt><dd>No public source found.</dd></div><div><dt>n/a</dt><dd>Does not apply.</dd></div><!--/slot:verify-key--></dl>
+            </details>
         </section>
 
-        <section class="eco-block" id="files">
-            <h2>Large files</h2>
-            <p id="eco-files-caption">Share of program lines that sit in files of 1,000 lines or more.</p>
-            <div id="chart-files"></div>
+        <section class="eco-block wide eco-foldable" id="stack" aria-labelledby="stack-h">
+            <details class="eco-fold">
+            <summary><h2 id="stack-h">Stack and dependencies</h2><span class="eco-fold-hint">License, languages, dependencies, vendored code</span></summary>
+            <p class="eco-meta">Direct deps: direct third-party libraries of a default node build, excluding build tools, test and dev dependencies, off-by-default extras and the project&rsquo;s own crates. Vendored source is counted separately. No transitive counts.</p>
+            <div class="eco-scroll" tabindex="0" role="region" aria-label="Stack and dependencies table">
+                <table class="eco-glance eco-deps" id="eco-deps">
+                    <caption>License, languages, direct dependencies, and vendored code at each pinned commit. Each row's sources open under it.</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Implementation</th>
+                            <th scope="col">License</th>
+                            <th scope="col">Languages</th>
+                            <th scope="col">Direct deps</th>
+                            <th scope="col">Vendored</th>
+                        </tr>
+                    </thead>
+                    <tbody><!--slot:stack--><tr data-slug="blvm"><th scope="row" class="internal">BLVM</th><td data-label="License">MIT</td><td data-label="Languages">Rust</td><td data-label="Direct deps">62</td><td class="m-full" data-label="Vendored">None found</td></tr><tr data-slug="blvm" class="eco-open-row"><td class="eco-open m-full" colspan="5"><details><summary>Sources<span class="visually-hidden"> for BLVM stack</span></summary><ul><li><span class="eco-meta">License.</span> MIT. <a href="https://github.com/BTCDecoded/blvm-node/blob/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/LICENSE">Source<span class="visually-hidden">: BLVM, license</span></a></li><li><span class="eco-meta">Languages.</span> Rust. <a href="https://github.com/BTCDecoded/blvm-node/tree/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/">Source<span class="visually-hidden">: BLVM, languages</span></a></li><li><span class="eco-meta">Direct dependencies, 62.</span> Third-party crates of blvm-node and the published BLVM crates it uses; resolved 2026-11-12, no Cargo.lock. <a href="https://github.com/BTCDecoded/blvm-node/blob/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/Cargo.toml">Source<span class="visually-hidden">: BLVM, dependencies</span></a></li><li><span class="eco-meta">Vendored.</span> None found.</li></ul><p class="eco-meta">BTCDecoded/blvm-node at 36bb40c7e9.</p></details></td></tr><tr data-slug="bitcoin-core"><th scope="row">Bitcoin Core</th><td data-label="License">MIT</td><td data-label="Languages">C++, Python, C</td><td data-label="Direct deps">2</td><td class="m-full" data-label="Vendored">6 subtrees, about 111,000 lines</td></tr><tr data-slug="bitcoin-core" class="eco-open-row"><td class="eco-open m-full" colspan="5"><details><summary>Sources<span class="visually-hidden"> for Bitcoin Core stack</span></summary><ul><li><span class="eco-meta">License.</span> MIT. <a href="https://github.com/bitcoin/bitcoin/blob/f0de87f040621468b956f01f526a43a010310501/COPYING">Source<span class="visually-hidden">: Bitcoin Core, license</span></a></li><li><span class="eco-meta">Languages.</span> C++, Python, C. <a href="https://github.com/bitcoin/bitcoin/tree/f0de87f040621468b956f01f526a43a010310501/">Source<span class="visually-hidden">: Bitcoin Core, languages</span></a></li><li><span class="eco-meta">Direct dependencies, 2.</span> Boost, SQLite. Cap'n Proto links only into the multiprocess binaries, not the default bitcoind. <a href="https://github.com/bitcoin/bitcoin/blob/f0de87f040621468b956f01f526a43a010310501/depends/packages/packages.mk">Source<span class="visually-hidden">: Bitcoin Core, dependencies</span></a></li><li><span class="eco-meta">Vendored.</span> 6 subtrees, about 111,000 lines. <a href="https://github.com/bitcoin/bitcoin/tree/f0de87f040621468b956f01f526a43a010310501/src">Source<span class="visually-hidden">: Bitcoin Core, vendored code</span></a></li></ul><p class="eco-meta">bitcoin/bitcoin at f0de87f040.</p></details></td></tr><tr data-slug="knots-legacy"><th scope="row">Knots Legacy</th><td data-label="License">MIT</td><td data-label="Languages">C++, Python, C</td><td data-label="Direct deps">3</td><td class="m-full" data-label="Vendored">5 subtrees, about 82,000 lines</td></tr><tr data-slug="knots-legacy" class="eco-open-row"><td class="eco-open m-full" colspan="5"><details><summary>Sources<span class="visually-hidden"> for Knots Legacy stack</span></summary><ul><li><span class="eco-meta">License.</span> MIT. <a href="https://github.com/DimiH2025/KnotsLegacy/blob/7936c49b6739640eb71e55eb2b5f720179b9c3b4/COPYING">Source<span class="visually-hidden">: Knots Legacy, license</span></a></li><li><span class="eco-meta">Languages.</span> C++, Python, C. <a href="https://github.com/DimiH2025/KnotsLegacy/tree/7936c49b6739640eb71e55eb2b5f720179b9c3b4/">Source<span class="visually-hidden">: Knots Legacy, languages</span></a></li><li><span class="eco-meta">Direct dependencies, 3.</span> Boost, libevent, SQLite. <a href="https://github.com/DimiH2025/KnotsLegacy/blob/7936c49b6739640eb71e55eb2b5f720179b9c3b4/CMakeLists.txt">Source<span class="visually-hidden">: Knots Legacy, dependencies</span></a></li><li><span class="eco-meta">Vendored.</span> 5 subtrees, about 82,000 lines. <a href="https://github.com/DimiH2025/KnotsLegacy/tree/7936c49b6739640eb71e55eb2b5f720179b9c3b4/src">Source<span class="visually-hidden">: Knots Legacy, vendored code</span></a></li></ul><p class="eco-meta">DimiH2025/KnotsLegacy at 7936c49b67.</p></details></td></tr><tr data-slug="bit-block"><th scope="row">Bit-Block</th><td data-label="License">MIT</td><td data-label="Languages">C++, Python, C</td><td data-label="Direct deps">3</td><td class="m-full" data-label="Vendored">5 subtrees, about 85,000 lines</td></tr><tr data-slug="bit-block" class="eco-open-row"><td class="eco-open m-full" colspan="5"><details><summary>Sources<span class="visually-hidden"> for Bit-Block stack</span></summary><ul><li><span class="eco-meta">License.</span> MIT. <a href="https://github.com/DimiH2025/Bit-Block/blob/c52f1161349e6a76463156fea39bce191951b915/COPYING">Source<span class="visually-hidden">: Bit-Block, license</span></a></li><li><span class="eco-meta">Languages.</span> C++, Python, C. <a href="https://github.com/DimiH2025/Bit-Block/tree/c52f1161349e6a76463156fea39bce191951b915/">Source<span class="visually-hidden">: Bit-Block, languages</span></a></li><li><span class="eco-meta">Direct dependencies, 3.</span> Boost, libevent, SQLite. <a href="https://github.com/DimiH2025/Bit-Block/blob/c52f1161349e6a76463156fea39bce191951b915/CMakeLists.txt">Source<span class="visually-hidden">: Bit-Block, dependencies</span></a></li><li><span class="eco-meta">Vendored.</span> 5 subtrees, about 85,000 lines. <a href="https://github.com/DimiH2025/Bit-Block/tree/c52f1161349e6a76463156fea39bce191951b915/src">Source<span class="visually-hidden">: Bit-Block, vendored code</span></a></li></ul><p class="eco-meta">DimiH2025/Bit-Block at c52f116134.</p></details></td></tr><tr data-slug="bitcoin-roots"><th scope="row">Bitcoin Roots</th><td data-label="License">MIT</td><td data-label="Languages">C++, Python, C</td><td data-label="Direct deps">2</td><td class="m-full" data-label="Vendored">6 subtrees, about 111,000 lines</td></tr><tr data-slug="bitcoin-roots" class="eco-open-row"><td class="eco-open m-full" colspan="5"><details><summary>Sources<span class="visually-hidden"> for Bitcoin Roots stack</span></summary><ul><li><span class="eco-meta">License.</span> MIT. <a href="https://github.com/LuganoPlanB/bitcoin-roots/blob/f0393f2688656ba544b40fe508db909152201c18/COPYING">Source<span class="visually-hidden">: Bitcoin Roots, license</span></a></li><li><span class="eco-meta">Languages.</span> C++, Python, C. <a href="https://github.com/LuganoPlanB/bitcoin-roots/tree/f0393f2688656ba544b40fe508db909152201c18/">Source<span class="visually-hidden">: Bitcoin Roots, languages</span></a></li><li><span class="eco-meta">Direct dependencies, 2.</span> Boost, SQLite. Cap'n Proto links only into the multiprocess binaries, not the default bitcoind. <a href="https://github.com/LuganoPlanB/bitcoin-roots/blob/f0393f2688656ba544b40fe508db909152201c18/CMakeLists.txt">Source<span class="visually-hidden">: Bitcoin Roots, dependencies</span></a></li><li><span class="eco-meta">Vendored.</span> 6 subtrees, about 111,000 lines. <a href="https://github.com/LuganoPlanB/bitcoin-roots/tree/f0393f2688656ba544b40fe508db909152201c18/src">Source<span class="visually-hidden">: Bitcoin Roots, vendored code</span></a></li></ul><p class="eco-meta">LuganoPlanB/bitcoin-roots at f0393f2688.</p></details></td></tr><tr data-slug="bitcoin-rs"><th scope="row">bitcoin-rs</th><td data-label="License">Apache-2.0</td><td data-label="Languages">Rust</td><td data-label="Direct deps">46</td><td class="m-full" data-label="Vendored">None found</td></tr><tr data-slug="bitcoin-rs" class="eco-open-row"><td class="eco-open m-full" colspan="5"><details><summary>Sources<span class="visually-hidden"> for bitcoin-rs stack</span></summary><ul><li><span class="eco-meta">License.</span> Apache-2.0. <a href="https://github.com/gosuda/bitcoin-rs/blob/9b8e91ae1aadfaad08e7fccbfa895bcbf41c6620/LICENSE">Source<span class="visually-hidden">: bitcoin-rs, license</span></a></li><li><span class="eco-meta">Languages.</span> Rust. <a href="https://github.com/gosuda/bitcoin-rs/tree/9b8e91ae1aadfaad08e7fccbfa895bcbf41c6620/">Source<span class="visually-hidden">: bitcoin-rs, languages</span></a></li><li><span class="eco-meta">Direct dependencies, 46.</span> Third-party crates of the bitcoin-rs binary and its workspace crates. <a href="https://github.com/gosuda/bitcoin-rs/blob/9b8e91ae1aadfaad08e7fccbfa895bcbf41c6620/Cargo.lock">Source<span class="visually-hidden">: bitcoin-rs, dependencies</span></a></li><li><span class="eco-meta">Vendored.</span> None found.</li></ul><p class="eco-meta">gosuda/bitcoin-rs at 9b8e91ae1a.</p></details></td></tr><tr data-slug="satd"><th scope="row">satd</th><td data-label="License">MIT</td><td data-label="Languages">Rust, Go</td><td data-label="Direct deps">65</td><td class="m-full" data-label="Vendored">None found</td></tr><tr data-slug="satd" class="eco-open-row"><td class="eco-open m-full" colspan="5"><details><summary>Sources<span class="visually-hidden"> for satd stack</span></summary><ul><li><span class="eco-meta">License.</span> MIT. <a href="https://github.com/epochbtc/satd/blob/f0ea0e5dfa8446d9cb63fef0a22eaf5f976216ce/LICENSE">Source<span class="visually-hidden">: satd, license</span></a></li><li><span class="eco-meta">Languages.</span> Rust, Go. <a href="https://github.com/epochbtc/satd/tree/f0ea0e5dfa8446d9cb63fef0a22eaf5f976216ce/">Source<span class="visually-hidden">: satd, languages</span></a></li><li><span class="eco-meta">Direct dependencies, 65.</span> Third-party crates of the satd binary and its workspace crates. <a href="https://github.com/epochbtc/satd/blob/f0ea0e5dfa8446d9cb63fef0a22eaf5f976216ce/Cargo.lock">Source<span class="visually-hidden">: satd, dependencies</span></a></li><li><span class="eco-meta">Vendored.</span> None found.</li></ul><p class="eco-meta">epochbtc/satd at f0ea0e5dfa.</p></details></td></tr><tr data-slug="libbitcoin"><th scope="row">libbitcoin</th><td data-label="License">AGPL-3.0-or-later</td><td data-label="Languages">C++</td><td data-label="Direct deps">0</td><td class="m-full" data-label="Vendored">None found</td></tr><tr data-slug="libbitcoin" class="eco-open-row"><td class="eco-open m-full" colspan="5"><details><summary>Sources<span class="visually-hidden"> for libbitcoin stack</span></summary><ul><li><span class="eco-meta">License.</span> AGPL-3.0-or-later. <a href="https://github.com/libbitcoin/libbitcoin-system/blob/9f9cce3086074840951cedf1d381f08112275bfd/COPYING">Source<span class="visually-hidden">: libbitcoin, license</span></a></li><li><span class="eco-meta">Languages.</span> C++. <a href="https://github.com/libbitcoin/libbitcoin-system/tree/9f9cce3086074840951cedf1d381f08112275bfd/">Source<span class="visually-hidden">: libbitcoin, languages</span></a></li><li><span class="eco-meta">Direct dependencies, 0.</span> None. Its secp256k1 code is its own, in src/crypto/secp256k1. <a href="https://github.com/libbitcoin/libbitcoin-system/tree/9f9cce3086074840951cedf1d381f08112275bfd/src/crypto/secp256k1">Source<span class="visually-hidden">: libbitcoin, dependencies</span></a></li><li><span class="eco-meta">Vendored.</span> None found.</li></ul><p class="eco-meta">libbitcoin/libbitcoin-system at 9f9cce3086.</p></details></td></tr><tr data-slug="hornet"><th scope="row">Hornet</th><td data-label="License">MIT</td><td data-label="Languages">C++, Python</td><td data-label="Direct deps">1</td><td class="m-full" data-label="Vendored">None in the tree. googletest and benchmark are git submodules for tests</td></tr><tr data-slug="hornet" class="eco-open-row"><td class="eco-open m-full" colspan="5"><details><summary>Sources<span class="visually-hidden"> for Hornet stack</span></summary><ul><li><span class="eco-meta">License.</span> MIT. <a href="https://github.com/tobysharp/hornet/blob/151462fa5ceece39c159674886dcfa6cfe9b1234/LICENSE">Source<span class="visually-hidden">: Hornet, license</span></a></li><li><span class="eco-meta">Languages.</span> C++, Python. <a href="https://github.com/tobysharp/hornet/tree/151462fa5ceece39c159674886dcfa6cfe9b1234/">Source<span class="visually-hidden">: Hornet, languages</span></a></li><li><span class="eco-meta">Direct dependencies, 1.</span> liburing. <a href="https://github.com/tobysharp/hornet/blob/151462fa5ceece39c159674886dcfa6cfe9b1234/CMakeLists.txt">Source<span class="visually-hidden">: Hornet, dependencies</span></a></li><li><span class="eco-meta">Vendored.</span> None in the tree. googletest and benchmark are git submodules for tests. <a href="https://github.com/tobysharp/hornet/tree/151462fa5ceece39c159674886dcfa6cfe9b1234/extern">Source<span class="visually-hidden">: Hornet, vendored code</span></a></li></ul><p class="eco-meta">tobysharp/hornet at 151462fa5c.</p></details></td></tr><tr data-slug="floresta"><th scope="row">Floresta</th><td data-label="License">MIT OR Apache-2.0</td><td data-label="Languages">Rust, Python</td><td data-label="Direct deps">38</td><td class="m-full" data-label="Vendored">None found</td></tr><tr data-slug="floresta" class="eco-open-row"><td class="eco-open m-full" colspan="5"><details><summary>Sources<span class="visually-hidden"> for Floresta stack</span></summary><ul><li><span class="eco-meta">License.</span> MIT OR Apache-2.0. <a href="https://github.com/getfloresta/Floresta/blob/cdbcf5a13cba2b0aab505977ba413f707bc06290/LICENSE.md">Source<span class="visually-hidden">: Floresta, license</span></a></li><li><span class="eco-meta">Languages.</span> Rust, Python. <a href="https://github.com/getfloresta/Floresta/tree/cdbcf5a13cba2b0aab505977ba413f707bc06290/">Source<span class="visually-hidden">: Floresta, languages</span></a></li><li><span class="eco-meta">Direct dependencies, 38.</span> Third-party crates of florestad and its workspace crates, including proc-macro2, quote and syn through floresta-proc-macro. <a href="https://github.com/getfloresta/Floresta/blob/cdbcf5a13cba2b0aab505977ba413f707bc06290/Cargo.lock">Source<span class="visually-hidden">: Floresta, dependencies</span></a></li><li><span class="eco-meta">Vendored.</span> None found.</li></ul><p class="eco-meta">getfloresta/Floresta at cdbcf5a13c.</p></details></td></tr><tr data-slug="rbitcoin"><th scope="row">rbitcoin</th><td data-label="License">MIT OR Apache-2.0</td><td data-label="Languages">Rust</td><td data-label="Direct deps">24</td><td class="m-full" data-label="Vendored">None in the tree. Bitcoin Core is a git submodule</td></tr><tr data-slug="rbitcoin" class="eco-open-row"><td class="eco-open m-full" colspan="5"><details><summary>Sources<span class="visually-hidden"> for rbitcoin stack</span></summary><ul><li><span class="eco-meta">License.</span> MIT OR Apache-2.0. <a href="https://github.com/reardencode/rbitcoin/blob/ca7bf804ed44d7efdca3da219ead6e644d35fd9e/LICENSE-APACHE">Source<span class="visually-hidden">: rbitcoin, license</span></a></li><li><span class="eco-meta">Languages.</span> Rust. <a href="https://github.com/reardencode/rbitcoin/tree/ca7bf804ed44d7efdca3da219ead6e644d35fd9e/">Source<span class="visually-hidden">: rbitcoin, languages</span></a></li><li><span class="eco-meta">Direct dependencies, 24.</span> Third-party crates of rbitcoin-node and its workspace crates. <a href="https://github.com/reardencode/rbitcoin/blob/ca7bf804ed44d7efdca3da219ead6e644d35fd9e/Cargo.lock">Source<span class="visually-hidden">: rbitcoin, dependencies</span></a></li><li><span class="eco-meta">Vendored.</span> None in the tree. Bitcoin Core is a git submodule. <a href="https://github.com/reardencode/rbitcoin/tree/ca7bf804ed44d7efdca3da219ead6e644d35fd9e/third_party">Source<span class="visually-hidden">: rbitcoin, vendored code</span></a></li></ul><p class="eco-meta">reardencode/rbitcoin at ca7bf804ed.</p></details></td></tr><tr data-slug="btcd"><th scope="row">btcd</th><td data-label="License">ISC</td><td data-label="Languages">Go</td><td data-label="Direct deps">11</td><td class="m-full" data-label="Vendored">None found</td></tr><tr data-slug="btcd" class="eco-open-row"><td class="eco-open m-full" colspan="5"><details><summary>Sources<span class="visually-hidden"> for btcd stack</span></summary><ul><li><span class="eco-meta">License.</span> ISC. <a href="https://github.com/btcsuite/btcd/blob/dd169fe0c32a56087d28b92fff3b8cf4fb43477a/LICENSE">Source<span class="visually-hidden">: btcd, license</span></a></li><li><span class="eco-meta">Languages.</span> Go. <a href="https://github.com/btcsuite/btcd/tree/dd169fe0c32a56087d28b92fff3b8cf4fb43477a/">Source<span class="visually-hidden">: btcd, languages</span></a></li><li><span class="eco-meta">Direct dependencies, 11.</span> Direct require lines in go.mod, excluding btcd's own modules and the test-only testify and rapid. <a href="https://github.com/btcsuite/btcd/blob/dd169fe0c32a56087d28b92fff3b8cf4fb43477a/go.mod">Source<span class="visually-hidden">: btcd, dependencies</span></a></li><li><span class="eco-meta">Vendored.</span> None found.</li></ul><p class="eco-meta">btcsuite/btcd at dd169fe0c3.</p></details></td></tr><!--/slot:stack--></tbody>
+                </table>
+            </div>
+            <details class="eco-more">
+                <summary>How these are counted</summary>
+                <p class="eco-meta" id="eco-stack-note"><!--slot:stack-note-->Read at each pinned commit. License: the repository's license file; no proprietary or non-OSI license file turned up in any tree. Languages: those with 5% or more of code lines (tokei 14; .h headers count with C and C++). Direct dependencies: direct third-party libraries of a default node build, excluding build tools, test and dev dependencies, off-by-default extras and the project's own crates; vendored source is counted separately; no transitive counts. C++: libraries the default bitcoind (or node binary) links, minus Qt and native build tools. Rust: third-party crates reached from the node binary through its own workspace crates, with default features (cargo tree). Go: go.mod require lines not marked indirect. Every row was counted on a separate checkout at its pinned commit. Vendored: library subtrees or vendor/ directories in the tree, with their code lines rounded.<!--/slot:stack-note--></p>
+            </details>
+            </details>
         </section>
 
-        <section class="eco-block" id="tests">
-            <h2>Tests</h2>
-            <p id="eco-test-caption">Test lines for each implementation line. The same counter on every tree.</p>
-            <div id="chart-tests"></div>
-            <p class="eco-meta eco-follow" id="eco-test-note"></p>
+        <section class="eco-block wide eco-foldable" id="compare" aria-labelledby="compare-h">
+            <details class="eco-fold">
+            <summary><h2 id="compare-h">Code, side by side</h2><span class="eco-fold-hint">Program lines, checkout, large files, tests, rules share</span></summary>
+            <p>One row per measured tree. The same counter on every tree. Each column is one of the five comparisons; what it counts is under the table.</p>
+            <p class="chart-legend"><span><i class="swatch other"></i>implementation</span><span><i class="swatch internal"></i>BLVM implementation</span><span><i class="swatch vend"></i>vendored</span><span><i class="swatch loc"></i>locale</span></p>
+            <div class="eco-scroll" tabindex="0" role="region" aria-label="Comparison table">
+                <table class="eco-cmp" id="eco-cmp">
+                    <caption>Sorted by program lines. Bars in a column share one scale. Rules share bars share a scale, but each cut is its own group.</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Implementation</th>
+                            <th scope="col" data-key="size">Program lines</th>
+                            <th scope="col" data-key="checkout">Checkout</th>
+                            <th scope="col" data-key="files">Large files</th>
+                            <th scope="col" data-key="tests">Tests per line</th>
+                            <th scope="col" data-key="rules">Rules share</th>
+                        </tr>
+                    </thead>
+                    <tbody><!--slot:compare--><tr data-slug="libbitcoin" data-order="0" data-size="302339" data-checkout="372995" data-files="16.5" data-tests="0.71" data-rules="1995.1"><th scope="row" class="cmp-name">libbitcoin</th><td data-label="Program lines"><span class="num">302,339</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:100.0%"></span></span></td><td data-label="Checkout"><span class="num">372,995</span><span class="mini" aria-hidden="true"><span class="mini-fill seg impl" style="width:54.9%"></span><span class="mini-fill seg vend" style="width:10.3%"></span><span class="mini-fill seg loc" style="width:0.0%"></span></span></td><td data-label="Large files"><span class="num">16.5%</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:16.5%"></span></span><small>253 files hold half</small></td><td data-label="Tests"><span class="num">0.71</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:65.7%"></span></span></td><td data-label="Rules share"><span class="num">4.9%</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:41.2%"></span></span><small>repository-role cut</small></td></tr><tr data-slug="bitcoin-rs" data-order="1" data-size="229374" data-checkout="229374" data-files="42.2" data-tests="0.78" data-rules="-5.5"><th scope="row" class="cmp-name">bitcoin-rs</th><td data-label="Program lines"><span class="num">229,374</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:75.9%"></span></span></td><td data-label="Checkout"><span class="num">229,374</span><span class="mini" aria-hidden="true"><span class="mini-fill seg impl" style="width:40.1%"></span><span class="mini-fill seg vend" style="width:0.0%"></span><span class="mini-fill seg loc" style="width:0.0%"></span></span></td><td data-label="Large files"><span class="num">42.2%</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:42.2%"></span></span><small>79 files hold half</small></td><td data-label="Tests"><span class="num">0.78</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:72.2%"></span></span></td><td data-label="Rules share"><span class="num">5.5%</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:46.2%"></span></span><small>crate-role cut</small></td></tr><tr data-slug="blvm" data-order="2" data-size="195990" data-checkout="303561" data-files="55.6" data-tests="0.67" data-rules="-10.7"><th scope="row" class="cmp-name internal">BLVM</th><td data-label="Program lines"><span class="num">195,990</span><span class="mini" aria-hidden="true"><span class="mini-fill internal" style="width:64.8%"></span></span></td><td data-label="Checkout"><span class="num">303,561</span><span class="mini" aria-hidden="true"><span class="mini-fill seg impl internal" style="width:53.0%"></span><span class="mini-fill seg vend" style="width:0.0%"></span><span class="mini-fill seg loc" style="width:0.0%"></span></span></td><td data-label="Large files"><span class="num">55.6%</span><span class="mini" aria-hidden="true"><span class="mini-fill internal" style="width:55.6%"></span></span><small>42 files hold half</small></td><td data-label="Tests"><span class="num">0.67</span><span class="mini" aria-hidden="true"><span class="mini-fill internal" style="width:62.0%"></span></span></td><td data-label="Rules share"><span class="num">10.7%</span><span class="mini" aria-hidden="true"><span class="mini-fill internal" style="width:89.9%"></span></span><small>crate-role cut</small></td></tr><tr data-slug="satd" data-order="3" data-size="191292" data-checkout="191292" data-files="47.6" data-tests="0.86" data-rules="-11.9"><th scope="row" class="cmp-name">satd</th><td data-label="Program lines"><span class="num">191,292</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:63.3%"></span></span></td><td data-label="Checkout"><span class="num">191,292</span><span class="mini" aria-hidden="true"><span class="mini-fill seg impl" style="width:33.4%"></span><span class="mini-fill seg vend" style="width:0.0%"></span><span class="mini-fill seg loc" style="width:0.0%"></span></span></td><td data-label="Large files"><span class="num">47.6%</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:47.6%"></span></span><small>28 files hold half</small></td><td data-label="Tests"><span class="num">0.86</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:79.6%"></span></span></td><td data-label="Rules share"><span class="num">11.9%</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:100.0%"></span></span><small>crate-role cut</small></td></tr><tr data-slug="bit-block" data-order="4" data-size="156636" data-checkout="572231" data-files="39.6" data-tests="0.88" data-rules="99999"><th scope="row" class="cmp-name">Bit-Block</th><td data-label="Program lines"><span class="num">156,636</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:51.8%"></span></span></td><td data-label="Checkout"><span class="num">572,231</span><span class="mini" aria-hidden="true"><span class="mini-fill seg impl" style="width:27.4%"></span><span class="mini-fill seg vend" style="width:14.9%"></span><span class="mini-fill seg loc" style="width:57.7%"></span></span></td><td data-label="Large files"><span class="num">39.6%</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:39.6%"></span></span><small>56 files hold half</small></td><td data-label="Tests"><span class="num">0.88</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:81.5%"></span></span></td><td data-label="Rules share"><span class="num">not measured</span><small>Rebuilt counter, no rules cut</small></td></tr><tr data-slug="bitcoin-roots" data-order="5" data-size="155040" data-checkout="553025" data-files="39.9" data-tests="1.08" data-rules="99999"><th scope="row" class="cmp-name">Bitcoin Roots</th><td data-label="Program lines"><span class="num">155,040</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:51.3%"></span></span></td><td data-label="Checkout"><span class="num">553,025</span><span class="mini" aria-hidden="true"><span class="mini-fill seg impl" style="width:27.1%"></span><span class="mini-fill seg vend" style="width:19.4%"></span><span class="mini-fill seg loc" style="width:50.1%"></span></span></td><td data-label="Large files"><span class="num">39.9%</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:39.9%"></span></span><small>55 files hold half</small></td><td data-label="Tests"><span class="num">1.08</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:100.0%"></span></span></td><td data-label="Rules share"><span class="num">not measured</span><small>Rebuilt counter, no rules cut</small></td></tr><tr data-slug="knots-legacy" data-order="6" data-size="153823" data-checkout="566281" data-files="38.6" data-tests="0.91" data-rules="99999"><th scope="row" class="cmp-name">Knots Legacy</th><td data-label="Program lines"><span class="num">153,823</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:50.9%"></span></span></td><td data-label="Checkout"><span class="num">566,281</span><span class="mini" aria-hidden="true"><span class="mini-fill seg impl" style="width:26.9%"></span><span class="mini-fill seg vend" style="width:14.3%"></span><span class="mini-fill seg loc" style="width:57.7%"></span></span></td><td data-label="Large files"><span class="num">38.6%</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:38.6%"></span></span><small>56 files hold half</small></td><td data-label="Tests"><span class="num">0.91</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:84.3%"></span></span></td><td data-label="Rules share"><span class="num">not measured</span><small>Rebuilt counter, no rules cut</small></td></tr><tr data-slug="bitcoin-core" data-order="7" data-size="151004" data-checkout="550448" data-files="38.9" data-tests="1.02" data-rules="993.7"><th scope="row" class="cmp-name">Bitcoin Core</th><td data-label="Program lines"><span class="num">151,004</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:49.9%"></span></span></td><td data-label="Checkout"><span class="num">550,448</span><span class="mini" aria-hidden="true"><span class="mini-fill seg impl" style="width:26.4%"></span><span class="mini-fill seg vend" style="width:19.7%"></span><span class="mini-fill seg loc" style="width:50.1%"></span></span></td><td data-label="Large files"><span class="num">38.9%</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:38.9%"></span></span><small>54 files hold half</small></td><td data-label="Tests"><span class="num">1.02</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:94.4%"></span></span></td><td data-label="Rules share"><span class="num">6.3%</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:52.9%"></span></span><small>Core file cut</small></td></tr><tr data-slug="hornet" data-order="8" data-size="14200" data-checkout="95241" data-files="0" data-tests="0.52" data-rules="99999"><th scope="row" class="cmp-name">Hornet</th><td data-label="Program lines"><span class="num">14,200</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:4.7%"></span></span></td><td data-label="Checkout"><span class="num">95,241</span><span class="mini" aria-hidden="true"><span class="mini-fill seg impl" style="width:2.5%"></span><span class="mini-fill seg vend" style="width:14.2%"></span><span class="mini-fill seg loc" style="width:0.0%"></span></span></td><td data-label="Large files"><span class="num">0.0%</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:0.0%"></span></span><small>38 files hold half</small></td><td data-label="Tests"><span class="num">0.52</span><span class="mini" aria-hidden="true"><span class="mini-fill" style="width:48.1%"></span></span></td><td data-label="Rules share"><span class="num">no cut</span><small>no rules cut</small></td></tr><!--/slot:compare--></tbody>
+                </table>
+            </div>
+            <dl class="eco-key">
+                <div id="size"><dt>Size</dt><dd><span id="eco-size-caption"><!--slot:size-caption--><!--/slot:size-caption--></span> Program lines. Implementation minus tooling. The same counter on every tree.</dd></div>
+                <div id="checkout"><dt>Checkout</dt><dd><span id="eco-comp-caption"><!--slot:comp-caption-->BLVM has neither vendored lines nor locale lines.<!--/slot:comp-caption--></span> Implementation, vendored libraries, and locale files. The same counter on every tree.</dd></div>
+                <div id="files"><dt>Large files</dt><dd><span id="eco-files-caption"><!--slot:files-caption--><!--/slot:files-caption--></span> Share of program lines that sit in files of 1,000 lines or more.</dd></div>
+                <div id="tests"><dt>Tests</dt><dd><span id="eco-test-caption"><!--slot:test-caption--><!--/slot:test-caption--></span> Test lines for each implementation line. The same counter on every tree. <span class="eco-meta" id="eco-test-note"><!--slot:test-note-->A Rust file named *_test.rs or *_tests.rs counts as tests. Lines inside a #[cfg(test)] item count as tests.<!--/slot:test-note--></span></dd></div>
+                <div id="rules"><dt>Rules share</dt><dd>Share of the tree on the rules side of its cut. The bars share a scale. The cuts do not, so read each group on its own. Hornet has no rules cut on this clock, so it has no bar here. Knots Legacy, Bit-Block, and Bitcoin Roots were counted with a rebuilt counter that reproduces the published counts for Core 32.1 and Knots, except vendored lines, which run up to 1.3% low. Their rules share is not measured yet. The cut is a qualitative reading of which code holds the rules, redone periodically. This reading: <!--slot:rules-asof-->2026-11-12<!--/slot:rules-asof-->.</dd></div>
+            </dl>
+            </details>
         </section>
 
-        <section class="eco-block" id="rules">
-            <h2>Rules share</h2>
-            <p>Share of the tree on the rules side of its cut. The bars share a scale. The cuts do not, so read each group on its own.</p>
-            <div id="chart-rules"></div>
-        </section>
-
-        <section class="eco-block wide" id="institution">
-            <h2>Institution</h2>
-            <p id="eco-inst-lead"></p>
-            <p class="eco-follow" id="eco-rule-test"></p>
-            <div id="chart-inst"></div>
-            <p class="eco-meta eco-follow" id="eco-jurisdiction"></p>
+        <section class="eco-block wide" id="institution" aria-labelledby="institution-h">
+            <h2 id="institution-h">Institution</h2>
+            <p id="eco-inst-lead"><!--slot:inst-lead-->one author, 825 of 854 in blvm-node. The written rule is 6 of 7 signatures, 180-day review, 365-day consensus review. Phase 1 is current. Enforcement is off and the keys are test keys. The signature counts are the written rule.<!--/slot:inst-lead--></p>
+            <p class="eco-follow" id="eco-rule-test"><!--slot:rule-test-->A statement that names a consequence is a rule, and a statement that names none is a norm. The rows below use that test on the files and the history this scan actually has. Judgment scores are not printed here, because they are not measurements.<!--/slot:rule-test--></p>
+            <div class="eco-scroll" tabindex="0" role="region" aria-label="Institution board" id="chart-inst">
+                <table class="eco-board">
+                    <caption>Catalog order, then the three directory rows. A blank is not measured. Commits and merges stay in different cells.</caption>
+                    <thead><tr><th scope="col">Implementation</th><th scope="col">Operating record</th><th scope="col">Who lands the work</th><th scope="col">Written rule</th></tr></thead>
+                    <tbody><!--slot:institution--><tr data-slug="bitcoin-core"><th scope="row">Bitcoin Core</th><td data-label="Operating record">Informal oligarchy</td><td class="m-full" data-label="Who lands the work">50.2% of merges since 2022. fanquake, merges since 2022</td><td data-label="Written rule">Norm. No written sanction.</td></tr><tr data-slug="bitcoin-core" class="eco-open-row"><td class="eco-open m-full" colspan="4"><details><summary>The record<span class="visually-hidden"> for Bitcoin Core</span></summary><p>Since 2022 one person, fanquake, merged 50.2% of pull requests, and three people merged 82.2%. The window is 5,747 merged pull requests. The contributing guide says anyone may offer review, tests, and patches, and that repository maintainers are responsible for merging pull requests.</p><p class="eco-meta">Merge shares from findings/GOVERNANCE_FRAMES.md, the 2022+ window. The guide sentence is CONTRIBUTING.md at f0de87f040.</p><p><span class="eco-meta">A stated consequence</span><br>The contributing guide names repository maintainers as the people who merge. The review practice states no sanction, so that practice is a norm. The guide does not say who receives keys.</p><p><span class="eco-meta">Who lands the work</span><br>Since 2022 one person merged 50.2% of pull requests and three people merged 82.2%, across 5,747 merged pull requests. That window is the current process. All-time, the top three hold 76.4% of merges, which is a different window.</p><p><span class="eco-meta">Who may change the rule</span><br>The contributing guide does not state a signature count for changing who may merge.</p><p><span class="eco-meta">Who receives keys</span><br>The contributing guide governs how a key holder judges consensus. It does not say who receives keys. The 2022 merge concentration is the record of who already has them.</p><p><span class="eco-meta">Written clocks</span><br>This scan has no written 180 day or 365 day clock for Core. The review series is a change in recorded review, not a clock.</p><p><span class="eco-meta">What reaches an outsider</span><br>First pull requests by non-maintainers have landed at 16.1% since 2022. Among closed outsider pull requests of 2,000 lines or more, 5.0% landed since 2022. Non-maintainers with five or more prior merges have landed at 68.6% in that window. On a merge outcome that includes self-merges, the maintainer odds ratio is 3.63 before prior merges are controlled and 1.36 after. The gate those findings support is at entry and on large new work. The comparison classes that newcomer pattern as ambient, including secp256k1, BDK, LND, and Eclair. Zero-review self-merges fell from 42.2% in 2017 to 4.0% in the 2026 partial year. Maintainer-authored pull requests that someone else merged with no review fell from 32.4% in 2017 to 8.8% in 2026. That fall is among work that reached review. It is not the filter before review. On the 2026-09-10 roster snapshot, 45.1% of maintainer self-merges have no review object, 1,129 of 2,501. That roster share is not the 2026 yearly rate.</p><ul><li>Top-1 merge share. 50.2% (fanquake). 2022+, 5,747 merged pull requests.</li><li>Top-3 merge share. 82.2%. 2022+, 5,747 merged pull requests.</li><li>Maintainer self-merge rate. 25.5% (2,501 of 9,793). roster artifact 2026-09-10, all-time.</li><li>Zero-review share of self-merges. 45.1% (1,129 of 2,501). roster artifact 2026-09-10, all-time.</li><li>Authorship Gini. 0.851 historical, 0.834 recent. report dated 2026-09-20.</li><li>Review Gini. 0.922 historical, 0.929 recent. report dated 2026-09-20.</li></ul><p><a href="https://secsovereign.github.io/articles/bitcoin-has-governance/">The long article</a></p></details></td></tr><tr data-slug="knots-legacy"><th scope="row">Knots Legacy</th><td data-label="Operating record">One maintainer</td><td class="m-full" data-label="Who lands the work">100% of commits. DimiH2025, 39 of 39 commits since Knots v29.3.knots20260507</td><td data-label="Written rule">Core's contributing template, renamed.</td></tr><tr data-slug="knots-legacy" class="eco-open-row"><td class="eco-open m-full" colspan="4"><details><summary>The record<span class="visually-hidden"> for Knots Legacy</span></summary><p>Knots Legacy continues Bitcoin Knots v29.3.knots20260507. Per its docs, it makes no consensus changes of its own. Since that tag, all 39 commits are by DimiH2025. The README says one person maintains it and invites co-maintainers. The contributing file is Core's template, renamed.</p><p class="eco-meta">GitHub compare v29.3.knots20260507...954823cfe8 on DimiH2025/KnotsLegacy, and the README at that commit, read 2026-11-12.</p><p><span class="eco-meta">A stated consequence</span><br>The contributing file is Core's template, renamed, so it does not add a separate stated consequence in this scan.</p></details></td></tr><tr data-slug="bit-block"><th scope="row">Bit-Block</th><td data-label="Operating record">One maintainer</td><td class="m-full" data-label="Who lands the work">82.9% of commits. DimiH2025, 121 of 146 commits</td><td data-label="Written rule">Core's contributing template, renamed.</td></tr><tr data-slug="bit-block" class="eco-open-row"><td class="eco-open m-full" colspan="4"><details><summary>The record<span class="visually-hidden"> for Bit-Block</span></summary><p>Bit-Block is a fork of Bitcoin Knots v29.1.knots20250903 by the Knots Legacy maintainer. Per its docs, its changes are local relay and mining policy, not consensus. Its repository holds 146 commits: 121 by DimiH2025 and 25 under the git name dimitrihellemon. The contributing file is Core's template, renamed.</p><p class="eco-meta">GitHub commit list for DimiH2025/Bit-Block at 16b8cd0932, and UPSTREAM.md at that commit, read 2026-11-12.</p><p><span class="eco-meta">A stated consequence</span><br>The contributing file is Core's template, renamed, so it does not add a separate stated consequence in this scan.</p></details></td></tr><tr data-slug="bitcoin-roots"><th scope="row">Bitcoin Roots</th><td data-label="Operating record">Foundation, one signing key</td><td class="m-full" data-label="Who lands the work">5.8% of commits. jaromil, 248 of 4,293 commits since Core v32.1</td><td data-label="Written rule">Written: every new commit is signed with one key.</td></tr><tr data-slug="bitcoin-roots" class="eco-open-row"><td class="eco-open m-full" colspan="4"><details><summary>The record<span class="visually-hidden"> for Bitcoin Roots</span></summary><p>Bitcoin Roots is a patch series on Bitcoin Core v32.1 that carries selected policy features from the Knots 29.3.knots20260507 code line. Of 4,293 commits since Core v32.1, 3,315 were committed by luke-jr and 506 by fanquake, carried from Knots and Core. jaromil committed 248. The README names the Plan B Foundation as maintainer, under three named people, and the maintainer workflow requires every new commit to be signed with one key.</p><p class="eco-meta">GitHub compare v32.1 (f0de87f040)...12a50ee10a on LuganoPlanB/bitcoin-roots, README, doc/website/content/README.md, and contrib/roots/README.md at that commit, read 2026-11-12.</p><p><span class="eco-meta">A stated consequence</span><br>The maintainer workflow states a consequence for one step. Every new commit is signed with one named key, and a signing failure leaves the work pending, with no unsigned fallback.</p></details></td></tr><tr data-slug="bitcoin-rs"><th scope="row">bitcoin-rs</th><td data-label="Operating record">One account</td><td class="m-full" data-label="Who lands the work">75.3% of commits. one account, 5,714 of 7,592 on dev<br><span class="eco-meta">2026-05-19 to 2026-11-06</span></td><td data-label="Written rule">Not read as a consequence.</td></tr><tr data-slug="bitcoin-rs" class="eco-open-row"><td class="eco-open m-full" colspan="4"><details><summary>The record<span class="visually-hidden"> for bitcoin-rs</span></summary><p>The dev branch measured here runs from 2026-05-19 to 2026-11-06 and holds 7,592 commits. One GitHub account authored 5,714 of them and is the committer on 4,693. 926 commits name a pull request. A contributing file is in the tree.</p><p class="eco-meta">git log on gosuda/bitcoin-rs dev at 9b8e91ae1. The checkout is not shallow, so this is the whole branch.</p><p><span class="eco-meta">A stated consequence</span><br>A contributing file is in the tree. This scan did not read it as a stated consequence.</p></details></td></tr><tr data-slug="satd"><th scope="row">satd</th><td data-label="Operating record">One account</td><td class="m-full" data-label="Who lands the work">97.2% of commits. bkeroack, 1,228 of 1,263<br><span class="eco-meta">repository from 2026-03-17</span></td><td data-label="Written rule">Not read.</td></tr><tr data-slug="satd" class="eco-open-row"><td class="eco-open m-full" colspan="4"><details><summary>The record<span class="visually-hidden"> for satd</span></summary><p>GitHub records the repository from 2026-03-17. It attributes 1,228 of 1,263 contributor commits to one person, bkeroack. The other 35 are Dependabot.</p><p class="eco-meta">GitHub contributors for epochbtc/satd, read 2026-11-11. The local checkout is shallow, so the reading uses the contributor total.</p></details></td></tr><tr data-slug="blvm"><th scope="row" class="internal">BLVM</th><td data-label="Operating record">One writer. The written rule is separate.</td><td class="m-full" data-label="Who lands the work">96.6% of commits. one author, 825 of 854 in blvm-node<br><span class="eco-meta">blvm-node from 2025-10-19</span></td><td data-label="Written rule">Designed, not running.</td></tr><tr data-slug="blvm" class="eco-open-row"><td class="eco-open m-full" colspan="4"><details><summary>The record<span class="visually-hidden"> for BLVM</span></summary><p>One author wrote 825 of 854 commits in blvm-node, all 141 commits in the blvm checkout, 231 of 296 in blvm-consensus, 165 of 167 in the governance repository, and 34 of 55 in blvm-spec. The layer table is the written rule. Enforcement is off, so that quorum is the rule on paper and the history is one writer.</p><p class="eco-meta">git log. blvm-node is a complete history from 2025-10-19 to 2026-11-11. The blvm-consensus count treats securesovereigns@pm.me and the matching GitHub noreply address as one person. The other checkouts are shallow and begin in 2026.</p><p><span class="eco-meta">A stated consequence</span><br>The design states a consequence. A non-conforming action is reversed when two of three governance nodes in a written set agree. Anyone may run a node and publish a conclusion. Only the written set binds. That consequence is Designed. It is not Running. Enforcement is off and the keys are test keys, so a commit stands when one author lands it.</p><p><span class="eco-meta">Who lands the work</span><br>One author wrote 825 of 854 commits in blvm-node. The written rule names several signatures. The operating record and the written rule are different levels. BLVM on activation is a separate projection, and this page does not score that projection.</p><p><span class="eco-meta">Who may change the rule</span><br>Tiers and layers are written. When a layer and a tier both apply, the more restrictive pair wins. Two Tier 5 pairs are both written. Meta-governance is 5 of 7 plus 2 of 3 over 90 days, with a 30 day public comment. The tier 5 row is 5 of 5 over 180 days. This page does not choose between them.</p><p><span class="eco-meta">Who receives keys</span><br>Adding a maintainer is 5 of 7 where the roster lists 7 names. Removing one is 6 of 7 excluding the subject, on that same roster. Layers 3 and 4 list 5 names, and layer 5 lists 3. The names in the roster file are placeholders. Keyholder activation is 5 of 7 and is a different pool from maintainer signatures. The governance-node quorum is 2 of 3 in a written set. That quorum is not the layer 5 maintainer signature, which is also 2 of 3 and applies to blvm-sdk.</p><p><span class="eco-meta">Written clocks</span><br>The layer chart writes 14, 60, 90, 180, and 365 day periods. Those clocks are the written rule. They are not the time a commit waits today, because enforcement is off.</p><p><a href="compact.html">The written rules</a></p></details></td></tr><tr data-slug="libbitcoin"><th scope="row">libbitcoin</th><td data-label="Operating record">One maintainer</td><td class="m-full" data-label="Who lands the work">77.7% of commits. Eric Voskuil, 8,145 of 10,489<br><span class="eco-meta">repository from 2013</span></td><td data-label="Written rule">Not read as a consequence.</td></tr><tr data-slug="libbitcoin" class="eco-open-row"><td class="eco-open m-full" colspan="4"><details><summary>The record<span class="visually-hidden"> for libbitcoin</span></summary><p>GitHub attributes 8,145 of 10,489 commits on libbitcoin-system to one maintainer, Eric Voskuil, across 66 people. The repository dates from 2013. A code owners file is in the tree.</p><p class="eco-meta">GitHub contributors for libbitcoin/libbitcoin-system, read 2026-11-11. The measured checkout is shallow and starts in 2026-07, so the reading uses the contributor total. The measured commit is 9f9cce3.</p><p><span class="eco-meta">A stated consequence</span><br>A code owners file is in the tree. This scan did not read it as a stated consequence.</p></details></td></tr><tr data-slug="hornet"><th scope="row">Hornet</th><td data-label="Operating record">One account</td><td class="m-full" data-label="Who lands the work">100% of commits. Toby Sharp, every commit<br><span class="eco-meta">2025-05-03 to 2026-04-15</span></td><td data-label="Written rule">No contributing file.</td></tr><tr data-slug="hornet" class="eco-open-row"><td class="eco-open m-full" colspan="4"><details><summary>The record<span class="visually-hidden"> for Hornet</span></summary><p>The repository holds 268 commits, from 2025-05-03 to 2026-04-15. All of them are Toby Sharp, under four email addresses. 32 commits name a pull request. The tree has no contributing file and no code owners file.</p><p class="eco-meta">git log on tobysharp/hornet at 151462f. The checkout is not shallow.</p><p><span class="eco-meta">A stated consequence</span><br>The tree has no contributing file and no code owners file. There is no stated consequence to read.</p></details></td></tr><tr data-slug="floresta"><th scope="row">Floresta <span class="tag">landing only</span></th><td data-label="Operating record">Largest share under half</td><td class="m-full" data-label="Who lands the work">46.7% of commits. Davidson-Souza, 712 of 1,523<br><span class="eco-meta">repository from 2022-11-22</span></td><td data-label="Written rule">Not read. Landing only.</td></tr><tr data-slug="floresta" class="eco-open-row"><td class="eco-open m-full" colspan="4"><details><summary>The record<span class="visually-hidden"> for Floresta</span></summary><p>GitHub attributes 712 of 1,523 contributor commits to Davidson-Souza, across 75 people. The repository dates from 2022-11-22. Line counts for this tree are not on this week's cut.</p><p class="eco-meta">GitHub contributors for getfloresta/Floresta, read 2026-11-12.</p></details></td></tr><tr data-slug="rbitcoin"><th scope="row">rbitcoin <span class="tag">landing only</span></th><td data-label="Operating record">Largest share under half</td><td class="m-full" data-label="Who lands the work">37.2% of commits. rearden-grok bot, 2,576 of 6,930<br><span class="eco-meta">repository from 2026-08-07</span></td><td data-label="Written rule">Not read. Landing only.</td></tr><tr data-slug="rbitcoin" class="eco-open-row"><td class="eco-open m-full" colspan="4"><details><summary>The record<span class="visually-hidden"> for rbitcoin</span></summary><p>GitHub attributes 2,576 of 6,930 contributor commits to the rearden-grok bot. The next account, reardencode, has 1,707. The repository dates from 2026-08-07. Line counts for this tree are not on this week's cut.</p><p class="eco-meta">GitHub contributors for reardencode/rbitcoin, read 2026-11-12.</p></details></td></tr><tr data-slug="btcd"><th scope="row">btcd <span class="tag">landing only</span></th><td data-label="Operating record">Largest share under half</td><td class="m-full" data-label="Who lands the work">36.8% of commits. davecgh, 1,662 of 4,517<br><span class="eco-meta">repository from 2013-08-06</span></td><td data-label="Written rule">Not read. Landing only.</td></tr><tr data-slug="btcd" class="eco-open-row"><td class="eco-open m-full" colspan="4"><details><summary>The record<span class="visually-hidden"> for btcd</span></summary><p>GitHub attributes 1,662 of 4,517 contributor commits to davecgh, across 265 people. The repository dates from 2013-08-06. Line counts for this tree are not on this week's cut.</p><p class="eco-meta">GitHub contributors for btcsuite/btcd, read 2026-11-12.</p></details></td></tr><!--/slot:institution--></tbody>
+                </table>
+            </div>
+            <p class="eco-meta eco-follow" id="eco-jurisdiction"><!--slot:jurisdiction-->This scan does not record where a maintainer sits. There is no jurisdiction chart.<!--/slot:jurisdiction--></p>
+            <details class="eco-more">
+                <summary>How each institution row was counted</summary>
+                <p id="eco-history-note" class="eco-meta"><!--slot:history-note-->Each reading uses the history that tree actually has. Where the checkout is shallow, the count is the GitHub contributor total.<!--/slot:history-note--></p>
+                <p id="eco-gov-quorum"><!--slot:gov-quorum-->When enforcement is on, two of three governance nodes in a written set must each conclude that an action conforms before that action stands. Anyone may run a node and publish a conclusion. Only the written set binds. Changing that set is a Tier 5 governance-rule change. The two written Tier 5 pairs both remain.<!--/slot:gov-quorum--></p>
+            </details>
             <div id="rule">
                 <h3 class="eco-sub">Written pairs</h3>
-                <p id="eco-gov-status"></p>
-                <div id="chart-layers"></div>
-                <p class="eco-meta eco-follow" id="eco-layer-note"></p>
+                <div class="eco-scroll" tabindex="0" role="region" aria-label="Written pairs" id="chart-layers">
+                    <table class="eco-board eco-layers-table">
+                        <thead><tr><th scope="col">Repositories</th><th scope="col">Signatures</th><th scope="col">Review</th><th scope="col">Layer</th></tr></thead>
+                        <tbody><!--slot:layers--><tr><th scope="row">blvm-spec</th><td data-label="Signatures">6 of 7.</td><td data-label="Review">180-day review, 365-day consensus review.</td><td class="m-full" data-label="Layer">Constitutional Layer. Constitutional documents and mathematical specifications</td></tr><tr><th scope="row">blvm-consensus, blvm-primitives, blvm-secp256k1</th><td data-label="Signatures">6 of 7.</td><td data-label="Review">180-day review, 365-day consensus review.</td><td class="m-full" data-label="Layer">Constitutional Layer. Consensus proof implementations and the crates beneath them</td></tr><tr><th scope="row">blvm-protocol</th><td data-label="Signatures">4 of 5.</td><td data-label="Review">90-day review.</td><td class="m-full" data-label="Layer">Implementation Layer. Core protocol implementation</td></tr><tr><th scope="row">blvm-node, blvm</th><td data-label="Signatures">3 of 5.</td><td data-label="Review">60-day review.</td><td class="m-full" data-label="Layer">Application Layer. Reference implementation and applications</td></tr><tr><th scope="row">blvm-sdk</th><td data-label="Signatures">2 of 3.</td><td data-label="Review">14-day review.</td><td class="m-full" data-label="Layer">Extension Layer. Developer tools and extensions</td></tr><!--/slot:layers--></tbody>
+                    </table>
+                </div>
+                <p class="eco-meta eco-follow" id="eco-layer-note"><!--slot:layer-note-->These bars are repository layers. Layers 1 and 2 share the constitutional name. Layer 1 is the specification and layer 2 is the proof crates, and both use 6 of 7 with a 180 day review and a 365 day consensus review. The 2 of 3 bar is the layer 5 maintainer signature on blvm-sdk. It is not the governance-node quorum. Action tiers are a second written table and are not drawn here. Tier 5 has two written pairs. Meta-governance is 5 of 7 plus 2 of 3 over 90 days, with a 30 day public comment. The tier 5 row is 5 of 5 over 180 days. Neither pair is chosen.<!--/slot:layer-note--></p>
                 <p class="eco-links"><a href="compact.html">The written rules</a> and <a href="whitepaper.html">the design argument</a> are the longer form.</p>
             </div>
         </section>
 
-        <section class="eco-block wide" id="forms">
-            <h2>Forms</h2>
+        <section class="eco-block wide" id="forms" aria-labelledby="forms-h">
+            <h2 id="forms-h">Forms</h2>
             <p>These cards are the codebook from <a href="https://secsovereign.github.io/articles/bitcoin-has-governance/">Bitcoin Has Governance</a>. Each score is a judgment of a form, not a measurement of a tree. The order is the article's. A higher total is not a rank of the implementations above.</p>
             <dl class="eco-measures">
                 <div><dt>Capture resistance</dt><dd>The smallest set of actors whose assent changes the rules, and how concentrated merges are.</dd></div>
@@ -594,20 +888,26 @@
                 <div><dt>Credible commitment</dt><dd>How many veto players there are, and how far apart they sit.</dd></div>
                 <div><dt>Decision cost</dt><dd>Time from proposal to decision. A higher score means the decision is cheaper.</dd></div>
             </dl>
-            <div class="eco-types">
-                <article class="eco-type"><h3>Direct democracy</h3><p>Cannot apply. Participants are pseudonymous, and identities are free to create, so votes cannot be counted.</p></article>
-                <article class="eco-type"><h3>Token-weighted voting</h3><p>Cannot apply. Bitcoin has no governance token.</p></article>
-                <article class="eco-type"><h3>Single maintainer</h3><p>Can apply, at a legitimacy cost. One obvious author and no written rule. 15 of 30, low confidence.</p></article>
-                <article class="eco-type"><h3>Foundation steward</h3><p>Can apply, with legal exposure. A legal entity is one place a suit or a rule can land. 19 of 30, low confidence.</p></article>
-                <article class="eco-type"><h3>Informal oligarchy</h3><p>The current repository form in the article. A few people merge, chosen by pull request and a meeting, with no written rule for keys or review. 15 of 30, medium confidence.</p></article>
-                <article class="eco-type"><h3>Formal oligarchy</h3><p>The same small set, with published rules for selection, review, and removal. 18 of 30, low confidence.</p></article>
-                <article class="eco-type"><h3>Elected council</h3><p>Can apply, with limits. Bitcoin has no agreed electorate. 19 of 30, medium confidence.</p></article>
-                <article class="eco-type"><h3>Mixed constitution</h3><p>Separate powers and written thresholds. 21 of 30, low confidence. Untested at Bitcoin's scale. The commons layer table is a written version of this shape. This page does not score that projection.</p></article>
-                <article class="eco-type"><h3>Ostrom commons</h3><p>Bounded membership, monitoring, and a cheap way to dispute. 22 of 30, low confidence. The cases behind the principles were small and local.</p></article>
+            <div class="eco-scroll" tabindex="0" role="region" aria-label="Forms codebook">
+                <table class="eco-board eco-forms">
+                    <caption>The article's nine forms, in the article's order. Total of 30.</caption>
+                    <thead><tr><th scope="col">Form</th><th scope="col">Total</th><th scope="col">Confidence</th><th scope="col">The article's reading</th></tr></thead>
+                    <tbody>
+                        <tr><th scope="row">Direct democracy</th><td data-label="Total" class="eco-dash">—</td><td data-label="Confidence" class="eco-dash">—</td><td class="m-full" data-label="Reading">Cannot apply. Participants are pseudonymous, and identities are free to create, so votes cannot be counted.</td></tr>
+                        <tr><th scope="row">Token-weighted voting</th><td data-label="Total" class="eco-dash">—</td><td data-label="Confidence" class="eco-dash">—</td><td class="m-full" data-label="Reading">Cannot apply. Bitcoin has no governance token.</td></tr>
+                        <tr><th scope="row">Single maintainer</th><td data-label="Total">15 of 30</td><td data-label="Confidence">low</td><td class="m-full" data-label="Reading">Can apply, at a legitimacy cost. One obvious author and no written rule.</td></tr>
+                        <tr><th scope="row">Foundation steward</th><td data-label="Total">19 of 30</td><td data-label="Confidence">low</td><td class="m-full" data-label="Reading">Can apply, with legal exposure. A legal entity is one place a suit or a rule can land.</td></tr>
+                        <tr><th scope="row">Informal oligarchy</th><td data-label="Total">15 of 30</td><td data-label="Confidence">medium</td><td class="m-full" data-label="Reading">The current repository form in the article. A few people merge, chosen by pull request and a meeting, with no written rule for keys or review.</td></tr>
+                        <tr><th scope="row">Formal oligarchy</th><td data-label="Total">18 of 30</td><td data-label="Confidence">low</td><td class="m-full" data-label="Reading">The same small set, with published rules for selection, review, and removal.</td></tr>
+                        <tr><th scope="row">Elected council</th><td data-label="Total">19 of 30</td><td data-label="Confidence">medium</td><td class="m-full" data-label="Reading">Can apply, with limits. Bitcoin has no agreed electorate.</td></tr>
+                        <tr><th scope="row">Mixed constitution</th><td data-label="Total">21 of 30</td><td data-label="Confidence">low</td><td class="m-full" data-label="Reading">Separate powers and written thresholds. Untested at Bitcoin's scale. The BLVM layer table is a written version of this shape. This page does not score that projection.</td></tr>
+                        <tr><th scope="row">Ostrom commons</th><td data-label="Total">22 of 30</td><td data-label="Confidence">low</td><td class="m-full" data-label="Reading">Bounded membership, monitoring, and a cheap way to dispute. The cases behind the principles were small and local.</td></tr>
+                    </tbody>
+                </table>
             </div>
             <h3 class="eco-sub">Where informal and formal oligarchy differ</h3>
-            <div class="eco-scroll" tabindex="0">
-                <table class="eco-board">
+<div class="eco-scroll" tabindex="0" role="region" aria-label="Informal and formal oligarchy">
+                <table class="eco-pair">
                     <caption>Score from 1, worst, to 5, best. Higher is better. For exit cost and decision cost, higher means cheaper. Source: the article's comparison of these two forms. The other forms have a total and no published six-cell row.</caption>
                     <thead>
                         <tr><th scope="col">Measure</th><th scope="col">Informal oligarchy</th><th scope="col">Formal oligarchy</th></tr>
@@ -624,38 +924,37 @@
             </div>
         </section>
 
-        <section class="eco-block" id="directory">
-            <h2>Directory</h2>
+        <section class="eco-block wide" id="directory" aria-labelledby="directory-h">
+            <h2 id="directory-h">Directory</h2>
             <p>Bitcoin Untangled keeps <a href="https://www.bitcoinuntangled.org/node-software/">a directory of node software</a>. The line charts are this week's measured trees. btcd, Floresta, and rbitcoin are on the institution list from GitHub contributor counts, and their line counts are not on this week's cut.</p>
             <ul class="eco-dir">
-                <li><a href="https://bit-block.org/bit-block-bitcoin-development/">Bit-Block</a><small>In their directory</small></li>
+                <li><a href="https://bit-block.org/bit-block-bitcoin-development/">Bit-Block</a><small>On the charts</small></li>
                 <li><a href="https://gosuda.org/">bitcoin-rs</a><small>On the charts</small></li>
-                <li><a href="https://btcdecoded.org/">BLVM</a><small>On the charts as commons</small></li>
+                <li><a href="https://btcdecoded.org/">BLVM</a><small>On the charts</small></li>
                 <li><a href="https://github.com/btcsuite/btcd">btcd</a><small>Contributor count</small></li>
                 <li><a href="https://bitcoincore.org/">Bitcoin Core</a><small>On the charts</small></li>
                 <li><a href="https://www.getfloresta.org/">Floresta</a><small>Contributor count</small></li>
                 <li><a href="https://github.com/tobysharp/hornet">Hornet</a><small>Measured here</small></li>
-                <li><a href="https://bit-block.org/knots-legacy/">Knots Legacy</a><small>In their directory</small></li>
+                <li><a href="https://bit-block.org/knots-legacy/">Knots Legacy</a><small>On the charts</small></li>
+                <li><a href="https://plan-b.foundation/bitcoin-roots">Bitcoin Roots</a><small>On the charts</small></li>
                 <li><a href="https://www.bitcoinuntangled.org/">Knots Untangled</a><small>In their directory</small></li>
-                <li><a href="https://github.com/bitcoinknots/bitcoin">Bitcoin Knots</a><small>On the charts</small></li>
                 <li><a href="https://libbitcoin.info/">libbitcoin</a><small>On the charts</small></li>
                 <li><a href="https://www.rbitcoin.org/">rbitcoin</a><small>Contributor count</small></li>
                 <li><a href="https://github.com/epochbtc/satd">satd</a><small>Measured here</small></li>
             </ul>
         </section>
 
-        <details class="eco-more">
-            <summary>How each institution row was counted</summary>
-            <p id="eco-history-note" class="eco-meta"></p>
-            <p id="eco-gov-quorum"></p>
-            <div id="eco-history"></div>
-        </details>
-        <details class="eco-more">
-            <summary>Every weekly count</summary>
-            <div id="eco-size"></div>
-            <div id="eco-cuts"></div>
-        </details>
-        <p id="eco-omitted"></p>
+        <section class="eco-block wide eco-foldable" id="counts" aria-labelledby="counts-h">
+            <details class="eco-fold">
+            <summary><h2 id="counts-h">Every count</h2><span class="eco-fold-hint">Every weekly counter table</span></summary>
+            <details class="eco-more">
+                <summary>Every weekly count</summary>
+                <div id="eco-size"><!--slot:weekly-size--><div class="eco-scroll" tabindex="0" role="region" aria-label="One counter on every tree. A line count, a ratio, and a file count are different rows."><table><caption>One counter on every tree. A line count, a ratio, and a file count are different rows.</caption><tr><th scope="col">Method</th><th scope="col">BLVM<small>crate-role cut<br><span class="eco-pin">36bb40c7e</span></small></th><th scope="col">Bitcoin Core<small>Core file cut<br><span class="eco-pin">f0de87f04</span></small></th><th scope="col">Knots Legacy<small>Rebuilt counter, no rules cut<br><span class="eco-pin">7936c49b6, shallow</span></small></th><th scope="col">Bit-Block<small>Rebuilt counter, no rules cut<br><span class="eco-pin">c52f11613, shallow</span></small></th><th scope="col">Bitcoin Roots<small>Rebuilt counter, no rules cut<br><span class="eco-pin">f0393f268, shallow</span></small></th><th scope="col">bitcoin-rs<small>crate-role cut<br><span class="eco-pin">9b8e91ae1</span></small></th><th scope="col">satd<small>crate-role cut<br><span class="eco-pin">f0ea0e5df, shallow</span></small></th><th scope="col">libbitcoin<small>repository-role cut<br><span class="eco-pin">9f9cce308, shallow</span></small></th><th scope="col">Hornet<small>no rules cut<br><span class="eco-pin">151462fa5</span></small></th></tr><tr><th scope="row">Implementation code</th><td class="internal">303,561</td><td>151,004</td><td>153,823</td><td>156,636</td><td>155,040</td><td>229,374</td><td>191,292</td><td>314,326</td><td>14,200</td></tr><tr><th scope="row">Program code</th><td class="internal">195,990</td><td>151,004</td><td>153,823</td><td>156,636</td><td>155,040</td><td>229,374</td><td>191,292</td><td>302,339</td><td>14,200</td></tr><tr><th scope="row">Tooling</th><td class="internal">107,571</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>11,987</td><td>0</td></tr><tr><th scope="row">Tests per implementation line</th><td class="internal">0.67</td><td>1.02</td><td>0.91</td><td>0.88</td><td>1.08</td><td>0.78</td><td>0.86</td><td>0.71</td><td>0.52</td></tr><tr><th scope="row">Vendored code</th><td class="internal">0</td><td>112,703</td><td>82,005</td><td>85,142</td><td>111,244</td><td>0</td><td>0</td><td>58,669</td><td>81,041</td></tr><tr><th scope="row">Locale</th><td class="internal">0</td><td>286,741</td><td>330,453</td><td>330,453</td><td>286,741</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th scope="row">Lines in files of 1,000 or more</th><td class="internal">55.6%</td><td>38.9%</td><td>38.6%</td><td>39.6%</td><td>39.9%</td><td>42.2%</td><td>47.6%</td><td>16.5%</td><td>0.0%</td></tr><tr><th scope="row">Files holding half the program</th><td class="internal">42</td><td>54</td><td>56</td><td>56</td><td>55</td><td>79</td><td>28</td><td>253</td><td>38</td></tr></table></div><details class="eco-notes"><summary>What these rows count</summary><ul><li>Implementation code. Size of the program the rules sit in. tokei code lines, one bucket per file.</li><li>Program code. Implementation code minus tooling.</li><li>Tooling. Files the role map marks as tooling. Spec lock lives here on BLVM.</li><li>Tests per implementation line. Test-bucket code lines divided by implementation code lines.</li><li>Vendored code. Bundled libraries. Outside first-party code.</li><li>Locale. Translation files. Outside first-party code.</li><li>Lines in files of 1,000 or more. How much of the program sits in large files. Tooling is outside this share. Spec lock is tooling on BLVM.</li><li>Files holding half the program. Smallest set of program files whose code lines reach half the program code. Tooling is outside this count.</li></ul></details><!--/slot:weekly-size--></div>
+                <div id="eco-cuts"><!--slot:weekly-cuts--><section><h3>crate-role cut</h3><p>satd is a shallow checkout. The line counter still reads the files present.</p><div class="eco-scroll" tabindex="0" role="region" aria-label="Rows in crate-role cut only."><table><caption>Rows in crate-role cut only.</caption><tr><th scope="col">Method</th><th scope="col">BLVM<small>crate-role cut<br><span class="eco-pin">36bb40c7e</span></small></th><th scope="col">bitcoin-rs<small>crate-role cut<br><span class="eco-pin">9b8e91ae1</span></small></th><th scope="col">satd<small>crate-role cut<br><span class="eco-pin">f0ea0e5df, shallow</span></small></th></tr><tr><th scope="row">Rules share</th><td class="internal">10.7%</td><td>5.5%</td><td>11.9%</td></tr><tr><th scope="row">Left mixed</th><td class="internal">0.0%</td><td>0.0%</td><td>51.8%</td></tr></table></div></section><section><h3>Core file cut</h3><div class="eco-scroll" tabindex="0" role="region" aria-label="Rows in Core file cut only."><table><caption>Rows in Core file cut only.</caption><tr><th scope="col">Method</th><th scope="col">Bitcoin Core<small>Core file cut<br><span class="eco-pin">f0de87f04</span></small></th></tr><tr><th scope="row">Rules share</th><td>6.3%</td></tr><tr><th scope="row">Left mixed</th><td>0.0%</td></tr></table></div></section><section><h3>Rebuilt counter, no rules cut</h3><p>Knots Legacy, Bit-Block, or Bitcoin Roots are shallow checkouts. The line counter still reads the files present.</p><div class="eco-scroll" tabindex="0" role="region" aria-label="Rows in Rebuilt counter, no rules cut only."><table><caption>Rows in Rebuilt counter, no rules cut only.</caption><tr><th scope="col">Method</th><th scope="col">Knots Legacy<small>Rebuilt counter, no rules cut<br><span class="eco-pin">7936c49b6, shallow</span></small></th><th scope="col">Bit-Block<small>Rebuilt counter, no rules cut<br><span class="eco-pin">c52f11613, shallow</span></small></th><th scope="col">Bitcoin Roots<small>Rebuilt counter, no rules cut<br><span class="eco-pin">f0393f268, shallow</span></small></th></tr><tr><th scope="row">Rules share</th><td>not measured</td><td>not measured</td><td>not measured</td></tr><tr><th scope="row">Left mixed</th><td>not measured</td><td>not measured</td><td>not measured</td></tr></table></div></section><section><h3>repository-role cut</h3><p>libbitcoin is a shallow checkout. The line counter still reads the files present.</p><div class="eco-scroll" tabindex="0" role="region" aria-label="Rows in repository-role cut only."><table><caption>Rows in repository-role cut only.</caption><tr><th scope="col">Method</th><th scope="col">libbitcoin<small>repository-role cut<br><span class="eco-pin">9f9cce308, shallow</span></small></th></tr><tr><th scope="row">Rules share</th><td>4.9%</td></tr><tr><th scope="row">Left mixed</th><td>37.4%</td></tr></table></div></section><section><h3>no rules cut</h3><div class="eco-scroll" tabindex="0" role="region" aria-label="Rows in no rules cut only."><table><caption>Rows in no rules cut only.</caption><tr><th scope="col">Method</th><th scope="col">Hornet<small>no rules cut<br><span class="eco-pin">151462fa5</span></small></th></tr><tr><th scope="row">Rules share</th><td>no cut</td></tr><tr><th scope="row">Left mixed</th><td>no cut</td></tr></table></div></section><details class="eco-notes"><summary>What these rows count</summary><ul><li>Rules share. Share of implementation on the rules side of that tree's cut. The Core file cut, the crate-role cut, and the repository-role cut are separate instruments.</li><li>Left mixed. Share left in a crate or library the cut did not split.</li></ul></details><!--/slot:weekly-cuts--></div>
+            </details>
+            <p id="eco-omitted"><!--slot:omitted-->Left off this page: attention effects E2, E3, E5, E7, and E12, and the size-adjusted residual. Comparison dumps do not host those effects the same way, and the residual intervals cover zero. They are not a weekly score.<!--/slot:omitted--></p>
+            </details>
+        </section>
     </main>
     <footer class="site-footer">
       <div class="footer-brand">
@@ -695,204 +994,116 @@
       <p>© 2026 Bitcoin Commons</p>
     </div>
     <script>
-        function esc(s) {
-            return String(s).replace(/[&<>"]/g, function (c) {
-                return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+        // Folded code sections stay in the HTML and open with their summary.
+        // This only opens a fold when a link or the URL hash points into it.
+        (function () {
+            function reveal(id) {
+                var el = id && document.getElementById(id);
+                if (!el) return;
+                var own = el.querySelector && el.querySelector(":scope > details.eco-fold");
+                if (own) own.open = true;
+                for (var d = el.closest("details"); d; d = d.parentElement && d.parentElement.closest("details")) d.open = true;
+            }
+            function fromHash() { try { reveal(decodeURIComponent(location.hash.slice(1))); } catch (e) {} }
+            fromHash();
+            window.addEventListener("hashchange", fromHash);
+            document.addEventListener("click", function (ev) {
+                var a = ev.target.closest && ev.target.closest("a[href^=\"#\"]");
+                if (a) reveal(a.getAttribute("href").slice(1));
+            }, true);
+        })();
+    </script>
+    <script>
+        // Every count is already in the HTML (scripts/render-ecosystem.mjs).
+        // This only adds sorting, a show filter, and deep links that sort.
+        (function () {
+            var table = document.getElementById("eco-cmp");
+            if (!table) return;
+            var body = table.tBodies[0];
+            var keys = { size: "Program lines", checkout: "Checkout", files: "Large files", tests: "Tests per line", rules: "Rules share" };
+            var ascending = { rules: true };
+            var caption = table.caption;
+            var heads = {};
+            Array.prototype.forEach.call(table.tHead.rows[0].cells, function (th) {
+                var key = th.getAttribute("data-key");
+                if (!key) return;
+                heads[key] = th;
+                var btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "eco-sort";
+                btn.textContent = th.textContent;
+                btn.addEventListener("click", function () { sortBy(key, true); });
+                th.textContent = "";
+                th.appendChild(btn);
             });
-        }
-        function head(trees) {
-            return "<tr><th scope=\"col\">Method</th>" + trees.map(function (t) {
-                var pin = t.commit ? t.commit.slice(0, 9) : "";
-                var shallow = t.shallow ? ", shallow" : "";
-                var pinHtml = pin ? "<br><span class=\"eco-pin\">" + esc(pin + shallow) + "</span>" : "";
-                return "<th scope=\"col\">" + esc(t.name) + "<small>" + esc(t.instrument) + pinHtml + "</small></th>";
-            }).join("") + "</tr>";
-        }
-        function row(label, trees, textFor) {
-            return "<tr><th scope=\"row\">" + esc(label) + "</th>" + trees.map(function (t) {
-                var cls = t.side === "internal" ? " class=\"internal\"" : "";
-                return "<td" + cls + ">" + esc(textFor(t)) + "</td>";
-            }).join("") + "</tr>";
-        }
-        function cellText(tree, method) {
-            var cell = tree.values && tree.values[method.id];
-            return cell ? cell.text : "not measured";
-        }
-        function byInstrument(trees) {
-            var order = [];
-            var map = {};
-            trees.forEach(function (t) {
-                var key = t.instrument || "unspecified";
-                if (!map[key]) { map[key] = []; order.push(key); }
-                map[key].push(t);
-            });
-            return order.map(function (key) { return { name: key, trees: map[key] }; });
-        }
-        function wideTable(trees, methods, caption) {
-            return "<div class=\"eco-scroll\" tabindex=\"0\"><table><caption>" + esc(caption) + "</caption>" + head(trees) + methods.map(function (m) {
-                return row(m.name, trees, function (t) { return cellText(t, m); });
-            }).join("") + "</table></div>";
-        }
-        function notes(methods) {
-            return "<details class=\"eco-notes\"><summary>What these rows count</summary><ul>" + methods.map(function (m) {
-                return "<li>" + esc(m.name) + ". " + esc(m.why) + "</li>";
-            }).join("") + "</ul></details>";
-        }
-        function englishList(names) {
-            if (names.length < 2) return names.join("");
-            if (names.length === 2) return names[0] + " or " + names[1];
-            return names.slice(0, -1).join(", ") + ", or " + names[names.length - 1];
-        }
-        function metric(tree, id) {
-            return tree.values && tree.values[id] ? tree.values[id] : null;
-        }
-        function shareText(n) {
-            var rounded = Math.round(n * 10) / 10;
-            var text = rounded.toFixed(1);
-            return (text.slice(-2) === ".0" ? String(Math.round(rounded)) : text) + "%";
-        }
-        function bars(rows, scale) {
-            return "<div class=\"chart\">" + rows.map(function (row) {
-                var width = Math.max(0, Math.min(100, (row.value / scale) * 100));
-                var fill = "bar-fill" + (row.merges ? " merges" : "") + (row.internal ? " internal" : "");
-                var note = row.note ? "<span class=\"bar-note\">" + esc(row.note) + "</span>" : "";
-                return "<div class=\"bar-row\"><div class=\"bar-label\"><span class=\"bar-name\">" + esc(row.name) + "</span>" + note + "</div><div class=\"bar-track\"><span class=\"" + fill + "\" style=\"width:" + width.toFixed(1) + "%\"></span></div><span class=\"bar-value\">" + esc(row.text) + "</span></div>";
-            }).join("") + "</div>";
-        }
-        fetch("data/implementations.json")
-            .then(function (res) { if (!res.ok) throw new Error(String(res.status)); return res.json(); })
-            .then(function (data) {
-                document.getElementById("eco-status").textContent = "Measured " + data.measured_at + ".";
-                var trees = data.trees || [];
-                var methods = data.tree_methods || [];
-                var internal = data.internal_slug;
-                function ranked(id) {
-                    return trees.map(function (tree) {
-                        var cell = metric(tree, id);
-                        return cell ? { name: tree.name, value: cell.value, text: cell.text, internal: tree.slug === internal, slug: tree.slug } : null;
-                    }).filter(Boolean).sort(function (a, b) { return b.value - a.value; });
-                }
-                var scan = data.scan || {};
-                var sizeRows = ranked("program_code");
-                var testRows = ranked("test_per_implementation");
-                document.getElementById("chart-size").innerHTML = bars(sizeRows, sizeRows[0].value);
-                document.getElementById("chart-tests").innerHTML = bars(testRows, testRows[0].value);
-                var comp = trees.map(function (tree) {
-                    function n(id) { var cell = metric(tree, id); return cell ? cell.value : 0; }
-                    var impl = n("implementation_code"), vend = n("vendored_code"), loc = n("locale_code");
-                    return { name: tree.name, impl: impl, vend: vend, loc: loc, total: impl + vend + loc, internal: tree.slug === internal };
-                }).sort(function (a, b) { return b.total - a.total; });
-                var compMax = comp[0].total;
-                document.getElementById("chart-comp").innerHTML = "<div class=\"chart\">" + comp.map(function (row) {
-                    function w(v) { return (v / compMax * 100).toFixed(1); }
-                    var implClass = "seg impl" + (row.internal ? " internal" : "");
-                    return "<div class=\"bar-row\"><div class=\"bar-label\"><span class=\"bar-name\">" + esc(row.name) + "</span></div><span class=\"bar-value\">" + row.total.toLocaleString("en-US") + "</span><div class=\"bar-track stack-track\"><span class=\"" + implClass + "\" style=\"width:" + w(row.impl) + "%\"></span><span class=\"seg vend\" style=\"width:" + w(row.vend) + "%\"></span><span class=\"seg loc\" style=\"width:" + w(row.loc) + "%\"></span></div></div>";
-                }).join("") + "</div>";
-                var commonsComp = comp.filter(function (row) { return row.internal; })[0];
-                document.getElementById("eco-comp-caption").textContent = comp[0].name + " is the largest checkout once vendored libraries and locale files are counted, at " + comp[0].total.toLocaleString("en-US") + " lines. " + (commonsComp && commonsComp.vend === 0 && commonsComp.loc === 0 ? "commons has neither vendored lines nor locale lines." : "");
-                var fileRows = ranked("share_lines_ge_1000").map(function (row) {
-                    var tree = trees.filter(function (t) { return t.name === row.name; })[0];
-                    var half = metric(tree, "files_holding_half");
-                    return { name: row.name, value: row.value, text: row.text, internal: row.internal, note: half ? half.text + " files hold half" : "" };
+            function sortBy(key, announce) {
+                var rows = Array.prototype.slice.call(body.rows);
+                rows.sort(function (a, b) {
+                    var x = parseFloat(a.getAttribute("data-" + key)), y = parseFloat(b.getAttribute("data-" + key));
+                    return ascending[key] ? x - y : y - x;
                 });
-                document.getElementById("chart-files").innerHTML = bars(fileRows, 100);
-                var commonsFiles = fileRows.filter(function (row) { return row.internal; })[0];
-                var spread = fileRows.slice().sort(function (a, b) { return parseInt(b.note, 10) - parseInt(a.note, 10); })[0];
-                var halfCount = function (row) { return row && row.note ? row.note.replace(" files hold half", "") : ""; };
-                document.getElementById("eco-files-caption").textContent = (commonsFiles ? commonsFiles.name + " keeps " + commonsFiles.text + " of its program in files of 1,000 lines or more, and half of that program sits in " + halfCount(commonsFiles) + " files." : "") + (spread ? " " + spread.name + " spreads half of its program over " + halfCount(spread) + " files." : "");
-                document.getElementById("eco-size-caption").textContent = sizeRows[0].name + " is the largest program, at " + sizeRows[0].text + " lines. Implementation minus tooling. " + sizeRows[sizeRows.length - 1].name + " is the smallest, at " + sizeRows[sizeRows.length - 1].text + ".";
-                document.getElementById("eco-test-caption").textContent = testRows[0].name + " has " + testRows[0].text + " test lines for each implementation line. " + testRows[testRows.length - 1].name + " has " + testRows[testRows.length - 1].text + ".";
-                document.getElementById("eco-test-note").textContent = "A Rust file named *_test.rs or *_tests.rs counts as tests. Lines inside a #[cfg(test)] item count as tests.";
-                var ruleRows = trees.map(function (tree) {
-                    var cell = metric(tree, "rules_share");
-                    if (!cell || cell.text === "no cut") return null;
-                    return { name: tree.name, value: cell.value, text: cell.text, internal: tree.slug === internal, instrument: tree.instrument };
-                }).filter(Boolean);
-                var ruleScale = Math.max.apply(null, ruleRows.map(function (row) { return row.value; }));
-                var seen = [];
-                ruleRows.forEach(function (row) { if (seen.indexOf(row.instrument) < 0) seen.push(row.instrument); });
-                document.getElementById("chart-rules").innerHTML = seen.map(function (instrument) {
-                    var group = ruleRows.filter(function (row) { return row.instrument === instrument; }).sort(function (a, b) { return b.value - a.value; });
-                    return "<section class=\"eco-group\"><h3>" + esc(instrument) + "</h3>" + bars(group, ruleScale) + "</section>";
-                }).join("") + "<p class=\"eco-meta\">Hornet has no rules cut on this clock, so it has no bar here.</p>";
-                document.getElementById("eco-rule-test").textContent = scan.rule_test || "";
-                document.getElementById("eco-jurisdiction").textContent = scan.jurisdiction || "";
-                var gov = data.governance || {};
-                var landingOrder = ["bitcoin-core", "knots", "bitcoin-rs", "satd", "blvm", "libbitcoin", "hornet", "floresta", "rbitcoin", "btcd"];
-                var board = {
-                    "bitcoin-core": { operating: "Informal oligarchy", rule: "Norm. No written sanction.", href: "https://secsovereign.github.io/articles/bitcoin-has-governance/", link: "The long article" },
-                    "knots": { operating: "One maintainer and a merge script", rule: "The contributing file is Core's." },
-                    "bitcoin-rs": { operating: "One account", rule: "Not read as a consequence." },
-                    "satd": { operating: "One account", rule: "Not read." },
-                    "blvm": { operating: "One writer. The written rule is separate.", rule: "Designed, not running.", href: "compact.html", link: "The written rules" },
-                    "libbitcoin": { operating: "One maintainer", rule: "Not read as a consequence." },
-                    "hornet": { operating: "One account", rule: "No contributing file." },
-                    "floresta": { operating: "Largest share under half", rule: "Not read. Landing only." },
-                    "rbitcoin": { operating: "Largest share under half", rule: "Not read. Landing only." },
-                    "btcd": { operating: "Largest share under half", rule: "Not read. Landing only." }
-                };
-                var bySlug = {};
-                (gov.landing || []).forEach(function (row) { bySlug[row.slug] = row; });
-                var historyByName = {};
-                (gov.history || []).forEach(function (item) { historyByName[item.name] = item; });
-                function categoryBits(name) {
-                    var bits = [];
-                    (scan.categories || []).forEach(function (cat) {
-                        (cat.items || []).forEach(function (item) {
-                            if (item.name === name) bits.push("<p><span class=\"eco-meta\">" + esc(cat.title) + "</span><br>" + esc(item.text) + "</p>");
-                        });
-                    });
-                    return bits.join("");
-                }
-                function recordedProcess(slug) {
-                    return (data.process_methods || []).filter(function (method) {
-                        return (method.cells || []).some(function (cell) { return cell.slug === slug && cell.status === "recorded"; });
-                    }).map(function (method) {
-                        var cell = method.cells.filter(function (item) { return item.slug === slug; })[0];
-                        return "<li>" + esc(method.name) + ". " + esc(cell.text) + ". " + esc(method.window) + ".</li>";
-                    }).join("");
-                }
-                document.getElementById("chart-inst").innerHTML = "<div class=\"eco-scroll\" tabindex=\"0\"><table class=\"eco-board\"><caption>Catalog order, then the three directory rows. A blank is not measured. Commits and merges stay in different cells.</caption><thead><tr><th scope=\"col\">Implementation</th><th scope=\"col\">Operating record</th><th scope=\"col\">Who lands the work</th><th scope=\"col\">Written rule</th></tr></thead><tbody>" + landingOrder.map(function (slug) {
-                    var row = bySlug[slug];
-                    var fact = board[slug] || { operating: "Not classified", rule: "Not read." };
-                    if (!row) return "";
-                    var lands = row.instrument === "merges" ? shareText(row.share) + " of merges since 2022. " + row.who : shareText(row.share) + " of commits. " + row.who;
-                    var past = historyByName[row.name];
-                    var process = recordedProcess(slug);
-                    var link = fact.href ? "<p><a href=\"" + esc(fact.href) + "\">" + esc(fact.link) + "</a></p>" : "";
-                    var open = "<details><summary>The record</summary>" + (past ? "<p>" + esc(past.text) + "</p><p class=\"eco-meta\">" + esc(past.basis) + "</p>" : "") + categoryBits(row.name) + (process ? "<ul>" + process + "</ul>" : "") + link + "</details>";
-                    var nameCell = row.slug === internal ? "<th scope=\"row\" class=\"internal\">" + esc(row.name) + "</th>" : "<th scope=\"row\">" + esc(row.name) + "</th>";
-                    return "<tr>" + nameCell + "<td data-label=\"Operating record\">" + esc(fact.operating) + "</td><td data-label=\"Who lands the work\">" + esc(lands) + (row.span ? "<br><span class=\"eco-meta\">" + esc(row.span) + "</span>" : "") + "</td><td data-label=\"Written rule\">" + esc(fact.rule) + "</td></tr><tr><td class=\"eco-open\" colspan=\"4\">" + open + "</td></tr>";
-                }).join("") + "</tbody></table></div>";
-                var commonsLand = bySlug[internal];
-                var written = data.written_rule;
-                document.getElementById("eco-inst-lead").textContent = (commonsLand ? commonsLand.who + ". " : "") + (written ? "The written rule is " + written.text + ". " : "") + (gov.status || "");
-                document.getElementById("eco-gov-status").textContent = gov.status || "";
-                document.getElementById("eco-gov-quorum").textContent = gov.quorum || "";
-                document.getElementById("eco-layer-note").textContent = gov.layer_note || "";
-                document.getElementById("chart-layers").innerHTML = "<ul class=\"eco-layers\">" + (gov.layers || []).map(function (layer) {
-                    var review = layer.review_period_days + "-day review";
-                    if (layer.consensus_review_period_days) review += ", " + layer.consensus_review_period_days + "-day consensus review";
-                    return "<li><strong>" + esc((layer.repositories || []).join(", ")) + "</strong><span>" + esc(layer.signatures_required + " of " + layer.signatures_total) + ". " + esc(review) + ".</span><span class=\"eco-meta\">" + esc(layer.name) + ". " + esc(layer.purpose || "") + "</span></li>";
-                }).join("") + "</ul>";
-                var sizeMethods = methods.filter(function (m) { return m.compare === "same-counter"; });
-                var cutMethods = methods.filter(function (m) { return m.compare === "same-profile"; });
-                document.getElementById("eco-size").innerHTML = wideTable(trees, sizeMethods, "One counter on every tree. A line count, a ratio, and a file count are different rows.") + notes(sizeMethods);
-                document.getElementById("eco-cuts").innerHTML = byInstrument(trees).map(function (g) {
-                    var shallow = g.trees.filter(function (t) { return t.shallow; }).map(function (t) { return t.name; });
-                    var shallowNote = shallow.length ? "<p>" + esc(englishList(shallow)) + (shallow.length === 1 ? " is a shallow checkout. The line counter still reads the files present." : " are shallow checkouts. The line counter still reads the files present.") + "</p>" : "";
-                    return "<section><h3>" + esc(g.name) + "</h3>" + shallowNote + wideTable(g.trees, cutMethods, "Rows in " + g.name + " only.") + "</section>";
-                }).join("") + notes(cutMethods);
-                document.getElementById("eco-history-note").textContent = gov.history_note || "";
-                document.getElementById("eco-history").innerHTML = (gov.history || []).map(function (item) {
-                    return "<article class=\"eco-finding\"><h4>" + esc(item.name) + "</h4><p>" + esc(item.text) + "</p><p class=\"eco-meta\">" + esc(item.basis) + "</p></article>";
-                }).join("");
-                document.getElementById("eco-lead").textContent = sizeRows[0].name + " has the largest program, at " + sizeRows[0].text + " lines. Implementation minus tooling.";
-                document.getElementById("eco-omitted").textContent = data.omitted || "";
-            })
-            .catch(function () {
-                document.getElementById("eco-status").textContent = "This week's file is not on the site yet.";
+                rows.forEach(function (r) { body.appendChild(r); });
+                Object.keys(heads).forEach(function (k) {
+                    if (k === key) heads[k].setAttribute("aria-sort", "descending");
+                    else heads[k].removeAttribute("aria-sort");
+                });
+                caption.textContent = "Sorted by " + keys[key].toLowerCase() + (key === "rules" ? ", within each cut" : "") + ". Bars in a column share one scale. Rules share bars share a scale, but each cut is its own group.";
+                Array.prototype.forEach.call(document.querySelectorAll(".eco-jump a"), function (a) {
+                    if (a.getAttribute("href") === "#" + key) a.setAttribute("aria-current", "true");
+                    else if (keys[a.getAttribute("href").slice(1)]) a.removeAttribute("aria-current");
+                });
+                return announce;
+            }
+            // Jump links for the five comparisons sort the table and bring it into view.
+            Array.prototype.forEach.call(document.querySelectorAll(".eco-jump a"), function (a) {
+                var key = a.getAttribute("href").slice(1);
+                if (!keys[key]) return;
+                a.addEventListener("click", function (ev) {
+                    ev.preventDefault();
+                    sortBy(key);
+                    history.replaceState(null, "", "#" + key);
+                    document.getElementById("compare").scrollIntoView();
+                    table.focus && heads[key].querySelector("button").focus({ preventScroll: true });
+                });
             });
+            var start = location.hash.slice(1);
+            if (keys[start]) {
+                sortBy(start);
+                requestAnimationFrame(function () { document.getElementById("compare").scrollIntoView(); });
+            }
+            // Show filter: one toggle per implementation, applied to both boards.
+            var names = {};
+            Array.prototype.forEach.call(document.querySelectorAll("#eco-cmp tbody tr, #chart-inst tbody tr:not(.eco-open-row)"), function (tr) {
+                var slug = tr.getAttribute("data-slug");
+                if (slug && !names[slug]) names[slug] = tr.cells[0].firstChild.textContent.trim();
+            });
+            var chips = document.getElementById("eco-chips");
+            var hidden = {};
+            Object.keys(names).forEach(function (slug) {
+                var b = document.createElement("button");
+                b.type = "button";
+                b.className = "eco-chip";
+                b.textContent = names[slug];
+                b.setAttribute("aria-pressed", "true");
+                b.addEventListener("click", function () {
+                    hidden[slug] = !hidden[slug];
+                    b.setAttribute("aria-pressed", hidden[slug] ? "false" : "true");
+                    Array.prototype.forEach.call(document.querySelectorAll("tr[data-slug=\"" + slug + "\"]"), function (tr) { tr.hidden = !!hidden[slug]; });
+                });
+                chips.appendChild(b);
+            });
+            var all = document.createElement("button");
+            all.type = "button";
+            all.className = "eco-chip eco-chip-reset";
+            all.textContent = "Show all";
+            all.addEventListener("click", function () {
+                hidden = {};
+                Array.prototype.forEach.call(chips.querySelectorAll("[aria-pressed]"), function (b) { b.setAttribute("aria-pressed", "true"); });
+                Array.prototype.forEach.call(document.querySelectorAll("tr[data-slug]"), function (tr) { tr.hidden = false; });
+            });
+            chips.appendChild(all);
+            document.getElementById("eco-tools").hidden = false;
+        })();
     </script>
 </body>
 </html>
