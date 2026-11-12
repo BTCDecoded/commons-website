@@ -82,7 +82,7 @@
       "name": "BLVM",
       "side": "internal",
       "profile": "rust-workspace",
-      "instrument": "crate-role cut",
+      "instrument": "crate-role cut not remade",
       "commit": "36bb40c7e9a3f805274fa7e1bda30d0a6c082560",
       "shallow": false,
       "values": {
@@ -102,14 +102,16 @@
           "status": "measured"
         },
         "rules_share": {
-          "value": 10.7,
-          "text": "10.7%",
-          "status": "measured"
+          "value": null,
+          "text": "not measured",
+          "status": "not-measured",
+          "note": "The crate-role map used for the earlier 10.7% / 0.0% figures was not found, so these cells were not recomputed for the composite crate set and are not measured. The previous numbers are not kept, because they described a different crate set."
         },
         "mixed_share": {
-          "value": 0,
-          "text": "0.0%",
-          "status": "measured"
+          "value": null,
+          "text": "not measured",
+          "status": "not-measured",
+          "note": "The crate-role map used for the earlier 10.7% / 0.0% figures was not found, so these cells were not recomputed for the composite crate set and are not measured. The previous numbers are not kept, because they described a different crate set."
         },
         "test_per_implementation": {
           "value": 0.63,
@@ -187,7 +189,7 @@
           "role": "tooling"
         }
       ],
-      "size_method": "tokei 14 code lines in programming languages. Default node first-party crates plus blvm-sdk (blvm-storage-fence is in the node tree; blvm-sdk-macros is in the sdk tree). blvm-spec-lock non-test lines are tooling; its tests count as tests. A Rust file named *_test.rs or *_tests.rs, a file under tests/, test/, fuzz/, bench(es)/, or e2e/, and lines inside a #[cfg(test)] or #[cfg(all(..., test))] item count as tests. Vendored and locale: none. Script: scripts/measure-ecosystem-metrics.py. Measured 2026-11-12. The crate-role cut (rules share, left mixed) was not rerun; those two cells keep the previous reading."
+      "size_method": "tokei 14 code lines in programming languages. Default node first-party crates plus blvm-sdk (blvm-storage-fence is in the node tree; blvm-sdk-macros is in the sdk tree). blvm-spec-lock non-test lines are tooling; its tests count as tests. A Rust file named *_test.rs or *_tests.rs, a file under tests/, test/, fuzz/, bench(es)/, or e2e/, and lines inside a #[cfg(test)] or #[cfg(all(..., test))] item count as tests. Vendored and locale: none. Script: scripts/measure-ecosystem-metrics.py. Measured 2026-11-12. The crate-role cut (rules share, left mixed) was not remade: the role map was not found, so those two cells are not measured rather than kept from the previous crate set."
     },
     {
       "slug": "bitcoin-core",

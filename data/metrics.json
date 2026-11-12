@@ -5,14 +5,14 @@
   "window_end": "2026-11-12",
   "window_label": "last 12 months",
   "methods": {
-    "test_split": "tokei 14 code lines in programming languages only. A file under tests/, test/, e2e/, qa/, or functional/, or named *_test/_tests/test_*, counts as tests. Rust lines inside a #[cfg(test)] or #[cfg(all(..., test))] item count as tests. Partition: fuzz paths (fuzz/, fuzz_targets/, src/test/fuzz/); property (path or name contains property/proptest/quickcheck/hypothesis/orange_paper_property); C++ src/test as unit; remaining integration dirs as integration; other in-source tests as unit. Benches under bench(es)/ are grouped with unit. Vendored and locale paths are excluded.",
-    "fuzz_targets": "Count of cargo-fuzz targets in fuzz/fuzz_targets/*.rs (excluding mod.rs) plus Bitcoin Core-style src/test/fuzz/*.cpp (excluding util helpers). Measured at the pinned checkout.",
+    "test_split": "tokei 14 code lines in programming languages only. A file under tests/, test/, e2e/, qa/, or functional/, or named *_test/_tests/test_*, counts as tests. Rust lines inside a #[cfg(test)] or #[cfg(all(..., test))] item count as tests. Partition: fuzz paths (fuzz/, fuzz_targets/, src/test/fuzz/); property (path or name contains property/proptest/quickcheck/hypothesis/orange_paper_property); in-source tests (files next to program sources, including in-file #[cfg(test)] and C++ src/test); test-folder tests (remaining files under tests/, test/, e2e/, qa/, or functional/). This is a folder split, not a unit-vs-integration classification. Benches under bench(es)/ are grouped with in-source tests. Vendored and locale paths are excluded. test_insource / test_folder are the canonical fields; test_unit / test_integration are aliases of those values.",
+    "fuzz_targets": "Declared fuzz targets at the pin, not a count of files in a fuzz directory. C++: invocations of the FUZZ_TARGET( macro, excluding the #define in fuzz.h. Go: func FuzzXxx(f *testing.F). Rust: cargo-fuzz [[bin]] entries when a fuzz Cargo.toml is present, otherwise fuzz_target! uses (the two Rust counts match on every tree measured here).",
     "vector_files": "Files whose path or name looks like a test vector (vector, tx_valid, tx_invalid, script_tests, sighash, bipN) with suffix .json, .csv, or .hex.",
     "spec_files": "Documentation or model files whose name looks like a spec (spec, THE_ORANGE_PAPER, orange paper, bipN) with suffix .md, .rst, .txt, .lean, or .tex. LICENSE and contributing files are excluded.",
-    "authors_12m": "Unique git author names (%aN) on the landing-share repo set from 2025-11-12 to 2026-11-12 inclusive. Names are not merged. A shallow clone that does not reach the window start is not measured.",
+    "authors_12m": "Human commit authors on the landing-share repo set from 2025-11-12 to 2026-11-12 inclusive. Aliases are merged through the committed mailmap data/author-mailmap (for example BLVM's Josh / SecSov / Secure Sovereign, Hornet's Toby Sharp mailboxes, Bit-Block's Dimitri names). Bots and agents are excluded: any name or email containing [bot], merge-script, github-actions, dependabot, Cursor Agent, Claude, Grok Bot Engineer, Devin AI, OpenAI, and other obvious agent identities (rbitcoin-grok, Tau Agent, and similar). Unique names are compared case-insensitively after the mailmap. A shallow clone that does not reach the window start is not measured.",
     "releases_12m": "Git tags whose creatordate falls in 2025-11-12 to 2026-11-12. Annotated tags use the tagger date; lightweight tags use the tagged commit date.",
     "ci_workflows": "Number of .github/workflows/*.{yml,yaml} files at the pin.",
-    "ci_jobs": "GitHub Actions jobs at the pin, expanding a static matrix of lists (including include/, minus exclude/). Dynamic ${{ }} matrices are not expanded and are noted.",
+    "ci_jobs": "GitHub Actions jobs at the pin, expanding a static matrix of lists (an include-only matrix is just the include rows, not one implicit job plus those rows; minus exclude/). A fromJSON(needs.job.outputs.x) matrix is expanded when the default non-PR value is written in the same workflow (suite=all, schedule/push flavors and arches, default mutant PARTS) or when the producer reads this tree's fuzz/Cargo.toml [[bin]] list. Unquoted run: scalars that break PyYAML are quoted and retried. If a matrix still cannot be expanded or a file still fails to parse, the cell is partial and the value is a lower bound.",
     "plugin_system": "yes / no / partial from the pinned tree's docs. own-team optional modules and independently maintained modules; not found when no source.",
     "blvm_size": "Default node first-party crates plus blvm-sdk (blvm-storage-fence lives in the node tree; blvm-sdk-macros lives in the sdk tree). blvm-spec-lock non-test lines are tooling. Tests include spec-lock tests. Same tokei 14 and #[cfg(test)] rules as test_split."
   },
@@ -76,17 +76,31 @@
         "value": 156,
         "text": "156",
         "status": "measured",
-        "note": "node + protocol + consensus + muhash + sdk (same set as the verification cell)"
+        "note": "Declared fuzz targets at the pin. blvm-node: 9 cargo-fuzz [[bin]]; blvm-protocol: 80 cargo-fuzz [[bin]]; blvm-consensus: 63 cargo-fuzz [[bin]]; blvm-muhash: 2 cargo-fuzz [[bin]]; blvm-sdk: 2 cargo-fuzz [[bin]] (same crate set as the verification cell)"
+      },
+      "test_insource": {
+        "value": 86744,
+        "text": "86,744",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)]); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
+      },
+      "test_folder": {
+        "value": 94585,
+        "text": "94,585",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)]); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_unit": {
         "value": 86744,
         "text": "86,744",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_insource. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)]); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_integration": {
         "value": 94585,
         "text": "94,585",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_folder. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)]); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_fuzz": {
         "value": 7185,
@@ -114,10 +128,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 8,
-        "text": "8",
+        "value": 2,
+        "text": "2",
         "status": "measured",
-        "note": "landing share repo: blvm-node only. oldest visible 2025-10-19"
+        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 8. landing share repo: blvm-node only. oldest visible 2025-10-19"
       },
       "releases_12m": {
         "value": 85,
@@ -134,7 +148,7 @@
         "value": 13,
         "text": "13",
         "status": "measured",
-        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists"
+        "note": "GitHub Actions workflow files at the pin. Jobs expand a static matrix of lists, and a fromJSON matrix when the default non-PR value is in the same file or is the tree's cargo-fuzz [[bin]] list."
       },
       "repo_set": "authors/releases/CI: landing share (blvm-node). test/fuzz/vectors: composite crate set",
       "plugin_system": {
@@ -160,19 +174,34 @@
       "commit": "f0de87f040621468b956f01f526a43a010310501",
       "measured_at": "2026-11-12",
       "fuzz_targets": {
-        "value": 140,
-        "text": "140",
-        "status": "measured"
+        "value": 206,
+        "text": "206",
+        "status": "measured",
+        "note": "Declared fuzz targets at the pin. bitcoin-core: 206 FUZZ_TARGET("
+      },
+      "test_insource": {
+        "value": 48500,
+        "text": "48,500",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
+      },
+      "test_folder": {
+        "value": 70107,
+        "text": "70,107",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_unit": {
         "value": 48500,
         "text": "48,500",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_insource. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_integration": {
         "value": 70107,
         "text": "70,107",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_folder. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_fuzz": {
         "value": 22063,
@@ -200,10 +229,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 153,
-        "text": "153",
+        "value": 144,
+        "text": "144",
         "status": "measured",
-        "note": "oldest visible 2009-08-30"
+        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 153. oldest visible 2009-08-30"
       },
       "releases_12m": {
         "value": 34,
@@ -217,10 +246,10 @@
         "status": "measured"
       },
       "ci_jobs": {
-        "value": 38,
-        "text": "38",
+        "value": 37,
+        "text": "37",
         "status": "measured",
-        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists"
+        "note": "GitHub Actions workflow files at the pin. Jobs expand a static matrix of lists, and a fromJSON matrix when the default non-PR value is in the same file or is the tree's cargo-fuzz [[bin]] list."
       },
       "repo_set": "landing share repo (single tree)",
       "plugin_system": {
@@ -246,19 +275,34 @@
       "commit": "7936c49b6739640eb71e55eb2b5f720179b9c3b4",
       "measured_at": "2026-11-12",
       "fuzz_targets": {
-        "value": 130,
-        "text": "130",
-        "status": "measured"
+        "value": 186,
+        "text": "186",
+        "status": "measured",
+        "note": "Declared fuzz targets at the pin. knots-legacy: 186 FUZZ_TARGET("
+      },
+      "test_insource": {
+        "value": 41763,
+        "text": "41,763",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
+      },
+      "test_folder": {
+        "value": 68633,
+        "text": "68,633",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_unit": {
         "value": 41763,
         "text": "41,763",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_insource. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_integration": {
         "value": 68633,
         "text": "68,633",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_folder. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_fuzz": {
         "value": 17814,
@@ -286,10 +330,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 47,
-        "text": "47",
+        "value": 45,
+        "text": "45",
         "status": "measured",
-        "note": "oldest visible 2009-08-30"
+        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 47. oldest visible 2009-08-30"
       },
       "releases_12m": {
         "value": 1,
@@ -303,10 +347,10 @@
         "status": "measured"
       },
       "ci_jobs": {
-        "value": 29,
-        "text": "29",
+        "value": 27,
+        "text": "27",
         "status": "measured",
-        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists"
+        "note": "GitHub Actions workflow files at the pin. Jobs expand a static matrix of lists, and a fromJSON matrix when the default non-PR value is in the same file or is the tree's cargo-fuzz [[bin]] list."
       },
       "repo_set": "landing share repo (single tree)",
       "plugin_system": {
@@ -332,19 +376,34 @@
       "commit": "c52f1161349e6a76463156fea39bce191951b915",
       "measured_at": "2026-11-12",
       "fuzz_targets": {
-        "value": 130,
-        "text": "130",
-        "status": "measured"
+        "value": 185,
+        "text": "185",
+        "status": "measured",
+        "note": "Declared fuzz targets at the pin. bit-block: 185 FUZZ_TARGET("
+      },
+      "test_insource": {
+        "value": 41184,
+        "text": "41,184",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
+      },
+      "test_folder": {
+        "value": 67215,
+        "text": "67,215",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_unit": {
         "value": 41184,
         "text": "41,184",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_insource. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_integration": {
         "value": 67215,
         "text": "67,215",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_folder. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_fuzz": {
         "value": 17793,
@@ -372,10 +431,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 2,
-        "text": "2",
+        "value": 1,
+        "text": "1",
         "status": "measured",
-        "note": "oldest visible 2025-08-23"
+        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 2. oldest visible 2025-08-23"
       },
       "releases_12m": {
         "value": 2,
@@ -389,10 +448,10 @@
         "status": "measured"
       },
       "ci_jobs": {
-        "value": 5,
-        "text": "5",
+        "value": 4,
+        "text": "4",
         "status": "measured",
-        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists"
+        "note": "GitHub Actions workflow files at the pin. Jobs expand a static matrix of lists, and a fromJSON matrix when the default non-PR value is in the same file or is the tree's cargo-fuzz [[bin]] list."
       },
       "repo_set": "landing share repo (single tree)",
       "plugin_system": {
@@ -418,19 +477,34 @@
       "commit": "f0393f2688656ba544b40fe508db909152201c18",
       "measured_at": "2026-11-12",
       "fuzz_targets": {
-        "value": 141,
-        "text": "141",
-        "status": "measured"
+        "value": 210,
+        "text": "210",
+        "status": "measured",
+        "note": "Declared fuzz targets at the pin. bitcoin-roots: 210 FUZZ_TARGET("
+      },
+      "test_insource": {
+        "value": 51210,
+        "text": "51,210",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
+      },
+      "test_folder": {
+        "value": 80972,
+        "text": "80,972",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_unit": {
         "value": 51210,
         "text": "51,210",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_insource. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_integration": {
         "value": 80972,
         "text": "80,972",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_folder. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_fuzz": {
         "value": 22278,
@@ -458,10 +532,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 154,
-        "text": "154",
+        "value": 145,
+        "text": "145",
         "status": "measured",
-        "note": "oldest visible 2009-08-30"
+        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 154. oldest visible 2009-08-30"
       },
       "releases_12m": {
         "value": 14,
@@ -475,10 +549,10 @@
         "status": "measured"
       },
       "ci_jobs": {
-        "value": 32,
-        "text": "32",
+        "value": 35,
+        "text": "35",
         "status": "measured",
-        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists. nightly.yml/linux-assurance: matrix not expanded; nightly.yml/sanitizers: matrix not expanded"
+        "note": "GitHub Actions workflow files at the pin. Jobs expand a static matrix of lists, and a fromJSON matrix when the default non-PR value is in the same file or is the tree's cargo-fuzz [[bin]] list. nightly.yml/linux-assurance: nightly.yml: default suite=all linux matrix; nightly.yml/sanitizers: nightly.yml: default suite=all sanitizer matrix"
       },
       "repo_set": "landing share repo (single tree)",
       "plugin_system": {
@@ -506,17 +580,32 @@
       "fuzz_targets": {
         "value": 23,
         "text": "23",
-        "status": "measured"
+        "status": "measured",
+        "note": "Declared fuzz targets at the pin. bitcoin-rs: 23 cargo-fuzz [[bin]]"
+      },
+      "test_insource": {
+        "value": 43050,
+        "text": "43,050",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
+      },
+      "test_folder": {
+        "value": 111620,
+        "text": "111,620",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_unit": {
         "value": 43050,
         "text": "43,050",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_insource. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_integration": {
         "value": 111620,
         "text": "111,620",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_folder. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_fuzz": {
         "value": 3813,
@@ -544,10 +633,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 32,
-        "text": "32",
+        "value": 14,
+        "text": "14",
         "status": "measured",
-        "note": "repository begins 2026-05-19 (inside window; full history)"
+        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 32. repository begins 2026-05-19 (inside window; full history)"
       },
       "releases_12m": {
         "value": 0,
@@ -561,10 +650,10 @@
         "status": "measured"
       },
       "ci_jobs": {
-        "value": 27,
-        "text": "27",
+        "value": 54,
+        "text": "54",
         "status": "measured",
-        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists. main.yml: parse error; daily-fuzz.yml/fuzz: matrix not expanded"
+        "note": "GitHub Actions workflow files at the pin. Jobs expand a static matrix of lists, and a fromJSON matrix when the default non-PR value is in the same file or is the tree's cargo-fuzz [[bin]] list. main.yml: parsed after quoting unquoted run: scalars; daily-fuzz.yml/fuzz: target:daily-fuzz.yml: matrix from fuzz/Cargo.toml [[bin]] (23)"
       },
       "repo_set": "landing share repo (single tree)",
       "plugin_system": {
@@ -592,17 +681,32 @@
       "fuzz_targets": {
         "value": 7,
         "text": "7",
-        "status": "measured"
+        "status": "measured",
+        "note": "Declared fuzz targets at the pin. satd: 7 cargo-fuzz [[bin]]"
+      },
+      "test_insource": {
+        "value": 114716,
+        "text": "114,716",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
+      },
+      "test_folder": {
+        "value": 56124,
+        "text": "56,124",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_unit": {
         "value": 114716,
         "text": "114,716",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_insource. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_integration": {
         "value": 56124,
         "text": "56,124",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_folder. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_fuzz": {
         "value": 626,
@@ -630,10 +734,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 2,
-        "text": "2",
+        "value": 1,
+        "text": "1",
         "status": "measured",
-        "note": "repository begins 2026-03-16 (inside window; full history)"
+        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 2. repository begins 2026-03-16 (inside window; full history)"
       },
       "releases_12m": {
         "value": 20,
@@ -647,10 +751,10 @@
         "status": "measured"
       },
       "ci_jobs": {
-        "value": 81,
-        "text": "81",
+        "value": 82,
+        "text": "82",
         "status": "measured",
-        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists. appliance.yml/image: matrix not expanded; mutants.yml/mutate: matrix not expanded"
+        "note": "GitHub Actions workflow files at the pin. Jobs expand a static matrix of lists, and a fromJSON matrix when the default non-PR value is in the same file or is the tree's cargo-fuzz [[bin]] list. appliance.yml/image: flavor:appliance.yml: default flavors ['core', 'desktop']; arch:appliance.yml: default arches ['amd64', 'arm64']; mutants.yml/mutate: part:mutants.yml: default 4 mutant parts from PARTS"
       },
       "repo_set": "landing share repo (single tree)",
       "plugin_system": {
@@ -678,17 +782,32 @@
       "fuzz_targets": {
         "value": 0,
         "text": "0",
-        "status": "measured"
+        "status": "measured",
+        "note": "Declared fuzz targets at the pin. none found"
+      },
+      "test_insource": {
+        "value": 10,
+        "text": "10",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
+      },
+      "test_folder": {
+        "value": 109815,
+        "text": "109,815",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_unit": {
         "value": 10,
         "text": "10",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_insource. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_integration": {
         "value": 109815,
         "text": "109,815",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_folder. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_fuzz": {
         "value": 0,
@@ -716,10 +835,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 17,
-        "text": "17",
+        "value": 10,
+        "text": "10",
         "status": "measured",
-        "note": "oldest visible 2011-05-19"
+        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 17. oldest visible 2011-05-19"
       },
       "releases_12m": {
         "value": 9,
@@ -733,10 +852,10 @@
         "status": "measured"
       },
       "ci_jobs": {
-        "value": 26,
-        "text": "26",
+        "value": 22,
+        "text": "22",
         "status": "measured",
-        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists"
+        "note": "GitHub Actions workflow files at the pin. Jobs expand a static matrix of lists, and a fromJSON matrix when the default non-PR value is in the same file or is the tree's cargo-fuzz [[bin]] list."
       },
       "repo_set": "landing share repo (single tree)",
       "plugin_system": {
@@ -764,17 +883,32 @@
       "fuzz_targets": {
         "value": 0,
         "text": "0",
-        "status": "measured"
+        "status": "measured",
+        "note": "Declared fuzz targets at the pin. none found"
+      },
+      "test_insource": {
+        "value": 127,
+        "text": "127",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
+      },
+      "test_folder": {
+        "value": 7156,
+        "text": "7,156",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_unit": {
         "value": 127,
         "text": "127",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_insource. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_integration": {
         "value": 7156,
         "text": "7,156",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_folder. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_fuzz": {
         "value": 0,
@@ -802,10 +936,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 2,
-        "text": "2",
+        "value": 1,
+        "text": "1",
         "status": "measured",
-        "note": "oldest visible 2025-05-03"
+        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 2. oldest visible 2025-05-03"
       },
       "releases_12m": {
         "value": 0,
@@ -850,17 +984,32 @@
       "fuzz_targets": {
         "value": 15,
         "text": "15",
-        "status": "measured"
+        "status": "measured",
+        "note": "Declared fuzz targets at the pin. floresta: 15 cargo-fuzz [[bin]]"
+      },
+      "test_insource": {
+        "value": 9436,
+        "text": "9,436",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
+      },
+      "test_folder": {
+        "value": 12227,
+        "text": "12,227",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_unit": {
         "value": 9436,
         "text": "9,436",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_insource. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_integration": {
         "value": 12227,
         "text": "12,227",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_folder. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_fuzz": {
         "value": 779,
@@ -888,10 +1037,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 47,
-        "text": "47",
+        "value": 44,
+        "text": "44",
         "status": "measured",
-        "note": "author history from a blobless clone, shallow; oldest visible 2025-11-19 (window starts 2025-11-12; count may miss the first days)"
+        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 47. author history from a blobless clone, oldest visible 2025-10-04"
       },
       "releases_12m": {
         "value": 4,
@@ -905,10 +1054,10 @@
         "status": "measured"
       },
       "ci_jobs": {
-        "value": 16,
-        "text": "16",
+        "value": 15,
+        "text": "15",
         "status": "measured",
-        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists"
+        "note": "GitHub Actions workflow files at the pin. Jobs expand a static matrix of lists, and a fromJSON matrix when the default non-PR value is in the same file or is the tree's cargo-fuzz [[bin]] list."
       },
       "repo_set": "landing share repo (single tree)",
       "plugin_system": {
@@ -936,17 +1085,32 @@
       "fuzz_targets": {
         "value": 21,
         "text": "21",
-        "status": "measured"
+        "status": "measured",
+        "note": "Declared fuzz targets at the pin. rbitcoin: 21 cargo-fuzz [[bin]]"
+      },
+      "test_insource": {
+        "value": 1829,
+        "text": "1,829",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
+      },
+      "test_folder": {
+        "value": 196931,
+        "text": "196,931",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_unit": {
         "value": 1829,
         "text": "1,829",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_insource. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_integration": {
         "value": 196931,
         "text": "196,931",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_folder. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_fuzz": {
         "value": 8745,
@@ -974,10 +1138,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 38,
-        "text": "38",
+        "value": 27,
+        "text": "27",
         "status": "measured",
-        "note": "author history from a blobless clone, repository begins 2026-07-14 (inside window; full history)"
+        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 38. author history from a blobless clone, repository begins 2026-07-14 (inside window; full history)"
       },
       "releases_12m": {
         "value": 10,
@@ -991,10 +1155,10 @@
         "status": "measured"
       },
       "ci_jobs": {
-        "value": 57,
-        "text": "57",
+        "value": 54,
+        "text": "54",
         "status": "measured",
-        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists"
+        "note": "GitHub Actions workflow files at the pin. Jobs expand a static matrix of lists, and a fromJSON matrix when the default non-PR value is in the same file or is the tree's cargo-fuzz [[bin]] list."
       },
       "repo_set": "landing share repo (single tree)",
       "plugin_system": {
@@ -1020,19 +1184,34 @@
       "commit": "dd169fe0c32a56087d28b92fff3b8cf4fb43477a",
       "measured_at": "2026-11-12",
       "fuzz_targets": {
+        "value": 3,
+        "text": "3",
+        "status": "measured",
+        "note": "Declared fuzz targets at the pin. btcd: 3 FuzzXxx"
+      },
+      "test_insource": {
+        "value": 67879,
+        "text": "67,879",
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
+      },
+      "test_folder": {
         "value": 0,
         "text": "0",
-        "status": "measured"
+        "status": "measured",
+        "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_unit": {
         "value": 67879,
         "text": "67,879",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_insource. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_integration": {
         "value": 0,
         "text": "0",
-        "status": "measured"
+        "status": "measured",
+        "note": "Deprecated alias of test_folder. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)] and C++ src/test); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_fuzz": {
         "value": 0,
@@ -1060,10 +1239,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 23,
-        "text": "23",
+        "value": 22,
+        "text": "22",
         "status": "measured",
-        "note": "author history from a blobless clone, shallow; oldest visible 2025-11-14 (window starts 2025-11-12; count may miss the first days)"
+        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 24. author history from a blobless clone, oldest visible 2025-10-27"
       },
       "releases_12m": {
         "value": 5,
@@ -1080,7 +1259,7 @@
         "value": 8,
         "text": "8",
         "status": "measured",
-        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists"
+        "note": "GitHub Actions workflow files at the pin. Jobs expand a static matrix of lists, and a fromJSON matrix when the default non-PR value is in the same file or is the tree's cargo-fuzz [[bin]] list."
       },
       "repo_set": "landing share repo (single tree)",
       "plugin_system": {
