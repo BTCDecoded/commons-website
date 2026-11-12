@@ -1077,5 +1077,104 @@
     "source": "governance/config/repository-layers.yml",
     "text": "6 of 7 signatures, 180-day review, 365-day consensus review"
   },
+  "governance": {
+    "status": "Phase 1 is current. Enforcement is off and the keys are test keys. The signature counts are the written rule.",
+    "quorum": "When enforcement is on, two of three governance nodes in a written set must each conclude that an action conforms before that action stands. Anyone may run a node and publish a conclusion. Only the written set binds. Changing that set is a Tier 5 governance-rule change. The two written Tier 5 pairs both remain.",
+    "source": "governance/config/repository-layers.yml",
+    "layers": [
+      {
+        "id": "layer_1_constitutional",
+        "purpose": "Constitutional documents and mathematical specifications",
+        "name": "Constitutional Layer",
+        "repositories": ["blvm-spec"],
+        "signatures_required": 6,
+        "signatures_total": 7,
+        "review_period_days": 180,
+        "consensus_review_period_days": 365
+      },
+      {
+        "id": "layer_2_constitutional",
+        "purpose": "Consensus proof implementations and the crates beneath them",
+        "name": "Constitutional Layer",
+        "repositories": ["blvm-consensus", "blvm-primitives", "blvm-secp256k1"],
+        "signatures_required": 6,
+        "signatures_total": 7,
+        "review_period_days": 180,
+        "consensus_review_period_days": 365
+      },
+      {
+        "id": "layer_3_implementation",
+        "purpose": "Core protocol implementation",
+        "name": "Implementation Layer",
+        "repositories": ["blvm-protocol"],
+        "signatures_required": 4,
+        "signatures_total": 5,
+        "review_period_days": 90
+      },
+      {
+        "id": "layer_4_application",
+        "purpose": "Reference implementation and applications",
+        "name": "Application Layer",
+        "repositories": ["blvm-node", "blvm"],
+        "signatures_required": 3,
+        "signatures_total": 5,
+        "review_period_days": 60
+      },
+      {
+        "id": "layer_5_extension",
+        "purpose": "Developer tools and extensions",
+        "name": "Extension Layer",
+        "repositories": ["blvm-sdk"],
+        "signatures_required": 2,
+        "signatures_total": 3,
+        "review_period_days": 14
+      }
+    ],
+    "history_note": "Each reading uses the history that tree actually has. Where the checkout is shallow, the count is the GitHub contributor total.",
+    "history": [
+      {
+        "slug": "blvm",
+        "name": "commons",
+        "text": "One author wrote 825 of 854 commits in blvm-node, all 141 commits in the blvm checkout, 231 of 296 in blvm-consensus, 165 of 167 in the governance repository, and 34 of 55 in blvm-spec. The layer table is the written rule. Enforcement is off, so that quorum is the rule on paper and the history is one writer.",
+        "basis": "git log. blvm-node is a complete history from 2025-10-19 to 2026-11-11. The blvm-consensus count treats securesovereigns@pm.me and the matching GitHub noreply address as one person. The other checkouts are shallow and begin in 2026."
+      },
+      {
+        "slug": "bitcoin-core",
+        "name": "Bitcoin Core",
+        "text": "Since 2022 one person, fanquake, merged 50.2% of pull requests, and three people merged 82.2%. The window is 5,747 merged pull requests. The contributing guide says anyone may offer review, tests, and patches, and that repository maintainers are responsible for merging pull requests.",
+        "basis": "Merge shares from findings/GOVERNANCE_FRAMES.md, the 2022+ window. The guide sentence is CONTRIBUTING.md at f0de87f040."
+      },
+      {
+        "slug": "knots",
+        "name": "Bitcoin Knots",
+        "text": "Since 2024 this checkout holds 10,594 commits. 4,532 are authored by merge-script, which tree-merges patches and bumps the Knots version. 1,341 are authored by Luke Dashjr. The next authors are Core committers the branch still carries. The contributing file is Core's.",
+        "basis": "git log --since=2024-01-01 on the Knots checkout at 5811235e3f. The checkout is marked shallow and the log still reaches 2009."
+      },
+      {
+        "slug": "bitcoin-rs",
+        "name": "bitcoin-rs",
+        "text": "The dev branch measured here runs from 2026-05-19 to 2026-11-06 and holds 7,592 commits. One GitHub account authored 5,714 of them and is the committer on 4,693. 926 commits name a pull request. A contributing file is in the tree.",
+        "basis": "git log on gosuda/bitcoin-rs dev at 9b8e91ae1. The checkout is not shallow, so this is the whole branch."
+      },
+      {
+        "slug": "satd",
+        "name": "satd",
+        "text": "GitHub records the repository from 2026-03-17. It attributes 1,228 of 1,263 contributor commits to one person, bkeroack. The other 35 are Dependabot.",
+        "basis": "GitHub contributors for epochbtc/satd, read 2026-11-11. The local checkout is shallow, so the reading uses the contributor total."
+      },
+      {
+        "slug": "libbitcoin",
+        "name": "libbitcoin",
+        "text": "GitHub attributes 8,145 of 10,489 commits on libbitcoin-system to one maintainer, Eric Voskuil, across 66 people. The repository dates from 2013. A code owners file is in the tree.",
+        "basis": "GitHub contributors for libbitcoin/libbitcoin-system, read 2026-11-11. The measured checkout is shallow and starts in 2026-07, so the reading uses the contributor total. The measured commit is 9f9cce3."
+      },
+      {
+        "slug": "hornet",
+        "name": "Hornet",
+        "text": "The repository holds 268 commits, from 2025-05-03 to 2026-04-15. All of them are Toby Sharp, under four email addresses. 32 commits name a pull request. The tree has no contributing file and no code owners file.",
+        "basis": "git log on tobysharp/hornet at 151462f. The checkout is not shallow."
+      }
+    ]
+  },
   "omitted": "Left off this page: attention effects E2, E3, E5, E7, and E12, and the size-adjusted residual. Comparison dumps do not host those effects the same way, and the residual intervals cover zero. They are not a weekly score."
 }
