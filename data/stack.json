@@ -120,8 +120,8 @@
       "direct_deps": 0,
       "deps_names": "None. Its secp256k1 code is its own, in src/crypto/secp256k1",
       "deps_source": "https://github.com/libbitcoin/libbitcoin-system/tree/9f9cce3086074840951cedf1d381f08112275bfd/src/crypto/secp256k1",
-      "vendored": "None found",
-      "vendored_source": null
+      "vendored": "None in the tree (0 lines). src/crypto/secp256k1 is first-party libbitcoin code",
+      "vendored_source": "https://github.com/libbitcoin/libbitcoin-system/tree/9f9cce3086074840951cedf1d381f08112275bfd/src/crypto/secp256k1"
     },
     {
       "slug": "hornet",
@@ -135,7 +135,7 @@
       "direct_deps": 1,
       "deps_names": "liburing",
       "deps_source": "https://github.com/tobysharp/hornet/blob/151462fa5ceece39c159674886dcfa6cfe9b1234/CMakeLists.txt",
-      "vendored": "None in the tree. googletest and benchmark are git submodules for tests",
+      "vendored": "None in the tree (0 lines). googletest and benchmark are git submodules for tests",
       "vendored_source": "https://github.com/tobysharp/hornet/tree/151462fa5ceece39c159674886dcfa6cfe9b1234/extern"
     },
     {
