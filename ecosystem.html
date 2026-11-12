@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self';">
     <title>Ecosystem</title>
-    <meta name="description" content="A weekly count of full-node trees, with commons in the first column.">
+    <meta name="description" content="Weekly size counts for full-node trees, grouped by the cut that measured them, and the written governance rule.">
     <link rel="canonical" href="https://thebitcoincommons.org/ecosystem.html" />
     <meta property="og:title" content="Ecosystem">
-    <meta property="og:description" content="A weekly count of full-node trees, with commons in the first column.">
+    <meta property="og:description" content="Weekly size counts for full-node trees, grouped by the cut that measured them, and the written governance rule.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://thebitcoincommons.org/ecosystem.html">
     <meta property="og:image" content="https://thebitcoincommons.org/assets/og-image.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Ecosystem">
-    <meta name="twitter:description" content="A weekly count of full-node trees, with commons in the first column.">
+    <meta name="twitter:description" content="Weekly size counts for full-node trees, grouped by the cut that measured them, and the written governance rule.">
     <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
     <link rel="stylesheet" href="style.css?v=25" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -206,6 +206,41 @@
             font-size: 0.85rem;
             color: #c4c4cc;
         }
+        .eco-stack { display: none; }
+        .eco-notes { margin: 0.75rem 0 0; }
+        .eco-notes summary { cursor: pointer; color: #c4c4cc; }
+        .eco-card {
+            border-top: 1px solid var(--rule);
+            padding: 1rem 0 0.25rem;
+        }
+        .eco-card h3 { margin: 0; font-size: 1.15rem; font-weight: 500; }
+        .eco-meta { color: #c4c4cc; font-size: 0.9rem; }
+        .eco-card-label {
+            margin: 0.85rem 0 0;
+            font-size: 0.78rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: #c4c4cc;
+            font-weight: 500;
+        }
+        .eco-card dl { margin: 0; }
+        .eco-card dt { margin-top: 0.7rem; color: #c4c4cc; font-size: 0.9rem; }
+        .eco-card dd {
+            margin: 0.1rem 0 0;
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            color: var(--text);
+        }
+        .eco-layers, .eco-finding ul { list-style: none; margin: 0; padding: 0; }
+        .eco-layers li, .eco-finding {
+            border-top: 1px solid var(--rule);
+            padding: 0.9rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        .eco-finding h4 { margin: 0; font-size: 1rem; }
+        .eco-finding ul li { padding: 0.35rem 0; }
         @media (max-width: 768px) {
             nav.site-nav { padding: 0 1rem; }
             .eco { padding: 1.5rem 1rem 3rem; }
@@ -223,8 +258,31 @@
             .footer-bottom { padding: 1rem; }
             .eco-pin { display: none; }
         }
-        @media (max-width: 420px) {
-            .footer-links { grid-template-columns: 1fr; }
+        @media (max-width: 480px) {
+            body { overflow-x: clip; }
+            nav.site-nav { padding: 0 0.75rem; }
+            .site-nav .nav-logo img { height: 28px; max-width: calc(100vw - 4.5rem); }
+            .site-nav .nav-menu[open] .nav-links {
+                position: static;
+                padding: 0.25rem 0 0.75rem;
+                border-bottom: 0;
+            }
+            .site-nav .nav-menu[open] .nav-links a {
+                display: flex;
+                align-items: center;
+                min-height: 44px;
+                width: 100%;
+                padding: 0;
+                font-size: 1rem;
+            }
+            .eco { padding: 1.25rem 0.75rem 2.5rem; }
+            .eco h1 { font-size: 1.7rem; }
+            #eco-wide { display: none; }
+            .eco-stack { display: block; }
+            .site-footer, .footer-links { grid-template-columns: 1fr; }
+            .footer-brand p { max-width: none; }
+            .site-footer { padding: 1.5rem 0.75rem 0.5rem; }
+            .footer-bottom { padding: 0.75rem; }
         }
     </style>
 </head>
@@ -265,32 +323,35 @@
     <main class="eco" id="content">
         <h1>Ecosystem</h1>
         <p>
-            A weekly count of full-node trees, with commons in the first column.
-            The same counters run on commons and on the other checkouts.
+            Weekly counts for full-node trees. Size rows share one counter.
+            A rules-share row stays inside the cut that produced it.
+            Governance is a reading of who lands commits in each tree, and the written rule for commons.
         </p>
         <p id="eco-status" role="status">Loading this week's file.</p>
 
-        <h2>This week</h2>
-        <div class="eco-scroll" tabindex="0" aria-label="This week's counts. Scroll sideways. The method name stays put.">
-            <table id="eco-trees"></table>
-        </div>
-        <p class="eco-scroll-hint">Scroll the numbers sideways. The method name stays put.</p>
+        <div id="eco-wide">
+            <h2>Size</h2>
+            <p>These rows use one counter on every tree. The figure is the size of the files in that checkout.</p>
+            <div id="eco-size"></div>
+            <p class="eco-scroll-hint">Scroll the numbers sideways. The method name stays put.</p>
 
-        <h2>Pull requests</h2>
+            <h2>Cuts</h2>
+            <p>Rules share and the share left mixed use the cut named on the group. A percentage in one group is a different instrument from a percentage in another group.</p>
+            <div id="eco-cuts"></div>
+        </div>
+        <div class="eco-stack" id="eco-stack"></div>
+
+        <h2>Governance</h2>
+        <p id="eco-gov-status"></p>
+        <p id="eco-gov-quorum"></p>
         <p>
-            These are the process counts the governance findings treat as worth keeping.
-            A cell is filled only from a named finding. “not measured” means this week’s job had no dump for that tree.
-        </p>
-        <div class="eco-scroll" tabindex="0" aria-label="Pull request counts. Scroll sideways. The method name stays put.">
-            <table id="eco-process"></table>
-        </div>
-        <p class="eco-scroll-hint">Scroll the numbers sideways. The method name stays put.</p>
-
-        <h2>Written rule</h2>
-        <p id="eco-rule">
-            The count is the size of each program. The approach is the written rule for who may change the specification, and how long review lasts.
             <a href="compact.html">The written rules</a> and <a href="whitepaper.html">the design argument</a> are the longer form.
         </p>
+        <h3>Who lands the commits</h3>
+        <p id="eco-history-note" class="eco-meta"></p>
+        <div id="eco-history"></div>
+        <h3>Written rule</h3>
+        <div id="eco-layers"></div>
         <p id="eco-omitted"></p>
     </main>
     <footer class="site-footer">
@@ -350,33 +411,78 @@
                 return "<td" + cls + ">" + esc(textFor(t)) + "</td>";
             }).join("") + "</tr>";
         }
+        function cellText(tree, method) {
+            var cell = tree.values && tree.values[method.id];
+            return cell ? cell.text : "not measured";
+        }
+        function byInstrument(trees) {
+            var order = [];
+            var map = {};
+            trees.forEach(function (t) {
+                var key = t.instrument || "unspecified";
+                if (!map[key]) { map[key] = []; order.push(key); }
+                map[key].push(t);
+            });
+            return order.map(function (key) { return { name: key, trees: map[key] }; });
+        }
+        function wideTable(trees, methods, caption) {
+            return "<div class=\"eco-scroll\" tabindex=\"0\"><table><caption>" + esc(caption) + "</caption>" + head(trees) + methods.map(function (m) {
+                return row(m.name, trees, function (t) { return cellText(t, m); });
+            }).join("") + "</table></div>";
+        }
+        function notes(methods) {
+            return "<details class=\"eco-notes\"><summary>What these rows count</summary><ul>" + methods.map(function (m) {
+                return "<li>" + esc(m.name) + ". " + esc(m.why) + "</li>";
+            }).join("") + "</ul></details>";
+        }
+        function englishList(names) {
+            if (names.length < 2) return names.join("");
+            if (names.length === 2) return names[0] + " or " + names[1];
+            return names.slice(0, -1).join(", ") + ", or " + names[names.length - 1];
+        }
+        function layerItem(layer) {
+            var repos = (layer.repositories || []).join(", ");
+            var sig = layer.signatures_required + " of " + layer.signatures_total + " signatures. " + layer.review_period_days + "-day review.";
+            if (layer.consensus_review_period_days) sig += " " + layer.consensus_review_period_days + "-day consensus review.";
+            var purpose = layer.purpose ? "<span>" + esc(layer.purpose) + "</span>" : "";
+            return "<li><strong>" + esc(layer.name) + "</strong>" + purpose + "<span>" + esc(repos) + "</span><span>" + esc(sig) + "</span></li>";
+        }
         fetch("data/implementations.json")
             .then(function (res) { if (!res.ok) throw new Error(String(res.status)); return res.json(); })
             .then(function (data) {
                 document.getElementById("eco-status").textContent = "Measured " + data.measured_at + ".";
                 var trees = data.trees || [];
-                var treeTable = document.getElementById("eco-trees");
-                var rules = (data.tree_methods || []).find(function (m) { return m.id === "rules_share"; });
-                var treeNote = rules && rules.why ? rules.why : "Size of each full-node tree.";
-                treeTable.innerHTML = "<caption>" + esc(treeNote) + "</caption>" + head(trees) + (data.tree_methods || []).map(function (m) {
-                    return row(m.name, trees, function (t) {
-                        var cell = t.values && t.values[m.id];
-                        return cell ? cell.text : "not measured";
-                    });
+                var methods = data.tree_methods || [];
+                var sizeMethods = methods.filter(function (m) { return m.compare === "same-counter"; });
+                var cutMethods = methods.filter(function (m) { return m.compare === "same-profile"; });
+                document.getElementById("eco-size").innerHTML = wideTable(trees, sizeMethods, "One counter on every tree. The figure is the size of the files in that checkout.") + notes(sizeMethods);
+                document.getElementById("eco-cuts").innerHTML = byInstrument(trees).map(function (g) {
+                    var shallow = g.trees.filter(function (t) { return t.shallow; }).map(function (t) { return t.name; });
+                    var shallowNote = shallow.length ? "<p>" + esc(englishList(shallow)) + (shallow.length === 1 ? " is a shallow checkout. The line counter still reads the files present." : " are shallow checkouts. The line counter still reads the files present.") + "</p>" : "";
+                    return "<section><h3>" + esc(g.name) + "</h3>" + shallowNote + wideTable(g.trees, cutMethods, "Rows in " + g.name + " only.") + "</section>";
+                }).join("") + notes(cutMethods);
+                document.getElementById("eco-stack").innerHTML = "<h2>This week</h2><p>Each tree stays in the cut that measured it. Size uses one counter.</p>" + byInstrument(trees).map(function (g) {
+                    return "<h3>" + esc(g.name) + "</h3>" + g.trees.map(function (t) {
+                        var shallow = t.shallow ? " Shallow checkout." : "";
+                        function rows(list) {
+                            return list.map(function (m) {
+                                return "<dt>" + esc(m.name) + "</dt><dd>" + esc(cellText(t, m)) + "</dd>";
+                            }).join("");
+                        }
+                        return "<article class=\"eco-card\"><h3>" + esc(t.name) + "</h3><p class=\"eco-meta\">" + esc(g.name) + "." + shallow + "</p><h4 class=\"eco-card-label\">Size</h4><dl>" + rows(sizeMethods) + "</dl><h4 class=\"eco-card-label\">This cut</h4><dl>" + rows(cutMethods) + "</dl></article>";
+                    }).join("");
+                }).join("") + notes(methods);
+                var gov = data.governance || {};
+                document.getElementById("eco-gov-status").textContent = gov.status || "";
+                document.getElementById("eco-gov-quorum").textContent = gov.quorum || "";
+                var layers = gov.layers || [];
+                if (!layers.length && data.written_rule) layers = [data.written_rule];
+                var source = gov.source ? "<p class=\"eco-meta\">" + esc(gov.source) + "</p>" : "";
+                document.getElementById("eco-layers").innerHTML = "<ul class=\"eco-layers\">" + layers.map(layerItem).join("") + "</ul>" + source;
+                document.getElementById("eco-history-note").textContent = gov.history_note || "";
+                document.getElementById("eco-history").innerHTML = (gov.history || []).map(function (item) {
+                    return "<article class=\"eco-finding\"><h4>" + esc(item.name) + "</h4><p>" + esc(item.text) + "</p><p class=\"eco-meta\">" + esc(item.basis) + "</p></article>";
                 }).join("");
-                var process = document.getElementById("eco-process");
-                process.innerHTML = "<caption>Process counts filled only from a named finding.</caption>" + head(trees) + (data.process_methods || []).map(function (m) {
-                    return row(m.name, trees, function (t) {
-                        var cell = (m.cells || []).find(function (c) { return c.slug === t.slug; });
-                        return cell ? cell.text : "not measured";
-                    });
-                }).join("");
-                var rule = document.getElementById("eco-rule");
-                if (data.written_rule && data.written_rule.text) {
-                    var extra = document.createElement("span");
-                    extra.textContent = " On the constitutional layer, commons is " + data.written_rule.text + ". The other trees are not measured on this clock.";
-                    rule.appendChild(extra);
-                }
                 document.getElementById("eco-omitted").textContent = data.omitted || "";
             })
             .catch(function () {
