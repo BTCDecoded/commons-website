@@ -1,0 +1,84 @@
+# Ecosystem author mailmap. Applied when counting human authors
+# in the last 12 months. Bots and agents are excluded in the
+# measurement script, not by mapping them to a person.
+#
+# Format: Canonical Name <canonical@email> Commit Name <commit@email>
+# Generated from same-email aliases in the measured window, plus
+# hand-checked aliases that use more than one mailbox.
+
+# Hand-checked aliases
+Josh <securesovereigns@pm.me>
+Josh <securesovereigns@pm.me> SecSov <securesovereigns@pm.me>
+Josh <securesovereigns@pm.me> Secure Sovereign <securesovereigns@pm.me>
+Toby Sharp <toby@hornetnode.org>
+Toby Sharp <toby@hornetnode.org> Toby Sharp <tsharp@hornetnode.com>
+Toby Sharp <toby@hornetnode.org> tobysharp <toby.sharp@hotmail.com>
+Dimitri Hellemond <dimitrihellemond@msn.com>
+Dimitri Hellemond <dimitrihellemond@msn.com> Dimi_h <dimitrihellemond@msn.com>
+Dimitri Hellemond <dimitrihellemond@msn.com> dimitrihellemon <46427019-dimitrihellemon@users.noreply.replit.com>
+Benjamen Keroack <ben@keroack.com>
+Benjamen Keroack <ben@keroack.com> Benjamen Keroack <bkeroack@gmail.com>
+gosunuts <sjc02183@naver.com>
+gosunuts <sjc02183@naver.com> gosunuts <dreamcacao02183@gmail.com>
+gosunuts <sjc02183@naver.com> Kim <dreamcacao02183@gmail.com>
+gosunuts <sjc02183@naver.com> rabbitprincess <sjc02183@naver.com>
+Hyunjae Chung <lidarbtc@protonmail.com>
+Hyunjae Chung <lidarbtc@protonmail.com> lidarbtc <97009593+lidarbtc@users.noreply.github.com>
+metaphorics <152830360+metaphorics@users.noreply.github.com>
+metaphorics <152830360+metaphorics@users.noreply.github.com> a a <152830360+metaphorics@users.noreply.github.com>
+metaphorics <152830360+metaphorics@users.noreply.github.com> cognitive <152830360+metaphorics@users.noreply.github.com>
+metaphorics <152830360+metaphorics@users.noreply.github.com> metaphorics <metaphorics@users.noreply.github.com>
+metaphorics <152830360+metaphorics@users.noreply.github.com> metaphorics <drivedon02+dev@gmail.com>
+metaphorics <152830360+metaphorics@users.noreply.github.com> metaphorica <drivedon02+github@gmail.com>
+metaphorics <152830360+metaphorics@users.noreply.github.com> metaphorics <typhoonoided@gmail.com>
+AgentDawn <mayanochoi@gmail.com>
+AgentDawn <mayanochoi@gmail.com> agentDawn <mayanochoi@gmail.com>
+Eric Voskuil <eric@voskuil.org>
+Eric Voskuil <eric@voskuil.org> evoskuil <eric@voskuil.org>
+Neill Miller <neillm@thecodefactory.org>
+Neill Miller <neillm@thecodefactory.org> neillm <neillm@thecodefactory.org>
+Neill Miller <neillm@thecodefactory.org> thecodefactory <neillm@thecodefactory.org>
+Eric Chennells <eric@brodie.rocks>
+Eric Chennells <eric@brodie.rocks> echennells <eric@brodie.rocks>
+Eric Chennells <eric@brodie.rocks> Eric Chennells <83478409+echennells@users.noreply.github.com>
+josie <josibake@protonmail.com>
+josie <josibake@protonmail.com> josibake <josibake@protonmail.com>
+Chris G <hey@imchris.me>
+Chris G <hey@imchris.me> Chris G. <hey@imchris.me>
+Luca DG <lcgntj@protonmail.com>
+Luca DG <lcgntj@protonmail.com> Luca DG <lucad70@pm.me>
+Calvin Kim <calvin@calvinkim.info>
+Calvin Kim <calvin@calvinkim.info> Calvin Kim <calvin@kcalvinalvin.info>
+Oliver Gugger <gugger@gmail.com>
+Oliver Gugger <gugger@gmail.com> Oli <gugger@gmail.com>
+yyforyongyu <yong2452@gmail.com>
+yyforyongyu <yong2452@gmail.com> Yong <yong2452@gmail.com>
+
+# Same-email name variants in the window (bots excluded)
+# same mailbox 94266259+w0xlt@users.noreply.github.com
+w0xlt <94266259+w0xlt@users.noreply.github.com>
+w0xlt <94266259+w0xlt@users.noreply.github.com> woltx <94266259+w0xlt@users.noreply.github.com>
+# same mailbox brunoely.gc@gmail.com
+Bruno Garcia <brunoely.gc@gmail.com>
+Bruno Garcia <brunoely.gc@gmail.com> brunoerg <brunoely.gc@gmail.com>
+# same mailbox gsanders87@gmail.com
+Gregory Sanders <gsanders87@gmail.com>
+Gregory Sanders <gsanders87@gmail.com> Greg Sanders <gsanders87@gmail.com>
+# same mailbox kyle@privkey.io
+Kyle Santiago <kyle@privkey.io>
+Kyle Santiago <kyle@privkey.io> Kyle 🐆 <kyle@privkey.io>
+# same mailbox pablomartin4btc@gmail.com
+Pablo Martin <pablomartin4btc@gmail.com>
+Pablo Martin <pablomartin4btc@gmail.com> pablomartin4btc <pablomartin4btc@gmail.com>
+# same mailbox pap.lorinc@gmail.com
+Lőrinc <pap.lorinc@gmail.com>
+Lőrinc <pap.lorinc@gmail.com> l0rinc <pap.lorinc@gmail.com>
+# same mailbox renatobritto@protonmail.com
+Renato Britto <renatobritto@protonmail.com>
+Renato Britto <renatobritto@protonmail.com> satsfy (Renato Britto) <renatobritto@protonmail.com>
+# same mailbox seb.kung@gmail.com
+TheCharlatan <seb.kung@gmail.com>
+TheCharlatan <seb.kung@gmail.com> sedited <seb.kung@gmail.com>
+# same mailbox will@256k1.dev
+willcl-ark <will@256k1.dev>
+willcl-ark <will@256k1.dev> will <will@256k1.dev>
