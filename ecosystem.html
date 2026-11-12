@@ -705,8 +705,8 @@
             .eco-block, .eco-key > div { scroll-margin-top: 4.5rem; }
             /* Filter chips: comfortable targets that wrap in a compact grid. */
             .eco-tools { gap: 0.5rem; }
-            .eco-chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr)); gap: 0.5rem; width: 100%; }
-            #content .eco-chip { min-height: 44px; padding: 0.35rem 0.75rem; text-align: left; }
+            .eco-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; width: 100%; }
+            #content .eco-chip { flex: none; min-height: 44px; padding: 0.3rem 0.9rem; }
             /* Disclosures inside cards. */
             .eco-glance details > summary, .eco-board details > summary, .eco-board .eco-open-row details > summary, .eco-more > summary, .eco-notes > summary { cursor: pointer; display: flex; align-items: center; min-height: 44px; }
             .eco-fold > summary { min-height: 48px; align-items: center; row-gap: 0.15rem; }
@@ -716,7 +716,7 @@
             .eco-glance tr { grid-template-columns: 1fr 1fr; }
             .eco-cmp tr { grid-template-columns: 1fr 1fr; }
             /* Tables that keep their columns scroll in their own box with an edge shadow as the cue. */
-            .eco-scroll-hint + .eco-scroll {
+            html:not(.js-scrollcue) .eco-scroll-hint + .eco-scroll, .eco-scroll-hint.is-overflowing + .eco-scroll {
                 background:
                     linear-gradient(to right, #17171a 30%, rgba(23,23,26,0)) left center / 2.5rem 100% no-repeat local,
                     linear-gradient(to left, #17171a 30%, rgba(23,23,26,0)) right center / 2.5rem 100% no-repeat local,
@@ -726,6 +726,7 @@
             .eco-pair th, .eco-pair td { white-space: normal; }
             .eco-scroll-hint + .eco-scroll caption { position: sticky; left: 0; max-width: calc(100vw - 3.5rem); box-sizing: border-box; }
             .eco .eco-scroll-hint { display: block; margin: 0.75rem 0 0; color: #c4c4cc; }
+            .js-scrollcue .eco .eco-scroll-hint:not(.is-overflowing) { display: none; }
             .eco .eco-scroll-hint::before { content: "\2194  "; color: var(--orange); }
             .eco-dir a { min-height: 44px; display: inline-flex; align-items: center; }
         }
@@ -1045,6 +1046,25 @@
     <div class="footer-bottom">
       <p>© 2026 Bitcoin Commons</p>
     </div>
+    <script>
+        // Show the sideways-scroll hint and edge shadows only on tables that overflow their box.
+        // Without JS the hint stays visible on every wide table.
+        (function () {
+            if (!window.ResizeObserver) return;
+            document.documentElement.classList.add("js-scrollcue");
+            var ro = new ResizeObserver(function (entries) {
+                entries.forEach(function (e) {
+                    var box = e.target.closest(".eco-scroll") || e.target;
+                    var hint = box.previousElementSibling;
+                    if (hint && hint.classList.contains("eco-scroll-hint")) hint.classList.toggle("is-overflowing", box.scrollWidth > box.clientWidth + 1);
+                });
+            });
+            Array.prototype.forEach.call(document.querySelectorAll(".eco-scroll-hint + .eco-scroll"), function (box) {
+                ro.observe(box);
+                if (box.firstElementChild) ro.observe(box.firstElementChild);
+            });
+        })();
+    </script>
     <script>
         // Folded code sections stay in the HTML and open with their summary.
         // This only opens a fold when a link or the URL hash points into it.
