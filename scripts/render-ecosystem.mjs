@@ -12,6 +12,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const pagePath = path.join(root, "ecosystem.html");
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/implementations.json"), "utf8"));
 const verification = JSON.parse(fs.readFileSync(path.join(root, "data/verification.json"), "utf8"));
+const stack = JSON.parse(fs.readFileSync(path.join(root, "data/stack.json"), "utf8"));
 
 function esc(s) {
     return String(s).replace(/[&<>"]/g, function (c) {
@@ -111,7 +112,7 @@ slots["test-note"] = "A Rust file named *_test.rs or *_tests.rs counts as tests.
 // Rules share: scale shared, cut order as first seen; sort groups by cut then value.
 const ruleRows = trees.map(function (tree) {
     var cell = metric(tree, "rules_share");
-    if (!cell || cell.text === "no cut") return null;
+    if (!cell || cell.status !== "measured") return null;
     return { slug: tree.slug, value: cell.value, instrument: tree.instrument };
 }).filter(Boolean);
 const ruleScale = Math.max.apply(null, ruleRows.map(function (r) { return r.value; }));
@@ -130,7 +131,8 @@ slots.compare = defaultOrder.map(function (slug, i) {
     var isInt = slug === internal ? " internal" : "";
     var prog = metric(t, "program_code"), test = metric(t, "test_per_implementation"), big = metric(t, "share_lines_ge_1000"), rules = metric(t, "rules_share");
     var c = compBySlug[slug];
-    var hasCut = rules && rules.text !== "no cut";
+    var hasCut = rules && rules.status === "measured";
+    var rulesText = hasCut ? rules.text : (rules && rules.status === "not-measured" ? "not measured" : "no cut");
     var cutIdx = hasCut ? cutOrder.indexOf(t.instrument) : cutOrder.length;
     var stack = "<span class=\"mini\" aria-hidden=\"true\"><span class=\"mini-fill seg impl" + isInt + "\" style=\"width:" + pct(c.impl, compMax) + "%\"></span><span class=\"mini-fill seg vend\" style=\"width:" + pct(c.vend, compMax) + "%\"></span><span class=\"mini-fill seg loc\" style=\"width:" + pct(c.loc, compMax) + "%\"></span></span>";
     return "<tr data-slug=\"" + esc(slug) + "\" data-order=\"" + i + "\" data-size=\"" + prog.value + "\" data-checkout=\"" + c.total + "\" data-files=\"" + big.value + "\" data-tests=\"" + test.value + "\" data-rules=\"" + (hasCut ? (cutIdx * 1000 - rules.value) : 99999) + "\">" +
@@ -139,7 +141,7 @@ slots.compare = defaultOrder.map(function (slug, i) {
         "<td data-label=\"Checkout\"><span class=\"num\">" + c.total.toLocaleString("en-US") + "</span>" + stack + "</td>" +
         "<td data-label=\"Large files\"><span class=\"num\">" + esc(big.text) + "</span>" + bar(big.value, 100, isInt.trim()) + "<small>" + esc(halfOf[slug] + " files hold half") + "</small></td>" +
         "<td data-label=\"Tests\"><span class=\"num\">" + esc(test.text) + "</span>" + bar(test.value, testScale, isInt.trim()) + "</td>" +
-        "<td data-label=\"Rules share\"><span class=\"num\">" + esc(hasCut ? rules.text : "no cut") + "</span>" + (hasCut ? bar(rules.value, ruleScale, isInt.trim()) : "") + "<small>" + esc(t.instrument) + "</small></td>" +
+        "<td data-label=\"Rules share\"><span class=\"num\">" + esc(rulesText) + "</span>" + (hasCut ? bar(rules.value, ruleScale, isInt.trim()) : "") + "<small>" + esc(t.instrument) + "</small></td>" +
         "</tr>";
 }).join("");
 
@@ -148,7 +150,7 @@ const govModel = data.governance_model || { labels: [] };
 const govBySlug = {}; govModel.labels.forEach(function (g) { govBySlug[g.slug] = g; });
 const vCols = verification.columns || [];
 const statusClass = { "yes": "st-yes", "partial": "st-partial", "not found": "st-nf", "n/a": "st-na" };
-const glanceOrder = [internal].concat(["bitcoin-core", "knots", "bitcoin-rs", "satd", "libbitcoin", "hornet", "floresta", "rbitcoin", "btcd"].filter(function (s) { return s !== internal; }));
+const glanceOrder = [internal].concat(["bitcoin-core", "knots-legacy", "bit-block", "bitcoin-roots", "bitcoin-rs", "satd", "libbitcoin", "hornet", "floresta", "rbitcoin", "btcd"].filter(function (s) { return s !== internal; }));
 const vBySlug = {}; (verification.rows || []).forEach(function (r) { vBySlug[r.slug] = r; });
 slots.glance = glanceOrder.map(function (slug) {
     var v = vBySlug[slug], g = govBySlug[slug];
@@ -178,14 +180,40 @@ slots["verify-key"] = vCols.map(function (col) {
     return "<div><dt>" + esc(k) + "</dt><dd>" + esc(verification.statuses[k]) + ".</dd></div>";
 }).join("");
 
+// Stack and dependencies: one row per implementation, same order as the glance table.
+const stackBySlug = {}; (stack.rows || []).forEach(function (r) { stackBySlug[r.slug] = r; });
+function srcLink(href, label, name) {
+    return href ? " <a href=\"" + esc(href) + "\">Source<span class=\"visually-hidden\">: " + esc(name + ", " + label) + "</span></a>" : "";
+}
+slots.stack = glanceOrder.map(function (slug) {
+    var r = stackBySlug[slug];
+    if (!r) throw new Error("stack row missing for " + slug);
+    var isInt = slug === internal;
+    var deps = r.direct_deps === null || r.direct_deps === undefined ? "not found" : String(r.direct_deps);
+    var notes = "<li><span class=\"eco-meta\">License.</span> " + esc(r.license) + "." + srcLink(r.license_source, "license", r.name) + "</li>" +
+        "<li><span class=\"eco-meta\">Languages.</span> " + esc(r.languages) + "." + srcLink(r.languages_source, "languages", r.name) + "</li>" +
+        "<li><span class=\"eco-meta\">Direct dependencies, " + esc(deps) + ".</span> " + esc(r.deps_names) + "." + srcLink(r.deps_source, "dependencies", r.name) + "</li>" +
+        "<li><span class=\"eco-meta\">Vendored.</span> " + esc(r.vendored) + "." + srcLink(r.vendored_source, "vendored code", r.name) + "</li>";
+    var open = "<details><summary>Sources<span class=\"visually-hidden\"> for " + esc(r.name) + " stack</span></summary><ul>" + notes + "</ul><p class=\"eco-meta\">" + esc(r.repo) + " at " + esc(r.commit.slice(0, 10)) + ".</p></details>";
+    return "<tr data-slug=\"" + esc(slug) + "\"><th scope=\"row\"" + (isInt ? " class=\"internal\"" : "") + ">" + esc(r.name) + "</th>" +
+        "<td data-label=\"License\">" + esc(r.license) + "</td>" +
+        "<td data-label=\"Languages\">" + esc(r.languages) + "</td>" +
+        "<td data-label=\"Direct deps\">" + esc(deps) + "</td>" +
+        "<td class=\"m-full\" data-label=\"Vendored\">" + esc(r.vendored) + "</td></tr>" +
+        "<tr data-slug=\"" + esc(slug) + "\" class=\"eco-open-row\"><td class=\"eco-open m-full\" colspan=\"5\">" + open + "</td></tr>";
+}).join("");
+slots["stack-note"] = esc(stack.method);
+
 slots["rule-test"] = esc(scan.rule_test || "");
 slots.jurisdiction = esc(scan.jurisdiction || "");
 
 // Institution board: as before, one row per tree plus its record.
-const landingOrder = ["bitcoin-core", "knots", "bitcoin-rs", "satd", "blvm", "libbitcoin", "hornet", "floresta", "rbitcoin", "btcd"];
+const landingOrder = ["bitcoin-core", "knots-legacy", "bit-block", "bitcoin-roots", "bitcoin-rs", "satd", "blvm", "libbitcoin", "hornet", "floresta", "rbitcoin", "btcd"];
 const board = {
     "bitcoin-core": { operating: "Informal oligarchy", rule: "Norm. No written sanction.", href: "https://secsovereign.github.io/articles/bitcoin-has-governance/", link: "The long article" },
-    "knots": { operating: "One maintainer and a merge script", rule: "The contributing file is Core's." },
+    "knots-legacy": { operating: "One maintainer", rule: "Core's contributing template, renamed." },
+    "bit-block": { operating: "One maintainer", rule: "Core's contributing template, renamed." },
+    "bitcoin-roots": { operating: "Foundation, one signing key", rule: "Written: every new commit is signed with one key." },
     "bitcoin-rs": { operating: "One account", rule: "Not read as a consequence." },
     "satd": { operating: "One account", rule: "Not read." },
     "blvm": { operating: "One writer. The written rule is separate.", rule: "Designed, not running.", href: "compact.html", link: "The written rules" },

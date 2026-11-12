@@ -117,10 +117,10 @@
       }
     },
     {
-      "slug": "knots",
-      "name": "Bitcoin Knots",
-      "repo": "bitcoinknots/bitcoin (29.x-knots)",
-      "commit": "5811235e3f",
+      "slug": "knots-legacy",
+      "name": "Knots Legacy",
+      "repo": "DimiH2025/KnotsLegacy (tag V29.3.0.20260920)",
+      "commit": "7936c49b67",
       "cells": {
         "formal_spec": {
           "status": "not found"
@@ -128,7 +128,7 @@
         "test_vectors": {
           "status": "yes",
           "text": "Core's JSON vectors, carried in the tree",
-          "source": "https://github.com/bitcoinknots/bitcoin/tree/5811235e3f5da687de1ac8ca731331a2fc24a350/src/test/data"
+          "source": "https://github.com/DimiH2025/KnotsLegacy/tree/7936c49b6739640eb71e55eb2b5f720179b9c3b4/src/test/data"
         },
         "property_tests": {
           "status": "not found"
@@ -136,7 +136,67 @@
         "fuzzing": {
           "status": "yes",
           "text": "Core's fuzz harnesses, carried in the tree",
-          "source": "https://github.com/bitcoinknots/bitcoin/tree/5811235e3f5da687de1ac8ca731331a2fc24a350/src/test/fuzz"
+          "source": "https://github.com/DimiH2025/KnotsLegacy/tree/7936c49b6739640eb71e55eb2b5f720179b9c3b4/src/test/fuzz"
+        },
+        "formal_verification": {
+          "status": "not found"
+        },
+        "differential": {
+          "status": "not found"
+        }
+      }
+    },
+    {
+      "slug": "bit-block",
+      "name": "Bit-Block",
+      "repo": "DimiH2025/Bit-Block (tag V3.1)",
+      "commit": "c52f116134",
+      "cells": {
+        "formal_spec": {
+          "status": "not found"
+        },
+        "test_vectors": {
+          "status": "yes",
+          "text": "Core's JSON vectors, carried in the tree",
+          "source": "https://github.com/DimiH2025/Bit-Block/tree/c52f1161349e6a76463156fea39bce191951b915/src/test/data"
+        },
+        "property_tests": {
+          "status": "not found"
+        },
+        "fuzzing": {
+          "status": "yes",
+          "text": "Core's fuzz harnesses, carried in the tree",
+          "source": "https://github.com/DimiH2025/Bit-Block/tree/c52f1161349e6a76463156fea39bce191951b915/src/test/fuzz"
+        },
+        "formal_verification": {
+          "status": "not found"
+        },
+        "differential": {
+          "status": "not found"
+        }
+      }
+    },
+    {
+      "slug": "bitcoin-roots",
+      "name": "Bitcoin Roots",
+      "repo": "LuganoPlanB/bitcoin-roots (release v32.1-roots.1, untagged)",
+      "commit": "f0393f2688",
+      "cells": {
+        "formal_spec": {
+          "status": "not found"
+        },
+        "test_vectors": {
+          "status": "yes",
+          "text": "Core's JSON vectors, carried in the tree",
+          "source": "https://github.com/LuganoPlanB/bitcoin-roots/tree/f0393f2688656ba544b40fe508db909152201c18/src/test/data"
+        },
+        "property_tests": {
+          "status": "not found"
+        },
+        "fuzzing": {
+          "status": "yes",
+          "text": "Core's fuzz harnesses, carried in the tree",
+          "source": "https://github.com/LuganoPlanB/bitcoin-roots/tree/f0393f2688656ba544b40fe508db909152201c18/src/test/fuzz"
         },
         "formal_verification": {
           "status": "not found"
