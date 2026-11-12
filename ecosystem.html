@@ -661,6 +661,32 @@
             .eco-glance td[data-label]::before { content: attr(data-label); display: block; color: #c4c4cc; font-family: var(--font-sans); font-size: 0.7rem; letter-spacing: 0.04em; text-transform: uppercase; }
             .eco-glance .eco-open-row { padding: 0 0.75rem 0.5rem; border-bottom: 1px solid var(--rule); }
         }
+        .eco-fold > summary {
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            column-gap: 0.75rem;
+            min-height: 44px;
+            padding: 0.2rem 0;
+        }
+        .eco-fold > summary::-webkit-details-marker { display: none; }
+        .eco-fold > summary::before {
+            content: "";
+            align-self: center;
+            width: 0.5rem;
+            height: 0.5rem;
+            border-right: 2px solid var(--orange);
+            border-bottom: 2px solid var(--orange);
+            transform: rotate(-45deg);
+        }
+        .eco-fold[open] > summary::before { transform: rotate(45deg); }
+        .eco-fold > summary h2 { display: inline; margin: 0; }
+        .eco-fold-hint { color: #c4c4cc; font-size: 0.9rem; }
+        .eco-fold > summary:hover h2 { color: var(--orange); }
+        .eco-fold > summary:focus-visible { outline: 2px solid var(--orange); outline-offset: 4px; border-radius: 4px; }
+        .eco-fold[open] > summary { margin-bottom: 0.5rem; }
     </style>
 </head>
 <body>
@@ -760,8 +786,9 @@
             </details>
         </section>
 
-        <section class="eco-block wide" id="stack" aria-labelledby="stack-h">
-            <h2 id="stack-h">Stack and dependencies</h2>
+        <section class="eco-block wide eco-foldable" id="stack" aria-labelledby="stack-h">
+            <details class="eco-fold">
+            <summary><h2 id="stack-h">Stack and dependencies</h2><span class="eco-fold-hint">License, languages, dependencies, vendored code</span></summary>
             <p class="eco-meta">Direct deps: direct third-party libraries of a default node build, excluding build tools, test and dev dependencies, off-by-default extras and the project&rsquo;s own crates. Vendored source is counted separately. No transitive counts.</p>
             <div class="eco-scroll" tabindex="0" role="region" aria-label="Stack and dependencies table">
                 <table class="eco-glance eco-deps" id="eco-deps">
@@ -782,10 +809,12 @@
                 <summary>How these are counted</summary>
                 <p class="eco-meta" id="eco-stack-note"><!--slot:stack-note-->Read at each pinned commit. License: the repository's license file; no proprietary or non-OSI license file turned up in any tree. Languages: those with 5% or more of code lines (tokei 14; .h headers count with C and C++). Direct dependencies: direct third-party libraries of a default node build, excluding build tools, test and dev dependencies, off-by-default extras and the project's own crates; vendored source is counted separately; no transitive counts. C++: libraries the default bitcoind (or node binary) links, minus Qt and native build tools. Rust: third-party crates reached from the node binary through its own workspace crates, with default features (cargo tree). Go: go.mod require lines not marked indirect. BLVM, Bitcoin Core, Knots Legacy, Bit-Block, Bitcoin Roots, Hornet, libbitcoin, bitcoin-rs and satd were counted on separate checkouts at the code-count pins; Floresta, rbitcoin and btcd keep our earlier counts under the same rule. Vendored: library subtrees or vendor/ directories in the tree, with their code lines rounded.<!--/slot:stack-note--></p>
             </details>
+            </details>
         </section>
 
-        <section class="eco-block wide" id="compare" aria-labelledby="compare-h">
-            <h2 id="compare-h">Code, side by side</h2>
+        <section class="eco-block wide eco-foldable" id="compare" aria-labelledby="compare-h">
+            <details class="eco-fold">
+            <summary><h2 id="compare-h">Code, side by side</h2><span class="eco-fold-hint">Program lines, checkout, large files, tests, rules share</span></summary>
             <p>One row per measured tree. The same counter on every tree. Each column is one of the five comparisons; what it counts is under the table.</p>
             <div class="eco-tools" id="eco-tools" hidden>
                 <p class="eco-tools-label" id="eco-show-label">Show</p>
@@ -815,6 +844,7 @@
                 <div id="tests"><dt>Tests</dt><dd><span id="eco-test-caption"><!--slot:test-caption--><!--/slot:test-caption--></span> Test lines for each implementation line. The same counter on every tree. <span class="eco-meta" id="eco-test-note"><!--slot:test-note-->A Rust file named *_test.rs or *_tests.rs counts as tests. Lines inside a #[cfg(test)] item count as tests.<!--/slot:test-note--></span></dd></div>
                 <div id="rules"><dt>Rules share</dt><dd>Share of the tree on the rules side of its cut. The bars share a scale. The cuts do not, so read each group on its own. Hornet has no rules cut on this clock, so it has no bar here. Knots Legacy, Bit-Block, and Bitcoin Roots were counted with a rebuilt counter that reproduces the published counts for Core 32.1 and Knots, except vendored lines, which run up to 1.3% low. Their rules share is not measured yet. The cut is a qualitative reading of which code holds the rules, redone periodically. This reading: <!--slot:rules-asof-->2026-11-12<!--/slot:rules-asof-->.</dd></div>
             </dl>
+            </details>
         </section>
 
         <section class="eco-block wide" id="institution" aria-labelledby="institution-h">
@@ -914,14 +944,16 @@
             </ul>
         </section>
 
-        <section class="eco-block wide" id="counts" aria-labelledby="counts-h">
-            <h2 id="counts-h">Every count</h2>
+        <section class="eco-block wide eco-foldable" id="counts" aria-labelledby="counts-h">
+            <details class="eco-fold">
+            <summary><h2 id="counts-h">Every count</h2><span class="eco-fold-hint">Every weekly counter table</span></summary>
             <details class="eco-more">
                 <summary>Every weekly count</summary>
                 <div id="eco-size"><!--slot:weekly-size--><div class="eco-scroll" tabindex="0" role="region" aria-label="One counter on every tree. A line count, a ratio, and a file count are different rows."><table><caption>One counter on every tree. A line count, a ratio, and a file count are different rows.</caption><tr><th scope="col">Method</th><th scope="col">BLVM<small>crate-role cut<br><span class="eco-pin">36bb40c7e</span></small></th><th scope="col">Bitcoin Core<small>Core file cut<br><span class="eco-pin">f0de87f04</span></small></th><th scope="col">Knots Legacy<small>Rebuilt counter, no rules cut<br><span class="eco-pin">7936c49b6, shallow</span></small></th><th scope="col">Bit-Block<small>Rebuilt counter, no rules cut<br><span class="eco-pin">c52f11613, shallow</span></small></th><th scope="col">Bitcoin Roots<small>Rebuilt counter, no rules cut<br><span class="eco-pin">f0393f268, shallow</span></small></th><th scope="col">bitcoin-rs<small>crate-role cut<br><span class="eco-pin">9b8e91ae1</span></small></th><th scope="col">satd<small>crate-role cut<br><span class="eco-pin">f0ea0e5df, shallow</span></small></th><th scope="col">libbitcoin<small>repository-role cut<br><span class="eco-pin">9f9cce308, shallow</span></small></th><th scope="col">Hornet<small>no rules cut<br><span class="eco-pin">151462fa5</span></small></th></tr><tr><th scope="row">Implementation code</th><td class="internal">303,561</td><td>151,004</td><td>153,823</td><td>156,636</td><td>155,040</td><td>229,374</td><td>191,292</td><td>314,326</td><td>14,200</td></tr><tr><th scope="row">Program code</th><td class="internal">195,990</td><td>151,004</td><td>153,823</td><td>156,636</td><td>155,040</td><td>229,374</td><td>191,292</td><td>302,339</td><td>14,200</td></tr><tr><th scope="row">Tooling</th><td class="internal">107,571</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>11,987</td><td>0</td></tr><tr><th scope="row">Tests per implementation line</th><td class="internal">0.67</td><td>1.02</td><td>0.91</td><td>0.88</td><td>1.08</td><td>0.78</td><td>0.86</td><td>0.71</td><td>0.52</td></tr><tr><th scope="row">Vendored code</th><td class="internal">0</td><td>112,703</td><td>82,005</td><td>85,142</td><td>111,244</td><td>0</td><td>0</td><td>58,669</td><td>81,041</td></tr><tr><th scope="row">Locale</th><td class="internal">0</td><td>286,741</td><td>330,453</td><td>330,453</td><td>286,741</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th scope="row">Lines in files of 1,000 or more</th><td class="internal">55.6%</td><td>38.9%</td><td>38.6%</td><td>39.6%</td><td>39.9%</td><td>42.2%</td><td>47.6%</td><td>16.5%</td><td>0.0%</td></tr><tr><th scope="row">Files holding half the program</th><td class="internal">42</td><td>54</td><td>56</td><td>56</td><td>55</td><td>79</td><td>28</td><td>253</td><td>38</td></tr></table></div><details class="eco-notes"><summary>What these rows count</summary><ul><li>Implementation code. Size of the program the rules sit in. tokei code lines, one bucket per file.</li><li>Program code. Implementation code minus tooling.</li><li>Tooling. Files the role map marks as tooling. Spec lock lives here on BLVM.</li><li>Tests per implementation line. Test-bucket code lines divided by implementation code lines.</li><li>Vendored code. Bundled libraries. Outside first-party code.</li><li>Locale. Translation files. Outside first-party code.</li><li>Lines in files of 1,000 or more. How much of the program sits in large files. Tooling is outside this share. Spec lock is tooling on BLVM.</li><li>Files holding half the program. Smallest set of program files whose code lines reach half the program code. Tooling is outside this count.</li></ul></details><!--/slot:weekly-size--></div>
                 <div id="eco-cuts"><!--slot:weekly-cuts--><section><h3>crate-role cut</h3><p>satd is a shallow checkout. The line counter still reads the files present.</p><div class="eco-scroll" tabindex="0" role="region" aria-label="Rows in crate-role cut only."><table><caption>Rows in crate-role cut only.</caption><tr><th scope="col">Method</th><th scope="col">BLVM<small>crate-role cut<br><span class="eco-pin">36bb40c7e</span></small></th><th scope="col">bitcoin-rs<small>crate-role cut<br><span class="eco-pin">9b8e91ae1</span></small></th><th scope="col">satd<small>crate-role cut<br><span class="eco-pin">f0ea0e5df, shallow</span></small></th></tr><tr><th scope="row">Rules share</th><td class="internal">10.7%</td><td>5.5%</td><td>11.9%</td></tr><tr><th scope="row">Left mixed</th><td class="internal">0.0%</td><td>0.0%</td><td>51.8%</td></tr></table></div></section><section><h3>Core file cut</h3><div class="eco-scroll" tabindex="0" role="region" aria-label="Rows in Core file cut only."><table><caption>Rows in Core file cut only.</caption><tr><th scope="col">Method</th><th scope="col">Bitcoin Core<small>Core file cut<br><span class="eco-pin">f0de87f04</span></small></th></tr><tr><th scope="row">Rules share</th><td>6.3%</td></tr><tr><th scope="row">Left mixed</th><td>0.0%</td></tr></table></div></section><section><h3>Rebuilt counter, no rules cut</h3><p>Knots Legacy, Bit-Block, or Bitcoin Roots are shallow checkouts. The line counter still reads the files present.</p><div class="eco-scroll" tabindex="0" role="region" aria-label="Rows in Rebuilt counter, no rules cut only."><table><caption>Rows in Rebuilt counter, no rules cut only.</caption><tr><th scope="col">Method</th><th scope="col">Knots Legacy<small>Rebuilt counter, no rules cut<br><span class="eco-pin">7936c49b6, shallow</span></small></th><th scope="col">Bit-Block<small>Rebuilt counter, no rules cut<br><span class="eco-pin">c52f11613, shallow</span></small></th><th scope="col">Bitcoin Roots<small>Rebuilt counter, no rules cut<br><span class="eco-pin">f0393f268, shallow</span></small></th></tr><tr><th scope="row">Rules share</th><td>not measured</td><td>not measured</td><td>not measured</td></tr><tr><th scope="row">Left mixed</th><td>not measured</td><td>not measured</td><td>not measured</td></tr></table></div></section><section><h3>repository-role cut</h3><p>libbitcoin is a shallow checkout. The line counter still reads the files present.</p><div class="eco-scroll" tabindex="0" role="region" aria-label="Rows in repository-role cut only."><table><caption>Rows in repository-role cut only.</caption><tr><th scope="col">Method</th><th scope="col">libbitcoin<small>repository-role cut<br><span class="eco-pin">9f9cce308, shallow</span></small></th></tr><tr><th scope="row">Rules share</th><td>4.9%</td></tr><tr><th scope="row">Left mixed</th><td>37.4%</td></tr></table></div></section><section><h3>no rules cut</h3><div class="eco-scroll" tabindex="0" role="region" aria-label="Rows in no rules cut only."><table><caption>Rows in no rules cut only.</caption><tr><th scope="col">Method</th><th scope="col">Hornet<small>no rules cut<br><span class="eco-pin">151462fa5</span></small></th></tr><tr><th scope="row">Rules share</th><td>no cut</td></tr><tr><th scope="row">Left mixed</th><td>no cut</td></tr></table></div></section><details class="eco-notes"><summary>What these rows count</summary><ul><li>Rules share. Share of implementation on the rules side of that tree's cut. The Core file cut, the crate-role cut, and the repository-role cut are separate instruments.</li><li>Left mixed. Share left in a crate or library the cut did not split.</li></ul></details><!--/slot:weekly-cuts--></div>
             </details>
             <p id="eco-omitted"><!--slot:omitted-->Left off this page: attention effects E2, E3, E5, E7, and E12, and the size-adjusted residual. Comparison dumps do not host those effects the same way, and the residual intervals cover zero. They are not a weekly score.<!--/slot:omitted--></p>
+            </details>
         </section>
     </main>
     <footer class="site-footer">
@@ -961,6 +993,26 @@
     <div class="footer-bottom">
       <p>© 2026 Bitcoin Commons</p>
     </div>
+    <script>
+        // Folded code sections stay in the HTML and open with their summary.
+        // This only opens a fold when a link or the URL hash points into it.
+        (function () {
+            function reveal(id) {
+                var el = id && document.getElementById(id);
+                if (!el) return;
+                var own = el.querySelector && el.querySelector(":scope > details.eco-fold");
+                if (own) own.open = true;
+                for (var d = el.closest("details"); d; d = d.parentElement && d.parentElement.closest("details")) d.open = true;
+            }
+            function fromHash() { try { reveal(decodeURIComponent(location.hash.slice(1))); } catch (e) {} }
+            fromHash();
+            window.addEventListener("hashchange", fromHash);
+            document.addEventListener("click", function (ev) {
+                var a = ev.target.closest && ev.target.closest("a[href^=\"#\"]");
+                if (a) reveal(a.getAttribute("href").slice(1));
+            }, true);
+        })();
+    </script>
     <script>
         // Every count is already in the HTML (scripts/render-ecosystem.mjs).
         // This only adds sorting, a show filter, and deep links that sort.
