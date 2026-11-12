@@ -1,0 +1,415 @@
+{
+  "schema_version": 1,
+  "source": "Research newcomer copy, ecosystem-newcomer-copy.md, 2026-11-12",
+  "note": "What and Why are verbatim from Research. How and Caveats are verbatim where they carry no figures; where they do, the page's own method text from the data files is shown instead.",
+  "tiles": {
+    "independence": "Independence is whether a client is its own codebase or is derived from Bitcoin Core. A fork can change policy and still share the same code, so a bug can travel with that lineage.",
+    "assurance": "Assurance is how far a client has gone in showing it follows Bitcoin's rules. The six layers are a written spec, shared test vectors, property tests, fuzzing, formal proofs, and comparison with Core.",
+    "accountability": "Accountability is who can change a client's code and how. Projects are read as a single maintainer, a maintainer group, a foundation signing key, written rules published by Bitcoin Commons, or not classified."
+  },
+  "how_to_read": [
+    "The page is organized on three axes: independence (own codebase or Core-derived), assurance (the six-layer verification stack), and accountability (who can change the code and how). Code-health figures sit under those axes; they are sizes and counts, not grades.",
+    "Assurance radials score yes = 2, partial = 1, and not found = 0. That rule is printed on the page. A not-measured, partial, or n/a cell is a gap or hatch, never a zero. A missing spoke is not a weak score.",
+    "\"Not found\" means no public source turned up. It does not mean the project lacks the thing.",
+    "Every numeric cell is dated (this reading: 2026-11-12) and pinned to a commit. Sources open under the row. Author and release counts use the 12 months from 2025-11-12 to 2026-11-12.",
+    "Rules share uses three different cuts. Those percentages are not comparable across cuts. Several rules-share cells are not measured, including BLVM's.",
+    "Size and composition tables cover nine trees. Floresta, rbitcoin, and btcd appear in the other tables but have no size row.",
+    "Some checkouts are shallow. Process figures for Bitcoin Core come from cited research reports and are not scored this week for the H2–H6 rows.",
+    "The implementation is called BLVM. \"Bitcoin Commons\" names the written governance rules, which are in Phase 1: enforcement is off and the keys are test keys.",
+    "No chart or caption on this page claims a full-chain differential result."
+  ],
+  "groups": [
+    {
+      "name": "Independence",
+      "link": "#why",
+      "entries": [
+        {
+          "name": "Lineage (Core-derived vs separate codebase)",
+          "field": null,
+          "what": "Whether the tree is Bitcoin Core, is stated as built from Core or from Bitcoin Knots, or is a separate codebase.",
+          "why": "Clients that share a lineage can share a bug. Moving to a Core-derived client can change policy without changing the code underneath.",
+          "how": "Derived from `data/implementations.json` `class` and `governance.history`, as quoted by `scripts/ecosystem-charts/10-lineage.mjs` on pull request #6. Four rows are the Core family: Bitcoin Core; Bitcoin Roots, a patch series on Bitcoin Core v32.1 that also carries selected Knots policy features; Knots Legacy, which continues Bitcoin Knots v29.3.knots20260507; and Bit-Block, a fork of Bitcoin Knots v29.1.knots20250903. Bitcoin Knots itself is not a row on the page. The other eight rows have no derivation from Core or Knots stated in the data and are grouped by primary language from `data/stack.json` `languages`.",
+          "caveats": "\"Separate\" means no derivation is stated in this page's data. rbitcoin carries Bitcoin Core as a git submodule (`stack.json` `vendored`); that is not counted as a derivation.",
+          "link": "#why"
+        },
+        {
+          "name": "Reachable-node share",
+          "field": null,
+          "what": "Share of reachable nodes by advertised user agent.",
+          "why": "It shows how much of the live network runs one lineage.",
+          "how_omitted": "contains figures; the page shows them from data",
+          "caveats_omitted": "contains figures; the page shows them from data",
+          "link": "#fig-node-share"
+        }
+      ]
+    },
+    {
+      "name": "Assurance",
+      "link": "#eco-glance",
+      "entries": [
+        {
+          "name": "Formal spec",
+          "field": "verification.json` cells `formal_spec",
+          "what": "A written, formal consensus specification separate from the code.",
+          "why": "Without a spec to check against, an alternative has to copy Core's behavior from Core, which keeps it tied to Core.",
+          "how": "Qualitative reading of each project's public repository, with a source link on yes or partial cells.",
+          "caveats": "On this reading, only BLVM is yes (the Orange Paper, with a Lean model of part of it). Hornet is partial. The rest are not found. A not-found cell is not a claim that no spec exists.",
+          "link": "#eco-glance"
+        },
+        {
+          "name": "Test vectors",
+          "field": "verification.json` cells `test_vectors",
+          "what": "Conformance against shared test vectors, such as Bitcoin Core's JSON vectors.",
+          "why": "Shared vectors are a common check that two implementations accept and reject the same cases.",
+          "how": "Public-repository reading, with a source link. This is a yes/partial/not-found status, not the file count in the metrics table.",
+          "caveats": "\"Yes\" does not mean every vector file is run, or run to completion. BLVM's cell notes that script_tests runs as a subset. libbitcoin and rbitcoin are partial. Hornet is not found.",
+          "link": "#eco-glance"
+        },
+        {
+          "name": "Property tests",
+          "field": "verification.json` cells `property_tests",
+          "what": "Property-based tests (proptest, quickcheck, and similar).",
+          "why": "They check general rules over many generated cases, not only fixed examples.",
+          "how": "Public-repository reading, with a source link. Distinct from the `test_property` line-count in `metrics.json`.",
+          "caveats": "satd and btcd are partial. Most Core-family rows are not found.",
+          "link": "#eco-glance"
+        },
+        {
+          "name": "Fuzzing",
+          "field": "verification.json` cells `fuzzing",
+          "what": "Fuzz targets in the tree.",
+          "why": "Fuzzing feeds unexpected inputs to consensus and protocol code.",
+          "how": "Public-repository reading, with a source link. The yes/partial status is separate from the numeric `metrics.json` `fuzz_targets` count (see Code health).",
+          "caveats": "btcd is partial. libbitcoin and Hornet are not found. Core-family yes cells include fuzz harnesses carried from Core.",
+          "link": "#eco-glance"
+        },
+        {
+          "name": "Formal verification",
+          "field": "verification.json` cells `formal_verification",
+          "what": "Machine-checked proofs or model checking of code.",
+          "why": "A proof can show that a function or a sentence of a spec holds, beyond passing tests.",
+          "how": "Public-repository reading, with a source link.",
+          "caveats_omitted": "contains figures; the page shows them from data",
+          "link": "#eco-glance"
+        },
+        {
+          "name": "Differential vs Core",
+          "field": "verification.json` cells `differential",
+          "what": "Tests that compare verdicts with Bitcoin Core or its libraries.",
+          "why": "An independent implementation only helps if it can show it enforces the same rules as everyone else.",
+          "how": "Public-repository reading, with a source link.",
+          "caveats": "Bitcoin Core is n/a. BLVM's cell states script verdicts against libbitcoinconsensus and block accept or reject against libbitcoinkernel in blvm-bench, and says \"No full-chain result is claimed here.\" Do not describe any row as having a full-chain differential result.",
+          "link": "#eco-glance"
+        }
+      ]
+    },
+    {
+      "name": "Accountability",
+      "link": "#institution",
+      "entries": [
+        {
+          "name": "Governance model",
+          "field": "implementations.json` `governance_model.labels",
+          "what": "A short label for who can change the tree and how.",
+          "why": "The people who can land a change are the people who can change the rules the network runs.",
+          "how": "`governance_model.labels[].label`, as of 2026-11-12. The file's note: labels are read from the institution board and the commit and merge shares on this page, and are redone with each reading. Current labels: Commons governance (BLVM); maintainer group with merge rights (Bitcoin Core); foundation, one signing key (Bitcoin Roots); single maintainer (Knots Legacy, Bit-Block, bitcoin-rs, satd, libbitcoin, Hornet); not classified (Floresta, rbitcoin, btcd).",
+          "caveats_omitted": "contains figures; the page shows them from data",
+          "link": "#institution"
+        },
+        {
+          "name": "Written rules published by Bitcoin Commons",
+          "field": "implementations.json` `written_rule`, `governance.status`, `governance.quorum`, `governance.layers",
+          "what": "Written rules for how node software changes, published by Bitcoin Commons: signatures by repository layer, review periods, and a governance-node quorum.",
+          "why": "They make the change process visible and, when enforcement is on, binding.",
+          "how_omitted": "contains figures; the page shows them from data",
+          "caveats": "BLVM is the only implementation here that uses these rules, and enforcement is not on yet. A commit currently stands when one author lands it. This page does not score a future \"on activation\" projection.",
+          "link": "#institution"
+        },
+        {
+          "name": "Landing share",
+          "field": "implementations.json` `governance.landing",
+          "what": "Share of each project's landing measure held by the account its history names.",
+          "why": "It is the operating record of who actually lands work, which can differ from the written rule.",
+          "how_omitted": "contains figures; the page shows them from data",
+          "caveats_omitted": "contains figures; the page shows them from data",
+          "link": "#institution"
+        },
+        {
+          "name": "Stated consequence vs norm",
+          "field": "implementations.json` `scan.rule_test`, `scan.categories",
+          "what": "A reading of whether a project's files state a consequence for breaking a process rule.",
+          "why": "A rule with a stated consequence is different from a stated practice with no sanction.",
+          "how": "`scan.rule_test`: a statement that names a consequence is a rule, and a statement that names none is a norm. Applied to the files and history this scan actually has. Judgment scores are not printed, because they are not measurements.",
+          "caveats": "Several trees have a contributing or code-owners file that this scan did not read as a stated consequence. satd, Floresta, rbitcoin, and btcd were not read for a rule file.",
+          "link": "#institution"
+        },
+        {
+          "name": "Jurisdiction",
+          "field": "implementations.json` `scan.jurisdiction",
+          "what": "\"This scan does not record where a maintainer sits. There is no jurisdiction chart.\"",
+          "why": null,
+          "link": "#institution"
+        }
+      ]
+    },
+    {
+      "name": "Code health — size and composition",
+      "link": "#eco-size",
+      "entries": [
+        {
+          "name": "Implementation code",
+          "field": "trees[].values.implementation_code",
+          "what": "Size of the program the rules sit in, in code lines.",
+          "why": "It is the volume of first-party code a reader has to take on trust, before tooling is removed.",
+          "how_omitted": "contains figures; the page shows them from data",
+          "caveats": "Compare only with the same counter. BLVM's crate set is listed in the size caption. libbitcoin is one repo: libbitcoin-system. Nine trees only.",
+          "link": "#eco-size"
+        },
+        {
+          "name": "Program code",
+          "field": "trees[].values.program_code",
+          "what": "Implementation code minus tooling.",
+          "why": "It is the program itself, with tooling taken out.",
+          "how": "Same counter. Tooling is files the role map marks as tooling.",
+          "caveats_omitted": "contains figures; the page shows them from data",
+          "link": "#eco-size"
+        },
+        {
+          "name": "Tooling",
+          "field": "trees[].values.tooling_code",
+          "what": "Files the role map marks as tooling.",
+          "why": "Tooling is part of the tree but is not the program the rules sit in.",
+          "how": "Same counter, role-map bucket.",
+          "caveats_omitted": "contains figures; the page shows them from data",
+          "link": "#eco-size"
+        },
+        {
+          "name": "Rules share",
+          "field": "trees[].values.rules_share",
+          "what": "Share of implementation on the rules side of that tree's cut, as a percent of implementation.",
+          "why": "It is one reading of how much of the tree is consensus-rule code, not a grade.",
+          "how": "Same-profile only: the Core file cut, the crate-role cut, and the repository-role cut are separate instruments and are not compared across profiles. Key: `tree_methods` id `rules_share`; `trees[].instrument` names the cut.",
+          "caveats_omitted": "contains figures; the page shows them from data",
+          "link": "#eco-size"
+        },
+        {
+          "name": "Left mixed",
+          "field": "trees[].values.mixed_share",
+          "what": "Share of implementation left in a crate or library the cut did not split.",
+          "why": "A high mixed share means a large part of the tree was not placed on either side of the rules cut.",
+          "how": "Same instrument as rules share.",
+          "caveats_omitted": "contains figures; the page shows them from data",
+          "link": "#eco-size"
+        },
+        {
+          "name": "Tests per implementation line",
+          "field": "trees[].values.test_per_implementation",
+          "what": "Test-bucket code lines divided by implementation code lines.",
+          "why": "It is a density ratio, not a claim about test quality.",
+          "how_omitted": "contains figures; the page shows them from data",
+          "caveats": "The shorter page note at `scan.test_placement` / the size-table test caption still mentions only `*_test.rs` and `#[cfg(test)]`, and is narrower than the method actually used.",
+          "link": "#eco-size"
+        },
+        {
+          "name": "Vendored code",
+          "field": "trees[].values.vendored_code",
+          "what": "Bundled libraries, in code lines. Outside first-party code.",
+          "why": "Vendored source is code the node runs that is not first-party, counted separately from direct dependencies.",
+          "how_omitted": "contains figures; the page shows them from data",
+          "caveats_omitted": "contains figures; the page shows them from data",
+          "link": "#eco-size"
+        },
+        {
+          "name": "Locale",
+          "field": "trees[].values.locale_code",
+          "what": "Translation files, in code lines. Outside first-party code.",
+          "why": "Locale files can be large and are not program code.",
+          "how": "Same counter, locale-path bucket (`is_locale`).",
+          "caveats_omitted": "contains figures; the page shows them from data",
+          "link": "#eco-size"
+        },
+        {
+          "name": "Lines in files of 1,000 or more",
+          "field": "trees[].values.share_lines_ge_1000",
+          "what": "How much of the program sits in large files, as a percent of program code.",
+          "why": "It is one reading of how concentrated the program is in large files.",
+          "how": "`share_ge_1000` in the measure script. Tooling is outside this share. Spec lock is tooling on BLVM.",
+          "link": "#eco-size"
+        },
+        {
+          "name": "Files holding half the program",
+          "field": "trees[].values.files_holding_half",
+          "what": "Smallest set of program files whose code lines reach half the program code.",
+          "why": "It is one reading of how widely or narrowly the program is spread across files.",
+          "how": "`files_holding_half` in the measure script. Tooling is outside this count.",
+          "link": "#eco-size"
+        }
+      ]
+    },
+    {
+      "name": "Code health — tests, authors, CI, plugins",
+      "link": "#depth",
+      "entries": [
+        {
+          "name": "Fuzz targets",
+          "field": "metrics.json` `rows[].fuzz_targets",
+          "what": "Number of declared fuzz targets at the pinned commit, not a count of files in a fuzz directory.",
+          "why": "It is a count of harnesses in the tree, not hours of fuzzing or bugs found.",
+          "how_omitted": "contains figures; the page shows them from data",
+          "caveats_omitted": "contains figures; the page shows them from data",
+          "revision": "under revision for C++ trees",
+          "link": "#depth"
+        },
+        {
+          "name": "In-source test lines",
+          "field": "metrics.json` `rows[].test_insource",
+          "what": "Test-bucket code lines that sit next to program sources, including in-file `#[cfg(test)]` and C++ `src/test`.",
+          "why": "It shows how much test code lives beside the program, as a folder split.",
+          "how_omitted": "contains figures; the page shows them from data",
+          "caveats": "This is a folder split, not a unit-versus-integration classification. `test_unit` is a deprecated alias of this field and should not be labeled \"unit tests.\"",
+          "link": "#depth"
+        },
+        {
+          "name": "Test-folder test lines",
+          "field": "metrics.json` `rows[].test_folder",
+          "what": "Remaining test-bucket files under `tests/`, `test/`, `e2e/`, `qa/`, or `functional/`.",
+          "why": "It shows tests kept in a dedicated test directory.",
+          "how": "Same `test_split` method.",
+          "caveats": "`test_integration` is a deprecated alias of this field and should not be labeled \"integration tests.\"",
+          "link": "#depth"
+        },
+        {
+          "name": "Fuzz test lines",
+          "field": "metrics.json` `rows[].test_fuzz",
+          "what": "Test-bucket code lines under fuzz paths (`fuzz/`, `fuzz_targets/`, `src/test/fuzz/`).",
+          "why": "It is the size of fuzz-related test code, not the number of targets.",
+          "how": "Same `test_split` partition.",
+          "caveats": "Do not confuse this line count with `fuzz_targets`.",
+          "link": "#depth"
+        },
+        {
+          "name": "Property test lines",
+          "field": "metrics.json` `rows[].test_property",
+          "what": "Test-bucket code lines whose path or name contains `property`, `proptest`, `quickcheck`, `hypothesis`, or `orange_paper_property`.",
+          "why": "It is a line-count companion to the verification-table property-tests status.",
+          "how": "Same `test_split` partition.",
+          "caveats_omitted": "contains figures; the page shows them from data",
+          "link": "#depth"
+        },
+        {
+          "name": "Test-split total",
+          "field": "metrics.json` `rows[].test_split_total",
+          "what": "Sum of the test-split buckets.",
+          "why": "It is the total test-bucket lines under the same counter.",
+          "how": "Sum of the `test_split` parts.",
+          "caveats_omitted": "contains figures; the page shows them from data",
+          "link": "#depth"
+        },
+        {
+          "name": "Test-vector files",
+          "field": "metrics.json` `rows[].vector_files",
+          "what": "Count of files whose path or name looks like a test vector.",
+          "why": "It is a file count, not a claim that every file is executed.",
+          "how": "`count_vector_and_spec_files`. Path or name looks like a test vector (`vector`, `tx_valid`, `tx_invalid`, `script_tests`, `sighash`, `bipN`) with suffix `.json`, `.csv`, or `.hex`.",
+          "caveats": "Distinct from the verification-table `test_vectors` status. Name matching can miss or over-count files.",
+          "link": "#depth"
+        },
+        {
+          "name": "Spec files",
+          "field": "metrics.json` `rows[].spec_files",
+          "what": "Count of documentation or model files whose name looks like a spec.",
+          "why": "It is a file count, not a formal-spec status.",
+          "how": "`count_vector_and_spec_files`. Name looks like a spec (`spec`, `THE_ORANGE_PAPER`, orange paper, `bipN`) with suffix `.md`, `.rst`, `.txt`, `.lean`, or `.tex`. LICENSE and contributing files are excluded.",
+          "caveats_omitted": "contains figures; the page shows them from data",
+          "link": "#depth"
+        },
+        {
+          "name": "Human authors, 12 months",
+          "field": "metrics.json` `rows[].authors_12m",
+          "what": "Distinct human commit authors on the landing-share repo set in the last 12 months.",
+          "why": "It is a head-count of people who landed commits in the window, after aliases are merged and bots are dropped — not a measure of review or of governance.",
+          "how_omitted": "contains figures; the page shows them from data",
+          "caveats_omitted": "contains figures; the page shows them from data",
+          "revision": "bitcoin-rs under revision",
+          "link": "#depth"
+        },
+        {
+          "name": "Tagged releases, 12 months",
+          "field": "metrics.json` `rows[].releases_12m",
+          "what": "Git tags whose creator date falls in the 12-month window.",
+          "why": "It is a release-cadence count, not a stability grade.",
+          "how": "`releases_12m`. Annotated tags use the tagger date; lightweight tags use the tagged commit date (`creatordate`). Names that contain `/` (Go module subpath tags) are excluded. BLVM's note: blvm-node tags.",
+          "caveats_omitted": "contains figures; the page shows them from data",
+          "link": "#depth"
+        },
+        {
+          "name": "CI workflows",
+          "field": "metrics.json` `rows[].ci_workflows",
+          "what": "Number of GitHub Actions workflow files at the pin.",
+          "why": "It is a file count, not a measure of coverage or of whether jobs pass.",
+          "how": "Number of `.github/workflows/*.{yml,yaml}` files at the pin (`parse_ci`).",
+          "caveats_omitted": "contains figures; the page shows them from data",
+          "link": "#depth"
+        },
+        {
+          "name": "CI jobs",
+          "field": "metrics.json` `rows[].ci_jobs",
+          "what": "GitHub Actions jobs at the pin, after expanding static matrices.",
+          "why": "It is a job-definition count, not a pass/fail record.",
+          "how": "`parse_ci` and `expand_matrix`. A static matrix of lists is expanded (an include-only matrix is just the include rows, not one implicit job plus those rows; minus exclude). A `fromJSON(needs.job.outputs.x)` matrix is expanded when the default non-PR value is written in the same workflow, or when the producer reads this tree's fuzz/Cargo.toml `[[bin]]` list. Unquoted `run:` scalars that break PyYAML are quoted and retried. If a matrix still cannot be expanded or a file still fails to parse, the cell is partial and the value is a lower bound.",
+          "caveats": "On pull request #9's head every `ci_jobs` cell is marked measured, not partial. The method still says a partial lower bound is what should be stored when expansion or parsing fails.",
+          "link": "#depth"
+        },
+        {
+          "name": "Plugin or module system",
+          "field": "metrics.json` `rows[].plugin_system`, `plugin_own`, `plugin_independent",
+          "what": "Whether the pinned tree's docs describe a module or plugin system; how many own-team optional modules; how many independently maintained modules.",
+          "why": "It describes how the node can be extended, not whether extensions are safe.",
+          "how_omitted": "contains figures; the page shows them from data",
+          "caveats": "Most rows are no, with independently maintained modules not found. \"No\" is a reading of the tree's docs at the pin.",
+          "link": "#modules"
+        }
+      ]
+    },
+    {
+      "name": "Stack (license, language, dependencies)",
+      "link": "#stack",
+      "entries": [
+        {
+          "name": "License",
+          "field": "stack.json` `rows[].license",
+          "what": "The repository's license file.",
+          "why": "It states the terms under which the code can be used and forked.",
+          "how": "The license file at the pin, with a source link. The method text states that no proprietary or non-OSI license file turned up in any tree.",
+          "link": "#stack"
+        },
+        {
+          "name": "Languages",
+          "field": "stack.json` `rows[].languages",
+          "what": "Languages with 5% or more of code lines.",
+          "why": "It is the language mix of the tree, and the grouping key for separate codebases on the lineage chart.",
+          "how_omitted": "contains figures; the page shows them from data",
+          "link": "#stack"
+        },
+        {
+          "name": "Direct third-party dependencies",
+          "field": "stack.json` `rows[].direct_deps",
+          "what": "Direct third-party libraries of a default node build.",
+          "why": "Each direct dependency is code the node pulls in from outside the project.",
+          "how_omitted": "contains figures; the page shows them from data",
+          "caveats": "Counts are not transitive. BLVM has no lockfile in that cell, so the resolve is dated.",
+          "link": "#stack"
+        },
+        {
+          "name": "Vendored (stack table)",
+          "field": "stack.json` `rows[].vendored",
+          "what": "Library subtrees or `vendor/` directories in the tree, with code lines rounded.",
+          "why": "Same as vendored code, above.",
+          "how": "Qualitative plus rounded line counts in the stack method.",
+          "caveats": "Prefer `trees[].values.vendored_code` when it is measured. See the disagreements listed under Vendored code. Floresta, rbitcoin, and btcd have only this stack field: Floresta and btcd \"None found\"; rbitcoin \"None in the tree. Bitcoin Core is a git submodule.\"",
+          "link": "#stack"
+        }
+      ]
+    }
+  ]
+}

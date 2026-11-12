@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-11-12",
+  "population": "reachable nodes, by advertised user agent",
+  "note": "The figures the Why section quotes. Both crawlers round; 'other' is the remainder of 100% and is not published by either source. 'Bitcoin Knots' is one user-agent family: it mixes releases from before and after the split, and Knots Legacy, Bit-Block and Bitcoin Roots are not reported separately.",
+  "sources": [
+    { "label": "Coin Dance", "href": "https://coin.dance/nodes" },
+    { "label": "Bitnodes via 21btc", "href": "https://21btc.cc/nodes" }
+  ],
+  "rows": [
+    { "id": "core", "label": "Bitcoin Core", "share": 90, "text": "about 90%" },
+    { "id": "knots", "label": "Bitcoin Knots family", "share": 9.5, "text": "about 9.5%" },
+    { "id": "other", "label": "Other", "share": 0.5, "text": "about 0.5%", "derived": "100 - 90 - 9.5" }
+  ]
+}

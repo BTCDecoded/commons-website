@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-11-12",
+  "crates": {
+    "note": "BLVM crates the default blvm binary links, read from each Cargo.toml. blvm is the binary; its default features turn on blvm-node's production feature, which enables blvm-consensus. Optional crates that no default feature turns on are marked default: false.",
+    "binary_commit": "d7741e325bd8e82a389da5249e5f05da52b363f8",
+    "node_pin": "36bb40c7e9a3f805274fa7e1bda30d0a6c082560",
+    "rows": [
+      {
+        "id": "blvm",
+        "repo": "blvm",
+        "role": "Node binary",
+        "cargo": "https://github.com/BTCDecoded/blvm/blob/d7741e325bd8e82a389da5249e5f05da52b363f8/Cargo.toml",
+        "in_default_binary": true
+      },
+      {
+        "id": "blvm-sdk",
+        "repo": "blvm-sdk",
+        "role": "Module SDK; not in the default binary",
+        "in_default_binary": false,
+        "cargo": "https://github.com/BTCDecoded/blvm-sdk/blob/fcb1afdc5e28a2893717dd4b2c9548d83b35ec62/Cargo.toml"
+      },
+      {
+        "id": "blvm-node",
+        "repo": "blvm-node",
+        "role": "Node: networking, storage, RPC",
+        "cargo": "https://github.com/BTCDecoded/blvm-node/blob/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/Cargo.toml",
+        "in_default_binary": true
+      },
+      {
+        "id": "blvm-storage-fence",
+        "repo": "blvm-node",
+        "role": "Storage engine fence",
+        "cargo": "https://github.com/BTCDecoded/blvm-node/blob/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/crates/blvm-storage-fence/Cargo.toml",
+        "in_default_binary": true
+      },
+      {
+        "id": "blvm-protocol",
+        "repo": "blvm-protocol",
+        "role": "Protocol engine",
+        "cargo": "https://github.com/BTCDecoded/blvm-protocol/blob/0bc9307a2235831fff52548621301b6084a9e809/Cargo.toml",
+        "in_default_binary": true
+      },
+      {
+        "id": "blvm-muhash",
+        "repo": "blvm-muhash",
+        "role": "MuHash UTXO set hash",
+        "cargo": "https://github.com/BTCDecoded/blvm-muhash/blob/b0031beba641737b6768d141ef26adc1edc0609f/Cargo.toml",
+        "in_default_binary": true
+      },
+      {
+        "id": "blvm-consensus",
+        "repo": "blvm-consensus",
+        "role": "Consensus rules",
+        "cargo": "https://github.com/BTCDecoded/blvm-consensus/blob/f63c32856a2da874296524f40b8cbd35518d8096/Cargo.toml",
+        "in_default_binary": true
+      },
+      {
+        "id": "blvm-primitives",
+        "repo": "blvm-primitives",
+        "role": "Types",
+        "cargo": "https://github.com/BTCDecoded/blvm-primitives/blob/0802458403a155206560749ab279470832988fe4/Cargo.toml",
+        "in_default_binary": true
+      },
+      {
+        "id": "blvm-secp256k1",
+        "repo": "blvm-secp256k1",
+        "role": "Pure-Rust secp256k1",
+        "cargo": "https://github.com/BTCDecoded/blvm-secp256k1/blob/926f41588fce67f0d87cb5ae0b4ea62fc3f92d62/Cargo.toml",
+        "in_default_binary": true
+      },
+      {
+        "id": "blvm-spec-lock",
+        "repo": "blvm-spec-lock",
+        "role": "Proof tooling (cargo spec-lock); off by default",
+        "in_default_binary": false,
+        "cargo": "https://github.com/BTCDecoded/blvm-spec-lock/blob/dbff220efd14daf5d409ebf74e6f467799cd7c8d/Cargo.toml"
+      }
+    ],
+    "edges": [
+      {
+        "from": "blvm",
+        "to": "blvm-node",
+        "default": true,
+        "evidence": "blvm-node = { version = \">=0.1, <1\", default-features = false }",
+        "source": "https://github.com/BTCDecoded/blvm/blob/d7741e325bd8e82a389da5249e5f05da52b363f8/Cargo.toml"
+      },
+      {
+        "from": "blvm-sdk",
+        "to": "blvm-node",
+        "default": true,
+        "evidence": "blvm-node = { version = \">=0.1, <1\", optional = true, default-features = false } with default = [\"node\"]",
+        "source": "https://github.com/BTCDecoded/blvm-sdk/blob/fcb1afdc5e28a2893717dd4b2c9548d83b35ec62/Cargo.toml"
+      },
+      {
+        "from": "blvm-node",
+        "to": "blvm-protocol",
+        "default": true,
+        "evidence": "blvm-protocol = { version = \">=0.1, <1\" }",
+        "source": "https://github.com/BTCDecoded/blvm-node/blob/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/Cargo.toml"
+      },
+      {
+        "from": "blvm-node",
+        "to": "blvm-consensus",
+        "default": true,
+        "evidence": "blvm-consensus optional; enabled by production = [..., \"dep:blvm-consensus\", ...], which the blvm default turns on",
+        "source": "https://github.com/BTCDecoded/blvm-node/blob/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/Cargo.toml"
+      },
+      {
+        "from": "blvm-node",
+        "to": "blvm-muhash",
+        "default": true,
+        "evidence": "blvm-muhash = { version = \">=0.1, <1\" }",
+        "source": "https://github.com/BTCDecoded/blvm-node/blob/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/Cargo.toml"
+      },
+      {
+        "from": "blvm-node",
+        "to": "blvm-storage-fence",
+        "default": true,
+        "evidence": "blvm-storage-fence = { version = \"0.1.0\", path = \"crates/blvm-storage-fence\", default-features = false }",
+        "source": "https://github.com/BTCDecoded/blvm-node/blob/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/Cargo.toml"
+      },
+      {
+        "from": "blvm-node",
+        "to": "blvm-secp256k1",
+        "default": true,
+        "evidence": "blvm-secp256k1 = { version = \">=0.1, <1\" }",
+        "source": "https://github.com/BTCDecoded/blvm-node/blob/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/Cargo.toml"
+      },
+      {
+        "from": "blvm-protocol",
+        "to": "blvm-consensus",
+        "default": true,
+        "evidence": "blvm-consensus = { version = \">=0.1, <1\" }",
+        "source": "https://github.com/BTCDecoded/blvm-protocol/blob/0bc9307a2235831fff52548621301b6084a9e809/Cargo.toml"
+      },
+      {
+        "from": "blvm-protocol",
+        "to": "blvm-secp256k1",
+        "default": true,
+        "evidence": "blvm-secp256k1 = { version = \">=0.1, <1\" }",
+        "source": "https://github.com/BTCDecoded/blvm-protocol/blob/0bc9307a2235831fff52548621301b6084a9e809/Cargo.toml"
+      },
+      {
+        "from": "blvm-protocol",
+        "to": "blvm-spec-lock",
+        "default": false,
+        "evidence": "blvm-spec-lock optional; spec-lock = [\"dep:blvm-spec-lock\"] is not a default feature (\"The node does not enable this.\")",
+        "source": "https://github.com/BTCDecoded/blvm-protocol/blob/0bc9307a2235831fff52548621301b6084a9e809/Cargo.toml"
+      },
+      {
+        "from": "blvm-consensus",
+        "to": "blvm-primitives",
+        "default": true,
+        "evidence": "blvm-primitives = { version = \">=0.1, <1\", default-features = false }",
+        "source": "https://github.com/BTCDecoded/blvm-consensus/blob/f63c32856a2da874296524f40b8cbd35518d8096/Cargo.toml"
+      },
+      {
+        "from": "blvm-consensus",
+        "to": "blvm-secp256k1",
+        "default": true,
+        "evidence": "blvm-secp256k1 optional; default = [\"production\", \"blvm-secp256k1\"]",
+        "source": "https://github.com/BTCDecoded/blvm-consensus/blob/f63c32856a2da874296524f40b8cbd35518d8096/Cargo.toml"
+      },
+      {
+        "from": "blvm-consensus",
+        "to": "blvm-spec-lock",
+        "default": false,
+        "evidence": "blvm-spec-lock optional; \"Not a node dependency. Off unless `--features spec-lock`.\"",
+        "source": "https://github.com/BTCDecoded/blvm-consensus/blob/f63c32856a2da874296524f40b8cbd35518d8096/Cargo.toml"
+      }
+    ]
+  },
+  "layers_source": {
+    "label": "governance/config/repository-layers.yml at d235edb",
+    "href": "https://github.com/BTCDecoded/governance/blob/d235edb93e57737fdb13a13647dc09362f681b2f/config/repository-layers.yml"
+  }
+}

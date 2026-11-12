@@ -1883,5 +1883,19 @@
         "basis": "landing: davecgh, 1,662 of 4,517 (36.8%)."
       }
     ]
-  }
+  },
+  "upstream": [
+    {
+      "slug": "knots",
+      "name": "Bitcoin Knots",
+      "derives_from": "bitcoin-core",
+      "text": "Bitcoin Knots is a fork of Bitcoin Core. GitHub lists bitcoinknots/bitcoin as a fork of bitcoin/bitcoin, and the Knots README says development generally takes place as part of Bitcoin Core and is merged into Knots for each release.",
+      "quote": "Development generally takes place as part of Bitcoin Core, and is merged into Knots for each release.",
+      "sources": [
+        { "label": "Knots README at 5811235", "href": "https://github.com/bitcoinknots/bitcoin/blob/5811235e3f5da687de1ac8ca731331a2fc24a350/README.md" },
+        { "label": "GitHub fork parent", "href": "https://github.com/bitcoinknots/bitcoin" }
+      ],
+      "read": "2026-11-12"
+    }
+  ]
 }

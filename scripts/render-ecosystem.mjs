@@ -6,13 +6,14 @@
 // Usage: node scripts/render-ecosystem.mjs   (run after the data file changes)
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const pagePath = path.join(root, "ecosystem.html");
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/implementations.json"), "utf8"));
 const verification = JSON.parse(fs.readFileSync(path.join(root, "data/verification.json"), "utf8"));
 const stack = JSON.parse(fs.readFileSync(path.join(root, "data/stack.json"), "utf8"));
+const stability = JSON.parse(fs.readFileSync(path.join(root, "data/stability.json"), "utf8"));
 const metrics = JSON.parse(fs.readFileSync(path.join(root, "data/metrics.json"), "utf8"));
 
 function esc(s) {
@@ -153,6 +154,12 @@ const vCols = verification.columns || [];
 const statusClass = { "yes": "st-yes", "partial": "st-partial", "not found": "st-nf", "n/a": "st-na" };
 const glanceOrder = [internal].concat(["bitcoin-core", "knots-legacy", "bit-block", "bitcoin-roots", "bitcoin-rs", "satd", "libbitcoin", "hornet", "floresta", "rbitcoin", "btcd"].filter(function (s) { return s !== internal; }));
 const vBySlug = {}; (verification.rows || []).forEach(function (r) { vBySlug[r.slug] = r; });
+// Stability column: the checklist count, hatched while not measured.
+function stabCell(slug) {
+    const st = stabilityFor(slug);
+    const nm = st.measured === 0;
+    return "<td data-label=\"Stability\" class=\"stab" + (nm ? " stab-nm" : "") + "\"><span class=\"stab-mark\" aria-hidden=\"true\"></span>" + esc(nm ? "not measured" : st.text) + "</td>";
+}
 slots.glance = glanceOrder.map(function (slug) {
     var v = vBySlug[slug], g = govBySlug[slug];
     if (!v || !g) throw new Error("glance row missing for " + slug);
@@ -160,7 +167,7 @@ slots.glance = glanceOrder.map(function (slug) {
     var cells = vCols.map(function (col) {
         var cell = v.cells[col.id];
         if (!cell || !statusClass[cell.status]) throw new Error("bad verification cell " + slug + "/" + col.id);
-        return "<td data-label=\"" + esc(col.short || col.name) + "\" class=\"st " + statusClass[cell.status] + "\"><span class=\"st-mark\" aria-hidden=\"true\"></span>" + esc(cell.status) + "</td>";
+        return "<td data-label=\"" + esc(col.short || col.name) + "\" class=\"st " + statusClass[cell.status] + "\"><span class=\"st-mark\" aria-hidden=\"true\"></span>" + esc(cell.status) + (cell.status === "n/a" ? "<small>" + esc(cell.text || verification.statuses["n/a"]) + "</small>" : "") + "</td>";
     }).join("");
     var notes = vCols.map(function (col) {
         var cell = v.cells[col.id];
@@ -174,10 +181,14 @@ slots.glance = glanceOrder.map(function (slug) {
         }).join("");
         return "<li><span class=\"eco-meta\">" + esc(col.name) + ", " + esc(cell.status) + ".</span> " + esc(cell.text || "") + (cell.text ? "." : "") + src + "</li>";
     }).join("");
+    var stab = stabilityFor(slug);
+    notes += stab.cells.concat(stab.tags).filter(function (c) { return c.evidence_url; }).map(function (c) {
+        return "<li><span class=\"eco-meta\">Stability, " + esc(c.label) + ", " + esc(c.type === "tag" ? c.tag : c.status.replace("_", " ")) + ".</span> <a href=\"" + esc(c.evidence_url) + "\">Source<span class=\"visually-hidden\">: " + esc(v.name + ", stability, " + c.label) + "</span></a></li>";
+    }).join("");
     var open = "<details><summary>Sources<span class=\"visually-hidden\"> for " + esc(v.name) + "</span></summary><ul>" + notes + "</ul><p class=\"eco-meta\">" + esc(v.repo) + " at " + esc(v.commit) + ".</p></details>";
     return "<tr data-slug=\"" + esc(slug) + "\"><th scope=\"row\"" + (isInt ? " class=\"internal\"" : "") + ">" + esc(v.name) + "</th>" +
-        "<td class=\"gov m-full\" data-label=\"Governance model\"><span class=\"gov-label" + (isInt ? " internal" : "") + "\">" + esc(g.label) + "</span><small>" + esc(g.detail) + "</small></td>" + cells + "</tr>" +
-        "<tr data-slug=\"" + esc(slug) + "\" class=\"eco-open-row\"><td class=\"eco-open m-full\" colspan=\"" + (vCols.length + 2) + "\">" + open + "</td></tr>";
+        "<td class=\"gov m-full\" data-label=\"Governance model\"><span class=\"gov-label" + (isInt ? " internal" : "") + "\">" + esc(g.label) + "</span><small>" + esc(g.detail) + "</small></td>" + cells + stabCell(slug) + "</tr>" +
+        "<tr data-slug=\"" + esc(slug) + "\" class=\"eco-open-row\"><td class=\"eco-open m-full\" colspan=\"" + (vCols.length + 3) + "\">" + open + "</td></tr>";
 }).join("");
 slots["glance-caption"] = esc("Governance labels as of " + govModel.as_of + ". " + govModel.note + " Verification statuses as of " + verification.as_of + ". Each row's sources open under it.");
 slots["verify-note"] = esc(verification.note);
@@ -361,14 +372,146 @@ slots["depth-note"] = Object.keys(metrics.methods || {}).filter(function (k) { r
 
 slots.omitted = esc(data.omitted || "");
 
+// Summary charts: one definition file per chart in scripts/ecosystem-charts/,
+// each exporting { slot, build(ctx) }. Removing a file drops its chart; its
+// slot then renders empty.
+const chartDir = path.join(root, "scripts/ecosystem-charts");
+// The three page axes, computed once from the data files so every chart and
+// card reads the same classification.
+//   Independence: Core, a fork of Core or Knots (stated in governance.history),
+//     or its own codebase (no derivation stated).
+//   Assurance: the six verification checks, yes = 2, partial = 1,
+//     not found = 0; n/a is left out of both score and maximum.
+//   Accountability: governance_model labels, ranked single maintainer (1),
+//     maintainer group (2), foundation key (3), written rules (4).
+// PENDING lists metrics a separate PR is correcting; charts mark them
+// "pending fix" and never draw their values as final.
+// Series a separate change is correcting; charts draw them as "pending fix".
+// Empty since #9 corrected fuzz targets, authors, CI counts and rules share.
+const PENDING = {};
+const POINTS = { "yes": 2, "partial": 1, "not found": 0 };
+const FORKS = {
+    "knots-legacy": "Knots Legacy continues Bitcoin Knots",
+    "bit-block": "Bit-Block is a fork of Bitcoin Knots",
+    "bitcoin-roots": "Bitcoin Roots is a patch series on Bitcoin Core"
+};
+const ACCOUNT = [
+    { rank: 1, match: "Single maintainer", label: "Single maintainer" },
+    { rank: 2, match: "Maintainer group", label: "Maintainer group" },
+    { rank: 3, match: "Foundation, one signing key", label: "Foundation key" },
+    { rank: 4, match: "Commons governance", label: "Written rules" }
+];
+// Stability: a checklist written by Research and scored by the metrics
+// script. A criterion a row does not carry is not measured. Met and not met
+// need an evidence link; anything else fails the render.
+function stabilityFor(slug) {
+    const STAB_STATUS = { met: 1, not_met: 1, not_measured: 1 };
+    const def = stability.definition || [];
+    const row = (stability.rows || {})[slug];
+    if (!row) throw new Error("stability: no row for " + slug);
+    Object.keys(row.criteria || {}).forEach(function (k) {
+        if (!def.some(function (c) { return c.id === k; })) throw new Error("stability: " + slug + " has unknown criterion " + k);
+    });
+    const all = def.map(function (c) {
+        const v = (row.criteria || {})[c.id] || { status: "not_measured" };
+        if (c.type === "tag") {
+            // Descriptive, not scored: a short tag with evidence, or not measured.
+            if (v.status === "n/a") {
+                if (!v.reason) throw new Error("stability: tag " + slug + "/" + c.id + " is n/a without a reason");
+                return { id: c.id, label: c.label, why: c.why, type: "tag", status: "n/a", tag: "n/a (" + v.reason + ")", evidence_url: null };
+            }
+            if (v.status !== "not_measured" && !(v.status === "tag" && v.tag && /^https:\/\//.test(v.evidence_url || ""))) throw new Error("stability: tag " + slug + "/" + c.id + " needs tag and evidence_url");
+            return { id: c.id, label: c.label, why: c.why, type: "tag", status: v.status === "not_measured" ? "not_measured" : "tag", tag: v.tag || null, evidence_url: v.evidence_url || null };
+        }
+        if (!STAB_STATUS[v.status]) throw new Error("stability: bad status " + slug + "/" + c.id);
+        if (v.status !== "not_measured" && !/^https:\/\//.test(v.evidence_url || "")) throw new Error("stability: " + slug + "/" + c.id + " needs an evidence_url");
+        return { id: c.id, label: c.label, why: c.why, type: "check", status: v.status, evidence_url: v.evidence_url || null };
+    });
+    const cells = all.filter(function (c) { return c.type === "check"; });
+    const tags = all.filter(function (c) { return c.type === "tag"; });
+    const met = cells.filter(function (c) { return c.status === "met"; }).length;
+    const nm = cells.filter(function (c) { return c.status === "not_measured"; }).length;
+    const measured = cells.length - nm;
+    const text = cells.length ? met + " of " + cells.length + " met" + (nm ? ", " + nm + " not measured" : "") : "not measured: the checklist is not written yet";
+    return { cells: cells, tags: tags, met: met, measured: measured, notMeasured: nm, total: cells.length, text: text };
+}
+
+function buildModel() {
+    const hist = {}, gov = {}, ver = {}, trees = {}, met = {};
+    data.governance.history.forEach(function (h) { hist[h.slug] = h.text; });
+    data.governance_model.labels.forEach(function (l) { gov[l.slug] = l; });
+    verification.rows.forEach(function (r) { ver[r.slug] = r; });
+    data.trees.forEach(function (t) { trees[t.slug] = t; });
+    metricRows.forEach(function (r) { met[r.slug] = r; });
+    const rows = stack.rows.map(function (r) {
+        let lineage;
+        if (r.slug === "bitcoin-core") lineage = { cls: "core", label: "Bitcoin Core", text: "The reference implementation." };
+        else if (FORKS[r.slug]) {
+            if ((hist[r.slug] || "").indexOf(FORKS[r.slug]) < 0) throw new Error("model: history no longer states " + FORKS[r.slug]);
+            lineage = { cls: "fork", label: "Core lineage", text: FORKS[r.slug] + "." };
+        } else lineage = { cls: "own", label: "Own codebase", text: "No derivation from Core or Knots is stated in the data." };
+        const g = gov[r.slug];
+        const acc = ACCOUNT.filter(function (a) { return g && g.label.indexOf(a.match) === 0; })[0];
+        const v = ver[r.slug];
+        if (!v) throw new Error("model: no verification row for " + r.slug);
+        const cells = verification.columns.map(function (c) {
+            const cell = v.cells[c.id];
+            const pts = cell.status in POINTS ? POINTS[cell.status] : null;
+            if (pts === null && cell.status !== "n/a") throw new Error("model: unknown status " + cell.status);
+            return { id: c.id, name: c.name, short: c.short, what: c.what, status: cell.status, points: pts, text: cell.text, source: cell.source };
+        });
+        const scored = cells.filter(function (c) { return c.points !== null; });
+        const score = scored.reduce(function (a, c) { return a + c.points; }, 0), max = 2 * scored.length;
+        const t = trees[r.slug];
+        return {
+            slug: r.slug, name: r.name, internal: r.slug === data.internal_slug,
+            lineage: lineage,
+            accountability: acc ? { rank: acc.rank, label: acc.label, full: g.label, detail: g.detail } : { rank: null, label: "Not classified", full: g ? g.label : "Not classified", detail: g ? g.detail : "" },
+            assurance: { cells: cells, score: score, max: max, pct: Math.round(100 * score / max) },
+            size: t ? t.values.implementation_code : { value: null, text: "not measured", status: "not-measured" },
+            shallow: t ? !!t.shallow : null,
+            deps: { value: r.direct_deps, text: String(r.direct_deps) },
+            stack: r, metrics: met[r.slug] || null,
+            stability: stabilityFor(r.slug)
+        };
+    });
+    const extra = Object.keys(stability.rows).filter(function (k) { return !rows.some(function (r) { return r.slug === k; }); }).map(function (k) {
+        const x = stability.rows[k];
+        if (x.on_page !== false) throw new Error("stability: row " + k + " has no implementation on the page; mark it on_page false");
+        return { slug: k, name: x.name, note: x.note, stability: stabilityFor(k) };
+    });
+    return { rows: rows, pending: PENDING, points: POINTS, accountRanks: ACCOUNT, stability: { note: stability.note, rule: stability.score_rule, definition: stability.definition, status: stability.status, extra: extra } };
+}
+const chartCtx = { root: root, data: data, verification: verification, stack: stack, metrics: metrics, stability: stability, model: buildModel(), readJson: function (rel) { return JSON.parse(fs.readFileSync(path.join(root, rel), "utf8")); } };
+for (const file of fs.existsSync(chartDir) ? fs.readdirSync(chartDir).filter(function (f) { return f.endsWith(".mjs"); }).sort() : []) {
+    const def = (await import(pathToFileURL(path.join(chartDir, file)).href)).default;
+    if (slots[def.slot] !== undefined) throw new Error("two charts fill slot " + def.slot);
+    slots[def.slot] = def.build(chartCtx);
+}
+
 let html = fs.readFileSync(pagePath, "utf8");
 const seen = new Set();
 html = html.replace(/<!--slot:([a-z-]+)-->[\s\S]*?<!--\/slot:\1-->/g, function (all, name) {
+    if (!(name in slots) && name.indexOf("chart-") === 0) slots[name] = "";
     if (!(name in slots)) throw new Error("no renderer for slot " + name);
     seen.add(name);
     return "<!--slot:" + name + "-->" + slots[name] + "<!--/slot:" + name + "-->";
 });
 const missing = Object.keys(slots).filter(function (k) { return !seen.has(k); });
 if (missing.length) throw new Error("slots missing from ecosystem.html: " + missing.join(", "));
+// Cell guard: no table cell may be empty or a bare dash (a missing value is
+// "not measured"), and a bare "n/a" must say why in a title.
+(function () {
+    const bad = [];
+    html.replace(/<td\b([^>]*)>([\s\S]*?)<\/td>/g, function (all, attrs, inner) {
+        const text = inner.replace(/<details[\s\S]*?<\/details>/g, " x ").replace(/<[^>]+>/g, "").replace(/&nbsp;|&#160;/g, " ").replace(/\s+/g, " ").trim();
+        const line = html.slice(0, html.indexOf(all)).split("\n").length;
+        if (!text) bad.push("empty cell at line " + line);
+        else if (/^[\u2014\u2013\u2212-]+$/.test(text) || /^&mdash;$|^&ndash;$/.test(text)) bad.push("dash cell at line " + line);
+        else if (/^n\/a\.?$/i.test(text) && !/\btitle="[^"]+"/.test(attrs)) bad.push("n/a without a reason at line " + line);
+        return all;
+    });
+    if (bad.length) throw new Error("table cells: " + bad.slice(0, 10).join("; ") + (bad.length > 10 ? "; and " + (bad.length - 10) + " more" : ""));
+})();
 fs.writeFileSync(pagePath, html);
 console.log("ecosystem.html rendered from data measured " + data.measured_at);

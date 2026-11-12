@@ -1,0 +1,473 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-11-12",
+  "status": "definition from Research; cells only where Research cites an https source",
+  "note": "Definition and readings from Research's stability brief (2026-11-12). A cell is met or not met only where the brief cites an https source for it; a reading the brief takes from a file in the tree without a link is not measured here until a pinned link is added.",
+  "score_rule": "Score = met / total criteria, with not measured counted in the total so it never inflates a score. Shown as N of 7 met, K not measured. Tracks an upstream line is descriptive and not scored.",
+  "statuses": {
+    "met": "The criterion holds, with an evidence link",
+    "not_met": "The criterion was checked and does not hold, with an evidence link",
+    "not_measured": "No reading yet; never read as not met"
+  },
+  "definition": [
+    {
+      "id": "has_stable_release",
+      "label": "tagged non-pre release",
+      "why": "A project that has never cut a non-prerelease tagged release has no stable artifact for operators to pin.",
+      "type": "check"
+    },
+    {
+      "id": "docs_not_pre_release",
+      "label": "docs not pre-release",
+      "why": "The project’s own operator-facing docs are the right place to read a maturity claim, not our grade and not Untangled’s Status field.",
+      "type": "check"
+    },
+    {
+      "id": "stable_release_in_12m",
+      "label": "stable release in 12m",
+      "why": "A past stable tag is not the same as a release still being cut. Operators need a current channel.",
+      "type": "check"
+    },
+    {
+      "id": "version_or_lts_policy",
+      "label": "version ≥1.0 or LTS",
+      "why": "SemVer treats 0.y.z as initial development, not a stable public API.",
+      "type": "check"
+    },
+    {
+      "id": "vulnerability_disclosure",
+      "label": "vuln disclosure",
+      "why": "A stable node needs a published way to report a consensus or security bug privately.",
+      "type": "check"
+    },
+    {
+      "id": "release_notes",
+      "label": "release notes",
+      "why": "Operators need a human-readable summary of what changed, not a tag and not a git log.",
+      "type": "check"
+    },
+    {
+      "id": "signed_or_reproducible",
+      "label": "signed or reproducible",
+      "why": "A release that cannot be verified is not a trustworthy stable channel, even if the tag exists.",
+      "type": "check"
+    },
+    {
+      "id": "upstream_track",
+      "label": "tracks an upstream line",
+      "why": "For forks only: which line the fork follows. Descriptive, not scored.",
+      "type": "tag"
+    }
+  ],
+  "definition_schema": {
+    "id": "short snake_case id",
+    "label": "what the criterion asks, in plain words",
+    "why": "one line on why it matters for a node operator",
+    "type": "check (scored met / not_met / not_measured) or tag (descriptive, not scored; for example tracks_upstream_line, forks only)"
+  },
+  "row_schema": {
+    "criteria": {
+      "<check id>": {
+        "status": "met | not_met | not_measured",
+        "evidence_url": "https URL pinned to a commit, tag or release; required unless not_measured",
+        "retrieved": "YYYY-MM-DD"
+      },
+      "<tag id>": {
+        "status": "tag | n/a | not_measured",
+        "tag": "short descriptive value, e.g. the upstream release line",
+        "evidence_url": "https URL; required unless not_measured",
+        "retrieved": "YYYY-MM-DD",
+        "reason": "required for n/a"
+      }
+    }
+  },
+  "rows": {
+    "blvm": {
+      "name": "BLVM",
+      "criteria": {
+        "has_stable_release": {
+          "status": "met",
+          "evidence_url": "https://github.com/BTCDecoded/blvm-node/releases/tag/v0.1.92",
+          "retrieved": "2026-11-12"
+        },
+        "stable_release_in_12m": {
+          "status": "met",
+          "evidence_url": "https://github.com/BTCDecoded/blvm-node/releases/tag/v0.1.92",
+          "retrieved": "2026-11-12"
+        },
+        "version_or_lts_policy": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/BTCDecoded/blvm-node/releases/tag/v0.1.92",
+          "retrieved": "2026-11-12"
+        },
+        "release_notes": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/BTCDecoded/blvm-node/releases/tag/v0.1.92",
+          "retrieved": "2026-11-12"
+        },
+        "signed_or_reproducible": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/BTCDecoded/blvm-node/releases/tag/v0.1.92",
+          "retrieved": "2026-11-12"
+        },
+        "upstream_track": {
+          "status": "n/a",
+          "reason": "independent tree"
+        }
+      }
+    },
+    "bitcoin-core": {
+      "name": "Bitcoin Core",
+      "criteria": {
+        "has_stable_release": {
+          "status": "met",
+          "evidence_url": "https://github.com/bitcoin/bitcoin/releases/tag/v32.1",
+          "retrieved": "2026-11-12"
+        },
+        "stable_release_in_12m": {
+          "status": "met",
+          "evidence_url": "https://github.com/bitcoin/bitcoin/releases/tag/v32.1",
+          "retrieved": "2026-11-12"
+        },
+        "version_or_lts_policy": {
+          "status": "met",
+          "evidence_url": "https://bitcoincore.org/en/lifecycle/#schedule",
+          "retrieved": "2026-11-12"
+        },
+        "release_notes": {
+          "status": "met",
+          "evidence_url": "https://bitcoincore.org/en/releases/32.1/",
+          "retrieved": "2026-11-12"
+        },
+        "signed_or_reproducible": {
+          "status": "met",
+          "evidence_url": "https://bitcoincore.org/bin/bitcoin-core-32.1/SHA256SUMS.asc",
+          "retrieved": "2026-11-12"
+        },
+        "upstream_track": {
+          "status": "n/a",
+          "reason": "independent tree"
+        }
+      }
+    },
+    "knots-legacy": {
+      "name": "Knots Legacy",
+      "criteria": {
+        "has_stable_release": {
+          "status": "met",
+          "evidence_url": "https://github.com/DimiH2025/KnotsLegacy/releases/tag/V29.3.0.20260920",
+          "retrieved": "2026-11-12"
+        },
+        "stable_release_in_12m": {
+          "status": "met",
+          "evidence_url": "https://github.com/DimiH2025/KnotsLegacy/releases/tag/V29.3.0.20260920",
+          "retrieved": "2026-11-12"
+        },
+        "version_or_lts_policy": {
+          "status": "met",
+          "evidence_url": "https://github.com/DimiH2025/KnotsLegacy/releases/tag/V29.3.0.20260920",
+          "retrieved": "2026-11-12"
+        },
+        "release_notes": {
+          "status": "met",
+          "evidence_url": "https://github.com/DimiH2025/KnotsLegacy/releases/tag/V29.3.0.20260920",
+          "retrieved": "2026-11-12"
+        },
+        "signed_or_reproducible": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/DimiH2025/KnotsLegacy/releases/tag/V29.3.0.20260920",
+          "retrieved": "2026-11-12"
+        },
+        "upstream_track": {
+          "status": "tag",
+          "tag": "tracks-knots-non-rdts",
+          "evidence_url": "https://github.com/DimiH2025/KnotsLegacy/releases/tag/V29.3.0.20260920",
+          "retrieved": "2026-11-12"
+        }
+      }
+    },
+    "bit-block": {
+      "name": "Bit-Block",
+      "criteria": {
+        "has_stable_release": {
+          "status": "met",
+          "evidence_url": "https://github.com/DimiH2025/Bit-Block/releases/tag/V3.1",
+          "retrieved": "2026-11-12"
+        },
+        "stable_release_in_12m": {
+          "status": "met",
+          "evidence_url": "https://github.com/DimiH2025/Bit-Block/releases/tag/V3.1",
+          "retrieved": "2026-11-12"
+        },
+        "version_or_lts_policy": {
+          "status": "met",
+          "evidence_url": "https://github.com/DimiH2025/Bit-Block/releases/tag/V3.1",
+          "retrieved": "2026-11-12"
+        },
+        "release_notes": {
+          "status": "met",
+          "evidence_url": "https://github.com/DimiH2025/Bit-Block/releases/tag/V3.1",
+          "retrieved": "2026-11-12"
+        },
+        "signed_or_reproducible": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/DimiH2025/Bit-Block/releases/tag/V3.1",
+          "retrieved": "2026-11-12"
+        }
+      }
+    },
+    "bitcoin-roots": {
+      "name": "Bitcoin Roots",
+      "criteria": {
+        "has_stable_release": {
+          "status": "met",
+          "evidence_url": "https://github.com/LuganoPlanB/bitcoin-roots/releases/tag/v31.1-roots.6",
+          "retrieved": "2026-11-12"
+        },
+        "stable_release_in_12m": {
+          "status": "met",
+          "evidence_url": "https://github.com/LuganoPlanB/bitcoin-roots/releases/tag/v31.1-roots.6",
+          "retrieved": "2026-11-12"
+        },
+        "version_or_lts_policy": {
+          "status": "met",
+          "evidence_url": "https://github.com/LuganoPlanB/bitcoin-roots/releases/tag/v31.1-roots.6",
+          "retrieved": "2026-11-12"
+        },
+        "release_notes": {
+          "status": "met",
+          "evidence_url": "https://github.com/LuganoPlanB/bitcoin-roots/releases/tag/v31.1-roots.6",
+          "retrieved": "2026-11-12"
+        },
+        "signed_or_reproducible": {
+          "status": "met",
+          "evidence_url": "https://github.com/LuganoPlanB/bitcoin-roots/releases/tag/v31.1-roots.6",
+          "retrieved": "2026-11-12"
+        }
+      }
+    },
+    "bitcoin-rs": {
+      "name": "bitcoin-rs",
+      "criteria": {
+        "has_stable_release": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/gosuda/bitcoin-rs",
+          "retrieved": "2026-11-12"
+        },
+        "stable_release_in_12m": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/gosuda/bitcoin-rs",
+          "retrieved": "2026-11-12"
+        },
+        "release_notes": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/gosuda/bitcoin-rs",
+          "retrieved": "2026-11-12"
+        },
+        "signed_or_reproducible": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/gosuda/bitcoin-rs",
+          "retrieved": "2026-11-12"
+        },
+        "upstream_track": {
+          "status": "n/a",
+          "reason": "independent tree"
+        }
+      }
+    },
+    "satd": {
+      "name": "satd",
+      "criteria": {
+        "has_stable_release": {
+          "status": "met",
+          "evidence_url": "https://github.com/epochbtc/satd/releases/tag/v0.7.1",
+          "retrieved": "2026-11-12"
+        },
+        "stable_release_in_12m": {
+          "status": "met",
+          "evidence_url": "https://github.com/epochbtc/satd/releases/tag/v0.7.1",
+          "retrieved": "2026-11-12"
+        },
+        "version_or_lts_policy": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/epochbtc/satd/releases/tag/v0.7.1",
+          "retrieved": "2026-11-12"
+        },
+        "signed_or_reproducible": {
+          "status": "met",
+          "evidence_url": "https://github.com/epochbtc/satd/releases/tag/v0.7.1",
+          "retrieved": "2026-11-12"
+        },
+        "upstream_track": {
+          "status": "n/a",
+          "reason": "independent tree"
+        }
+      }
+    },
+    "libbitcoin": {
+      "name": "libbitcoin",
+      "criteria": {
+        "has_stable_release": {
+          "status": "met",
+          "evidence_url": "https://github.com/libbitcoin/libbitcoin-system/releases/tag/v3.8.0",
+          "retrieved": "2026-11-12"
+        },
+        "version_or_lts_policy": {
+          "status": "met",
+          "evidence_url": "https://github.com/libbitcoin/libbitcoin-system/releases/tag/v3.8.0",
+          "retrieved": "2026-11-12"
+        },
+        "upstream_track": {
+          "status": "n/a",
+          "reason": "independent tree"
+        }
+      }
+    },
+    "hornet": {
+      "name": "Hornet",
+      "criteria": {
+        "has_stable_release": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/tobysharp/hornet",
+          "retrieved": "2026-11-12"
+        },
+        "stable_release_in_12m": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/tobysharp/hornet",
+          "retrieved": "2026-11-12"
+        },
+        "version_or_lts_policy": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/tobysharp/hornet",
+          "retrieved": "2026-11-12"
+        },
+        "release_notes": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/tobysharp/hornet",
+          "retrieved": "2026-11-12"
+        },
+        "signed_or_reproducible": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/tobysharp/hornet",
+          "retrieved": "2026-11-12"
+        },
+        "upstream_track": {
+          "status": "n/a",
+          "reason": "independent tree"
+        }
+      }
+    },
+    "floresta": {
+      "name": "Floresta",
+      "criteria": {
+        "has_stable_release": {
+          "status": "met",
+          "evidence_url": "https://github.com/getfloresta/Floresta/releases/tag/v0.9.1",
+          "retrieved": "2026-11-12"
+        },
+        "stable_release_in_12m": {
+          "status": "met",
+          "evidence_url": "https://github.com/getfloresta/Floresta/releases/tag/v0.9.1",
+          "retrieved": "2026-11-12"
+        },
+        "release_notes": {
+          "status": "met",
+          "evidence_url": "https://github.com/getfloresta/Floresta/releases/tag/v0.9.1",
+          "retrieved": "2026-11-12"
+        },
+        "version_or_lts_policy": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/getfloresta/Floresta/releases/tag/v0.9.1",
+          "retrieved": "2026-11-12"
+        },
+        "signed_or_reproducible": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/getfloresta/Floresta/releases/tag/v0.9.1",
+          "retrieved": "2026-11-12"
+        },
+        "upstream_track": {
+          "status": "n/a",
+          "reason": "independent tree"
+        }
+      }
+    },
+    "rbitcoin": {
+      "name": "rbitcoin",
+      "criteria": {
+        "has_stable_release": {
+          "status": "met",
+          "evidence_url": "https://github.com/rbitcoin-org/rbitcoin/releases/tag/v0.9.2",
+          "retrieved": "2026-11-12"
+        },
+        "stable_release_in_12m": {
+          "status": "met",
+          "evidence_url": "https://github.com/rbitcoin-org/rbitcoin/releases/tag/v0.9.2",
+          "retrieved": "2026-11-12"
+        },
+        "release_notes": {
+          "status": "met",
+          "evidence_url": "https://github.com/rbitcoin-org/rbitcoin/releases/tag/v0.9.2",
+          "retrieved": "2026-11-12"
+        },
+        "version_or_lts_policy": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/rbitcoin-org/rbitcoin/releases/tag/v0.9.2",
+          "retrieved": "2026-11-12"
+        },
+        "signed_or_reproducible": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/rbitcoin-org/rbitcoin/releases/tag/v0.9.2",
+          "retrieved": "2026-11-12"
+        },
+        "upstream_track": {
+          "status": "n/a",
+          "reason": "independent tree"
+        }
+      }
+    },
+    "btcd": {
+      "name": "btcd",
+      "criteria": {
+        "has_stable_release": {
+          "status": "met",
+          "evidence_url": "https://github.com/btcsuite/btcd/releases/tag/v0.27.0",
+          "retrieved": "2026-11-12"
+        },
+        "stable_release_in_12m": {
+          "status": "met",
+          "evidence_url": "https://github.com/btcsuite/btcd/releases/tag/v0.27.0",
+          "retrieved": "2026-11-12"
+        },
+        "release_notes": {
+          "status": "met",
+          "evidence_url": "https://github.com/btcsuite/btcd/releases/tag/v0.27.0",
+          "retrieved": "2026-11-12"
+        },
+        "signed_or_reproducible": {
+          "status": "met",
+          "evidence_url": "https://github.com/btcsuite/btcd/releases/tag/v0.27.0",
+          "retrieved": "2026-11-12"
+        },
+        "version_or_lts_policy": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/btcsuite/btcd/releases/tag/v0.27.0",
+          "retrieved": "2026-11-12"
+        },
+        "upstream_track": {
+          "status": "n/a",
+          "reason": "independent tree"
+        }
+      }
+    },
+    "bitcoin-untangled": {
+      "name": "Bitcoin Untangled",
+      "on_page": false,
+      "note": "Row reserved. Bitcoin Untangled has no lineage, governance or verification row on this page yet, so it has no card; its stability cells show here once measured.",
+      "criteria": {}
+    }
+  },
+  "source": {
+    "label": "Research, ecosystem-stability-brief.md, sections 3 to 5",
+    "retrieved": "2026-11-12"
+  }
+}
