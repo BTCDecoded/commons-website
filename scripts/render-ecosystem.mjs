@@ -382,10 +382,9 @@ const chartDir = path.join(root, "scripts/ecosystem-charts");
 //     maintainer group (2), foundation key (3), written rules (4).
 // PENDING lists metrics a separate PR is correcting; charts mark them
 // "pending fix" and never draw their values as final.
-const PENDING = {
-    fuzz_targets: "fuzz target counts", authors_12m: "authors in 12 months", ci_workflows: "CI workflows",
-    ci_jobs: "CI jobs", rules_share: "rules share"
-};
+// Series a separate change is correcting; charts draw them as "pending fix".
+// Empty since #9 corrected fuzz targets, authors, CI counts and rules share.
+const PENDING = {};
 const POINTS = { "yes": 2, "partial": 1, "not found": 0 };
 const FORKS = {
     "knots-legacy": "Knots Legacy continues Bitcoin Knots",

@@ -9,7 +9,6 @@ export default {
         const rows = ctx.model.rows, n = rows.length;
         const own = rows.filter(function (r) { return r.lineage.cls === "own"; }).length;
         const med = median(rows.map(function (r) { return r.assurance.pct; }));
-        const top = rows.slice().sort(function (a, b) { return b.assurance.pct - a.assurance.pct; })[0];
         const counts = {};
         rows.forEach(function (r) { counts[r.accountability.label] = (counts[r.accountability.label] || 0) + 1; });
         const order = ctx.model.accountRanks.map(function (a) { return a.label; }).concat(["Not classified"]);
@@ -21,7 +20,7 @@ export default {
         };
         return "<div class=\"eco-tiles\" role=\"list\">" +
             "<div role=\"listitem\">" + tile("Independence", own + " of " + n, "are their own codebase. The other " + (n - own) + " are Bitcoin Core and clients forked from it.", T.independence, "#why") + "</div>" +
-            "<div role=\"listitem\">" + tile("Assurance", "median " + med + "%", "of possible points across six kinds of evidence. Top: " + top.name + ", " + top.assurance.score + " of " + top.assurance.max + ".", T.assurance, "#commons") + "</div>" +
+            "<div role=\"listitem\">" + tile("Assurance", "median " + med + "%", "of possible points across six kinds of evidence.", T.assurance, "#commons") + "</div>" +
             "<div role=\"listitem\">" + tile("Accountability", single + " of " + n, "rest on a single maintainer. In all: " + accLine + ".", T.accountability, "#institution") + "</div>" +
             "</div>";
     }
