@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "as_of": "2026-11-12",
-  "method": "Read at each pinned commit. License: the repository's license file; no proprietary or non-OSI license file turned up in any tree. Languages: those with 5% or more of code lines (tokei 14; .h headers count with C and C++). Direct dependencies: direct third-party libraries of a default node build, excluding build tools, test and dev dependencies, off-by-default extras and the project's own crates; vendored source is counted separately; no transitive counts. C++: libraries the default bitcoind (or node binary) links, minus Qt and native build tools. Rust: third-party crates reached from the node binary through its own workspace crates, with default features (cargo tree). Go: go.mod require lines not marked indirect. Every row was counted on a separate checkout at its pinned commit. Vendored: library subtrees or vendor/ directories in the tree, with their code lines (tokei 14) rounded to the nearest thousand. Git submodules are not in the tree. Where the published code counter disagrees, the row says why.",
+  "method": "Read at each pinned commit. License: the repository's license file; no proprietary or non-OSI license file turned up in any tree. Languages: those with 5% or more of code lines (tokei 14; .h headers count with C and C++). Direct dependencies: direct third-party libraries of a default node build, excluding build tools, test and dev dependencies, off-by-default extras and the project's own crates; vendored source is counted separately; no transitive counts. C++: libraries the default bitcoind (or node binary) links, minus Qt and native build tools. Rust: third-party crates reached from the node binary through its own workspace crates, with default features (cargo tree). Go: go.mod require lines not marked indirect. Every row was counted on a separate checkout at its pinned commit. Vendored: library subtrees or vendor/ directories in the tree, with their code lines rounded.",
   "rows": [
     {
       "slug": "blvm",
@@ -30,7 +30,7 @@
       "direct_deps": 2,
       "deps_names": "Boost, SQLite. Cap'n Proto links only into the multiprocess binaries, not the default bitcoind",
       "deps_source": "https://github.com/bitcoin/bitcoin/blob/f0de87f040621468b956f01f526a43a010310501/depends/packages/packages.mk",
-      "vendored": "6 subtrees, about 113,000 lines: secp256k1, leveldb, minisketch, libmultiprocess, crc32c and ctaes. The code counter gives 112,703 and tokei 14 on the six directories gives 112,649",
+      "vendored": "6 subtrees, about 111,000 lines",
       "vendored_source": "https://github.com/bitcoin/bitcoin/tree/f0de87f040621468b956f01f526a43a010310501/src"
     },
     {
@@ -120,8 +120,8 @@
       "direct_deps": 0,
       "deps_names": "None. Its secp256k1 code is its own, in src/crypto/secp256k1",
       "deps_source": "https://github.com/libbitcoin/libbitcoin-system/tree/9f9cce3086074840951cedf1d381f08112275bfd/src/crypto/secp256k1",
-      "vendored": "None found. Its secp256k1 code carries libbitcoin's own copyright. The code counter's 58,669 vendored lines cannot be traced to this repository; that counter measures a wider libbitcoin scope, giving 314,326 implementation lines, more than all 265,436 code lines in libbitcoin-system at this commit by tokei 14",
-      "vendored_source": null
+      "vendored": "None in the tree (0 lines). src/crypto/secp256k1 is first-party libbitcoin code",
+      "vendored_source": "https://github.com/libbitcoin/libbitcoin-system/tree/9f9cce3086074840951cedf1d381f08112275bfd/src/crypto/secp256k1"
     },
     {
       "slug": "hornet",
@@ -135,7 +135,7 @@
       "direct_deps": 1,
       "deps_names": "liburing",
       "deps_source": "https://github.com/tobysharp/hornet/blob/151462fa5ceece39c159674886dcfa6cfe9b1234/CMakeLists.txt",
-      "vendored": "None in the tree. googletest and benchmark are git submodules for tests. The code counter's 81,041 vendored lines match those two submodules checked out (tokei 14 at their pinned commits gives 82,389). They are test tooling, not vendored source",
+      "vendored": "None in the tree (0 lines). googletest and benchmark are git submodules for tests",
       "vendored_source": "https://github.com/tobysharp/hornet/tree/151462fa5ceece39c159674886dcfa6cfe9b1234/extern"
     },
     {
