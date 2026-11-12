@@ -102,13 +102,13 @@ const compBySlug = {}; comp.forEach(function (c) { compBySlug[c.slug] = c; });
 const compMax = comp[0].total;
 const blvmComp = comp.filter(function (r) { return r.internal; })[0];
 // Column captions state facts only. Rankings are left to the sortable table.
-slots["size-caption"] = esc("BLVM program, implementation, and test counts cover blvm-node, blvm-protocol, blvm-consensus, blvm-primitives, blvm-secp256k1, blvm-muhash, blvm-storage-fence (in the node tree), and blvm-sdk including blvm-sdk-macros. blvm-spec-lock is counted as tooling. libbitcoin is one repo: libbitcoin-system.");
+slots["size-caption"] = esc("BLVM program, implementation, and test counts cover blvm-node, blvm-protocol, blvm-consensus, blvm-primitives, blvm-secp256k1, blvm-muhash, blvm-storage-fence (in the node tree), and blvm-sdk including blvm-sdk-macros. blvm-spec-lock is counted as tooling. BLVM rules share and left-mixed are not measured: the crate-role map used for the earlier 10.7% and 0.0% figures was not found, and those cells were not kept from the previous crate set. libbitcoin is one repo: libbitcoin-system.");
 slots["comp-caption"] = esc(blvmComp && blvmComp.vend === 0 && blvmComp.loc === 0 ? blvmComp.name + " has neither vendored lines nor locale lines." : "");
 const halfOf = {}; trees.forEach(function (t) { var h = metric(t, "files_holding_half"); halfOf[t.slug] = h ? h.text : ""; });
 slots["files-caption"] = "";
 slots["test-caption"] = "";
 slots["rules-asof"] = esc(data.measured_at);
-slots["test-note"] = "A Rust file named *_test.rs or *_tests.rs counts as tests. Lines inside a #[cfg(test)] item count as tests.";
+slots["test-note"] = esc(scan.test_placement || "");
 
 // Rules share: scale shared, cut order as first seen; sort groups by cut then value.
 const ruleRows = trees.map(function (tree) {
@@ -164,8 +164,14 @@ slots.glance = glanceOrder.map(function (slug) {
     }).join("");
     var notes = vCols.map(function (col) {
         var cell = v.cells[col.id];
-        if (!cell.text && !cell.source) return "";
-        var src = cell.source ? " <a href=\"" + esc(cell.source) + "\">Source<span class=\"visually-hidden\">: " + esc(v.name + ", " + col.name) + "</span></a>" : "";
+        var srcList = Array.isArray(cell.sources) && cell.sources.length ? cell.sources : (cell.source ? [cell.source] : []);
+        if (!cell.text && !srcList.length) return "";
+        var src = srcList.map(function (s) {
+            var url = typeof s === "string" ? s : s.url;
+            var lab = typeof s === "string" ? "Source" : (s.label || "Source");
+            if (!url) return "";
+            return " <a href=\"" + esc(url) + "\">" + esc(lab) + "<span class=\"visually-hidden\">: " + esc(v.name + ", " + col.name) + "</span></a>";
+        }).join("");
         return "<li><span class=\"eco-meta\">" + esc(col.name) + ", " + esc(cell.status) + ".</span> " + esc(cell.text || "") + (cell.text ? "." : "") + src + "</li>";
     }).join("");
     var open = "<details><summary>Sources<span class=\"visually-hidden\"> for " + esc(v.name) + "</span></summary><ul>" + notes + "</ul><p class=\"eco-meta\">" + esc(v.repo) + " at " + esc(v.commit) + ".</p></details>";
@@ -277,7 +283,8 @@ slots["weekly-size"] = wideTable(trees, sizeMethods, "One counter on every tree.
 slots["weekly-cuts"] = byInstrument(trees).map(function (g) {
     var shallow = g.trees.filter(function (t) { return t.shallow; }).map(function (t) { return t.name; });
     var shallowNote = shallow.length ? "<p>" + esc(englishList(shallow)) + (shallow.length === 1 ? " is a shallow checkout. The line counter still reads the files present." : " are shallow checkouts. The line counter still reads the files present.") + "</p>" : "";
-    return "<section><h3>" + esc(g.name) + "</h3>" + shallowNote + wideTable(g.trees, cutMethods, "Rows in " + g.name + " only.") + "</section>";
+    var capName = g.name === "Crate-role cut (not measured)" ? "crate-role cut (not measured)" : g.name;
+    return "<section><h3>" + esc(g.name) + "</h3>" + shallowNote + wideTable(g.trees, cutMethods, "Rows in " + capName + " only.") + "</section>";
 }).join("") + notes(cutMethods);
 
 const metricRows = metrics.rows || [];
@@ -290,7 +297,7 @@ function metricCell(row, id) {
 }
 function metricText(c) { return c && c.text ? c.text : "not measured"; }
 function metricVal(c, rankMap) {
-    if (!c || c.status !== "measured" || c.value === null || c.value === undefined) return "";
+    if (!c || (c.status !== "measured" && c.status !== "partial") || c.value === null || c.value === undefined) return "";
     if (rankMap) return rankMap[c.value] !== undefined ? String(rankMap[c.value]) : "";
     if (typeof c.value === "number") return String(c.value);
     return "";
@@ -316,13 +323,13 @@ slots["plugins-note"] = esc(metrics.methods && metrics.methods.plugin_system ? m
 
 const depthCols = [
     { id: "fuzz_targets", key: "fuzz", label: "Fuzz targets" },
-    { id: "test_unit", key: "unit", label: "Unit test lines" },
-    { id: "test_integration", key: "integration", label: "Integration test lines" },
+    { id: "test_insource", key: "insource", label: "In-source test lines" },
+    { id: "test_folder", key: "folder", label: "Test-folder test lines" },
     { id: "test_fuzz", key: "fuzzlines", label: "Fuzz test lines" },
     { id: "test_property", key: "property", label: "Property test lines" },
     { id: "vector_files", key: "vectors", label: "Test-vector files" },
     { id: "spec_files", key: "specs", label: "Spec files" },
-    { id: "authors_12m", key: "authors", label: "Authors, 12 months" },
+    { id: "authors_12m", key: "authors", label: "Human authors, 12 months" },
     { id: "releases_12m", key: "releases", label: "Tagged releases, 12 months" },
     { id: "ci_workflows", key: "workflows", label: "CI workflows" },
     { id: "ci_jobs", key: "jobs", label: "CI jobs" }
@@ -347,7 +354,7 @@ function depthRow(slug) {
         (open ? "<tr data-slug=\"" + esc(slug) + "\" class=\"eco-open-row\"><td class=\"eco-open m-full\" colspan=\"" + (depthCols.length + 1) + "\">" + open + "</td></tr>" : "");
 }
 slots.depth = glanceOrder.map(depthRow).join("");
-slots["depth-caption"] = esc("Fuzz targets, test-line split, test-vector and spec file counts, unique commit authors and tagged releases in the 12 months from " + (metrics.window_start || "2025-11-12") + " to " + (metrics.window_end || "2026-11-12") + ", and GitHub Actions workflow and job counts. Measured " + (metrics.as_of || data.measured_at) + ". Sort buttons need JavaScript; the figures are in the table without it.");
+slots["depth-caption"] = esc("Declared fuzz targets; test lines split into in-source tests and test-folder tests (a folder split, not unit vs integration), plus fuzz and property test lines; test-vector and spec file counts; human commit authors in the 12 months from " + (metrics.window_start || "2025-11-12") + " to " + (metrics.window_end || "2026-11-12") + " (known aliases merged, bots and agents excluded); tagged releases in that window; and GitHub Actions workflow and job counts. Measured " + (metrics.as_of || data.measured_at) + ". Sort buttons need JavaScript; the figures are in the table without it.");
 slots["depth-note"] = Object.keys(metrics.methods || {}).filter(function (k) { return k !== "plugin_system" && k !== "blvm_size"; }).map(function (k) {
     return "<li>" + esc(k) + ". " + esc(metrics.methods[k]) + "</li>";
 }).join("");

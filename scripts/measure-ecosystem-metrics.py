@@ -11,11 +11,16 @@ import json
 import os
 import re
 import subprocess
+import sys
 from collections import defaultdict
 from datetime import date
 from pathlib import Path
 
 TOKEI = os.environ.get("TOKEI", "/workspace/uiux-eco/tools/bin/tokei")
+REPO_ROOT = Path(__file__).resolve().parent.parent
+# Local private mailmap, not shipped in this repository. Override with AUTHOR_MAILMAP.
+DEFAULT_MAILMAP = Path("/home/box/agent-data/ui-ux/private/author-mailmap")
+MAILMAP = Path(os.environ.get("AUTHOR_MAILMAP", DEFAULT_MAILMAP))
 AS_OF = "2026-11-12"
 WINDOW_START = "2025-11-12"
 WINDOW_END = "2026-11-12"
@@ -46,9 +51,14 @@ VENDOR_PREFIXES = {
         "src/secp256k1/", "src/leveldb/", "src/minisketch/", "src/univalue/",
         "src/crc32c/", "src/crypto/ctaes/", "src/ipc/libmultiprocess/",
     ),
+    # Hornet's extern/ holds test-only git submodules (googletest, benchmark).
+    # They are excluded from first-party counts; the published vendored cell is
+    # 0 when those directories are empty gitlinks, as they are at the pin.
     "hornet": ("extern/",),
     "rbitcoin": ("third_party/",),
-    "libbitcoin": (),  # vendored column on the page is measured separately
+    # libbitcoin has no vendor/ or third-party library subtree. src/crypto/secp256k1
+    # is first-party libbitcoin code, not a bundled copy of libsecp256k1.
+    "libbitcoin": (),
 }
 
 LOCALE_PREFIXES = ("src/qt/locale/",)
@@ -366,25 +376,133 @@ def history_complete_for_window(cwd: Path, rev: str) -> tuple[bool, str]:
     return True, f"repository begins {oldest} (inside window; full history)"
 
 
-def unique_authors(cwd: Path, rev: str) -> list[str]:
-    out = git(
-        cwd,
+def is_bot_or_agent(name: str, email: str) -> bool:
+    """Exclude bots and obvious agent identities from the human-author count."""
+    n = name.lower().strip()
+    e = email.lower().strip()
+    if "[bot]" in n or "[bot]" in e:
+        return True
+    exact = {
+        "merge-script",
+        "github-actions",
+        "github-actions[bot]",
+        "dependabot[bot]",
+        "cursor agent",
+        "cursor[bot]",
+        "claude",
+        "grok bot engineer",
+        "devin ai",
+        "openai",
+        "tau agent",
+        "grok agent operator",
+        "agent",
+        "rearden-bitcoin-agent",
+        "rbitcoin-grok",
+        "rbitcoin-bot",
+        "rbitcoin-auto",
+        "rearden-grok[bot]",
+        "rbitcoin-grok[bot]",
+        "node refactor",
+        "qodo-code-review[bot]",
+        "gormes-agent[bot]",
+        "coderabbitai[bot]",
+        "copilot-swe-agent[bot]",
+    }
+    if n in exact:
+        return True
+    if n.startswith("rearden-grok") or n.startswith("rbitcoin-grok") or n.startswith("rbitcoin-bot"):
+        return True
+    if e in {
+        "noreply@anthropic.com",
+        "cursoragent@cursor.com",
+        "engineer@grokbot.invalid",
+        "noreply@openai.com",
+    }:
+        return True
+    if e.startswith("bot@") or e.startswith("auto@") or e.startswith("agent@"):
+        return True
+    if "github-actions" in e or "dependabot" in e or "dependabot" in n:
+        return True
+    # Machine-local or job-runner mailboxes (bitcoin-rs: alpha@localhost,
+    # omp@localhost, omp-worker@local, pr-repairs-11@omp).
+    host = e.rsplit("@", 1)[-1] if "@" in e else ""
+    if host in {"localhost", "local", "omp"}:
+        return True
+    if n in {"alpha", "omp", "omp-worker", "pr-repairs-11"}:
+        return True
+    return False
+
+
+def unique_authors(cwd: Path, rev: str) -> tuple[list[str], int]:
+    """Human authors after mailmap, bots and agents excluded.
+
+    Returns (canonical names in first-seen order, raw unique %aN count before filter).
+    """
+    args = [
         "log",
         rev,
         f"--since={WINDOW_START}",
         f"--until={WINDOW_END}",
-        "--format=%aN",
-        check=False,
-    )
-    # Unique author names as recorded; identities are not merged.
-    names = []
-    seen = set()
-    for line in out.splitlines():
+        "--format=%aN%x09%aE",
+    ]
+    # Apply a local private mailmap without writing into the source repo.
+    # If the file is missing, do not fall back to unmerged names (that would
+    # silently change the published counts).
+    if not MAILMAP.is_file():
+        raise FileNotFoundError(
+            f"author mailmap not found at {MAILMAP}. "
+            "Set AUTHOR_MAILMAP to a local mailmap file. "
+            "Author counts are not measured because aliases would otherwise change silently."
+        )
+    out = git(cwd, "-c", f"mailmap.file={MAILMAP}", *args, "--use-mailmap", check=False)
+    raw = git(cwd, "log", rev, f"--since={WINDOW_START}", f"--until={WINDOW_END}",
+              "--format=%aN", check=False)
+    raw_names = []
+    raw_seen = set()
+    for line in raw.splitlines():
         n = line.strip()
-        if n and n not in seen:
-            seen.add(n)
-            names.append(n)
-    return names
+        if n and n not in raw_seen:
+            raw_seen.add(n)
+            raw_names.append(n)
+    names = []
+    seen = set()  # casefold
+    for line in out.splitlines():
+        if not line.strip():
+            continue
+        if "\t" in line:
+            name, email = line.split("\t", 1)
+        else:
+            name, email = line, ""
+        name, email = name.strip(), email.strip()
+        if not name or is_bot_or_agent(name, email):
+            continue
+        key = name.casefold()
+        if key not in seen:
+            seen.add(key)
+            names.append(name)
+    return names, len(raw_names)
+
+
+def measure_authors(cwd: Path, rev: str, extra_note: str = ""):
+    """Human-author cell, or not-measured if the local mailmap is missing."""
+    missing_note = (
+        f"author mailmap not found at {MAILMAP}. Set AUTHOR_MAILMAP to a local "
+        "mailmap file. Aliases were not merged, so this cell is not measured."
+    )
+    if extra_note:
+        missing_note += " " + extra_note
+    try:
+        authors, raw_n = unique_authors(cwd, rev)
+    except FileNotFoundError as e:
+        print(str(e), file=sys.stderr)
+        return cell(None, "not-measured", note=missing_note)
+    note = (
+        "human authors (known aliases merged, bots and agents excluded). "
+        f"Raw unique %aN names before the filter: {raw_n}."
+    )
+    if extra_note:
+        note += " " + extra_note
+    return cell(len(authors), note=note)
 
 
 def releases_12m(cwd: Path) -> tuple[int | None, str]:
@@ -436,43 +554,114 @@ def count_fuzz_targets(roots: list[Path]) -> int:
     return n
 
 
-def count_fuzz_from_roots(roots: list[Path]) -> int:
+def _skip_fuzz_path(rel: str) -> bool:
+    return any(s in rel for s in ("/.git/", "/target/", "node_modules/"))
+
+
+def _iter_text_files(root: Path, suffixes: set[str]):
+    for p in root.rglob("*"):
+        if not p.is_file() or p.suffix not in suffixes:
+            continue
+        rel = str(p.relative_to(root)).replace("\\", "/")
+        if _skip_fuzz_path("/" + rel):
+            continue
+        try:
+            text = p.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        yield p, rel, text
+
+
+# Declared C++ fuzz targets: FUZZ_TARGET( and wrappers such as
+# FUZZ_TARGET_DESERIALIZE(. Skip #define lines and lines that continue a
+# macro body (the previous line ends with a backslash), so the FUZZ_TARGET(
+# that appears inside the DESERIALIZE wrapper definition is not counted.
+FUZZ_TARGET_CALL = re.compile(r"\bFUZZ_TARGET(?:_\w+)?\s*\(")
+
+
+def count_cpp_fuzz_invocations(text: str) -> int:
     n = 0
-    seen = set()
-    for root in roots:
-        # cargo-fuzz
-        ft = root / "fuzz" / "fuzz_targets"
-        if ft.is_dir():
-            for p in ft.iterdir():
-                if p.is_file() and p.suffix == ".rs" and p.name != "mod.rs":
-                    key = f"{root}:{p.name}"
-                    if key not in seen:
-                        seen.add(key)
-                        n += 1
-        # nested crates
-        for p in root.glob("*/fuzz/fuzz_targets/*.rs"):
-            if p.name != "mod.rs":
-                key = str(p.relative_to(root))
-                if key not in seen:
-                    seen.add(key)
-                    n += 1
-        for p in root.glob("crates/*/fuzz/fuzz_targets/*.rs"):
-            if p.name != "mod.rs":
-                key = str(p.relative_to(root))
-                if key not in seen:
-                    seen.add(key)
-                    n += 1
-        # Bitcoin Core style
-        for base in (root / "src" / "test" / "fuzz", root / "test" / "fuzz"):
-            if not base.is_dir():
-                continue
-            for p in base.rglob("*"):
-                if p.is_file() and p.suffix in {".cpp", ".cc"} and p.name not in SKIP_FUZZ_NAMES:
-                    key = p.name
-                    if key not in seen:
-                        seen.add(key)
-                        n += 1
+    continued = False
+    for line in text.splitlines():
+        is_define = bool(re.match(r"^\s*#\s*define\b", line))
+        if not is_define and not continued:
+            n += len(FUZZ_TARGET_CALL.findall(line))
+        continued = line.rstrip().endswith("\\")
     return n
+FUZZ_TARGET_MACRO = re.compile(r"\bfuzz_target!\s*[\(\{]")
+GO_FUZZ_FUNC = re.compile(r"^func\s+(Fuzz\w+)\s*\(\s*f\s+\*testing\.F\s*\)", re.M)
+
+
+def count_cargo_fuzz_bins(root: Path) -> list[str]:
+    """Names of [[bin]] targets in cargo-fuzz Cargo.toml files under root."""
+    names = []
+    for p in root.rglob("Cargo.toml"):
+        rel = str(p.relative_to(root)).replace("\\", "/")
+        if _skip_fuzz_path("/" + rel):
+            continue
+        if "fuzz" not in rel.split("/"):
+            continue
+        text = p.read_text(encoding="utf-8", errors="replace")
+        name = None
+        in_bin = False
+        for line in text.splitlines():
+            if line.strip() == "[[bin]]":
+                if name:
+                    names.append(name)
+                name = None
+                in_bin = True
+                continue
+            if in_bin and line.startswith("[") and not line.startswith("[[bin]]"):
+                if name:
+                    names.append(name)
+                in_bin = False
+                name = None
+                continue
+            if in_bin:
+                m = re.match(r'name\s*=\s*"([^"]+)"', line.strip())
+                if m:
+                    name = m.group(1)
+        if in_bin and name:
+            names.append(name)
+    return names
+
+
+def count_fuzz_from_roots(roots: list[Path]) -> tuple[int, str]:
+    """Count declared fuzz targets, not merely files in a fuzz directory.
+
+    C++: FUZZ_TARGET( macro invocations (exclude #define in fuzz.h).
+    Go: func FuzzXxx(f *testing.F).
+    Rust: cargo-fuzz [[bin]] entries when a fuzz Cargo.toml exists, otherwise
+    fuzz_target! uses. The two Rust counts match on every tree measured here.
+    """
+    total = 0
+    parts = []
+    for root in roots:
+        cpp = 0
+        for _, rel, text in _iter_text_files(root, {".cpp", ".cc", ".h", ".hpp", ".c"}):
+            cpp += count_cpp_fuzz_invocations(text)
+        go = 0
+        for _, rel, text in _iter_text_files(root, {".go"}):
+            go += len(GO_FUZZ_FUNC.findall(text))
+        bins = count_cargo_fuzz_bins(root)
+        rust_bang = 0
+        for _, rel, text in _iter_text_files(root, {".rs"}):
+            rust_bang += len(FUZZ_TARGET_MACRO.findall(text))
+        rust = len(bins) if bins else rust_bang
+        n = cpp + go + rust
+        total += n
+        if n:
+            bits = []
+            if cpp:
+                bits.append(f"{cpp} FUZZ_TARGET(")
+            if go:
+                bits.append(f"{go} FuzzXxx")
+            if rust:
+                how = "cargo-fuzz [[bin]]" if bins else "fuzz_target!"
+                bits.append(f"{rust} {how}")
+            parts.append(f"{root.name}: " + ", ".join(bits))
+    note = "Declared fuzz targets at the pin. " + ("; ".join(parts) if parts else "none found")
+    return total, note
 
 
 def count_vector_and_spec_files(roots: list[Path]) -> tuple[int, int, list[str], list[str]]:
@@ -494,32 +683,186 @@ def count_vector_and_spec_files(roots: list[Path]) -> tuple[int, int, list[str],
     return len(vectors), len(specs), vectors, specs
 
 
-def parse_ci(root: Path) -> tuple[int | None, int | None, str]:
+def repair_workflow_yaml(text: str) -> str:
+    """Quote unquoted run: scalars that contain ':' (invalid YAML, seen in bitcoin-rs main.yml)."""
+    out = []
+    for line in text.splitlines(True):
+        m = re.match(r'^(\s+(?:-\s+)?run:\s+)([^\'"\n][^\n]*)$', line)
+        if m and ":" in m.group(2):
+            val = m.group(2).rstrip("\n")
+            out.append(m.group(1) + json.dumps(val) + ("\n" if line.endswith("\n") else ""))
+        else:
+            out.append(line)
+    return "".join(out)
+
+
+def load_workflow(path: Path):
+    raw = path.read_text(encoding="utf-8", errors="replace")
+    try:
+        import yaml
+    except ImportError:
+        return None, raw, "pyyaml-missing"
+    try:
+        return yaml.safe_load(raw) or {}, raw, None
+    except Exception:
+        try:
+            return yaml.safe_load(repair_workflow_yaml(raw)) or {}, raw, "repaired-yaml"
+        except Exception:
+            return None, raw, "parse-error"
+
+
+def _fromjson_ref(expr: str):
+    """Return (job, output) for ${{ fromJSON(needs.JOB.outputs.KEY) }}, else None."""
+    m = re.search(
+        r"fromJSON\(\s*needs\.([A-Za-z0-9_-]+)\.outputs\.([A-Za-z0-9_-]+)\s*\)",
+        expr or "",
+    )
+    if not m:
+        return None
+    return m.group(1), m.group(2)
+
+
+def _json_literals(text: str):
+    """Best-effort JSON object/array literals in a workflow script."""
+    found = []
+    for m in re.finditer(r"(\{[^{}]*\}|\[[^\[\]]*\])", text):
+        s = m.group(1)
+        try:
+            found.append(json.loads(s))
+        except Exception:
+            continue
+    return found
+
+
+def resolve_dynamic_matrix(matrix, doc, raw, root: Path, wf_name: str, job_name: str):
+    """Expand a fromJSON(needs.X.outputs.Y) matrix from in-file defaults or known sources.
+
+    Uses the workflow's default non-PR event (schedule/push): the `all` or `*)`
+    branch of an inlined case statement, PARTS env for shard lists, or
+    cargo-fuzz [[bin]] names when the producer reads fuzz/Cargo.toml.
+    Returns (count_or_None, note).
+    """
+    if isinstance(matrix, dict):
+        # values may themselves be expressions
+        if any(isinstance(v, str) and "${{" in v for v in matrix.values()):
+            # product of resolved axes
+            axes = []
+            notes = []
+            for k, v in matrix.items():
+                if k in ("include", "exclude"):
+                    continue
+                if isinstance(v, str) and "${{" in v:
+                    ref = _fromjson_ref(v)
+                    n, note = _resolve_output(ref, doc, raw, root, wf_name) if ref else (None, "unresolved")
+                    if n is None:
+                        return None, note
+                    axes.append(n)
+                    notes.append(f"{k}:{note}")
+                elif isinstance(v, list):
+                    axes.append(len(v) if v else 1)
+            n = 1
+            for a in axes:
+                n *= a
+            inc = matrix.get("include")
+            if isinstance(inc, list):
+                n += len(inc)
+            return n, "; ".join(notes) if notes else "axes expanded"
+        return expand_matrix(matrix), "static matrix"
+    if isinstance(matrix, str) and "${{" in matrix:
+        ref = _fromjson_ref(matrix)
+        if not ref:
+            return None, "dynamic matrix expression not parsed"
+        n, note = _resolve_output(ref, doc, raw, root, wf_name)
+        return n, note
+    return expand_matrix(matrix) if isinstance(matrix, dict) or not matrix else None, ""
+
+
+def _resolve_output(ref, doc, raw, root: Path, wf_name: str):
+    job_name, output = ref
+    jobs = (doc or {}).get("jobs") or {}
+    job = jobs.get(job_name) if isinstance(jobs, dict) else None
+    job_raw = raw
+    # Prefer explicit default-branch JSON in the same file.
+    # satd mutants: env PARTS: '4' and default all parts [0,1,...,PARTS-1]
+    m_parts = re.search(r"(?m)^\s+PARTS:\s*'(\d+)'", raw)
+    if output in {"parts", "part"} and m_parts:
+        n = int(m_parts.group(1))
+        return n, f"{wf_name}: default {n} mutant parts from PARTS"
+
+    # Default (non-PR) JSON arrays assigned in case *) or all) branches.
+    # Capture `list='[...]'` / `arches='[...]'` / `all='{...}'` following a *) or all) arm.
+    default_arrays = []
+    for m in re.finditer(
+        r"(?:\*\)|\ball\))\s*[^\n]*\n(?:[^\n]*\n){0,8}?.*?((?:list|arches|value|all|sanitizers|sanitizer_value)='(\{.*?\}|\[.*?\])')",
+        raw,
+        re.S,
+    ):
+        try:
+            default_arrays.append(json.loads(m.group(2)))
+        except Exception:
+            pass
+
+    # Named assignments near the output: all='{"include":[...]}' used for suite=all
+    named = {}
+    for m in re.finditer(
+        r"\b(all|sanitizers|sanitizer_value|value|list|arches|parts)\s*=\s*'(\{.*?\}|\[.*?\])'",
+        raw,
+    ):
+        try:
+            named[m.group(1)] = json.loads(m.group(2))
+        except Exception:
+            continue
+
+    # Roots nightly: linux-matrix <- all, sanitizer-matrix <- sanitizers, suite default all
+    if output in {"linux-matrix", "value"} and "all" in named:
+        return expand_matrix(named["all"]), f"{wf_name}: default suite=all linux matrix"
+    if output in {"sanitizer-matrix", "sanitizers"} and "sanitizers" in named:
+        return expand_matrix(named["sanitizers"]), f"{wf_name}: default suite=all sanitizer matrix"
+    if output in {"flavors", "list"} and "list" in named:
+        # last 'list=' in a *) branch is the non-PR default if we parsed several
+        val = named["list"]
+        if isinstance(val, list):
+            return len(val), f"{wf_name}: default flavors {val}"
+    if output == "arches" and "arches" in named:
+        val = named["arches"]
+        if isinstance(val, list):
+            return len(val), f"{wf_name}: default arches {val}"
+
+    # Producer reads cargo-fuzz bins (bitcoin-rs daily-fuzz.yml)
+    if "fuzz/Cargo.toml" in raw and "tomllib" in raw:
+        bins = count_cargo_fuzz_bins(root)
+        if bins:
+            return len(bins), f"{wf_name}: matrix from fuzz/Cargo.toml [[bin]] ({len(bins)})"
+
+    return None, f"{wf_name}: could not resolve needs.{job_name}.outputs.{output}"
+
+
+def parse_ci(root: Path) -> tuple[int | None, int | None, str, bool]:
     wfdir = root / ".github" / "workflows"
     if not wfdir.is_dir():
-        # Core also uses ci/ ; still count GHA if present
-        return 0, 0, "no .github/workflows directory"
+        return 0, 0, "no .github/workflows directory", False
     files = []
     for p in wfdir.iterdir():
         if p.suffix not in {".yml", ".yaml"} or not p.is_file():
             continue
-        # Skip generated *expanded* duplicates (e.g. libbitcoin ci-expanded.yml),
-        # not every file whose header says GENERATED.
         if p.name.endswith("-expanded.yml") or p.name.endswith("-expanded.yaml"):
             continue
         files.append(p)
     try:
-        import yaml
+        import yaml  # noqa: F401
     except ImportError:
-        return len(files), None, "workflow files counted; PyYAML missing so jobs not expanded"
+        return len(files), None, "workflow files counted; PyYAML missing so jobs not expanded", True
     jobs = 0
     notes = []
+    partial = False
     for p in files:
-        try:
-            doc = yaml.safe_load(p.read_text(encoding="utf-8", errors="replace")) or {}
-        except Exception as e:
+        doc, raw, err = load_workflow(p)
+        if doc is None:
             notes.append(f"{p.name}: parse error")
+            partial = True
             continue
+        if err == "repaired-yaml":
+            notes.append(f"{p.name}: parsed after quoting unquoted run: scalars")
         if not isinstance(doc, dict):
             continue
         jmap = doc.get("jobs") or {}
@@ -531,16 +874,33 @@ def parse_ci(root: Path) -> tuple[int | None, int | None, str]:
                 continue
             strat = job.get("strategy") or {}
             matrix = strat.get("matrix") if isinstance(strat, dict) else None
-            expanded = expand_matrix(matrix)
+            if not matrix:
+                jobs += 1
+                continue
+            expanded, how = resolve_dynamic_matrix(matrix, doc, raw, root, p.name, jname)
             if expanded is None:
                 jobs += 1
-                notes.append(f"{p.name}/{jname}: matrix not expanded")
+                partial = True
+                notes.append(f"{p.name}/{jname}: matrix not expanded ({how}); counted as 1, lower bound")
             else:
                 jobs += max(1, expanded)
-    note = "GitHub Actions workflow files; jobs count expands a static matrix of lists"
+                if how and how not in ("static matrix", "axes expanded"):
+                    notes.append(f"{p.name}/{jname}: {how}")
+    note = (
+        "GitHub Actions workflow files at the pin. Jobs expand a static matrix "
+        "of lists, and a fromJSON matrix when the default non-PR value is in "
+        "the same file or is the tree's cargo-fuzz [[bin]] list."
+    )
     if notes:
-        note += ". " + "; ".join(notes[:8])
-    return len(files), jobs, note
+        # unique, short
+        uniq = []
+        for n in notes:
+            if n not in uniq:
+                uniq.append(n)
+        note += " " + "; ".join(uniq[:12])
+    if partial:
+        note += " Status: partial (lower bound) because at least one matrix could not be fully expanded or a workflow failed to parse."
+    return len(files), jobs, note, partial
 
 
 def expand_matrix(matrix):
@@ -548,7 +908,6 @@ def expand_matrix(matrix):
         return 1
     if not isinstance(matrix, dict):
         return None
-    # include-only or dynamic expressions
     if any(isinstance(v, str) and "${{" in v for v in matrix.values()):
         return None
     lists = []
@@ -559,17 +918,21 @@ def expand_matrix(matrix):
             lists.append(len(v) if v else 1)
         else:
             lists.append(1)
-    n = 1
-    for L in lists:
-        n *= L
     inc = matrix.get("include")
-    if isinstance(inc, list):
-        n += len(inc)
     exc = matrix.get("exclude")
+    if lists:
+        n = 1
+        for L in lists:
+            n *= L
+        if isinstance(inc, list):
+            n += len(inc)
+    elif isinstance(inc, list):
+        # include-only: each include entry is one job (no implicit default combo)
+        n = len(inc)
+    else:
+        n = 1
     if isinstance(exc, list):
         n = max(0, n - len(exc))
-    if not lists and not inc:
-        return 1
     return n
 
 
@@ -617,7 +980,7 @@ LANDING_GIT = {
 
 # Optional blobless --shallow-since=2025-11-12 clones for author counts when
 # the pin checkout is too shallow. Built with:
-#   git clone --bare --filter=blob:none --shallow-since=2025-11-12 --single-branch \
+#   git clone --bare --filter=blob:none --shallow-since=2025-10-01 --single-branch \
 #     https://github.com/<repo>.git
 HIST_OVERRIDE = {
     "floresta": "/tmp/eco-audit/hist/floresta",
@@ -679,8 +1042,8 @@ def blvm_size():
     ratio = round(test_total / implementation, 2) if implementation else None
     ge1000 = share_ge_1000(program_files, program_code)
     half = files_holding_half(program_files, program_code)
-    fuzz_all_program = count_fuzz_from_roots(program_roots + tooling_roots)
-    fuzz_verify = count_fuzz_from_roots(fuzz_roots)
+    fuzz_all_program, _fuzz_all_note = count_fuzz_from_roots(program_roots + tooling_roots)
+    fuzz_verify, fuzz_verify_note = count_fuzz_from_roots(fuzz_roots)
     vec_n, spec_n, vecs, specs = count_vector_and_spec_files(program_roots + tooling_roots)
     return {
         "implementation_code": implementation,
@@ -694,6 +1057,7 @@ def blvm_size():
         "vendored": prog["vendored"] + tool["vendored"],
         "locale": prog["locale"] + tool["locale"],
         "fuzz_targets_verify_set": fuzz_verify,
+        "fuzz_targets_verify_note": fuzz_verify_note,
         "fuzz_targets_all_counted_crates": fuzz_all_program,
         "vector_files": vec_n,
         "spec_files": spec_n,
@@ -716,9 +1080,9 @@ def row_depth(slug: str):
     rev = TREES[slug][1]
     tokei = Path(f"/tmp/eco-audit/tokei/{slug}.json")
     m = measure_trees(slug, [(slug, root, tokei)])
-    fuzz = count_fuzz_from_roots([root])
+    fuzz, fuzz_note = count_fuzz_from_roots([root])
     vec_n, spec_n, _, _ = count_vector_and_spec_files([root])
-    wf, jobs, ci_note = parse_ci(root)
+    wf, jobs, ci_note, ci_partial = parse_ci(root)
     complete, hist_note = history_complete_for_window(root, rev)
     rel_n, rel_note = releases_12m(root)
     releases_cell = cell(rel_n, note=rel_note) if rel_n is not None else cell(None, "not-measured", note=rel_note or hist_note)
@@ -729,35 +1093,43 @@ def row_depth(slug: str):
         author_root, author_rev = Path(hist_alt), "HEAD"
         ok, alt_note = history_complete_for_window(author_root, author_rev)
         author_extra = "author history from a blobless clone, " + alt_note
-        complete = True if ok else complete
-        if not ok and alt_note:
-            # A few days short of the window start is still reported, with the date.
-            complete = True
-            author_extra += " (window starts 2025-11-12; count may miss the first days)"
+        complete = ok
     if complete:
-        authors = unique_authors(author_root, author_rev)
-        authors_cell = cell(len(authors), note=author_extra)
+        authors_cell = measure_authors(author_root, author_rev, author_extra)
     else:
         authors_cell = cell(None, "not-measured", note=hist_note)
 
     tests = m["tests"]
+    insource = tests.get("unit", 0)
+    folder = tests.get("integration", 0)
+    split_note = (
+        "Folder split, not a unit-vs-integration classification: in-source tests "
+        "are tests next to program sources (including in-file #[cfg(test)] and "
+        "C++ src/test); test-folder tests are files under tests/, test/, e2e/, "
+        "qa/, or functional/."
+    )
+    ci_status = "partial" if ci_partial else "measured"
+    ci_text = (f"{jobs:,} (partial)" if ci_partial and jobs is not None else None)
     return {
         "slug": slug,
         "name": NAMES[slug],
         "commit": rev,
         "measured_at": AS_OF,
-        "fuzz_targets": cell(fuzz),
-        "test_unit": cell(tests.get("unit", 0)),
-        "test_integration": cell(tests.get("integration", 0)),
+        "fuzz_targets": cell(fuzz, note=fuzz_note),
+        "test_insource": cell(insource, note=split_note),
+        "test_folder": cell(folder, note=split_note),
+        "test_unit": cell(insource, note="Deprecated alias of test_insource. " + split_note),
+        "test_integration": cell(folder, note="Deprecated alias of test_folder. " + split_note),
         "test_fuzz": cell(tests.get("fuzz", 0)),
         "test_property": cell(tests.get("property", 0)),
-        "test_split_total": cell(m["test_total"]),
+        "test_split_total": cell(sum(tests.values()) if tests else 0),
+
         "vector_files": cell(vec_n),
         "spec_files": cell(spec_n),
         "authors_12m": authors_cell,
         "releases_12m": releases_cell,
         "ci_workflows": cell(wf),
-        "ci_jobs": cell(jobs, note=ci_note) if jobs is not None else cell(None, "not-measured", note=ci_note),
+        "ci_jobs": cell(jobs, ci_status, text=ci_text, note=ci_note) if jobs is not None else cell(None, "not-measured", note=ci_note),
         "repo_set": "landing share repo (single tree)",
     }
 
@@ -867,6 +1239,13 @@ def main():
     parser.add_argument("--size-out", default="")
     args = parser.parse_args()
 
+    if not MAILMAP.is_file():
+        print(
+            f"author mailmap not found at {MAILMAP}. "
+            "Set AUTHOR_MAILMAP to a local mailmap file. "
+            "Author counts will be recorded as not measured.",
+            file=sys.stderr,
+        )
     size = blvm_size()
     if args.size_out:
         Path(args.size_out).write_text(json.dumps(size, indent=2) + "\n")
@@ -879,14 +1258,23 @@ def main():
             "#[cfg(all(..., test))] item count as tests. Partition: fuzz paths "
             "(fuzz/, fuzz_targets/, src/test/fuzz/); property (path or name "
             "contains property/proptest/quickcheck/hypothesis/orange_paper_property); "
-            "C++ src/test as unit; remaining integration dirs as integration; "
-            "other in-source tests as unit. Benches under bench(es)/ are grouped "
-            "with unit. Vendored and locale paths are excluded."
+            "in-source tests (files next to program sources, including in-file "
+            "#[cfg(test)] and C++ src/test); test-folder tests (remaining files "
+            "under tests/, test/, e2e/, qa/, or functional/). This is a folder "
+            "split, not a unit-vs-integration classification. Benches under "
+            "bench(es)/ are grouped with in-source tests. Vendored and locale "
+            "paths are excluded. test_insource / test_folder are the canonical "
+            "fields; test_unit / test_integration are aliases of those values."
         ),
         "fuzz_targets": (
-            "Count of cargo-fuzz targets in fuzz/fuzz_targets/*.rs (excluding "
-            "mod.rs) plus Bitcoin Core-style src/test/fuzz/*.cpp (excluding util "
-            "helpers). Measured at the pinned checkout."
+            "Declared fuzz targets at the pin, not a count of files in a fuzz "
+            "directory. C++: invocations of FUZZ_TARGET( and wrappers such as "
+            "FUZZ_TARGET_DESERIALIZE(, skipping #define lines and lines that "
+            "continue a macro body (the previous line ends with a backslash). "
+            "Go: func FuzzXxx(f *testing.F). Rust: "
+            "cargo-fuzz [[bin]] entries when a fuzz Cargo.toml is present, "
+            "otherwise fuzz_target! uses (the two Rust counts match on every "
+            "tree measured here)."
         ),
         "vector_files": (
             "Files whose path or name looks like a test vector (vector, tx_valid, "
@@ -898,9 +1286,19 @@ def main():
             ".txt, .lean, or .tex. LICENSE and contributing files are excluded."
         ),
         "authors_12m": (
-            f"Unique git author names (%aN) on the landing-share repo set from "
-            f"{WINDOW_START} to {WINDOW_END} inclusive. Names are not merged. "
-            "A shallow clone that does not reach the window start is not measured."
+            f"Human commit authors on the landing-share repo set from "
+            f"{WINDOW_START} to {WINDOW_END} inclusive. Known aliases are "
+            "merged from a local mailmap (AUTHOR_MAILMAP); the mailmap is "
+            "not in this repository. Bots and agents are "
+            "excluded: any name or email containing [bot], merge-script, "
+            "github-actions, dependabot, Cursor Agent, Claude, Grok Bot "
+            "Engineer, Devin AI, OpenAI, and other obvious agent identities "
+            "(rbitcoin-grok, Tau Agent, and similar), plus authors whose "
+            "email host is localhost, local, or omp. Unique names are "
+            "compared case-insensitively after the mailmap. If the mailmap "
+            "is absent, author counts are not measured rather than silently "
+            "published without alias merging. A shallow clone that does not "
+            "reach the window start is not measured."
         ),
         "releases_12m": (
             f"Git tags whose creatordate falls in {WINDOW_START} to {WINDOW_END}. "
@@ -910,8 +1308,13 @@ def main():
         "ci_workflows": "Number of .github/workflows/*.{yml,yaml} files at the pin.",
         "ci_jobs": (
             "GitHub Actions jobs at the pin, expanding a static matrix of lists "
-            "(including include/, minus exclude/). Dynamic ${{ }} matrices are "
-            "not expanded and are noted."
+            "(an include-only matrix is just the include rows, not one implicit job plus those rows; minus exclude/). A fromJSON(needs.job.outputs.x) "
+            "matrix is expanded when the default non-PR value is written in the "
+            "same workflow (suite=all, schedule/push flavors and arches, default "
+            "mutant PARTS) or when the producer reads this tree's fuzz/Cargo.toml "
+            "[[bin]] list. Unquoted run: scalars that break PyYAML are quoted "
+            "and retried. If a matrix still cannot be expanded or a file still "
+            "fails to parse, the cell is partial and the value is a lower bound."
         ),
         "plugin_system": (
             "yes / no / partial from the pinned tree's docs. own-team optional "
@@ -931,15 +1334,25 @@ def main():
     git_root, git_rev = LANDING_GIT["blvm"]
     complete, hist_note = history_complete_for_window(Path(git_root), git_rev)
     if complete:
-        authors = unique_authors(Path(git_root), git_rev)
-        authors_cell = cell(len(authors), note="landing share repo: blvm-node only. " + hist_note)
+        authors_cell = measure_authors(
+            Path(git_root), git_rev, "landing share repo: blvm-node only. " + hist_note
+        )
         rel_n, rel_note = releases_12m(Path(git_root))
         releases_cell = cell(rel_n, note=rel_note + " (blvm-node tags)")
     else:
         authors_cell = cell(None, "not-measured", note=hist_note)
         releases_cell = cell(None, "not-measured", note=hist_note)
-    wf, jobs, ci_note = parse_ci(Path("/tmp/eco-audit/src/blvm-node"))
+    wf, jobs, ci_note, ci_partial = parse_ci(Path("/tmp/eco-audit/src/blvm-node"))
     tests = size["test_split"]
+    insource = tests.get("unit", 0)
+    folder = tests.get("integration", 0)
+    split_note = (
+        "Folder split, not a unit-vs-integration classification: in-source tests "
+        "are tests next to program sources (including in-file #[cfg(test)]); "
+        "test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
+    )
+    ci_status = "partial" if ci_partial else "measured"
+    ci_text = (f"{jobs:,} (partial)" if ci_partial and jobs is not None else None)
     blvm_row = {
         "slug": "blvm",
         "name": "BLVM",
@@ -948,10 +1361,12 @@ def main():
         "measured_at": AS_OF,
         "fuzz_targets": cell(
             size["fuzz_targets_verify_set"],
-            note="node + protocol + consensus + muhash + sdk (same set as the verification cell)",
+            note=size.get("fuzz_targets_verify_note", "") + " (same crate set as the verification cell)",
         ),
-        "test_unit": cell(tests.get("unit", 0)),
-        "test_integration": cell(tests.get("integration", 0)),
+        "test_insource": cell(insource, note=split_note),
+        "test_folder": cell(folder, note=split_note),
+        "test_unit": cell(insource, note="Deprecated alias of test_insource. " + split_note),
+        "test_integration": cell(folder, note="Deprecated alias of test_folder. " + split_note),
         "test_fuzz": cell(tests.get("fuzz", 0)),
         "test_property": cell(tests.get("property", 0)),
         "test_split_total": cell(size["test_total"]),
@@ -960,7 +1375,7 @@ def main():
         "authors_12m": authors_cell,
         "releases_12m": releases_cell,
         "ci_workflows": cell(wf),
-        "ci_jobs": cell(jobs, note=ci_note) if jobs is not None else cell(None, "not-measured", note=ci_note),
+        "ci_jobs": cell(jobs, ci_status, text=ci_text, note=ci_note) if jobs is not None else cell(None, "not-measured", note=ci_note),
         "repo_set": "authors/releases/CI: landing share (blvm-node). test/fuzz/vectors: composite crate set",
     }
     blvm_row.update(plugin_fields("blvm"))

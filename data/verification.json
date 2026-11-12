@@ -70,8 +70,30 @@
         },
         "fuzzing": {
           "status": "yes",
-          "text": "156 fuzz target files (cargo-fuzz) across blvm-consensus, blvm-protocol, blvm-node, blvm-muhash, and blvm-sdk",
-          "source": "https://github.com/BTCDecoded/blvm-consensus/tree/f63c32856a2da874296524f40b8cbd35518d8096/fuzz/fuzz_targets"
+          "text": "156 declared cargo-fuzz targets (fuzz_target! / [[bin]]) across blvm-consensus, blvm-protocol, blvm-node, blvm-muhash, and blvm-sdk",
+          "source": "https://github.com/BTCDecoded/blvm-consensus/tree/f63c32856a2da874296524f40b8cbd35518d8096/fuzz/fuzz_targets",
+          "sources": [
+            {
+              "label": "blvm-consensus",
+              "url": "https://github.com/BTCDecoded/blvm-consensus/tree/f63c32856a2da874296524f40b8cbd35518d8096/fuzz/fuzz_targets"
+            },
+            {
+              "label": "blvm-protocol",
+              "url": "https://github.com/BTCDecoded/blvm-protocol/tree/0bc9307a2235831fff52548621301b6084a9e809/fuzz/fuzz_targets"
+            },
+            {
+              "label": "blvm-node",
+              "url": "https://github.com/BTCDecoded/blvm-node/tree/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/fuzz/fuzz_targets"
+            },
+            {
+              "label": "blvm-muhash",
+              "url": "https://github.com/BTCDecoded/blvm-muhash/tree/b0031beba641737b6768d141ef26adc1edc0609f/fuzz/fuzz_targets"
+            },
+            {
+              "label": "blvm-sdk",
+              "url": "https://github.com/BTCDecoded/blvm-sdk/tree/fcb1afdc5e28a2893717dd4b2c9548d83b35ec62/fuzz/fuzz_targets"
+            }
+          ]
         },
         "formal_verification": {
           "status": "partial",
