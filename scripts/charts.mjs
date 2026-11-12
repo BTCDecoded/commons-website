@@ -35,6 +35,11 @@ function wrap(text, size, max) {
 function t(x, y, s, cls, extra) {
     return "<text x=\"" + fmt(x) + "\" y=\"" + fmt(y) + "\" class=\"" + (cls || "ch-t") + "\"" + (extra || "") + ">" + esc(s) + "</text>";
 }
+// An SVG that holds links is a group, not an image, so the links stay
+// reachable and are not nested inside an image role.
+function linkRole(open, body) {
+    return body.indexOf("<a ") >= 0 ? open.replace("role=\"img\"", "role=\"group\"") : open;
+}
 function svgOpen(id, w, h, title, desc) {
     return "<svg class=\"ch-svg\" viewBox=\"0 0 " + w + " " + fmt(h) + "\" width=\"" + w + "\" height=\"" + fmt(h) + "\" role=\"img\" aria-labelledby=\"" + id + "-t " + id + "-d\" preserveAspectRatio=\"xMinYMin meet\">" +
         "<title id=\"" + id + "-t\">" + esc(title) + "</title><desc id=\"" + id + "-d\">" + esc(desc) + "</desc>";
@@ -49,7 +54,7 @@ export function figure(spec) {
     function variant(width, cls) {
         var r = spec.chart(width, spec.id + "-" + cls);
         var id = spec.id + "-" + cls;
-        return "<div class=\"ch-v ch-" + cls + "\">" + svgOpen(id, width, r.height, spec.title, spec.desc) + r.body + "</svg></div>";
+        return "<div class=\"ch-v ch-" + cls + "\">" + linkRole(svgOpen(id, width, r.height, spec.title, spec.desc), r.body) + r.body + "</svg></div>";
     }
     var table = "<div class=\"visually-hidden\"><table><caption>" + esc(spec.table.caption) + "</caption><thead><tr>" +
         spec.table.columns.map(function (c) { return "<th scope=\"col\">" + esc(c) + "</th>"; }).join("") + "</tr></thead><tbody>" +
@@ -634,7 +639,7 @@ export function assuranceRadial(cells, opts) {
 export function fieldMap(cols, points, opts) {
     opts = opts || {};
     return function (width) {
-        var narrow = width < 500, axisW = narrow ? 34 : 44, pillH = 40, gap = 4;
+        var narrow = width < 500, axisW = narrow ? 34 : 44, pillH = narrow ? 56 : 54, gap = 4;
         var colW = (width - axisW) / cols.length;
         var counts = cols.map(function (c) { return points.filter(function (p) { return p.col === c.id; }).length; });
         var plotH = Math.max(narrow ? 360 : 320, Math.max.apply(null, counts) * (pillH + gap) + 8);
@@ -730,7 +735,7 @@ export function smallMultiples(items, opts) {
 // title and desc, sized by viewBox.
 export function svgOnce(id, width, chart, title, desc, cls) {
     var r = chart(width, id);
-    return "<svg class=\"ch-svg" + (cls ? " " + cls : "") + "\" viewBox=\"0 0 " + width + " " + fmt(r.height) + "\" role=\"img\" aria-labelledby=\"" + id + "-t " + id + "-d\" preserveAspectRatio=\"xMidYMin meet\">" +
+    return "<svg class=\"ch-svg" + (cls ? " " + cls : "") + "\" viewBox=\"0 0 " + width + " " + fmt(r.height) + "\" role=\"" + (r.body.indexOf("<a ") >= 0 ? "group" : "img") + "\" aria-labelledby=\"" + id + "-t " + id + "-d\" preserveAspectRatio=\"xMidYMin meet\">" +
         "<title id=\"" + id + "-t\">" + esc(title) + "</title><desc id=\"" + id + "-d\">" + esc(desc) + "</desc>" + r.body + "</svg>";
 }
 
