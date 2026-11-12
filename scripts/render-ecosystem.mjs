@@ -167,7 +167,7 @@ slots.glance = glanceOrder.map(function (slug) {
     var cells = vCols.map(function (col) {
         var cell = v.cells[col.id];
         if (!cell || !statusClass[cell.status]) throw new Error("bad verification cell " + slug + "/" + col.id);
-        return "<td data-label=\"" + esc(col.short || col.name) + "\" class=\"st " + statusClass[cell.status] + "\"><span class=\"st-mark\" aria-hidden=\"true\"></span>" + esc(cell.status) + "</td>";
+        return "<td data-label=\"" + esc(col.short || col.name) + "\" class=\"st " + statusClass[cell.status] + "\"><span class=\"st-mark\" aria-hidden=\"true\"></span>" + esc(cell.status) + (cell.status === "n/a" ? "<small>" + esc(cell.text || verification.statuses["n/a"]) + "</small>" : "") + "</td>";
     }).join("");
     var notes = vCols.map(function (col) {
         var cell = v.cells[col.id];
@@ -485,5 +485,19 @@ html = html.replace(/<!--slot:([a-z-]+)-->[\s\S]*?<!--\/slot:\1-->/g, function (
 });
 const missing = Object.keys(slots).filter(function (k) { return !seen.has(k); });
 if (missing.length) throw new Error("slots missing from ecosystem.html: " + missing.join(", "));
+// Cell guard: no table cell may be empty or a bare dash (a missing value is
+// "not measured"), and a bare "n/a" must say why in a title.
+(function () {
+    const bad = [];
+    html.replace(/<td\b([^>]*)>([\s\S]*?)<\/td>/g, function (all, attrs, inner) {
+        const text = inner.replace(/<details[\s\S]*?<\/details>/g, " x ").replace(/<[^>]+>/g, "").replace(/&nbsp;|&#160;/g, " ").replace(/\s+/g, " ").trim();
+        const line = html.slice(0, html.indexOf(all)).split("\n").length;
+        if (!text) bad.push("empty cell at line " + line);
+        else if (/^[\u2014\u2013\u2212-]+$/.test(text) || /^&mdash;$|^&ndash;$/.test(text)) bad.push("dash cell at line " + line);
+        else if (/^n\/a\.?$/i.test(text) && !/\btitle="[^"]+"/.test(attrs)) bad.push("n/a without a reason at line " + line);
+        return all;
+    });
+    if (bad.length) throw new Error("table cells: " + bad.slice(0, 10).join("; ") + (bad.length > 10 ? "; and " + (bad.length - 10) + " more" : ""));
+})();
 fs.writeFileSync(pagePath, html);
 console.log("ecosystem.html rendered from data measured " + data.measured_at);

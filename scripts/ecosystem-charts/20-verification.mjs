@@ -36,7 +36,7 @@ export default {
             desc: rows.map(function (r) { return r.label + ": " + r.yes + " yes, " + r.partial + " partial"; }).join("; ") + ".",
             chart: heatmap(rows, cols, STATUS),
             sources: [{ label: "data/verification.json" }, { label: "sources per cell in the table below", href: "#eco-glance" }],
-            table: { caption: "Verification status by implementation", columns: ["Implementation"].concat(v.columns.map(function (c) { return c.name; })).concat(["Yes", "Partial"]), rows: rows.map(function (r) { return [r.label].concat(v.columns.map(function (c) { return r.cells[c.id]; })).concat([String(r.yes), String(r.partial)]); }) }
+            table: { caption: "Verification status by implementation", columns: ["Implementation"].concat(v.columns.map(function (c) { return c.name; })).concat(["Yes", "Partial"]), rows: rows.map(function (r) { const src = v.rows.filter(function (x) { return x.slug === r.slug; })[0]; return [r.label].concat(v.columns.map(function (c) { return r.cells[c.id] === "n/a" ? "n/a: " + (src.cells[c.id].text || v.statuses["n/a"]) : r.cells[c.id]; })).concat([String(r.yes), String(r.partial)]); }) }
         });
     }
 };
