@@ -23,7 +23,7 @@ export default {
             headline: "Bitcoin Core and the Knots family together account for about " + lineage + "% of reachable nodes.",
             caption: "Reachable nodes by advertised client, " + d.as_of + ". The Knots family is one user-agent count that mixes releases from before and after the split.",
             measures: "Which client software reachable nodes advertise; it matters because one bug in a client most nodes run can reach most of the network.",
-            takeaway: "Almost every reachable node runs Bitcoin Core or Bitcoin Knots, which shares Core's code.",
+            takeaway: "On " + d.as_of + ", about " + byId.core.share + "% of reachable nodes advertised Bitcoin Core and about " + byId.knots.share + "% advertised the Bitcoin Knots family; the page treats that as one code lineage covering about " + Math.floor(lineage) + "% of reachable nodes.",
             title: "Reachable nodes by client, " + d.as_of,
             desc: d.rows.map(function (r) { return r.label + " " + r.text; }).join(", ") + ".",
             chart: stacked(d.rows.map(function (r) { return { label: r.label, value: r.share, valueText: r.text, cls: cls[r.id] || "a" }; }), { total: 100 }),
