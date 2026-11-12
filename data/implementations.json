@@ -597,9 +597,10 @@
           "status": "measured"
         },
         "vendored_code": {
-          "value": 58669,
-          "text": "58,669",
-          "status": "measured"
+          "value": 0,
+          "text": "0",
+          "status": "measured",
+          "note": "No vendor/ or third-party library subtree in the pinned tree. src/crypto/secp256k1 is first-party libbitcoin code (AGPL, libbitcoin copyright), not a bundled copy of libsecp256k1."
         },
         "locale_code": {
           "value": 0,
@@ -658,9 +659,10 @@
           "status": "measured"
         },
         "vendored_code": {
-          "value": 81041,
-          "text": "81,041",
-          "status": "measured"
+          "value": 0,
+          "text": "0",
+          "status": "measured",
+          "note": "extern/googletest and extern/benchmark are git submodules for tests; both are empty gitlinks in the pinned tree, so no vendored lines are present."
         },
         "locale_code": {
           "value": 0,
@@ -1630,7 +1632,7 @@
     "systems": [
       {
         "slug": "blvm",
-        "note": "blvm-node is split. Mixed share is 0."
+        "note": "blvm-node is split. Mixed share is not measured."
       },
       {
         "slug": "bitcoin-core",
@@ -1656,7 +1658,7 @@
     "unsplit": [
       {
         "slug": "blvm",
-        "note": "split. Mixed share is 0."
+        "note": "split. Mixed share is not measured."
       },
       {
         "slug": "satd",
@@ -1675,7 +1677,7 @@
         "note": "cut finished"
       }
     ],
-    "test_placement": "A Rust file named *_test.rs or *_tests.rs counts as tests. Lines inside a #[cfg(test)] item count as tests.",
+    "test_placement": "tokei 14 code lines count as tests when the file is under tests/, test/, e2e/, qa/, functional/, fuzz/, fuzz_targets/, bench/, or benches/, or is named *_test, *_tests, or test_*, including C++ src/test and Rust lines inside a #[cfg(test)] item.",
     "test_basis": "Same tokei 14 bucket rule, replayed on the 2026-11-11 pins.",
     "jurisdiction": "This scan does not record where a maintainer sits. There is no jurisdiction chart.",
     "rule_test": "A statement that names a consequence is a rule, and a statement that names none is a norm. The rows below use that test on the files and the history this scan actually has. Judgment scores are not printed here, because they are not measurements.",

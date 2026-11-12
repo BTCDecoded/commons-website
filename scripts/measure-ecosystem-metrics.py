@@ -11,13 +11,16 @@ import json
 import os
 import re
 import subprocess
+import sys
 from collections import defaultdict
 from datetime import date
 from pathlib import Path
 
 TOKEI = os.environ.get("TOKEI", "/workspace/uiux-eco/tools/bin/tokei")
 REPO_ROOT = Path(__file__).resolve().parent.parent
-MAILMAP = Path(os.environ.get("MAILMAP", REPO_ROOT / "data" / "author-mailmap"))
+# Local private mailmap, not shipped in this repository. Override with AUTHOR_MAILMAP.
+DEFAULT_MAILMAP = Path("/home/box/agent-data/ui-ux/private/author-mailmap")
+MAILMAP = Path(os.environ.get("AUTHOR_MAILMAP", DEFAULT_MAILMAP))
 AS_OF = "2026-11-12"
 WINDOW_START = "2025-11-12"
 WINDOW_END = "2026-11-12"
@@ -48,9 +51,14 @@ VENDOR_PREFIXES = {
         "src/secp256k1/", "src/leveldb/", "src/minisketch/", "src/univalue/",
         "src/crc32c/", "src/crypto/ctaes/", "src/ipc/libmultiprocess/",
     ),
+    # Hornet's extern/ holds test-only git submodules (googletest, benchmark).
+    # They are excluded from first-party counts; the published vendored cell is
+    # 0 when those directories are empty gitlinks, as they are at the pin.
     "hornet": ("extern/",),
     "rbitcoin": ("third_party/",),
-    "libbitcoin": (),  # vendored column on the page is measured separately
+    # libbitcoin has no vendor/ or third-party library subtree. src/crypto/secp256k1
+    # is first-party libbitcoin code, not a bundled copy of libsecp256k1.
+    "libbitcoin": (),
 }
 
 LOCALE_PREFIXES = ("src/qt/locale/",)
@@ -437,14 +445,18 @@ def unique_authors(cwd: Path, rev: str) -> tuple[list[str], int]:
         f"--until={WINDOW_END}",
         "--format=%aN%x09%aE",
     ]
-    # Apply the committed mailmap without writing into the source repo.
-    if MAILMAP.is_file():
-        out = git(cwd, "-c", f"mailmap.file={MAILMAP}", *args, "--use-mailmap", check=False)
-        raw = git(cwd, "log", rev, f"--since={WINDOW_START}", f"--until={WINDOW_END}",
-                  "--format=%aN", check=False)
-    else:
-        out = git(cwd, *args, check=False)
-        raw = "\n".join(line.split("\t", 1)[0] for line in out.splitlines() if line.strip())
+    # Apply a local private mailmap without writing into the source repo.
+    # If the file is missing, do not fall back to unmerged names (that would
+    # silently change the published counts).
+    if not MAILMAP.is_file():
+        raise FileNotFoundError(
+            f"author mailmap not found at {MAILMAP}. "
+            "Set AUTHOR_MAILMAP to a local mailmap file. "
+            "Author counts are not measured because aliases would otherwise change silently."
+        )
+    out = git(cwd, "-c", f"mailmap.file={MAILMAP}", *args, "--use-mailmap", check=False)
+    raw = git(cwd, "log", rev, f"--since={WINDOW_START}", f"--until={WINDOW_END}",
+              "--format=%aN", check=False)
     raw_names = []
     raw_seen = set()
     for line in raw.splitlines():
@@ -469,6 +481,28 @@ def unique_authors(cwd: Path, rev: str) -> tuple[list[str], int]:
             seen.add(key)
             names.append(name)
     return names, len(raw_names)
+
+
+def measure_authors(cwd: Path, rev: str, extra_note: str = ""):
+    """Human-author cell, or not-measured if the local mailmap is missing."""
+    missing_note = (
+        f"author mailmap not found at {MAILMAP}. Set AUTHOR_MAILMAP to a local "
+        "mailmap file. Aliases were not merged, so this cell is not measured."
+    )
+    if extra_note:
+        missing_note += " " + extra_note
+    try:
+        authors, raw_n = unique_authors(cwd, rev)
+    except FileNotFoundError as e:
+        print(str(e), file=sys.stderr)
+        return cell(None, "not-measured", note=missing_note)
+    note = (
+        "human authors (known aliases merged, bots and agents excluded). "
+        f"Raw unique %aN names before the filter: {raw_n}."
+    )
+    if extra_note:
+        note += " " + extra_note
+    return cell(len(authors), note=note)
 
 
 def releases_12m(cwd: Path) -> tuple[int | None, str]:
@@ -1061,15 +1095,7 @@ def row_depth(slug: str):
         author_extra = "author history from a blobless clone, " + alt_note
         complete = ok
     if complete:
-        authors, raw_n = unique_authors(author_root, author_rev)
-        authors_cell = cell(
-            len(authors),
-            note=(
-                "human authors (aliases merged via data/author-mailmap, bots and "
-                f"agents excluded). Raw unique %aN names before the filter: {raw_n}. "
-                + author_extra
-            ),
-        )
+        authors_cell = measure_authors(author_root, author_rev, author_extra)
     else:
         authors_cell = cell(None, "not-measured", note=hist_note)
 
@@ -1213,6 +1239,13 @@ def main():
     parser.add_argument("--size-out", default="")
     args = parser.parse_args()
 
+    if not MAILMAP.is_file():
+        print(
+            f"author mailmap not found at {MAILMAP}. "
+            "Set AUTHOR_MAILMAP to a local mailmap file. "
+            "Author counts will be recorded as not measured.",
+            file=sys.stderr,
+        )
     size = blvm_size()
     if args.size_out:
         Path(args.size_out).write_text(json.dumps(size, indent=2) + "\n")
@@ -1254,17 +1287,18 @@ def main():
         ),
         "authors_12m": (
             f"Human commit authors on the landing-share repo set from "
-            f"{WINDOW_START} to {WINDOW_END} inclusive. Aliases are merged "
-            "through the committed mailmap data/author-mailmap (for example "
-            "BLVM's Josh / SecSov / Secure Sovereign, Hornet's Toby Sharp "
-            "mailboxes, Bit-Block's Dimitri names). Bots and agents are "
+            f"{WINDOW_START} to {WINDOW_END} inclusive. Known aliases are "
+            "merged from a local mailmap (AUTHOR_MAILMAP); the mailmap is "
+            "not in this repository. Bots and agents are "
             "excluded: any name or email containing [bot], merge-script, "
             "github-actions, dependabot, Cursor Agent, Claude, Grok Bot "
             "Engineer, Devin AI, OpenAI, and other obvious agent identities "
             "(rbitcoin-grok, Tau Agent, and similar), plus authors whose "
             "email host is localhost, local, or omp. Unique names are "
-            "compared case-insensitively after the mailmap. A shallow clone "
-            "that does not reach the window start is not measured."
+            "compared case-insensitively after the mailmap. If the mailmap "
+            "is absent, author counts are not measured rather than silently "
+            "published without alias merging. A shallow clone that does not "
+            "reach the window start is not measured."
         ),
         "releases_12m": (
             f"Git tags whose creatordate falls in {WINDOW_START} to {WINDOW_END}. "
@@ -1300,14 +1334,8 @@ def main():
     git_root, git_rev = LANDING_GIT["blvm"]
     complete, hist_note = history_complete_for_window(Path(git_root), git_rev)
     if complete:
-        authors, raw_n = unique_authors(Path(git_root), git_rev)
-        authors_cell = cell(
-            len(authors),
-            note=(
-                "human authors (aliases merged via data/author-mailmap, bots and "
-                f"agents excluded). Raw unique %aN names before the filter: {raw_n}. "
-                "landing share repo: blvm-node only. " + hist_note
-            ),
+        authors_cell = measure_authors(
+            Path(git_root), git_rev, "landing share repo: blvm-node only. " + hist_note
         )
         rel_n, rel_note = releases_12m(Path(git_root))
         releases_cell = cell(rel_n, note=rel_note + " (blvm-node tags)")

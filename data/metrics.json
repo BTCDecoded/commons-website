@@ -9,7 +9,7 @@
     "fuzz_targets": "Declared fuzz targets at the pin, not a count of files in a fuzz directory. C++: invocations of FUZZ_TARGET( and wrappers such as FUZZ_TARGET_DESERIALIZE(, skipping #define lines and lines that continue a macro body (the previous line ends with a backslash). Go: func FuzzXxx(f *testing.F). Rust: cargo-fuzz [[bin]] entries when a fuzz Cargo.toml is present, otherwise fuzz_target! uses (the two Rust counts match on every tree measured here).",
     "vector_files": "Files whose path or name looks like a test vector (vector, tx_valid, tx_invalid, script_tests, sighash, bipN) with suffix .json, .csv, or .hex.",
     "spec_files": "Documentation or model files whose name looks like a spec (spec, THE_ORANGE_PAPER, orange paper, bipN) with suffix .md, .rst, .txt, .lean, or .tex. LICENSE and contributing files are excluded.",
-    "authors_12m": "Human commit authors on the landing-share repo set from 2025-11-12 to 2026-11-12 inclusive. Aliases are merged through the committed mailmap data/author-mailmap (for example BLVM's Josh / SecSov / Secure Sovereign, Hornet's Toby Sharp mailboxes, Bit-Block's Dimitri names). Bots and agents are excluded: any name or email containing [bot], merge-script, github-actions, dependabot, Cursor Agent, Claude, Grok Bot Engineer, Devin AI, OpenAI, and other obvious agent identities (rbitcoin-grok, Tau Agent, and similar), plus authors whose email host is localhost, local, or omp. Unique names are compared case-insensitively after the mailmap. A shallow clone that does not reach the window start is not measured.",
+    "authors_12m": "Human commit authors on the landing-share repo set from 2025-11-12 to 2026-11-12 inclusive. Known aliases are merged from a local mailmap (AUTHOR_MAILMAP); the mailmap is not in this repository. Bots and agents are excluded: any name or email containing [bot], merge-script, github-actions, dependabot, Cursor Agent, Claude, Grok Bot Engineer, Devin AI, OpenAI, and other obvious agent identities (rbitcoin-grok, Tau Agent, and similar), plus authors whose email host is localhost, local, or omp. Unique names are compared case-insensitively after the mailmap. If the mailmap is absent, author counts are not measured rather than silently published without alias merging. A shallow clone that does not reach the window start is not measured.",
     "releases_12m": "Git tags whose creatordate falls in 2025-11-12 to 2026-11-12. Annotated tags use the tagger date; lightweight tags use the tagged commit date.",
     "ci_workflows": "Number of .github/workflows/*.{yml,yaml} files at the pin.",
     "ci_jobs": "GitHub Actions jobs at the pin, expanding a static matrix of lists (an include-only matrix is just the include rows, not one implicit job plus those rows; minus exclude/). A fromJSON(needs.job.outputs.x) matrix is expanded when the default non-PR value is written in the same workflow (suite=all, schedule/push flavors and arches, default mutant PARTS) or when the producer reads this tree's fuzz/Cargo.toml [[bin]] list. Unquoted run: scalars that break PyYAML are quoted and retried. If a matrix still cannot be expanded or a file still fails to parse, the cell is partial and the value is a lower bound.",
@@ -131,7 +131,7 @@
         "value": 2,
         "text": "2",
         "status": "measured",
-        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 8. landing share repo: blvm-node only. oldest visible 2025-10-19"
+        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 8. landing share repo: blvm-node only. oldest visible 2025-10-19"
       },
       "releases_12m": {
         "value": 85,
@@ -232,7 +232,7 @@
         "value": 144,
         "text": "144",
         "status": "measured",
-        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 153. oldest visible 2009-08-30"
+        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 153. oldest visible 2009-08-30"
       },
       "releases_12m": {
         "value": 34,
@@ -333,7 +333,7 @@
         "value": 45,
         "text": "45",
         "status": "measured",
-        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 47. oldest visible 2009-08-30"
+        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 47. oldest visible 2009-08-30"
       },
       "releases_12m": {
         "value": 1,
@@ -434,7 +434,7 @@
         "value": 1,
         "text": "1",
         "status": "measured",
-        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 2. oldest visible 2025-08-23"
+        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 2. oldest visible 2025-08-23"
       },
       "releases_12m": {
         "value": 2,
@@ -535,7 +535,7 @@
         "value": 145,
         "text": "145",
         "status": "measured",
-        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 154. oldest visible 2009-08-30"
+        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 154. oldest visible 2009-08-30"
       },
       "releases_12m": {
         "value": 14,
@@ -633,10 +633,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 10,
-        "text": "10",
+        "value": 9,
+        "text": "9",
         "status": "measured",
-        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 32. repository begins 2026-05-19 (inside window; full history)"
+        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 32. repository begins 2026-05-19 (inside window; full history)"
       },
       "releases_12m": {
         "value": 0,
@@ -737,7 +737,7 @@
         "value": 1,
         "text": "1",
         "status": "measured",
-        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 2. repository begins 2026-03-16 (inside window; full history)"
+        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 2. repository begins 2026-03-16 (inside window; full history)"
       },
       "releases_12m": {
         "value": 20,
@@ -838,7 +838,7 @@
         "value": 10,
         "text": "10",
         "status": "measured",
-        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 17. oldest visible 2011-05-19"
+        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 17. oldest visible 2011-05-19"
       },
       "releases_12m": {
         "value": 9,
@@ -939,7 +939,7 @@
         "value": 1,
         "text": "1",
         "status": "measured",
-        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 2. oldest visible 2025-05-03"
+        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 2. oldest visible 2025-05-03"
       },
       "releases_12m": {
         "value": 0,
@@ -1040,7 +1040,7 @@
         "value": 44,
         "text": "44",
         "status": "measured",
-        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 47. author history from a blobless clone, oldest visible 2025-10-04"
+        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 47. author history from a blobless clone, oldest visible 2025-10-04"
       },
       "releases_12m": {
         "value": 4,
@@ -1138,10 +1138,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 27,
-        "text": "27",
+        "value": 26,
+        "text": "26",
         "status": "measured",
-        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 38. author history from a blobless clone, repository begins 2026-07-14 (inside window; full history)"
+        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 38. author history from a blobless clone, repository begins 2026-07-14 (inside window; full history)"
       },
       "releases_12m": {
         "value": 10,
@@ -1242,7 +1242,7 @@
         "value": 22,
         "text": "22",
         "status": "measured",
-        "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 24. author history from a blobless clone, oldest visible 2025-10-27"
+        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 24. author history from a blobless clone, oldest visible 2025-10-27"
       },
       "releases_12m": {
         "value": 5,

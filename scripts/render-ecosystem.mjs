@@ -108,7 +108,7 @@ const halfOf = {}; trees.forEach(function (t) { var h = metric(t, "files_holding
 slots["files-caption"] = "";
 slots["test-caption"] = "";
 slots["rules-asof"] = esc(data.measured_at);
-slots["test-note"] = "A Rust file named *_test.rs or *_tests.rs counts as tests. Lines inside a #[cfg(test)] item count as tests.";
+slots["test-note"] = esc(scan.test_placement || "");
 
 // Rules share: scale shared, cut order as first seen; sort groups by cut then value.
 const ruleRows = trees.map(function (tree) {
@@ -354,7 +354,7 @@ function depthRow(slug) {
         (open ? "<tr data-slug=\"" + esc(slug) + "\" class=\"eco-open-row\"><td class=\"eco-open m-full\" colspan=\"" + (depthCols.length + 1) + "\">" + open + "</td></tr>" : "");
 }
 slots.depth = glanceOrder.map(depthRow).join("");
-slots["depth-caption"] = esc("Declared fuzz targets; test lines split into in-source tests and test-folder tests (a folder split, not unit vs integration), plus fuzz and property test lines; test-vector and spec file counts; human commit authors in the 12 months from " + (metrics.window_start || "2025-11-12") + " to " + (metrics.window_end || "2026-11-12") + " (aliases merged, bots and agents excluded); tagged releases in that window; and GitHub Actions workflow and job counts. Measured " + (metrics.as_of || data.measured_at) + ". Sort buttons need JavaScript; the figures are in the table without it.");
+slots["depth-caption"] = esc("Declared fuzz targets; test lines split into in-source tests and test-folder tests (a folder split, not unit vs integration), plus fuzz and property test lines; test-vector and spec file counts; human commit authors in the 12 months from " + (metrics.window_start || "2025-11-12") + " to " + (metrics.window_end || "2026-11-12") + " (known aliases merged, bots and agents excluded); tagged releases in that window; and GitHub Actions workflow and job counts. Measured " + (metrics.as_of || data.measured_at) + ". Sort buttons need JavaScript; the figures are in the table without it.");
 slots["depth-note"] = Object.keys(metrics.methods || {}).filter(function (k) { return k !== "plugin_system" && k !== "blvm_size"; }).map(function (k) {
     return "<li>" + esc(k) + ". " + esc(metrics.methods[k]) + "</li>";
 }).join("");
