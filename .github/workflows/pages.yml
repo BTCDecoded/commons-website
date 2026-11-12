@@ -47,6 +47,9 @@ jobs:
       - name: Sync governance assets for site viewers
         run: GOVERNANCE_DIR=_governance node scripts/sync-governance-assets.mjs
 
+      - name: Render ecosystem page from data/implementations.json
+        run: node scripts/render-ecosystem.mjs
+
       - name: Refresh BLVM release metadata (badge + assets/blvm-release.json)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
