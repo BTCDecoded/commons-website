@@ -1556,7 +1556,7 @@
         "slug": "blvm",
         "name": "BLVM",
         "text": "One author wrote 825 of 854 commits in blvm-node, all 141 commits in the blvm checkout, 231 of 296 in blvm-consensus, 165 of 167 in the governance repository, and 34 of 55 in blvm-spec. The layer table is the written rule. Enforcement is off, so that quorum is the rule on paper and the history is one writer.",
-        "basis": "git log. blvm-node is a complete history from 2025-10-19 to 2026-11-11. The blvm-consensus count treats securesovereigns@pm.me and the matching GitHub noreply address as one person. The other checkouts are shallow and begin in 2026."
+        "basis": "git log. blvm-node is a complete history from 2025-10-19 to 2026-11-11. The blvm-consensus count treats an author's personal address and its GitHub noreply alias as one person. The other checkouts are shallow and begin in 2026."
       },
       {
         "slug": "bitcoin-core",
