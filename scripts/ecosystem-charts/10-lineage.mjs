@@ -54,7 +54,12 @@ export default {
             headline: separate.length + " of " + rows.length + " implementations are separate codebases. The other " + (rows.length - separate.length) + " are Bitcoin Core and clients built from it.",
             caption: "Arrows show derivation as each project's history on this page states it; the dashed arrow is Bitcoin Roots carrying Knots policy features onto Core. Bitcoin Knots itself is not a row on this page" + (knotsUp ? "; its arrow from Core cites the Knots README" : "") + ". Separate codebases are grouped by primary language.",
             measures: "Where each implementation's code comes from; it matters because clients that share code share its bugs.",
-            takeaway: "Most implementations are separate codebases, but the network runs almost entirely on the Core branch (see the node-share bar at the top).",
+            takeaway: (function () {
+                const fam = rows.filter(function (r) { return derived[r.slug]; }).map(function (r) { return r.name; });
+                const sub = rows.filter(function (r) { return !derived[r.slug] && /Bitcoin Core is a git submodule/.test(r.vendored || ""); }).map(function (r) { return r.name; });
+                const lst = function (a) { return a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + ", and " + a[a.length - 1]; };
+                return "The lineage map is a Core family of " + fam.length + " implementations \u2014 " + lst(fam) + " \u2014 plus " + (rows.length - fam.length) + " separate codebases grouped by primary language; Bitcoin Knots itself is not a row" + (sub.length ? ", and " + lst(sub) + "\u2019s Core git submodule is not a derivation." : ".");
+            })(),
             title: "Lineage of the " + rows.length + " implementations",
             desc: "Core family: Bitcoin Core; " + (knotsUp ? "Bitcoin Knots, a fork of Core; " : "") + "Bitcoin Roots, a patch series on Core that also carries Knots features; Knots Legacy and Bit-Block, both from Bitcoin Knots. Separate codebases: " + langs.map(function (l) { return l + ": " + byLang[l].map(function (s) { return nodes[s].label; }).join(", "); }).join("; ") + ".",
             chart: lineage(groups, nodes, edges),
