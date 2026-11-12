@@ -415,6 +415,13 @@ def is_bot_or_agent(name: str, email: str) -> bool:
         return True
     if "github-actions" in e or "dependabot" in e or "dependabot" in n:
         return True
+    # Machine-local or job-runner mailboxes (bitcoin-rs: alpha@localhost,
+    # omp@localhost, omp-worker@local, pr-repairs-11@omp).
+    host = e.rsplit("@", 1)[-1] if "@" in e else ""
+    if host in {"localhost", "local", "omp"}:
+        return True
+    if n in {"alpha", "omp", "omp-worker", "pr-repairs-11"}:
+        return True
     return False
 
 
@@ -531,8 +538,22 @@ def _iter_text_files(root: Path, suffixes: set[str]):
         yield p, rel, text
 
 
-# Invocation of FUZZ_TARGET(, not the #define in fuzz.h / util headers.
-FUZZ_TARGET_CALL = re.compile(r"(?m)^(?!\s*#\s*define\b).*\bFUZZ_TARGET\s*\(")
+# Declared C++ fuzz targets: FUZZ_TARGET( and wrappers such as
+# FUZZ_TARGET_DESERIALIZE(. Skip #define lines and lines that continue a
+# macro body (the previous line ends with a backslash), so the FUZZ_TARGET(
+# that appears inside the DESERIALIZE wrapper definition is not counted.
+FUZZ_TARGET_CALL = re.compile(r"\bFUZZ_TARGET(?:_\w+)?\s*\(")
+
+
+def count_cpp_fuzz_invocations(text: str) -> int:
+    n = 0
+    continued = False
+    for line in text.splitlines():
+        is_define = bool(re.match(r"^\s*#\s*define\b", line))
+        if not is_define and not continued:
+            n += len(FUZZ_TARGET_CALL.findall(line))
+        continued = line.rstrip().endswith("\\")
+    return n
 FUZZ_TARGET_MACRO = re.compile(r"\bfuzz_target!\s*[\(\{]")
 GO_FUZZ_FUNC = re.compile(r"^func\s+(Fuzz\w+)\s*\(\s*f\s+\*testing\.F\s*\)", re.M)
 
@@ -584,7 +605,7 @@ def count_fuzz_from_roots(roots: list[Path]) -> tuple[int, str]:
     for root in roots:
         cpp = 0
         for _, rel, text in _iter_text_files(root, {".cpp", ".cc", ".h", ".hpp", ".c"}):
-            cpp += len(FUZZ_TARGET_CALL.findall(text))
+            cpp += count_cpp_fuzz_invocations(text)
         go = 0
         for _, rel, text in _iter_text_files(root, {".go"}):
             go += len(GO_FUZZ_FUNC.findall(text))
@@ -1214,8 +1235,10 @@ def main():
         ),
         "fuzz_targets": (
             "Declared fuzz targets at the pin, not a count of files in a fuzz "
-            "directory. C++: invocations of the FUZZ_TARGET( macro, excluding "
-            "the #define in fuzz.h. Go: func FuzzXxx(f *testing.F). Rust: "
+            "directory. C++: invocations of FUZZ_TARGET( and wrappers such as "
+            "FUZZ_TARGET_DESERIALIZE(, skipping #define lines and lines that "
+            "continue a macro body (the previous line ends with a backslash). "
+            "Go: func FuzzXxx(f *testing.F). Rust: "
             "cargo-fuzz [[bin]] entries when a fuzz Cargo.toml is present, "
             "otherwise fuzz_target! uses (the two Rust counts match on every "
             "tree measured here)."
@@ -1238,7 +1261,8 @@ def main():
             "excluded: any name or email containing [bot], merge-script, "
             "github-actions, dependabot, Cursor Agent, Claude, Grok Bot "
             "Engineer, Devin AI, OpenAI, and other obvious agent identities "
-            "(rbitcoin-grok, Tau Agent, and similar). Unique names are "
+            "(rbitcoin-grok, Tau Agent, and similar), plus authors whose "
+            "email host is localhost, local, or omp. Unique names are "
             "compared case-insensitively after the mailmap. A shallow clone "
             "that does not reach the window start is not measured."
         ),
