@@ -405,7 +405,12 @@ export function layered(bands, nodes, edges, opts) {
             var tracks = gapEdges[ri].length;
             row.gapTop = y;
             y += Math.max(last ? 18 : 22, 12 + tracks * 6) + (last ? 8 : 0);
-            if (last) bandRects[bandRects.length - 1].bottom = y - 6 - (ri === rows.length - 1 ? 0 : 0);
+            if (last && !narrow) {
+                // A band is at least as tall as its label column.
+                var br0 = bandRects[bandRects.length - 1], need = br0.top + 17 + 3 + br0.subL.length * (ss + 3) + 14;
+                if (y < need) { row.gapTop += need - y; y = need; }
+                if (ri === rows.length - 1) row.gapTop = Math.max(row.gapTop, need - 18);
+            }
         });
         var height = rows[rows.length - 1].gapTop + 10;
         bandRects[bandRects.length - 1].bottom = height;
