@@ -1,0 +1,372 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-11-12",
+  "note": "Statuses come from each project's public repository as of 2026-11-12. “Not found” means no public source turned up; it does not mean the project lacks it.",
+  "statuses": {
+    "yes": "Found in the repository",
+    "partial": "Found for part of the scope",
+    "not found": "No public source found",
+    "n/a": "Does not apply"
+  },
+  "columns": [
+    {
+      "id": "formal_spec",
+      "name": "Formal spec",
+      "short": "Formal spec",
+      "what": "A written, formal consensus specification separate from the code."
+    },
+    {
+      "id": "test_vectors",
+      "name": "Test vectors",
+      "short": "Vectors",
+      "what": "Conformance against shared test vectors, such as Bitcoin Core's JSON vectors."
+    },
+    {
+      "id": "property_tests",
+      "name": "Property tests",
+      "short": "Property",
+      "what": "Property-based tests (proptest, quickcheck and similar)."
+    },
+    {
+      "id": "fuzzing",
+      "name": "Fuzzing",
+      "short": "Fuzzing",
+      "what": "Fuzz targets in the tree."
+    },
+    {
+      "id": "formal_verification",
+      "name": "Formal verification",
+      "short": "Formal proofs",
+      "what": "Machine-checked proofs or model checking of code."
+    },
+    {
+      "id": "differential",
+      "name": "Differential vs Core",
+      "short": "Diff vs Core",
+      "what": "Tests that compare verdicts with Bitcoin Core or its libraries."
+    }
+  ],
+  "rows": [
+    {
+      "slug": "blvm",
+      "name": "BLVM",
+      "repo": "BTCDecoded repositories",
+      "commit": "blvm-spec afc5b49, blvm-spec-lock bddfae4, blvm-consensus f63c328, blvm-bench 3d5cd92",
+      "cells": {
+        "formal_spec": {
+          "status": "yes",
+          "text": "The Orange Paper, with a Lean model of part of it",
+          "source": "https://github.com/BTCDecoded/blvm-spec/blob/afc5b491282ce2da12e5c177745711bcd5c118a0/THE_ORANGE_PAPER.md"
+        },
+        "test_vectors": {
+          "status": "yes",
+          "text": "Core tx_valid, tx_invalid, sighash and script_tests JSON; script_tests runs as a subset",
+          "source": "https://github.com/BTCDecoded/blvm-consensus/tree/f63c32856a2da874296524f40b8cbd35518d8096/tests/core_test_vectors"
+        },
+        "property_tests": {
+          "status": "yes",
+          "text": "proptest suites, including Orange Paper properties",
+          "source": "https://github.com/BTCDecoded/blvm-consensus/blob/f63c32856a2da874296524f40b8cbd35518d8096/tests/orange_paper_property_tests.rs"
+        },
+        "fuzzing": {
+          "status": "yes",
+          "text": "63 fuzz target files (cargo-fuzz)",
+          "source": "https://github.com/BTCDecoded/blvm-consensus/tree/f63c32856a2da874296524f40b8cbd35518d8096/fuzz/fuzz_targets"
+        },
+        "formal_verification": {
+          "status": "partial",
+          "text": "Z3 proves 13 functions from the body. Of 274 Orange Paper sentences, 1 is proved in Rust and Lean, 16 in Lean only, 257 not yet",
+          "source": "https://github.com/BTCDecoded/blvm-spec-lock/blob/bddfae4ac8063f78bf654d7a2245c810d89f98d1/README.md"
+        },
+        "differential": {
+          "status": "yes",
+          "text": "Script verdicts against libbitcoinconsensus; block accept or reject against libbitcoinkernel in blvm-bench. No full-chain result is claimed here",
+          "source": "https://github.com/BTCDecoded/blvm-bench/blob/3d5cd92371d497bb3ae7807a5f07cd4ca8c9b762/README_DIFFERENTIAL_TESTING.md"
+        }
+      }
+    },
+    {
+      "slug": "bitcoin-core",
+      "name": "Bitcoin Core",
+      "repo": "bitcoin/bitcoin",
+      "commit": "9183edd25e",
+      "cells": {
+        "formal_spec": {
+          "status": "not found"
+        },
+        "test_vectors": {
+          "status": "yes",
+          "text": "Source of the shared JSON vectors",
+          "source": "https://github.com/bitcoin/bitcoin/tree/9183edd25e60aa410bc3e4728989a1d75c309a09/src/test/data"
+        },
+        "property_tests": {
+          "status": "not found"
+        },
+        "fuzzing": {
+          "status": "yes",
+          "text": "Fuzz harnesses and fuzz CI jobs",
+          "source": "https://github.com/bitcoin/bitcoin/tree/9183edd25e60aa410bc3e4728989a1d75c309a09/src/test/fuzz"
+        },
+        "formal_verification": {
+          "status": "not found"
+        },
+        "differential": {
+          "status": "n/a",
+          "text": "The reference the others are tested against"
+        }
+      }
+    },
+    {
+      "slug": "knots",
+      "name": "Bitcoin Knots",
+      "repo": "bitcoinknots/bitcoin (29.x-knots)",
+      "commit": "5811235e3f",
+      "cells": {
+        "formal_spec": {
+          "status": "not found"
+        },
+        "test_vectors": {
+          "status": "yes",
+          "text": "Core's JSON vectors, carried in the tree",
+          "source": "https://github.com/bitcoinknots/bitcoin/tree/5811235e3f5da687de1ac8ca731331a2fc24a350/src/test/data"
+        },
+        "property_tests": {
+          "status": "not found"
+        },
+        "fuzzing": {
+          "status": "yes",
+          "text": "Core's fuzz harnesses, carried in the tree",
+          "source": "https://github.com/bitcoinknots/bitcoin/tree/5811235e3f5da687de1ac8ca731331a2fc24a350/src/test/fuzz"
+        },
+        "formal_verification": {
+          "status": "not found"
+        },
+        "differential": {
+          "status": "not found"
+        }
+      }
+    },
+    {
+      "slug": "bitcoin-rs",
+      "name": "bitcoin-rs",
+      "repo": "gosuda/bitcoin-rs (dev)",
+      "commit": "60b33f6be7",
+      "cells": {
+        "formal_spec": {
+          "status": "not found"
+        },
+        "test_vectors": {
+          "status": "yes",
+          "text": "Core script, tx and sighash JSON, plus BIP143 and BIP341 vectors",
+          "source": "https://github.com/gosuda/bitcoin-rs/tree/60b33f6be7c55eb27e6892cdb7770687a8e40276/crates/consensus/tests/vectors"
+        },
+        "property_tests": {
+          "status": "yes",
+          "text": "proptest across crates, including script",
+          "source": "https://github.com/gosuda/bitcoin-rs/blob/60b33f6be7c55eb27e6892cdb7770687a8e40276/crates/consensus/tests/script_proptest.rs"
+        },
+        "fuzzing": {
+          "status": "yes",
+          "text": "cargo-fuzz targets and a daily fuzz workflow",
+          "source": "https://github.com/gosuda/bitcoin-rs/tree/60b33f6be7c55eb27e6892cdb7770687a8e40276/fuzz"
+        },
+        "formal_verification": {
+          "status": "partial",
+          "text": "Kani proofs on primitives including script and sighash; TLA+ models of components. CI runners do not run Kani",
+          "source": "https://github.com/gosuda/bitcoin-rs/blob/60b33f6be7c55eb27e6892cdb7770687a8e40276/docs/contracts/formal-verification.md"
+        },
+        "differential": {
+          "status": "yes",
+          "text": "Vector, boundary and block parity tests against libbitcoinkernel",
+          "source": "https://github.com/gosuda/bitcoin-rs/blob/60b33f6be7c55eb27e6892cdb7770687a8e40276/crates/consensus/tests/kernel_block_parity.rs"
+        }
+      }
+    },
+    {
+      "slug": "satd",
+      "name": "satd",
+      "repo": "epochbtc/satd",
+      "commit": "d2dc5cf78c",
+      "cells": {
+        "formal_spec": {
+          "status": "not found"
+        },
+        "test_vectors": {
+          "status": "yes",
+          "text": "Core script, tx and sighash JSON, BIP341 vectors and a script-assets subset",
+          "source": "https://github.com/epochbtc/satd/tree/d2dc5cf78c086db7d8de555050ae52539cd82d5a/consensus/test-data"
+        },
+        "property_tests": {
+          "status": "partial",
+          "text": "proptest in the node and policy crates; none found in the consensus crate",
+          "source": "https://github.com/epochbtc/satd/blob/d2dc5cf78c086db7d8de555050ae52539cd82d5a/satd-policy/Cargo.toml"
+        },
+        "fuzzing": {
+          "status": "yes",
+          "text": "cargo-fuzz targets and a nightly fuzz workflow",
+          "source": "https://github.com/epochbtc/satd/tree/d2dc5cf78c086db7d8de555050ae52539cd82d5a/fuzz"
+        },
+        "formal_verification": {
+          "status": "not found"
+        },
+        "differential": {
+          "status": "yes",
+          "text": "Script shadow validation against libbitcoinkernel and a block differential fuzz workflow",
+          "source": "https://github.com/epochbtc/satd/blob/d2dc5cf78c086db7d8de555050ae52539cd82d5a/.github/workflows/core_block_differential_fuzz.yml"
+        }
+      }
+    },
+    {
+      "slug": "libbitcoin",
+      "name": "libbitcoin",
+      "repo": "libbitcoin/libbitcoin-system",
+      "commit": "b243223933",
+      "cells": {
+        "formal_spec": {
+          "status": "not found"
+        },
+        "test_vectors": {
+          "status": "partial",
+          "text": "In-tree script test lists by BIP; Core's JSON files not found",
+          "source": "https://github.com/libbitcoin/libbitcoin-system/blob/b243223933c6cdb38eb59e32d6110f60743aa9c8/test/chain/script.hpp"
+        },
+        "property_tests": {
+          "status": "not found"
+        },
+        "fuzzing": {
+          "status": "not found"
+        },
+        "formal_verification": {
+          "status": "not found"
+        },
+        "differential": {
+          "status": "not found"
+        }
+      }
+    },
+    {
+      "slug": "hornet",
+      "name": "Hornet",
+      "repo": "tobysharp/hornet",
+      "commit": "151462fa5c",
+      "cells": {
+        "formal_spec": {
+          "status": "partial",
+          "text": "Executable declarative spec of block validation rules, in C++ and a DSL",
+          "source": "https://github.com/tobysharp/hornet/blob/151462fa5ceece39c159674886dcfa6cfe9b1234/docs/spec.md"
+        },
+        "test_vectors": {
+          "status": "not found"
+        },
+        "property_tests": {
+          "status": "not found"
+        },
+        "fuzzing": {
+          "status": "not found"
+        },
+        "formal_verification": {
+          "status": "not found"
+        },
+        "differential": {
+          "status": "not found"
+        }
+      }
+    },
+    {
+      "slug": "floresta",
+      "name": "Floresta",
+      "repo": "getfloresta/Floresta",
+      "commit": "cdbcf5a13c",
+      "cells": {
+        "formal_spec": {
+          "status": "not found"
+        },
+        "test_vectors": {
+          "status": "yes",
+          "text": "Core script, tx and sighash JSON and BIP341 vectors",
+          "source": "https://github.com/getfloresta/Floresta/tree/cdbcf5a13cba2b0aab505977ba413f707bc06290/crates/floresta-chain/testdata/bitcoin-core/data"
+        },
+        "property_tests": {
+          "status": "not found"
+        },
+        "fuzzing": {
+          "status": "yes",
+          "text": "cargo-fuzz targets and a fuzz workflow",
+          "source": "https://github.com/getfloresta/Floresta/tree/cdbcf5a13cba2b0aab505977ba413f707bc06290/fuzz"
+        },
+        "formal_verification": {
+          "status": "not found"
+        },
+        "differential": {
+          "status": "not found",
+          "text": "Validates with libbitcoinkernel, Core's engine",
+          "source": "https://github.com/getfloresta/Floresta/blob/cdbcf5a13cba2b0aab505977ba413f707bc06290/README.md"
+        }
+      }
+    },
+    {
+      "slug": "rbitcoin",
+      "name": "rbitcoin",
+      "repo": "reardencode/rbitcoin",
+      "commit": "ca7bf804ed",
+      "cells": {
+        "formal_spec": {
+          "status": "not found"
+        },
+        "test_vectors": {
+          "status": "partial",
+          "text": "Core script_tests JSON; tx and sighash JSON not found",
+          "source": "https://github.com/reardencode/rbitcoin/blob/ca7bf804ed44d7efdca3da219ead6e644d35fd9e/crates/rbitcoin-consensus/tests/fixtures/script_corpus/script_tests.json"
+        },
+        "property_tests": {
+          "status": "not found"
+        },
+        "fuzzing": {
+          "status": "yes",
+          "text": "cargo-fuzz targets and a fuzz workflow",
+          "source": "https://github.com/reardencode/rbitcoin/tree/ca7bf804ed44d7efdca3da219ead6e644d35fd9e/fuzz/fuzz_targets"
+        },
+        "formal_verification": {
+          "status": "not found"
+        },
+        "differential": {
+          "status": "yes",
+          "text": "Script and block differential fuzz targets against libbitcoinconsensus and a Core oracle",
+          "source": "https://github.com/reardencode/rbitcoin/blob/ca7bf804ed44d7efdca3da219ead6e644d35fd9e/fuzz/fuzz_targets/script_verify_differential.rs"
+        }
+      }
+    },
+    {
+      "slug": "btcd",
+      "name": "btcd",
+      "repo": "btcsuite/btcd",
+      "commit": "dd169fe0c3",
+      "cells": {
+        "formal_spec": {
+          "status": "not found"
+        },
+        "test_vectors": {
+          "status": "yes",
+          "text": "Core script, tx and sighash JSON",
+          "source": "https://github.com/btcsuite/btcd/tree/dd169fe0c32a56087d28b92fff3b8cf4fb43477a/txscript/data"
+        },
+        "property_tests": {
+          "status": "partial",
+          "text": "testing/quick in two test files (taproot, schnorr)",
+          "source": "https://github.com/btcsuite/btcd/blob/dd169fe0c32a56087d28b92fff3b8cf4fb43477a/txscript/taproot_test.go"
+        },
+        "fuzzing": {
+          "status": "partial",
+          "text": "Go fuzz tests in wire and btcec only",
+          "source": "https://github.com/btcsuite/btcd/blob/dd169fe0c32a56087d28b92fff3b8cf4fb43477a/wire/fuzz_test.go"
+        },
+        "formal_verification": {
+          "status": "not found"
+        },
+        "differential": {
+          "status": "not found"
+        }
+      }
+    }
+  ]
+}

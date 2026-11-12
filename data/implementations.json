@@ -2,7 +2,7 @@
   "schema_version": 1,
   "measured_at": "2026-11-12",
   "internal_slug": "blvm",
-  "internal_name": "commons",
+  "internal_name": "BLVM",
   "class": "Bitcoin full-node source trees already compared on this machine, plus Bitcoin Core as the secsov baseline and Knots because that checkout uses Core's src layout. GridPool is outside this class. The 2026-10-01 Commons Pool note is a reward-network request.",
   "tree_methods": [
     {
@@ -24,7 +24,7 @@
       "name": "Tooling",
       "unit": "lines",
       "compare": "same-counter",
-      "why": "Files the role map marks as tooling. Spec lock lives here on commons."
+      "why": "Files the role map marks as tooling. Spec lock lives here on BLVM."
     },
     {
       "id": "rules_share",
@@ -66,7 +66,7 @@
       "name": "Lines in files of 1,000 or more",
       "unit": "percent of program code",
       "compare": "same-counter",
-      "why": "How much of the program sits in large files. Tooling is outside this share. Spec lock is tooling on commons."
+      "why": "How much of the program sits in large files. Tooling is outside this share. Spec lock is tooling on BLVM."
     },
     {
       "id": "files_holding_half",
@@ -79,7 +79,7 @@
   "trees": [
     {
       "slug": "blvm",
-      "name": "commons",
+      "name": "BLVM",
       "side": "internal",
       "profile": "rust-workspace",
       "instrument": "crate-role cut",
@@ -1163,7 +1163,7 @@
       },
       {
         "slug": "blvm",
-        "name": "commons",
+        "name": "BLVM",
         "share": 96.6,
         "who": "one author, 825 of 854 in blvm-node",
         "instrument": "commits",
@@ -1229,7 +1229,7 @@
     "history": [
       {
         "slug": "blvm",
-        "name": "commons",
+        "name": "BLVM",
         "text": "One author wrote 825 of 854 commits in blvm-node, all 141 commits in the blvm checkout, 231 of 296 in blvm-consensus, 165 of 167 in the governance repository, and 34 of 55 in blvm-spec. The layer table is the written rule. Enforcement is off, so that quorum is the rule on paper and the history is one writer.",
         "basis": "git log. blvm-node is a complete history from 2025-10-19 to 2026-11-11. The blvm-consensus count treats securesovereigns@pm.me and the matching GitHub noreply address as one person. The other checkouts are shallow and begin in 2026."
       },
@@ -1357,7 +1357,7 @@
         "title": "A stated consequence",
         "items": [
           {
-            "name": "commons",
+            "name": "BLVM",
             "text": "The design states a consequence. A non-conforming action is reversed when two of three governance nodes in a written set agree. Anyone may run a node and publish a conclusion. Only the written set binds. That consequence is Designed. It is not Running. Enforcement is off and the keys are test keys, so a commit stands when one author lands it."
           },
           {
@@ -1390,12 +1390,12 @@
         "title": "Who lands the work",
         "items": [
           {
-            "name": "commons",
-            "text": "One author wrote 825 of 854 commits in blvm-node. The written rule names several signatures. The operating record and the written rule are different levels. That split is the peculiar form. It is not a guild. It is not a mixed constitution that is already operating. A mixed constitution in the institutional reading is a scored form with vetoes. commons on activation is a separate projection, and this page does not score that projection."
+            "name": "BLVM",
+            "text": "One author wrote 825 of 854 commits in blvm-node. The written rule names several signatures. The operating record and the written rule are different levels. BLVM on activation is a separate projection, and this page does not score that projection."
           },
           {
             "name": "Bitcoin Core",
-            "text": "Since 2022 one person merged 50.2% of pull requests and three people merged 82.2%, across 5,747 merged pull requests. That window is the current process. All-time, the top three hold 76.4% of merges, which is a different window. The small set that merges is the guild. The review norm did not disperse it."
+            "text": "Since 2022 one person merged 50.2% of pull requests and three people merged 82.2%, across 5,747 merged pull requests. That window is the current process. All-time, the top three hold 76.4% of merges, which is a different window."
           },
           {
             "name": "The other trees",
@@ -1407,7 +1407,7 @@
         "title": "Who may change the rule",
         "items": [
           {
-            "name": "commons",
+            "name": "BLVM",
             "text": "Tiers and layers are written. When a layer and a tier both apply, the more restrictive pair wins. Two Tier 5 pairs are both written. Meta-governance is 5 of 7 plus 2 of 3 over 90 days, with a 30 day public comment. The tier 5 row is 5 of 5 over 180 days. This page does not choose between them."
           },
           {
@@ -1424,7 +1424,7 @@
         "title": "Who receives keys",
         "items": [
           {
-            "name": "commons",
+            "name": "BLVM",
             "text": "Adding a maintainer is 5 of 7 where the roster lists 7 names. Removing one is 6 of 7 excluding the subject, on that same roster. Layers 3 and 4 list 5 names, and layer 5 lists 3. The names in the roster file are placeholders. Keyholder activation is 5 of 7 and is a different pool from maintainer signatures. The governance-node quorum is 2 of 3 in a written set. That quorum is not the layer 5 maintainer signature, which is also 2 of 3 and applies to blvm-sdk."
           },
           {
@@ -1441,7 +1441,7 @@
         "title": "Written clocks",
         "items": [
           {
-            "name": "commons",
+            "name": "BLVM",
             "text": "The layer chart writes 14, 60, 90, 180, and 365 day periods. Those clocks are the written rule. They are not the time a commit waits today, because enforcement is off."
           },
           {
@@ -1463,9 +1463,75 @@
           },
           {
             "name": "The other trees",
-            "text": "No other tree in this file has this outsider measurement. commons is not scored with Core's filter."
+            "text": "No other tree in this file has this outsider measurement. BLVM is not scored with Core's filter."
           }
         ]
+      }
+    ]
+  },
+  "governance_model": {
+    "as_of": "2026-11-12",
+    "note": "Labels are read from the institution board and the commit and merge shares on this page. They are redone with each reading.",
+    "labels": [
+      {
+        "slug": "blvm",
+        "label": "Commons governance",
+        "detail": "Written rule. Enforcement is off (Phase 1).",
+        "basis": "governance.status and written_rule: 6 of 7 signatures on the spec layer, enforcement off, test keys. landing: one author, 825 of 854 blvm-node commits."
+      },
+      {
+        "slug": "bitcoin-core",
+        "label": "Maintainer group with merge rights",
+        "detail": "Three people merged 82.2% since 2022.",
+        "basis": "Contributing guide: repository maintainers merge. process_methods top3_merge_share_2022: 82.2%."
+      },
+      {
+        "slug": "knots",
+        "label": "Single maintainer",
+        "detail": "One maintainer and a merge script.",
+        "basis": "history: merge-script 4,532 and Luke Dashjr 1,341 of 10,594 commits since 2024. Board: one maintainer and a merge script."
+      },
+      {
+        "slug": "bitcoin-rs",
+        "label": "Single maintainer",
+        "detail": "One account, 75.3% of commits on dev.",
+        "basis": "landing: one account, 5,714 of 7,592 commits on dev."
+      },
+      {
+        "slug": "satd",
+        "label": "Single maintainer",
+        "detail": "One account, 97.2% of commits.",
+        "basis": "landing: bkeroack, 1,228 of 1,263."
+      },
+      {
+        "slug": "libbitcoin",
+        "label": "Single maintainer",
+        "detail": "One maintainer, 77.7% of commits.",
+        "basis": "landing: Eric Voskuil, 8,145 of 10,489."
+      },
+      {
+        "slug": "hornet",
+        "label": "Single maintainer",
+        "detail": "One author, every commit.",
+        "basis": "landing: Toby Sharp, every commit."
+      },
+      {
+        "slug": "floresta",
+        "label": "Not classified",
+        "detail": "Largest share under half. No rule file read.",
+        "basis": "landing: Davidson-Souza, 712 of 1,523 (46.7%)."
+      },
+      {
+        "slug": "rbitcoin",
+        "label": "Not classified",
+        "detail": "Largest share under half. No rule file read.",
+        "basis": "landing: rearden-grok bot, 2,576 of 6,930 (37.2%)."
+      },
+      {
+        "slug": "btcd",
+        "label": "Not classified",
+        "detail": "Largest share under half. No rule file read.",
+        "basis": "landing: davecgh, 1,662 of 4,517 (36.8%)."
       }
     ]
   }
