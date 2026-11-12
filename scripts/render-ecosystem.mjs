@@ -158,7 +158,7 @@ const vBySlug = {}; (verification.rows || []).forEach(function (r) { vBySlug[r.s
 function stabCell(slug) {
     const st = stabilityFor(slug);
     const nm = st.measured === 0;
-    return "<td data-label=\"Stability\" class=\"stab" + (nm ? " stab-nm" : "") + "\"><span class=\"stab-mark\" aria-hidden=\"true\"></span>" + esc(nm ? "not measured" : st.met + " of " + st.total + " met, " + st.notMeasured + " not measured") + "</td>";
+    return "<td data-label=\"Stability\" class=\"stab" + (nm ? " stab-nm" : "") + "\"><span class=\"stab-mark\" aria-hidden=\"true\"></span>" + esc(nm ? "not measured" : st.text) + "</td>";
 }
 slots.glance = glanceOrder.map(function (slug) {
     var v = vBySlug[slug], g = govBySlug[slug];
@@ -180,6 +180,10 @@ slots.glance = glanceOrder.map(function (slug) {
             return " <a href=\"" + esc(url) + "\">" + esc(lab) + "<span class=\"visually-hidden\">: " + esc(v.name + ", " + col.name) + "</span></a>";
         }).join("");
         return "<li><span class=\"eco-meta\">" + esc(col.name) + ", " + esc(cell.status) + ".</span> " + esc(cell.text || "") + (cell.text ? "." : "") + src + "</li>";
+    }).join("");
+    var stab = stabilityFor(slug);
+    notes += stab.cells.concat(stab.tags).filter(function (c) { return c.evidence_url; }).map(function (c) {
+        return "<li><span class=\"eco-meta\">Stability, " + esc(c.label) + ", " + esc(c.type === "tag" ? c.tag : c.status.replace("_", " ")) + ".</span> <a href=\"" + esc(c.evidence_url) + "\">Source<span class=\"visually-hidden\">: " + esc(v.name + ", stability, " + c.label) + "</span></a></li>";
     }).join("");
     var open = "<details><summary>Sources<span class=\"visually-hidden\"> for " + esc(v.name) + "</span></summary><ul>" + notes + "</ul><p class=\"eco-meta\">" + esc(v.repo) + " at " + esc(v.commit) + ".</p></details>";
     return "<tr data-slug=\"" + esc(slug) + "\"><th scope=\"row\"" + (isInt ? " class=\"internal\"" : "") + ">" + esc(v.name) + "</th>" +
@@ -412,7 +416,11 @@ function stabilityFor(slug) {
         const v = (row.criteria || {})[c.id] || { status: "not_measured" };
         if (c.type === "tag") {
             // Descriptive, not scored: a short tag with evidence, or not measured.
-            if (v.status !== "not_measured" && !(v.tag && /^https:\/\//.test(v.evidence_url || ""))) throw new Error("stability: tag " + slug + "/" + c.id + " needs tag and evidence_url");
+            if (v.status === "n/a") {
+                if (!v.reason) throw new Error("stability: tag " + slug + "/" + c.id + " is n/a without a reason");
+                return { id: c.id, label: c.label, why: c.why, type: "tag", status: "n/a", tag: "n/a (" + v.reason + ")", evidence_url: null };
+            }
+            if (v.status !== "not_measured" && !(v.status === "tag" && v.tag && /^https:\/\//.test(v.evidence_url || ""))) throw new Error("stability: tag " + slug + "/" + c.id + " needs tag and evidence_url");
             return { id: c.id, label: c.label, why: c.why, type: "tag", status: v.status === "not_measured" ? "not_measured" : "tag", tag: v.tag || null, evidence_url: v.evidence_url || null };
         }
         if (!STAB_STATUS[v.status]) throw new Error("stability: bad status " + slug + "/" + c.id);
@@ -424,7 +432,7 @@ function stabilityFor(slug) {
     const met = cells.filter(function (c) { return c.status === "met"; }).length;
     const nm = cells.filter(function (c) { return c.status === "not_measured"; }).length;
     const measured = cells.length - nm;
-    const text = cells.length ? met + " of " + cells.length + " met, " + nm + " not measured" : "not measured: the checklist is not written yet";
+    const text = cells.length ? met + " of " + cells.length + " met" + (nm ? ", " + nm + " not measured" : "") : "not measured: the checklist is not written yet";
     return { cells: cells, tags: tags, met: met, measured: measured, notMeasured: nm, total: cells.length, text: text };
 }
 
