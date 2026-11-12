@@ -45,6 +45,7 @@ function svgOpen(id, w, h, title, desc) {
 //         title, desc, chart: function (width) -> {body, height},
 //         table: { caption, columns: [label], rows: [[cell, ...]] } }
 export function figure(spec) {
+    if (spec.html === undefined) spec.html = null;
     function variant(width, cls) {
         var r = spec.chart(width, spec.id + "-" + cls);
         var id = spec.id + "-" + cls;
@@ -59,8 +60,13 @@ export function figure(spec) {
         return s.href ? "<a href=\"" + esc(s.href) + "\">" + esc(s.label) + "</a>" : esc(s.label);
     }).join(", ") + ".</p>" : "";
     var notes = (spec.notes || []).map(function (n) { return "<p class=\"ch-note\">" + n + "</p>"; }).join("");
-    return "<figure class=\"ch\" id=\"" + esc(spec.id) + "\"><figcaption><strong class=\"ch-head\">" + esc(spec.headline) + "</strong> <span class=\"ch-cap\">" + esc(spec.caption) + "</span></figcaption>" +
-        variant(WIDE, "wide") + variant(NARROW, "narrow") + notes + sources + table + "</figure>";
+    // measures: one line on what the chart measures and why it matters.
+    // takeaway: one plain sentence under the chart for a first-time reader.
+    var measures = spec.measures ? " <span class=\"ch-why\"><b>What this measures:</b> " + esc(spec.measures) + "</span>" : "";
+    var take = spec.takeaway ? "<p class=\"ch-take\"><b>Takeaway:</b> " + esc(spec.takeaway) + "</p>" : "";
+    var body = spec.html ? spec.html : variant(WIDE, "wide") + variant(NARROW, "narrow");
+    return "<figure class=\"ch" + (spec.cls ? " " + spec.cls : "") + "\" id=\"" + esc(spec.id) + "\"><figcaption><strong class=\"ch-head\">" + esc(spec.headline) + "</strong> <span class=\"ch-cap\">" + esc(spec.caption) + "</span>" + measures + "</figcaption>" +
+        body + take + notes + sources + table + "</figure>";
 }
 
 // ---------- horizontal bars ----------
@@ -475,4 +481,296 @@ export function kOfN(rows, opts) {
         });
         return { body: "<g font-size=\"" + fs + "\">" + out + "</g>", height: y };
     };
+}
+
+// ---------- composition ----------
+// parts: [{ heading, chart }] Stacks primitives in one SVG under small headings.
+export function compose(parts, opts) {
+    opts = opts || {};
+    return function (width, uid) {
+        var y = 0, out = "", gap = opts.gap || 22;
+        parts.forEach(function (p, i) {
+            if (i > 0) y += gap;
+            if (p.heading) {
+                wrap(p.heading, 12, width).forEach(function (l) { out += t(0, y + 13, l, "ch-t ch-ghead"); y += 18; });
+                y += 6;
+            }
+            var r = p.chart(width, (uid || "ch") + "-p" + i);
+            out += "<g transform=\"translate(0 " + fmt(y) + ")\">" + r.body + "</g>";
+            y += r.height;
+        });
+        return { body: out, height: y };
+    };
+}
+
+// Shared hatch pattern for "not measured" and "pending fix" areas. Pattern
+// ids carry the chart's uid so two SVGs on a page never share one.
+function hatchDef(id, cls) {
+    return "<pattern id=\"" + id + "\" width=\"6\" height=\"6\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><rect width=\"6\" height=\"6\" class=\"ch-hatch-bg" + (cls ? " " + cls : "") + "\"/><line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"6\" class=\"ch-hatch" + (cls ? " " + cls : "") + "\"/></pattern>";
+}
+function polar(cx, cy, r, deg) { var a = deg * Math.PI / 180; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; }
+function sector(cx, cy, r0, r1, a0, a1) {
+    var p1 = polar(cx, cy, r1, a0), p2 = polar(cx, cy, r1, a1), large = a1 - a0 > 180 ? 1 : 0;
+    if (r0 <= 0) return "M" + fmt(cx) + " " + fmt(cy) + " L" + fmt(p1[0]) + " " + fmt(p1[1]) + " A" + fmt(r1) + " " + fmt(r1) + " 0 " + large + " 1 " + fmt(p2[0]) + " " + fmt(p2[1]) + " Z";
+    var q1 = polar(cx, cy, r0, a1), q2 = polar(cx, cy, r0, a0);
+    return "M" + fmt(p1[0]) + " " + fmt(p1[1]) + " A" + fmt(r1) + " " + fmt(r1) + " 0 " + large + " 1 " + fmt(p2[0]) + " " + fmt(p2[1]) + " L" + fmt(q1[0]) + " " + fmt(q1[1]) + " A" + fmt(r0) + " " + fmt(r0) + " 0 " + large + " 0 " + fmt(q2[0]) + " " + fmt(q2[1]) + " Z";
+}
+
+// ---------- radar / star chart ----------
+// axes:   [{ label, short, max, invert, pending, scale }]  value / max sets
+//         the radius; invert puts 0 at the rim (fewer is better).
+// series: [{ name, cls: "hl"|"core"|"median"|"", values: [{ v, text }] }]
+//         v null = not measured. A missing or pending axis is drawn as a
+//         hatched wedge and the outline breaks there; it is never drawn as 0.
+// opts:   { size, labels: "full"|"short"|"none", values: bool, pad }
+export function radar(axes, series, opts) {
+    opts = opts || {};
+    return function (width, uid) {
+        var n = axes.length, step = 360 / n, lab = opts.labels || "full";
+        var size = Math.min(opts.size || width, width), pad = lab === "none" ? 6 : (opts.pad || (lab === "full" ? 70 : 34));
+        var narrowLab = width < 500 && lab === "full";
+        if (narrowLab) pad = Math.max(pad, 58);
+        var R = (size - 2 * pad) / 2, cx = width / 2, cy = pad + R + (lab === "none" ? 0 : 8);
+        var hid = (uid || "ch") + "-hatch", pid = (uid || "ch") + "-pend";
+        var out = "<defs>" + hatchDef(hid, "") + hatchDef(pid, "ch-pend") + "</defs>";
+        [0.25, 0.5, 0.75, 1].forEach(function (f) {
+            var pts = axes.map(function (a, i) { var p = polar(cx, cy, R * f, -90 + i * step); return fmt(p[0]) + "," + fmt(p[1]); }).join(" ");
+            out += "<polygon points=\"" + pts + "\" class=\"ch-rgrid" + (f === 1 ? " ch-rgrid-o" : "") + "\"/>";
+        });
+        axes.forEach(function (a, i) {
+            var p = polar(cx, cy, R, -90 + i * step);
+            out += "<line x1=\"" + fmt(cx) + "\" y1=\"" + fmt(cy) + "\" x2=\"" + fmt(p[0]) + "\" y2=\"" + fmt(p[1]) + "\" class=\"ch-rgrid\"/>";
+        });
+        // Hatched wedges where an axis is pending for everyone, or missing for
+        // the (single) series drawn.
+        axes.forEach(function (a, i) {
+            var one = series.length === 1 ? series[0].values[i] : null;
+            var missing = a.pending || (one && (one.v === null || one.v === undefined));
+            if (!missing) return;
+            var ang = -90 + i * step, pend = a.pending || (one && one.pending);
+            out += "<path d=\"" + sector(cx, cy, 0, R, ang - step / 2.6, ang + step / 2.6) + "\" style=\"fill:url(#" + (pend ? pid : hid) + ")\" class=\"ch-rmiss\"/>";
+        });
+        series.forEach(function (sr) {
+            var pts = sr.values.map(function (val, i) {
+                var a = axes[i];
+                if (a.pending || val.v === null || val.v === undefined) return null;
+                var f = Math.max(0, Math.min(1, val.v / a.max)); if (a.invert) f = 1 - f;
+                return polar(cx, cy, R * f, -90 + i * step);
+            });
+            var fill = "";
+            pts.forEach(function (p, i) {
+                var q = pts[(i + 1) % n];
+                if (p && q) fill += "M" + fmt(cx) + " " + fmt(cy) + " L" + fmt(p[0]) + " " + fmt(p[1]) + " L" + fmt(q[0]) + " " + fmt(q[1]) + " Z ";
+            });
+            if (fill && sr.cls !== "median") out += "<path d=\"" + fill + "\" class=\"ch-rfill ch-r-" + (sr.cls || "all") + "\"/>";
+            var line = "";
+            pts.forEach(function (p, i) {
+                var q = pts[(i + 1) % n];
+                if (p && q) line += "M" + fmt(p[0]) + " " + fmt(p[1]) + " L" + fmt(q[0]) + " " + fmt(q[1]) + " ";
+            });
+            if (line) out += "<path d=\"" + line + "\" class=\"ch-rline ch-r-" + (sr.cls || "all") + "\"/>";
+            pts.forEach(function (p) {
+                if (!p) return;
+                if (sr.cls === "core") out += "<rect x=\"" + fmt(p[0] - 3.5) + "\" y=\"" + fmt(p[1] - 3.5) + "\" width=\"7\" height=\"7\" class=\"ch-rdot ch-r-core\"/>";
+                else if (sr.cls === "median") out += "<path d=\"M" + fmt(p[0]) + " " + fmt(p[1] - 4.5) + " L" + fmt(p[0] + 4.5) + " " + fmt(p[1] + 3.5) + " L" + fmt(p[0] - 4.5) + " " + fmt(p[1] + 3.5) + " Z\" class=\"ch-rdot ch-r-median\"/>";
+                else out += "<circle cx=\"" + fmt(p[0]) + "\" cy=\"" + fmt(p[1]) + "\" r=\"3.2\" class=\"ch-rdot ch-r-" + (sr.cls || "all") + "\"/>";
+            });
+        });
+        if (lab !== "none") {
+            var fsz = lab === "full" ? (width < 500 ? 12 : 12.5) : 11;
+            axes.forEach(function (a, i) {
+                var ang = -90 + i * step, p = polar(cx, cy, R + 10, ang);
+                var c = Math.cos(ang * Math.PI / 180), anchor = Math.abs(c) < 0.2 ? "middle" : c > 0 ? "start" : "end";
+                var dy = Math.sin(ang * Math.PI / 180) > 0.5 ? fsz : Math.sin(ang * Math.PI / 180) < -0.5 ? -4 : 4;
+                var name = lab === "full" ? a.label : a.short || a.label;
+                var lines = lab === "full" ? wrap(name, fsz, narrowLab ? 70 : 110) : [name];
+                var extra = [];
+                if (a.pending) extra.push("pending fix");
+                else if (opts.values && series.length === 1) extra.push(series[0].values[i].text);
+                lines = lines.concat(extra);
+                var y0 = p[1] + dy - (Math.sin(ang * Math.PI / 180) < -0.5 ? (lines.length - 1) * (fsz + 2) : 0);
+                lines.forEach(function (l, j) {
+                    var isVal = j >= lines.length - extra.length;
+                    out += t(p[0], y0 + j * (fsz + 2), l, "ch-t " + (isVal ? (a.pending ? "ch-pendt" : "ch-val") : "ch-label"), " text-anchor=\"" + anchor + "\" font-size=\"" + fsz + "\"");
+                });
+            });
+        }
+        return { body: out, height: cy + R + (lab === "none" ? 6 : pad - 4) };
+    };
+}
+
+// ---------- assurance radial (one card) ----------
+// cells: [{ short, status, points (0..2 | null) }] One wedge per check; the
+// wedge fills by points (yes = 2 full, partial = 1 half, not found = 0 empty)
+// and carries a glyph at the rim (● ◐ ○); n/a is hatched with a dash. The
+// score sits in the middle.
+export function assuranceRadial(cells, opts) {
+    opts = opts || {};
+    return function (width, uid) {
+        var n = cells.length, step = 360 / n, size = Math.min(width, opts.size || 220);
+        var R = size / 2 - (opts.labelSize ? opts.labelSize * 2.6 : 34), cx = width / 2, cy = size / 2, r0 = R * 0.3;
+        var hid = (uid || "ch") + "-hatch", out = "<defs>" + hatchDef(hid, "") + "</defs>";
+        var glyph = { "yes": "\u25CF", "partial": "\u25D0", "not found": "\u25CB", "n/a": "\u2013" };
+        cells.forEach(function (c, i) {
+            var a0 = -90 + i * step - step / 2 + 2, a1 = a0 + step - 4, mid = -90 + i * step;
+            out += "<path d=\"" + sector(cx, cy, r0, R, a0, a1) + "\" class=\"ch-wtrack" + (c.points === null ? " ch-wtrack-na\" style=\"fill:url(#" + hid + ")\"" : "\"") + "/>";
+            if (c.points) out += "<path d=\"" + sector(cx, cy, r0, r0 + (R - r0) * c.points / 2, a0, a1) + "\" class=\"ch-wfill" + (c.points === 1 ? " ch-wfill-p" : "") + (opts.cls ? " ch-w-" + opts.cls : "") + "\"/>";
+            var g = polar(cx, cy, R + 14, mid), cc = Math.cos(mid * Math.PI / 180);
+            var anchor = Math.abs(cc) < 0.3 ? "middle" : cc > 0 ? "start" : "end";
+            var gy = g[1] + (Math.sin(mid * Math.PI / 180) > 0.5 ? 12 : Math.sin(mid * Math.PI / 180) < -0.5 ? -2 : 5);
+            out += "<text x=\"" + fmt(g[0]) + "\" y=\"" + fmt(gy) + "\" text-anchor=\"" + anchor + "\" class=\"ch-t\" font-size=\"" + (opts.labelSize || 13) + "\"><tspan class=\"ch-wglyph\">" + esc(glyph[c.status] || "?") + "</tspan> <tspan class=\"ch-label\">" + esc(c.label || c.short) + "</tspan></text>";
+        });
+        out += t(cx, cy + 2, opts.center || "", "ch-t ch-wscore", " text-anchor=\"middle\" font-size=\"18\"");
+        out += t(cx, cy + 17, opts.centerSub || "", "ch-t ch-muted", " text-anchor=\"middle\" font-size=\"10.5\"");
+        return { body: out, height: size };
+    };
+}
+
+// ---------- field map (category columns by score, linked dots) ----------
+// cols: [{ id, label }]  points: [{ col, y (0-100), label, valueText, href, cls }]
+// Each point is an <a href> (to its card) wrapping its dot and a label pill at
+// least 44 px tall, so it is a usable tap target. Pills in a column are
+// pushed apart vertically and joined to their exact dot by a leader line.
+export function fieldMap(cols, points, opts) {
+    opts = opts || {};
+    return function (width) {
+        var narrow = width < 500, axisW = narrow ? 34 : 44, pillH = 40, gap = 4;
+        var colW = (width - axisW) / cols.length;
+        var counts = cols.map(function (c) { return points.filter(function (p) { return p.col === c.id; }).length; });
+        var plotH = Math.max(narrow ? 360 : 320, Math.max.apply(null, counts) * (pillH + gap) + 8);
+        var top = 34, out = "";
+        [0, 25, 50, 75, 100].forEach(function (v) {
+            var y = top + plotH * (1 - v / 100);
+            out += "<line x1=\"" + axisW + "\" x2=\"" + width + "\" y1=\"" + fmt(y) + "\" y2=\"" + fmt(y) + "\" class=\"ch-grid\"/>";
+            out += t(axisW - 6, y + 4, v + "%", "ch-t ch-muted", " text-anchor=\"end\" font-size=\"11\"");
+        });
+        out += t(0, 12, opts.yLabel || "", "ch-t ch-muted", " font-size=\"11\"");
+        cols.forEach(function (c, ci) {
+            var x0 = axisW + ci * colW, dotX = x0 + 14;
+            out += t(x0 + 6, top - 10, c.label, "ch-t ch-ghead");
+            out += "<line x1=\"" + fmt(dotX) + "\" x2=\"" + fmt(dotX) + "\" y1=\"" + top + "\" y2=\"" + fmt(top + plotH) + "\" class=\"ch-rgrid\"/>";
+            var ps = points.filter(function (p) { return p.col === c.id; }).slice().sort(function (a, b) { return b.y - a.y || (a.label < b.label ? -1 : 1); });
+            // Ideal pill centre = dot y; push down to avoid overlap, then pull
+            // the stack up if it runs off the bottom.
+            var ys = ps.map(function (p) { return top + plotH * (1 - p.y / 100); });
+            var cy = [];
+            ys.forEach(function (y, i) { cy.push(i === 0 ? Math.max(y, top + pillH / 2) : Math.max(y, cy[i - 1] + pillH + gap)); });
+            var over = cy.length ? cy[cy.length - 1] + pillH / 2 - (top + plotH) : 0;
+            if (over > 0) for (var i = cy.length - 1; i >= 0; i--) { var lim = i === cy.length - 1 ? cy[i] - over : Math.min(cy[i], cy[i + 1] - pillH - gap); cy[i] = lim; }
+            ps.forEach(function (p, i) {
+                var px = dotX + 18, pw = colW - 18 - 14 - 6;
+                out += "<a href=\"" + esc(p.href) + "\" class=\"ch-link\"><title>" + esc(p.label + ": " + p.valueText) + "</title>";
+                out += "<path d=\"M" + fmt(dotX) + " " + fmt(ys[i]) + " L" + fmt(px) + " " + fmt(cy[i]) + "\" class=\"ch-leader\"/>";
+                out += "<rect x=\"" + fmt(px) + "\" y=\"" + fmt(cy[i] - pillH / 2) + "\" width=\"" + fmt(pw) + "\" height=\"" + pillH + "\" rx=\"6\" class=\"ch-pill" + (p.cls ? " ch-pill-" + p.cls : "") + "\"/>";
+                out += t(px + 8, cy[i] - 3, p.label, "ch-t ch-pillt" + (p.cls === "hl" ? " ch-hl" : ""), " font-size=\"13\"");
+                out += t(px + 8, cy[i] + 13, p.valueText, "ch-t ch-val", " font-size=\"11.5\"");
+                if (p.cls === "hl") out += "<circle cx=\"" + fmt(dotX) + "\" cy=\"" + fmt(ys[i]) + "\" r=\"6\" class=\"ch-dot-hl\"/>";
+                else if (p.mark === "square") out += "<rect x=\"" + fmt(dotX - 5) + "\" y=\"" + fmt(ys[i] - 5) + "\" width=\"10\" height=\"10\" class=\"ch-dot-core\"/>";
+                else out += "<circle cx=\"" + fmt(dotX) + "\" cy=\"" + fmt(ys[i]) + "\" r=\"5\" class=\"ch-dot\"/>";
+                out += "</a>";
+            });
+        });
+        return { body: out, height: top + plotH + 8 };
+    };
+}
+
+// ---------- flow (relationship chain) ----------
+// steps: [{ label, sub, href }] Left to right on wide screens, top to bottom
+// on phones, each step a link to its section.
+export function flow(steps) {
+    return function (width, uid) {
+        var narrow = width < 500, n = steps.length, gap = narrow ? 0 : 26, arrow = (uid || "ch") + "-arrow";
+        var out = "<defs><marker id=\"" + arrow + "\" viewBox=\"0 0 8 8\" refX=\"7\" refY=\"4\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L8 4 L0 8 z\" class=\"ch-arrowhead\"/></marker></defs>";
+        var w = narrow ? width : (width - (n - 1) * gap) / n, y = 0, h = 0;
+        var subs = steps.map(function (s) { return wrap(s.sub, 12.5, w - 20); });
+        var boxH = 46 + Math.max.apply(null, subs.map(function (l) { return l.length; })) * 16;
+        steps.forEach(function (s, i) {
+            var x = narrow ? 0 : i * (w + gap), by = narrow ? y : 0, bh = narrow ? 46 + subs[i].length * 16 : boxH;
+            out += "<a href=\"" + esc(s.href) + "\" class=\"ch-link\">";
+            out += "<rect x=\"" + fmt(x + 0.5) + "\" y=\"" + fmt(by + 0.5) + "\" width=\"" + fmt(w - 1) + "\" height=\"" + fmt(bh) + "\" rx=\"8\" class=\"ch-node" + (s.cls ? " ch-node-" + s.cls : "") + "\"/>";
+            out += t(x + 12, by + 22, (i + 1) + ". " + s.label, "ch-t ch-nodet", " font-size=\"14\" font-weight=\"600\"");
+            subs[i].forEach(function (l, j) { out += t(x + 12, by + 42 + j * 16, l, "ch-t ch-nsub", " font-size=\"12.5\""); });
+            out += "</a>";
+            if (i < n - 1) {
+                if (narrow) out += "<path d=\"M" + fmt(width / 2) + " " + fmt(by + bh + 2) + " V" + fmt(by + bh + 22) + "\" class=\"ch-edge\" marker-end=\"url(#" + arrow + ")\"/>";
+                else out += "<path d=\"M" + fmt(x + w + 2) + " " + fmt(boxH / 2) + " H" + fmt(x + w + gap - 2) + "\" class=\"ch-edge\" marker-end=\"url(#" + arrow + ")\"/>";
+            }
+            if (narrow) y += bh + 26;
+            h = narrow ? y - 26 + 1 : boxH + 1;
+        });
+        return { body: out, height: h + 1 };
+    };
+}
+
+// ---------- small multiples ----------
+// items: [{ title, sub, href, chart }] A grid of one primitive, each cell
+// titled (and linked when href is set). cols: { wide, narrow }.
+export function smallMultiples(items, opts) {
+    opts = opts || {};
+    return function (width, uid) {
+        var cols = width < 500 ? (opts.narrow || 2) : (opts.wide || 4), gap = 10;
+        var cw = (width - (cols - 1) * gap) / cols, out = "", y = 0, rowH = 0;
+        items.forEach(function (it, i) {
+            var c = i % cols; if (c === 0 && i > 0) { y += rowH + gap; rowH = 0; }
+            var x = c * (cw + gap);
+            var r = it.chart(cw, (uid || "ch") + "-m" + i);
+            var cell = t(cw / 2, 16, it.title, "ch-t ch-label" + (it.cls === "hl" ? " ch-hl" : ""), " text-anchor=\"middle\" font-size=\"13\"") +
+                (it.sub ? t(cw / 2, 31, it.sub, "ch-t ch-muted", " text-anchor=\"middle\" font-size=\"11\"") : "") +
+                "<g transform=\"translate(0 " + (it.sub ? 36 : 22) + ")\">" + r.body + "</g>";
+            var hh = (it.sub ? 36 : 22) + r.height;
+            out += "<g transform=\"translate(" + fmt(x) + " " + fmt(y) + ")\">" + (it.href ? "<a href=\"" + esc(it.href) + "\" class=\"ch-link\"><rect width=\"" + fmt(cw) + "\" height=\"" + fmt(hh) + "\" class=\"ch-cellbg\"/>" + cell + "</a>" : cell) + "</g>";
+            rowH = Math.max(rowH, hh);
+        });
+        return { body: out, height: y + rowH };
+    };
+}
+
+// ---------- single SVG (no wide/narrow pair) ----------
+// For charts that scale cleanly, such as one card's radial: one SVG with
+// title and desc, sized by viewBox.
+export function svgOnce(id, width, chart, title, desc, cls) {
+    var r = chart(width, id);
+    return "<svg class=\"ch-svg" + (cls ? " " + cls : "") + "\" viewBox=\"0 0 " + width + " " + fmt(r.height) + "\" role=\"img\" aria-labelledby=\"" + id + "-t " + id + "-d\" preserveAspectRatio=\"xMidYMin meet\">" +
+        "<title id=\"" + id + "-t\">" + esc(title) + "</title><desc id=\"" + id + "-d\">" + esc(desc) + "</desc>" + r.body + "</svg>";
+}
+
+// ---------- radial tree ----------
+// tree: { id, label, children: [...], cls, dashedFrom } rooted at a hidden
+// centre. Leaves spread evenly round the circle; a parent sits at the mean
+// angle of its children, one ring further in per generation. extra: dashed
+// cross-links [{ from, to }].
+export function radialTree(tree, extra, opts) {
+    opts = opts || {};
+    return function (width, uid) {
+        var narrow = width < 500, fs = narrow ? 11.5 : 13;
+        var depth = 0, leaves = [], pos = {};
+        (function walk(n, d) { n._d = d; depth = Math.max(depth, d); if (!n.children || !n.children.length) leaves.push(n); else n.children.forEach(function (c) { walk(c, d + 1); }); })(tree, 0);
+        var labelRoom = narrow ? 62 : 110, R = Math.min(width / 2 - labelRoom, opts.maxR || 230), cx = width / 2, cy = R + labelRoom * 0.55;
+        leaves.forEach(function (l, i) { l._a = -90 + i * 360 / leaves.length; });
+        (function place(n) { if (n.children && n.children.length) { n.children.forEach(place); n._a = n.children.reduce(function (s, c) { return s + c._a; }, 0) / n.children.length; } })(tree);
+        var out = "", arrow = (uid || "ch") + "-arrow";
+        [1, 2, 3].forEach(function (k) { if (k <= depth) out += "<circle cx=\"" + fmt(cx) + "\" cy=\"" + fmt(cy) + "\" r=\"" + fmt(R * k / depth) + "\" class=\"ch-rgrid\"/>"; });
+        (function xy(n) { var r = n._d === 0 ? 0 : R * (n._leafOuter && !n.children ? 1 : n._d / depth); var p = polar(cx, cy, n.children && n.children.length ? R * n._d / depth : R, n._a); if (n._d === 0) p = [cx, cy]; pos[n.id] = p; (n.children || []).forEach(xy); })(tree);
+        (function edges(n) { (n.children || []).forEach(function (c) { if (n._d > 0) out += "<path d=\"M" + fmt(pos[n.id][0]) + " " + fmt(pos[n.id][1]) + " L" + fmt(pos[c.id][0]) + " " + fmt(pos[c.id][1]) + "\" class=\"ch-edge\" marker-end=\"url(#" + arrow + ")\"/>"; else out += "<path d=\"M" + fmt(cx) + " " + fmt(cy) + " L" + fmt(pos[c.id][0]) + " " + fmt(pos[c.id][1]) + "\" class=\"ch-rgrid\"/>"; edges(c); }); })(tree);
+        (extra || []).forEach(function (e) { out += "<path d=\"M" + fmt(pos[e.from][0]) + " " + fmt(pos[e.from][1]) + " L" + fmt(pos[e.to][0]) + " " + fmt(pos[e.to][1]) + "\" class=\"ch-edge ch-edge-dash\" marker-end=\"url(#" + arrow + ")\"/>"; });
+        (function nodes(n) {
+            if (n._d > 0) {
+                var p = pos[n.id], leaf = !n.children || !n.children.length;
+                out += n.cls === "core" ? "<rect x=\"" + fmt(p[0] - 5) + "\" y=\"" + fmt(p[1] - 5) + "\" width=\"10\" height=\"10\" class=\"ch-dot-core\"/>" : "<circle cx=\"" + fmt(p[0]) + "\" cy=\"" + fmt(p[1]) + "\" r=\"5\" class=\"" + (n.cls === "hl" ? "ch-dot-hl" : n.cls === "muted" ? "ch-wtrack" : "ch-dot") + "\"/>";
+                var c = Math.cos(n._a * Math.PI / 180), q = polar(cx, cy, (leaf ? R : R * n._d / depth) + 10, n._a);
+                var anchor = Math.abs(c) < 0.25 ? "middle" : c > 0 ? "start" : "end", dy = Math.sin(n._a * Math.PI / 180) > 0.6 ? fs : Math.sin(n._a * Math.PI / 180) < -0.6 ? -3 : 4;
+                if (!leaf) { q = [p[0] + 9, p[1] - 8]; anchor = "start"; dy = 0; }
+                out += t(q[0], q[1] + dy, n.label, "ch-t ch-label ch-halo-d" + (n.cls === "hl" ? " ch-hl" : n.cls === "muted" ? " ch-muted" : ""), " text-anchor=\"" + anchor + "\"");
+            }
+            (n.children || []).forEach(nodes);
+        })(tree);
+        var defs = "<defs><marker id=\"" + arrow + "\" viewBox=\"0 0 8 8\" refX=\"7\" refY=\"4\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L8 4 L0 8 z\" class=\"ch-arrowhead\"/></marker></defs>";
+        return { body: defs + "<g font-size=\"" + fs + "\">" + out + "</g>", height: cy + R + labelRoom * 0.45 };
+    };
+}
+
+// Median of a list of numbers (mean of the middle two for an even count).
+export function median(xs) {
+    var s = xs.slice().sort(function (a, b) { return a - b; }), m = Math.floor(s.length / 2);
+    return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
 }

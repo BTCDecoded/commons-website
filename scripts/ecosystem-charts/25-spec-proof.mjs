@@ -28,6 +28,8 @@ export default {
             id: "fig-spec-proof",
             headline: row.name + ": " + (both + lean) + " of " + total + " Orange Paper sentences are formalized so far (" + pct(both + lean) + ").",
             caption: "Each Orange Paper sentence by proof status: machine-checked in both the Rust code and Lean, in the Lean model only, or not yet." + (z3 ? " Separately, Z3 proves " + z3[1] + " functions." : ""),
+            measures: "How much of the Orange Paper spec BLVM has machine-checked; it matters because a proof covers every input, a test only the ones tried.",
+            takeaway: "Most of the spec is not proved yet; the proof work has started, not finished.",
             title: row.name + " Orange Paper sentences by proof status",
             desc: segs.map(function (s) { return s.label + ": " + s.valueText; }).join("; ") + ". Total " + total + ".",
             chart: progress(segs, { total: total }),
