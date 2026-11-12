@@ -87,8 +87,8 @@
       "shallow": false,
       "values": {
         "implementation_code": {
-          "value": 303558,
-          "text": "303,558",
+          "value": 303561,
+          "text": "303,561",
           "status": "measured"
         },
         "program_code": {
@@ -97,8 +97,8 @@
           "status": "measured"
         },
         "tooling_code": {
-          "value": 107568,
-          "text": "107,568",
+          "value": 107571,
+          "text": "107,571",
           "status": "measured"
         },
         "rules_share": {
