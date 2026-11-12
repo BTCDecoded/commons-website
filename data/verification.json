@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "as_of": "2026-11-12",
-  "note": "Statuses come from each project's public repository as of 2026-11-12. “Not found” means no public source turned up; it does not mean the project lacks it.",
+  "note": "Statuses come from each project's public repository as of 2026-11-12. \u201cNot found\u201d means no public source turned up; it does not mean the project lacks it.",
   "statuses": {
     "yes": "Found in the repository",
     "partial": "Found for part of the scope",
@@ -70,7 +70,7 @@
         },
         "fuzzing": {
           "status": "yes",
-          "text": "63 fuzz target files (cargo-fuzz)",
+          "text": "156 fuzz target files (cargo-fuzz) across blvm-consensus, blvm-protocol, blvm-node, blvm-muhash, and blvm-sdk",
           "source": "https://github.com/BTCDecoded/blvm-consensus/tree/f63c32856a2da874296524f40b8cbd35518d8096/fuzz/fuzz_targets"
         },
         "formal_verification": {

@@ -1,0 +1,49 @@
+# Validate committed JSON and confirm ecosystem.html matches a fresh render.
+
+name: PR check
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Parse data JSON
+        run: |
+          set -euo pipefail
+          node -e '
+            const fs = require("fs");
+            const path = require("path");
+            function walk(dir, acc = []) {
+              for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
+                const p = path.join(dir, ent.name);
+                if (ent.isDirectory()) walk(p, acc);
+                else if (ent.name.endsWith(".json")) acc.push(p);
+              }
+              return acc;
+            }
+            const files = [...walk("data"), "section-link-map.json"];
+            for (const f of files) {
+              JSON.parse(fs.readFileSync(f, "utf8"));
+              console.log("ok " + f);
+            }
+          '
+
+      - name: Render ecosystem page and require a clean tree
+        run: |
+          set -euo pipefail
+          node scripts/render-ecosystem.mjs
+          git diff --exit-code
