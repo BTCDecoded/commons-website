@@ -1289,5 +1289,129 @@
       }
     ]
   },
-  "omitted": "Left off this page: attention effects E2, E3, E5, E7, and E12, and the size-adjusted residual. Comparison dumps do not host those effects the same way, and the residual intervals cover zero. They are not a weekly score."
+  "omitted": "Left off this page: attention effects E2, E3, E5, E7, and E12, and the size-adjusted residual. Comparison dumps do not host those effects the same way, and the residual intervals cover zero. They are not a weekly score.",
+  "scan": {
+    "systems": [
+      {
+        "slug": "blvm",
+        "note": "blvm-node 208,311, left unsplit"
+      },
+      {
+        "slug": "bitcoin-core",
+        "note": "wallet 19,507. Rules lines are 9,510"
+      },
+      {
+        "slug": "knots",
+        "note": "GUI 25,587"
+      },
+      {
+        "slug": "bitcoin-rs",
+        "note": "p2p 76,218"
+      },
+      {
+        "slug": "satd",
+        "note": "node crate 172,878, left unsplit"
+      },
+      {
+        "slug": "libbitcoin",
+        "note": "libbitcoin-system 117,526, left unsplit"
+      },
+      {
+        "slug": "hornet",
+        "note": "hornetlib 9,895"
+      }
+    ],
+    "unsplit": [
+      {
+        "slug": "blvm",
+        "note": "208,311 lines unsplit"
+      },
+      {
+        "slug": "satd",
+        "note": "172,878 lines unsplit"
+      },
+      {
+        "slug": "libbitcoin",
+        "note": "117,526 lines unsplit"
+      },
+      {
+        "slug": "bitcoin-core",
+        "note": "cut finished"
+      },
+      {
+        "slug": "knots",
+        "note": "cut finished"
+      },
+      {
+        "slug": "bitcoin-rs",
+        "note": "cut finished"
+      }
+    ],
+    "test_placement": "Files named like tests.rs that sit outside a tests directory stay in the implementation count. bitcoin-rs has 111,525 such lines. Moving them into the test bucket would print 1.55 instead of 0.50. commons has 21,758. Moving them would print 0.34 instead of 0.27. Core's tests already sit in the test bucket.",
+    "test_basis": "Same tokei 14 bucket rule, replayed on the 2026-11-11 pins.",
+    "keyholders": "commons is the only tree in this file with a written keyholder process. The written-rule bars are that process. The keys are test keys and enforcement is off, so a commit stands when one author lands it. The other trees have no keyholder scan here.",
+    "jurisdiction": "This scan does not record where a maintainer sits. There is no jurisdiction chart.",
+    "institutions": [
+      {
+        "type": "Mixed constitution",
+        "slug": "blvm",
+        "name": "commons",
+        "text": "The written rule requires several signatures. One author lands the commits. Enforcement is off."
+      },
+      {
+        "type": "Guild",
+        "slug": "bitcoin-core",
+        "name": "Bitcoin Core",
+        "text": "The contributing guide names repository maintainers as the people who merge. Since 2022 one person merged 50.2% and three people merged 82.2%."
+      },
+      {
+        "type": "Single maintainer",
+        "slug": "hornet",
+        "name": "Hornet",
+        "text": "Every commit is one person."
+      },
+      {
+        "type": "Single maintainer",
+        "slug": "satd",
+        "name": "satd",
+        "text": "One person has 1,228 of 1,263 contributor commits."
+      },
+      {
+        "type": "Single maintainer",
+        "slug": "libbitcoin",
+        "name": "libbitcoin",
+        "text": "One maintainer has 8,145 of 10,489 commits, and a code owners file is in the tree."
+      },
+      {
+        "type": "Single maintainer",
+        "slug": "bitcoin-rs",
+        "name": "bitcoin-rs",
+        "text": "One account authored 5,714 of 7,592 commits on a branch that starts in 2026-05."
+      },
+      {
+        "type": "Single maintainer",
+        "slug": "knots",
+        "name": "Bitcoin Knots",
+        "text": "One maintainer and a merge script land the Knots history. The contributing file is Core's."
+      },
+      {
+        "type": "Contributor set",
+        "slug": "floresta",
+        "name": "Floresta",
+        "text": "No written role is in this file. The largest account has 46.7% of contributor commits, across 75 people."
+      },
+      {
+        "type": "Contributor set",
+        "slug": "rbitcoin",
+        "name": "rbitcoin",
+        "text": "No written role is in this file. The largest share is a bot, 37.2%, and the next account has 24.6%."
+      },
+      {
+        "type": "Contributor set",
+        "slug": "btcd",
+        "name": "btcd",
+        "text": "No written role is in this file. The largest account has 36.8% of contributor commits, across 265 people."
+      }
+    ]
+  }
 }

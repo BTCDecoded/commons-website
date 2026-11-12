@@ -93,7 +93,7 @@
         }
         .eco-block p { color: var(--text); margin: 0; }
         .eco-block .chart-legend { margin-top: 0.85rem; color: #c4c4cc; }
-        .eco-block .eco-links { margin-top: 0.95rem; }
+        .eco-block .eco-links, .eco-block .eco-follow { margin-top: 0.85rem; }
         .eco-more p { margin: 0.8rem 0 0; }
         .chart {
             margin: 1rem 0 0;
@@ -126,7 +126,7 @@
         .bar-fill.internal { background: var(--orange); }
         .bar-fill.merges { background: #7eb6ff; }
         .stack-track { display: flex; }
-        .seg { display: block; height: 100%; }
+        .seg { display: block; height: 100%; flex: none; }
         .seg.impl { background: #b9b9c2; }
         .seg.impl.internal { background: var(--orange); }
         .seg.vend { background: #6d7c8a; }
@@ -471,6 +471,7 @@
                 <a href="#files">Large files</a>
                 <a href="#tests">Tests</a>
                 <a href="#landing">Who lands the work</a>
+                <a href="#institution">Institution</a>
                 <a href="#rules">Rules share</a>
                 <a href="#rule">Written rule</a>
                 <a href="#directory">Directory</a>
@@ -486,7 +487,7 @@
         <section class="eco-block" id="checkout">
             <h2>Checkout</h2>
             <p id="eco-comp-caption">Implementation, vendored libraries, and locale files. The same counter on every tree.</p>
-            <p class="chart-legend"><span><i class="swatch other"></i>implementation</span><span><i class="swatch internal"></i>commons</span><span><i class="swatch vend"></i>vendored</span><span><i class="swatch loc"></i>locale</span></p>
+            <p class="chart-legend"><span><i class="swatch other"></i>implementation</span><span><i class="swatch internal"></i>commons implementation</span><span><i class="swatch vend"></i>vendored</span><span><i class="swatch loc"></i>locale</span></p>
             <div id="chart-comp"></div>
         </section>
 
@@ -500,6 +501,7 @@
             <h2>Tests</h2>
             <p id="eco-test-caption">Test lines for each implementation line. The same counter on every tree.</p>
             <div id="chart-tests"></div>
+            <p class="eco-meta eco-follow" id="eco-test-note"></p>
         </section>
 
         <section class="eco-block" id="landing">
@@ -509,9 +511,16 @@
             <div id="chart-land"></div>
         </section>
 
+        <section class="eco-block" id="institution">
+            <h2>Institution</h2>
+            <p id="eco-keyholders"></p>
+            <p class="eco-meta eco-follow" id="eco-jurisdiction"></p>
+            <div id="chart-inst"></div>
+        </section>
+
         <section class="eco-block" id="rules">
             <h2>Rules share</h2>
-            <p>Share of the tree on the rules side of its cut. The bars share a scale. The cuts do not, so read each group on its own.</p>
+            <p>Share of the tree on the rules side of its cut. The bars share a scale. The cuts do not, so read each group on its own. A note of unsplit lines means that crate stayed in the denominator and was not called rules.</p>
             <div id="chart-rules"></div>
         </section>
 
@@ -524,18 +533,21 @@
 
         <section class="eco-block" id="directory">
             <h2>Directory</h2>
-            <p>Bitcoin Untangled keeps <a href="https://www.bitcoinuntangled.org/node-software/">a directory of node software</a>. The charts above are the trees measured on this clock. btcd, Floresta, and rbitcoin are on the landing chart from GitHub contributor counts. Their line counts are not on this week's cut. satd and Hornet are measured here and are not in that directory.</p>
+            <p>Bitcoin Untangled keeps <a href="https://www.bitcoinuntangled.org/node-software/">a directory of node software</a>. The line charts are this week's measured trees. btcd, Floresta, and rbitcoin are on the landing chart from GitHub contributor counts, and their line counts are not on this week's cut.</p>
             <ul class="eco-dir">
-                <li><a href="https://bit-block.org/bit-block-bitcoin-development/">Bit-Block</a><small>Listed</small></li>
+                <li><a href="https://bit-block.org/bit-block-bitcoin-development/">Bit-Block</a><small>In their directory</small></li>
                 <li><a href="https://gosuda.org/">bitcoin-rs</a><small>On the charts</small></li>
                 <li><a href="https://btcdecoded.org/">BLVM</a><small>On the charts as commons</small></li>
-                <li><a href="https://github.com/btcsuite/btcd">btcd</a><small>Landing chart</small></li>
+                <li><a href="https://github.com/btcsuite/btcd">btcd</a><small>Contributor count</small></li>
                 <li><a href="https://bitcoincore.org/">Bitcoin Core</a><small>On the charts</small></li>
-                <li><a href="https://www.getfloresta.org/">Floresta</a><small>Landing chart</small></li>
-                <li><a href="https://bit-block.org/knots-legacy/">Knots Legacy</a><small>Listed</small></li>
-                <li><a href="https://www.bitcoinuntangled.org/">Knots Untangled</a><small>Listed</small></li>
+                <li><a href="https://www.getfloresta.org/">Floresta</a><small>Contributor count</small></li>
+                <li><a href="https://github.com/tobysharp/hornet">Hornet</a><small>Measured here</small></li>
+                <li><a href="https://bit-block.org/knots-legacy/">Knots Legacy</a><small>In their directory</small></li>
+                <li><a href="https://www.bitcoinuntangled.org/">Knots Untangled</a><small>In their directory</small></li>
+                <li><a href="https://github.com/bitcoinknots/bitcoin">Bitcoin Knots</a><small>On the charts</small></li>
                 <li><a href="https://libbitcoin.info/">libbitcoin</a><small>On the charts</small></li>
-                <li><a href="https://www.rbitcoin.org/">rbitcoin</a><small>Landing chart</small></li>
+                <li><a href="https://www.rbitcoin.org/">rbitcoin</a><small>Contributor count</small></li>
+                <li><a href="https://github.com/epochbtc/satd">satd</a><small>Measured here</small></li>
             </ul>
         </section>
 
@@ -667,7 +679,15 @@
                         return cell ? { name: tree.name, value: cell.value, text: cell.text, internal: tree.slug === internal, slug: tree.slug } : null;
                     }).filter(Boolean).sort(function (a, b) { return b.value - a.value; });
                 }
-                var sizeRows = ranked("implementation_code");
+                var scan = data.scan || {};
+                function noteFor(list, slug) {
+                    var hit = (list || []).filter(function (row) { return row.slug === slug; })[0];
+                    return hit ? hit.note : "";
+                }
+                var sizeRows = ranked("implementation_code").map(function (row) {
+                    row.note = noteFor(scan.systems, row.slug);
+                    return row;
+                });
                 var testRows = ranked("test_per_implementation");
                 document.getElementById("chart-size").innerHTML = bars(sizeRows, sizeRows[0].value);
                 document.getElementById("chart-tests").innerHTML = bars(testRows, testRows[0].value);
@@ -694,8 +714,9 @@
                 var spread = fileRows.slice().sort(function (a, b) { return parseInt(b.note, 10) - parseInt(a.note, 10); })[0];
                 var halfCount = function (row) { return row && row.note ? row.note.replace(" files hold half", "") : ""; };
                 document.getElementById("eco-files-caption").textContent = (commonsFiles ? commonsFiles.name + " keeps " + commonsFiles.text + " of its implementation in files of 1,000 lines or more, and half of that implementation sits in " + halfCount(commonsFiles) + " files." : "") + (spread ? " " + spread.name + " spreads half of its implementation over " + halfCount(spread) + " files." : "");
-                document.getElementById("eco-size-caption").textContent = sizeRows[0].name + " is the largest checkout on this counter, at " + sizeRows[0].text + " implementation lines. " + sizeRows[sizeRows.length - 1].name + " is the smallest, at " + sizeRows[sizeRows.length - 1].text + ".";
+                document.getElementById("eco-size-caption").textContent = sizeRows[0].name + " is the largest implementation, at " + sizeRows[0].text + " lines. " + sizeRows[sizeRows.length - 1].name + " is the smallest, at " + sizeRows[sizeRows.length - 1].text + ".";
                 document.getElementById("eco-test-caption").textContent = testRows[0].name + " has " + testRows[0].text + " test lines for each implementation line. " + testRows[testRows.length - 1].name + " has " + testRows[testRows.length - 1].text + ".";
+                document.getElementById("eco-test-note").textContent = scan.test_placement || "";
                 var landing = (data.governance && data.governance.landing ? data.governance.landing : []).slice().sort(function (a, b) { return b.share - a.share; });
                 document.getElementById("chart-land").innerHTML = bars(landing.map(function (row) {
                     return { name: row.name, value: row.share, text: shareText(row.share), note: [row.who, row.span].filter(Boolean).join(". "), internal: row.slug === internal, merges: row.instrument === "merges" };
@@ -708,7 +729,7 @@
                 var ruleRows = trees.map(function (tree) {
                     var cell = metric(tree, "rules_share");
                     if (!cell || cell.text === "no cut") return null;
-                    return { name: tree.name, value: cell.value, text: cell.text, internal: tree.slug === internal, instrument: tree.instrument };
+                    return { name: tree.name, value: cell.value, text: cell.text, internal: tree.slug === internal, instrument: tree.instrument, note: noteFor(scan.unsplit, tree.slug) };
                 }).filter(Boolean);
                 var ruleScale = Math.max.apply(null, ruleRows.map(function (row) { return row.value; }));
                 var seen = [];
@@ -717,6 +738,16 @@
                     var group = ruleRows.filter(function (row) { return row.instrument === instrument; }).sort(function (a, b) { return b.value - a.value; });
                     return "<section class=\"eco-group\"><h3>" + esc(instrument) + "</h3>" + bars(group, ruleScale) + "</section>";
                 }).join("") + "<p class=\"eco-meta\">Hornet has no rules cut on this clock, so it has no bar here.</p>";
+                document.getElementById("eco-keyholders").textContent = scan.keyholders || "";
+                document.getElementById("eco-jurisdiction").textContent = scan.jurisdiction || "";
+                var typeOrder = [];
+                (scan.institutions || []).forEach(function (item) { if (typeOrder.indexOf(item.type) < 0) typeOrder.push(item.type); });
+                document.getElementById("chart-inst").innerHTML = typeOrder.map(function (type) {
+                    var items = (scan.institutions || []).filter(function (item) { return item.type === type; });
+                    return "<section class=\"eco-group\"><h3>" + esc(type) + "</h3>" + items.map(function (item) {
+                        return "<article class=\"eco-finding\"><h4>" + esc(item.name) + "</h4><p>" + esc(item.text) + "</p></article>";
+                    }).join("") + "</section>";
+                }).join("");
                 var gov = data.governance || {};
                 document.getElementById("eco-gov-status").textContent = gov.status || "";
                 document.getElementById("eco-gov-quorum").textContent = gov.quorum || "";
