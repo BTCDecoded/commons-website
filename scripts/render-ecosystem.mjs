@@ -283,7 +283,8 @@ slots["weekly-size"] = wideTable(trees, sizeMethods, "One counter on every tree.
 slots["weekly-cuts"] = byInstrument(trees).map(function (g) {
     var shallow = g.trees.filter(function (t) { return t.shallow; }).map(function (t) { return t.name; });
     var shallowNote = shallow.length ? "<p>" + esc(englishList(shallow)) + (shallow.length === 1 ? " is a shallow checkout. The line counter still reads the files present." : " are shallow checkouts. The line counter still reads the files present.") + "</p>" : "";
-    return "<section><h3>" + esc(g.name) + "</h3>" + shallowNote + wideTable(g.trees, cutMethods, "Rows in " + g.name + " only.") + "</section>";
+    var capName = g.name === "Crate-role cut (not measured)" ? "crate-role cut (not measured)" : g.name;
+    return "<section><h3>" + esc(g.name) + "</h3>" + shallowNote + wideTable(g.trees, cutMethods, "Rows in " + capName + " only.") + "</section>";
 }).join("") + notes(cutMethods);
 
 const metricRows = metrics.rows || [];
@@ -322,13 +323,13 @@ slots["plugins-note"] = esc(metrics.methods && metrics.methods.plugin_system ? m
 
 const depthCols = [
     { id: "fuzz_targets", key: "fuzz", label: "Fuzz targets" },
-    { id: "test_insource", key: "insource", label: "In-source tests" },
-    { id: "test_folder", key: "folder", label: "Test-folder tests" },
+    { id: "test_insource", key: "insource", label: "In-source test lines" },
+    { id: "test_folder", key: "folder", label: "Test-folder test lines" },
     { id: "test_fuzz", key: "fuzzlines", label: "Fuzz test lines" },
     { id: "test_property", key: "property", label: "Property test lines" },
     { id: "vector_files", key: "vectors", label: "Test-vector files" },
     { id: "spec_files", key: "specs", label: "Spec files" },
-    { id: "authors_12m", key: "authors", label: "Human authors (aliases merged, bots excluded)" },
+    { id: "authors_12m", key: "authors", label: "Human authors, 12 months" },
     { id: "releases_12m", key: "releases", label: "Tagged releases, 12 months" },
     { id: "ci_workflows", key: "workflows", label: "CI workflows" },
     { id: "ci_jobs", key: "jobs", label: "CI jobs" }

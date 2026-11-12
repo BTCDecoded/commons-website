@@ -82,7 +82,7 @@
       "name": "BLVM",
       "side": "internal",
       "profile": "rust-workspace",
-      "instrument": "crate-role cut not remade",
+      "instrument": "Crate-role cut (not measured)",
       "commit": "36bb40c7e9a3f805274fa7e1bda30d0a6c082560",
       "shallow": false,
       "values": {
