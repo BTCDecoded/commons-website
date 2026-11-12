@@ -480,7 +480,7 @@
 
         <section class="eco-block" id="size">
             <h2>Size</h2>
-            <p id="eco-size-caption">Implementation lines. The same counter on every tree.</p>
+            <p id="eco-size-caption">Program lines. Implementation minus tooling. The same counter on every tree.</p>
             <div id="chart-size"></div>
         </section>
 
@@ -685,7 +685,7 @@
                     var hit = (list || []).filter(function (row) { return row.slug === slug; })[0];
                     return hit ? hit.note : "";
                 }
-                var sizeRows = ranked("implementation_code").map(function (row) {
+                var sizeRows = ranked("program_code").map(function (row) {
                     row.note = noteFor(scan.systems, row.slug);
                     return row;
                 });
@@ -714,8 +714,8 @@
                 var commonsFiles = fileRows.filter(function (row) { return row.internal; })[0];
                 var spread = fileRows.slice().sort(function (a, b) { return parseInt(b.note, 10) - parseInt(a.note, 10); })[0];
                 var halfCount = function (row) { return row && row.note ? row.note.replace(" files hold half", "") : ""; };
-                document.getElementById("eco-files-caption").textContent = (commonsFiles ? commonsFiles.name + " keeps " + commonsFiles.text + " of its implementation in files of 1,000 lines or more, and half of that implementation sits in " + halfCount(commonsFiles) + " files." : "") + (spread ? " " + spread.name + " spreads half of its implementation over " + halfCount(spread) + " files." : "");
-                document.getElementById("eco-size-caption").textContent = sizeRows[0].name + " is the largest implementation, at " + sizeRows[0].text + " lines. " + sizeRows[sizeRows.length - 1].name + " is the smallest, at " + sizeRows[sizeRows.length - 1].text + ".";
+                document.getElementById("eco-files-caption").textContent = (commonsFiles ? commonsFiles.name + " keeps " + commonsFiles.text + " of its program in files of 1,000 lines or more, and half of that program sits in " + halfCount(commonsFiles) + " files." : "") + (spread ? " " + spread.name + " spreads half of its program over " + halfCount(spread) + " files." : "");
+                document.getElementById("eco-size-caption").textContent = sizeRows[0].name + " is the largest program, at " + sizeRows[0].text + " lines. Implementation minus tooling. " + sizeRows[sizeRows.length - 1].name + " is the smallest, at " + sizeRows[sizeRows.length - 1].text + ".";
                 document.getElementById("eco-test-caption").textContent = testRows[0].name + " has " + testRows[0].text + " test lines for each implementation line. " + testRows[testRows.length - 1].name + " has " + testRows[testRows.length - 1].text + ".";
                 document.getElementById("eco-test-note").textContent = scan.test_placement || "";
                 var landing = (data.governance && data.governance.landing ? data.governance.landing : []).slice().sort(function (a, b) { return b.share - a.share; });
@@ -774,7 +774,7 @@
                 document.getElementById("eco-history").innerHTML = (gov.history || []).map(function (item) {
                     return "<article class=\"eco-finding\"><h4>" + esc(item.name) + "</h4><p>" + esc(item.text) + "</p><p class=\"eco-meta\">" + esc(item.basis) + "</p></article>";
                 }).join("");
-                document.getElementById("eco-lead").textContent = "commons is the largest implementation. " + comp[0].name + " is the largest checkout once locale and vendored lines are counted. The landing record is concentrated, and Core's bar counts merges.";
+                document.getElementById("eco-lead").textContent = sizeRows[0].name + " has the largest program, at " + sizeRows[0].text + " lines. " + comp[0].name + " is the largest checkout once locale and vendored lines are counted. The landing record is concentrated, and Core's bar counts merges.";
                 document.getElementById("eco-omitted").textContent = data.omitted || "";
             })
             .catch(function () {
