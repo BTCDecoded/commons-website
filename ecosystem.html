@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self';">
     <title>Ecosystem</title>
-    <meta name="description" content="Weekly size counts for full-node trees, grouped by the cut that measured them, and the written governance rule.">
+    <meta name="description" content="Three comparisons of full-node trees. Size, test lines, and who lands the commits, plus the written rule for commons.">
     <link rel="canonical" href="https://thebitcoincommons.org/ecosystem.html" />
     <meta property="og:title" content="Ecosystem">
-    <meta property="og:description" content="Weekly size counts for full-node trees, grouped by the cut that measured them, and the written governance rule.">
+    <meta property="og:description" content="Three comparisons of full-node trees. Size, test lines, and who lands the commits, plus the written rule for commons.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://thebitcoincommons.org/ecosystem.html">
     <meta property="og:image" content="https://thebitcoincommons.org/assets/og-image.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Ecosystem">
-    <meta name="twitter:description" content="Weekly size counts for full-node trees, grouped by the cut that measured them, and the written governance rule.">
+    <meta name="twitter:description" content="Three comparisons of full-node trees. Size, test lines, and who lands the commits, plus the written rule for commons.">
     <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
     <link rel="stylesheet" href="style.css?v=25" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,17 +44,137 @@
             margin-bottom: 0.75rem;
         }
         .eco h2 {
-            font-weight: 400;
-            font-size: 1.25rem;
-            margin: 2.5rem 0 0.75rem;
+            font-weight: 500;
+            font-size: 1.15rem;
+            margin: 0 0 0.35rem;
             color: var(--white);
         }
         .eco p, .eco li {
             color: var(--text-secondary);
-            line-height: 1.7;
+            line-height: 1.6;
             max-width: 42rem;
         }
         .eco a { color: var(--orange); }
+        .site-nav a[aria-current="page"] {
+            color: var(--text);
+            box-shadow: inset 0 -2px 0 var(--orange);
+        }
+        .eco-head { max-width: 42rem; }
+        .eco-lead { color: var(--text); font-size: 1.15rem; line-height: 1.45; margin: 0.35rem 0 0; }
+        #eco-status { margin: 0.75rem 0 0; font-size: 0.85rem; color: #c4c4cc; }
+        .eco-jump {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.25rem 0 0.25rem;
+            max-width: 42rem;
+        }
+        .eco .eco-jump a {
+            color: var(--text);
+            text-decoration: none;
+            border: 1px solid var(--rule);
+            background: #17171a;
+            border-radius: 999px;
+            padding: 0.4rem 0.85rem;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        .eco .eco-jump a:hover, .eco .eco-jump a:focus-visible { border-color: var(--orange); color: var(--white); }
+        .eco-block {
+            max-width: 42rem;
+            margin-top: 1rem;
+            padding: 1.15rem 1.15rem 1.25rem;
+            background: #17171a;
+            border: 1px solid var(--rule);
+            border-radius: 12px;
+            scroll-margin-top: 5rem;
+        }
+        .eco-block p { color: var(--text); margin: 0; }
+        .eco-block .chart-legend { margin-top: 0.85rem; color: #c4c4cc; }
+        .eco-block .eco-links { margin-top: 0.95rem; }
+        .eco-more p { margin: 0.8rem 0 0; }
+        .chart {
+            margin: 1rem 0 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.95rem;
+        }
+        .bar-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 0.2rem 0.75rem;
+            align-items: baseline;
+        }
+        .bar-name { color: var(--white); font-size: 0.98rem; }
+        .bar-note { display: block; color: #c4c4cc; font-size: 0.8rem; line-height: 1.35; margin-top: 0.1rem; }
+        .bar-track {
+            grid-column: 1 / -1;
+            height: 18px;
+            margin-top: 0.35rem;
+            background: #111113;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            display: block;
+            height: 100%;
+            background: #b9b9c2;
+            border-radius: 2px;
+        }
+        .bar-fill.internal { background: var(--orange); }
+        .bar-fill.merges { background: #7eb6ff; }
+        .bar-value {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text);
+            text-align: right;
+            white-space: nowrap;
+        }
+        .chart-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem 1.25rem;
+            margin: 0.85rem 0 0;
+            font-size: 0.85rem;
+            color: #c4c4cc;
+        }
+        .swatch {
+            display: inline-block;
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 2px;
+            margin-right: 0.35rem;
+            vertical-align: -1px;
+        }
+        .swatch.internal { background: var(--orange); }
+        .swatch.other { background: #b9b9c2; }
+        .swatch.merges { background: #7eb6ff; }
+        .eco-group { margin-top: 1.1rem; padding-top: 0.85rem; border-top: 1px solid var(--rule); }
+        .eco-group:first-child { margin-top: 0.25rem; padding-top: 0; border-top: 0; }
+        .eco-group h3 { margin: 0 0 0.55rem; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.02em; color: #c4c4cc; }
+        .eco-more { max-width: 42rem; margin-top: 0.75rem; }
+        .eco-more > summary {
+            cursor: pointer;
+            color: var(--text);
+            font-size: 1rem;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            list-style: none;
+        }
+        .eco-more > summary::-webkit-details-marker { display: none; }
+        .eco-more > summary::before {
+            content: "";
+            width: 0.45rem;
+            height: 0.45rem;
+            margin-right: 0.7rem;
+            border-right: 2px solid currentColor;
+            border-bottom: 2px solid currentColor;
+            transform: rotate(-45deg);
+        }
+        .eco-more[open] > summary::before { transform: rotate(45deg); margin-top: -0.2rem; }
         .eco-scroll {
             overflow-x: auto;
             margin: 1rem 0 0.5rem;
@@ -277,8 +397,7 @@
             }
             .eco { padding: 1.25rem 0.75rem 2.5rem; }
             .eco h1 { font-size: 1.7rem; }
-            #eco-wide { display: none; }
-            .eco-stack { display: block; }
+            .eco-block { padding: 1rem; }
             .site-footer, .footer-links { grid-template-columns: 1fr; }
             .footer-brand p { max-width: none; }
             .site-footer { padding: 1.5rem 0.75rem 0.5rem; }
@@ -321,37 +440,62 @@
     </nav>
 
     <main class="eco" id="content">
-        <h1>Ecosystem</h1>
-        <p>
-            Weekly counts for full-node trees. Size rows share one counter.
-            A rules-share row stays inside the cut that produced it.
-            Governance is a reading of who lands commits in each tree, and the written rule for commons.
-        </p>
-        <p id="eco-status" role="status">Loading this week's file.</p>
+        <header class="eco-head">
+            <h1>Ecosystem</h1>
+            <p class="eco-lead" id="eco-lead">Three comparisons. Size and tests use one counter. Who lands the work uses each tree's own record.</p>
+            <p id="eco-status" role="status">Loading this week's file.</p>
+            <nav class="eco-jump" aria-label="On this page">
+                <a href="#size">Size</a>
+                <a href="#tests">Tests</a>
+                <a href="#landing">Who lands the work</a>
+                <a href="#rules">Rules share</a>
+                <a href="#rule">Written rule</a>
+            </nav>
+        </header>
 
-        <div id="eco-wide">
+        <section class="eco-block" id="size">
             <h2>Size</h2>
-            <p>These rows use one counter on every tree. The figure is the size of the files in that checkout.</p>
+            <p id="eco-size-caption">Implementation lines. The same counter on every tree.</p>
+            <div id="chart-size"></div>
+        </section>
+
+        <section class="eco-block" id="tests">
+            <h2>Tests</h2>
+            <p id="eco-test-caption">Test lines for each implementation line. The same counter on every tree.</p>
+            <div id="chart-tests"></div>
+        </section>
+
+        <section class="eco-block" id="landing">
+            <h2>Who lands the work</h2>
+            <p id="eco-land-caption">The longest bar is the largest single share of that tree's record.</p>
+            <p class="chart-legend"><span><i class="swatch internal"></i>commons</span><span><i class="swatch other"></i>commits</span><span><i class="swatch merges"></i>merges</span></p>
+            <div id="chart-land"></div>
+        </section>
+
+        <section class="eco-block" id="rules">
+            <h2>Rules share</h2>
+            <p>Share of the tree on the rules side of its cut. The bars share a scale. The cuts do not, so read each group on its own.</p>
+            <div id="chart-rules"></div>
+        </section>
+
+        <section class="eco-block" id="rule">
+            <h2>Written rule</h2>
+            <p id="eco-gov-status"></p>
+            <div id="chart-layers"></div>
+            <p class="eco-links"><a href="compact.html">The written rules</a> and <a href="whitepaper.html">the design argument</a> are the longer form.</p>
+        </section>
+
+        <details class="eco-more">
+            <summary>How the landing bars were counted</summary>
+            <p id="eco-history-note" class="eco-meta"></p>
+            <p id="eco-gov-quorum"></p>
+            <div id="eco-history"></div>
+        </details>
+        <details class="eco-more">
+            <summary>Every weekly count</summary>
             <div id="eco-size"></div>
-            <p class="eco-scroll-hint">Scroll the numbers sideways. The method name stays put.</p>
-
-            <h2>Cuts</h2>
-            <p>Rules share and the share left mixed use the cut named on the group. A percentage in one group is a different instrument from a percentage in another group.</p>
             <div id="eco-cuts"></div>
-        </div>
-        <div class="eco-stack" id="eco-stack"></div>
-
-        <h2>Governance</h2>
-        <p id="eco-gov-status"></p>
-        <p id="eco-gov-quorum"></p>
-        <p>
-            <a href="compact.html">The written rules</a> and <a href="whitepaper.html">the design argument</a> are the longer form.
-        </p>
-        <h3>Who lands the commits</h3>
-        <p id="eco-history-note" class="eco-meta"></p>
-        <div id="eco-history"></div>
-        <h3>Written rule</h3>
-        <div id="eco-layers"></div>
+        </details>
         <p id="eco-omitted"></p>
     </main>
     <footer class="site-footer">
@@ -440,12 +584,21 @@
             if (names.length === 2) return names[0] + " or " + names[1];
             return names.slice(0, -1).join(", ") + ", or " + names[names.length - 1];
         }
-        function layerItem(layer) {
-            var repos = (layer.repositories || []).join(", ");
-            var sig = layer.signatures_required + " of " + layer.signatures_total + " signatures. " + layer.review_period_days + "-day review.";
-            if (layer.consensus_review_period_days) sig += " " + layer.consensus_review_period_days + "-day consensus review.";
-            var purpose = layer.purpose ? "<span>" + esc(layer.purpose) + "</span>" : "";
-            return "<li><strong>" + esc(layer.name) + "</strong>" + purpose + "<span>" + esc(repos) + "</span><span>" + esc(sig) + "</span></li>";
+        function metric(tree, id) {
+            return tree.values && tree.values[id] ? tree.values[id] : null;
+        }
+        function shareText(n) {
+            var rounded = Math.round(n * 10) / 10;
+            var text = rounded.toFixed(1);
+            return (text.slice(-2) === ".0" ? String(Math.round(rounded)) : text) + "%";
+        }
+        function bars(rows, scale) {
+            return "<div class=\"chart\">" + rows.map(function (row) {
+                var width = Math.max(0, Math.min(100, (row.value / scale) * 100));
+                var fill = "bar-fill" + (row.merges ? " merges" : "") + (row.internal ? " internal" : "");
+                var note = row.note ? "<span class=\"bar-note\">" + esc(row.note) + "</span>" : "";
+                return "<div class=\"bar-row\"><div class=\"bar-label\"><span class=\"bar-name\">" + esc(row.name) + "</span>" + note + "</div><div class=\"bar-track\"><span class=\"" + fill + "\" style=\"width:" + width.toFixed(1) + "%\"></span></div><span class=\"bar-value\">" + esc(row.text) + "</span></div>";
+            }).join("") + "</div>";
         }
         fetch("data/implementations.json")
             .then(function (res) { if (!res.ok) throw new Error(String(res.status)); return res.json(); })
@@ -453,6 +606,55 @@
                 document.getElementById("eco-status").textContent = "Measured " + data.measured_at + ".";
                 var trees = data.trees || [];
                 var methods = data.tree_methods || [];
+                var internal = data.internal_slug;
+                function ranked(id) {
+                    return trees.map(function (tree) {
+                        var cell = metric(tree, id);
+                        return cell ? { name: tree.name, value: cell.value, text: cell.text, internal: tree.slug === internal, slug: tree.slug } : null;
+                    }).filter(Boolean).sort(function (a, b) { return b.value - a.value; });
+                }
+                var sizeRows = ranked("implementation_code");
+                var testRows = ranked("test_per_implementation");
+                document.getElementById("chart-size").innerHTML = bars(sizeRows, sizeRows[0].value);
+                document.getElementById("chart-tests").innerHTML = bars(testRows, testRows[0].value);
+                document.getElementById("eco-size-caption").textContent = sizeRows[0].name + " is the largest checkout on this counter, at " + sizeRows[0].text + " implementation lines. " + sizeRows[sizeRows.length - 1].name + " is the smallest, at " + sizeRows[sizeRows.length - 1].text + ".";
+                document.getElementById("eco-test-caption").textContent = testRows[0].name + " has " + testRows[0].text + " test lines for each implementation line. " + testRows[testRows.length - 1].name + " has " + testRows[testRows.length - 1].text + ".";
+                var landing = (data.governance && data.governance.landing ? data.governance.landing : []).slice().sort(function (a, b) { return b.share - a.share; });
+                document.getElementById("chart-land").innerHTML = bars(landing.map(function (row) {
+                    return { name: row.name, value: row.share, text: shareText(row.share), note: row.who, internal: row.slug === internal, merges: row.instrument === "merges" };
+                }), 100);
+                var core = landing.filter(function (row) { return row.instrument === "merges"; })[0];
+                var topCommit = landing.filter(function (row) { return row.instrument === "commits"; })[0];
+                if (topCommit && core) {
+                    document.getElementById("eco-land-caption").textContent = topCommit.name + " is " + shareText(topCommit.share) + " of commits. " + core.name + " is " + shareText(core.share) + " of merges since 2022. The blue bar is merges. The others are commits.";
+                }
+                var ruleRows = trees.map(function (tree) {
+                    var cell = metric(tree, "rules_share");
+                    if (!cell || cell.text === "no cut") return null;
+                    return { name: tree.name, value: cell.value, text: cell.text, internal: tree.slug === internal, instrument: tree.instrument };
+                }).filter(Boolean);
+                var ruleScale = Math.max.apply(null, ruleRows.map(function (row) { return row.value; }));
+                var seen = [];
+                ruleRows.forEach(function (row) { if (seen.indexOf(row.instrument) < 0) seen.push(row.instrument); });
+                document.getElementById("chart-rules").innerHTML = seen.map(function (instrument) {
+                    var group = ruleRows.filter(function (row) { return row.instrument === instrument; }).sort(function (a, b) { return b.value - a.value; });
+                    return "<section class=\"eco-group\"><h3>" + esc(instrument) + "</h3>" + bars(group, ruleScale) + "</section>";
+                }).join("") + "<p class=\"eco-meta\">Hornet has no rules cut on this clock, so it has no bar here.</p>";
+                var gov = data.governance || {};
+                document.getElementById("eco-gov-status").textContent = gov.status || "";
+                document.getElementById("eco-gov-quorum").textContent = gov.quorum || "";
+                var layers = gov.layers || [];
+                document.getElementById("chart-layers").innerHTML = bars(layers.map(function (layer) {
+                    var review = layer.review_period_days + "-day review";
+                    if (layer.consensus_review_period_days) review += ", " + layer.consensus_review_period_days + "-day consensus review";
+                    return {
+                        name: (layer.repositories || []).join(", "),
+                        value: layer.signatures_required,
+                        text: layer.signatures_required + " of " + layer.signatures_total,
+                        note: review,
+                        internal: true
+                    };
+                }), 7);
                 var sizeMethods = methods.filter(function (m) { return m.compare === "same-counter"; });
                 var cutMethods = methods.filter(function (m) { return m.compare === "same-profile"; });
                 document.getElementById("eco-size").innerHTML = wideTable(trees, sizeMethods, "One counter on every tree. The figure is the size of the files in that checkout.") + notes(sizeMethods);
@@ -461,28 +663,11 @@
                     var shallowNote = shallow.length ? "<p>" + esc(englishList(shallow)) + (shallow.length === 1 ? " is a shallow checkout. The line counter still reads the files present." : " are shallow checkouts. The line counter still reads the files present.") + "</p>" : "";
                     return "<section><h3>" + esc(g.name) + "</h3>" + shallowNote + wideTable(g.trees, cutMethods, "Rows in " + g.name + " only.") + "</section>";
                 }).join("") + notes(cutMethods);
-                document.getElementById("eco-stack").innerHTML = "<h2>This week</h2><p>Each tree stays in the cut that measured it. Size uses one counter.</p>" + byInstrument(trees).map(function (g) {
-                    return "<h3>" + esc(g.name) + "</h3>" + g.trees.map(function (t) {
-                        var shallow = t.shallow ? " Shallow checkout." : "";
-                        function rows(list) {
-                            return list.map(function (m) {
-                                return "<dt>" + esc(m.name) + "</dt><dd>" + esc(cellText(t, m)) + "</dd>";
-                            }).join("");
-                        }
-                        return "<article class=\"eco-card\"><h3>" + esc(t.name) + "</h3><p class=\"eco-meta\">" + esc(g.name) + "." + shallow + "</p><h4 class=\"eco-card-label\">Size</h4><dl>" + rows(sizeMethods) + "</dl><h4 class=\"eco-card-label\">This cut</h4><dl>" + rows(cutMethods) + "</dl></article>";
-                    }).join("");
-                }).join("") + notes(methods);
-                var gov = data.governance || {};
-                document.getElementById("eco-gov-status").textContent = gov.status || "";
-                document.getElementById("eco-gov-quorum").textContent = gov.quorum || "";
-                var layers = gov.layers || [];
-                if (!layers.length && data.written_rule) layers = [data.written_rule];
-                var source = gov.source ? "<p class=\"eco-meta\">" + esc(gov.source) + "</p>" : "";
-                document.getElementById("eco-layers").innerHTML = "<ul class=\"eco-layers\">" + layers.map(layerItem).join("") + "</ul>" + source;
                 document.getElementById("eco-history-note").textContent = gov.history_note || "";
                 document.getElementById("eco-history").innerHTML = (gov.history || []).map(function (item) {
                     return "<article class=\"eco-finding\"><h4>" + esc(item.name) + "</h4><p>" + esc(item.text) + "</p><p class=\"eco-meta\">" + esc(item.basis) + "</p></article>";
                 }).join("");
+                document.getElementById("eco-lead").textContent = "commons is the largest checkout. " + testRows[0].name + " carries the most test lines per implementation line. The landing record is concentrated in every tree, and Core's bar counts merges.";
                 document.getElementById("eco-omitted").textContent = data.omitted || "";
             })
             .catch(function () {
