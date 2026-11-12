@@ -6,7 +6,11 @@
   "window_label": "last 12 months",
   "methods": {
     "plugin_system": "yes / no / partial from the pinned tree's docs. own-team optional modules and independently maintained modules; not found when no source.",
-    "blvm_size": "Default node first-party crates plus blvm-sdk (blvm-storage-fence lives in the node tree; blvm-sdk-macros lives in the sdk tree). blvm-spec-lock non-test lines are tooling. Tests include spec-lock tests. Same tokei 14 and #[cfg(test)] rules as test_split."
+    "blvm_size": "Default node first-party crates plus blvm-sdk (blvm-storage-fence lives in the node tree; blvm-sdk-macros lives in the sdk tree). blvm-spec-lock non-test lines are tooling. Tests include spec-lock tests. Same tokei 14 and #[cfg(test)] rules as test_split.",
+    "test_split": "tokei 14 code lines in programming languages only. A file under tests/, test/, e2e/, qa/, or functional/, or named *_test/_tests/test_*, counts as tests. Rust lines inside a #[cfg(test)] or #[cfg(all(..., test))] item count as tests. Partition: fuzz paths (fuzz/, fuzz_targets/, src/test/fuzz/); property (path or name contains property/proptest/quickcheck/hypothesis/orange_paper_property); C++ src/test as unit; remaining integration dirs as integration; other in-source tests as unit. Benches under bench(es)/ are grouped with unit. Vendored and locale paths are excluded.",
+    "fuzz_targets": "Count of cargo-fuzz targets in fuzz/fuzz_targets/*.rs (excluding mod.rs) plus Bitcoin Core-style src/test/fuzz/*.cpp (excluding util helpers). Measured at the pinned checkout.",
+    "vector_files": "Files whose path or name looks like a test vector (vector, tx_valid, tx_invalid, script_tests, sighash, bipN) with suffix .json, .csv, or .hex.",
+    "spec_files": "Documentation or model files whose name looks like a spec (spec, THE_ORANGE_PAPER, orange paper, bipN) with suffix .md, .rst, .txt, .lean, or .tex. LICENSE and contributing files are excluded."
   },
   "rows": [
     {
@@ -79,7 +83,48 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "docs/MODULE_SYSTEM.md and modules/README.md at blvm-node 36bb40c7e9a3f805274fa7e1bda30d0a6c082560. Official registry https://raw.githubusercontent.com/BTCDecoded/blvm/main/registry/modules.json fetched 2026-11-12 (eight BTCDecoded modules). Independently maintained modules: not found."
+      "plugin_source": "docs/MODULE_SYSTEM.md and modules/README.md at blvm-node 36bb40c7e9a3f805274fa7e1bda30d0a6c082560. Official registry https://raw.githubusercontent.com/BTCDecoded/blvm/main/registry/modules.json fetched 2026-11-12 (eight BTCDecoded modules). Independently maintained modules: not found.",
+      "fuzz_targets": {
+        "value": 156,
+        "text": "156",
+        "status": "measured",
+        "note": "node + protocol + consensus + muhash + sdk (same set as the verification cell)"
+      },
+      "test_unit": {
+        "value": 86744,
+        "text": "86,744",
+        "status": "measured"
+      },
+      "test_integration": {
+        "value": 94585,
+        "text": "94,585",
+        "status": "measured"
+      },
+      "test_fuzz": {
+        "value": 7185,
+        "text": "7,185",
+        "status": "measured"
+      },
+      "test_property": {
+        "value": 5384,
+        "text": "5,384",
+        "status": "measured"
+      },
+      "test_split_total": {
+        "value": 193898,
+        "text": "193,898",
+        "status": "measured"
+      },
+      "vector_files": {
+        "value": 9,
+        "text": "9",
+        "status": "measured"
+      },
+      "spec_files": {
+        "value": 6,
+        "text": "6",
+        "status": "measured"
+      }
     },
     {
       "slug": "bitcoin-core",
@@ -101,7 +146,47 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "No loadable plugin API found. doc/multiprocess.md describes IPC for supplemental bitcoin-node and bitcoin-gui binaries, not third-party modules."
+      "plugin_source": "No loadable plugin API found. doc/multiprocess.md describes IPC for supplemental bitcoin-node and bitcoin-gui binaries, not third-party modules.",
+      "fuzz_targets": {
+        "value": 140,
+        "text": "140",
+        "status": "measured"
+      },
+      "test_unit": {
+        "value": 48500,
+        "text": "48,500",
+        "status": "measured"
+      },
+      "test_integration": {
+        "value": 70107,
+        "text": "70,107",
+        "status": "measured"
+      },
+      "test_fuzz": {
+        "value": 22063,
+        "text": "22,063",
+        "status": "measured"
+      },
+      "test_property": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "test_split_total": {
+        "value": 140670,
+        "text": "140,670",
+        "status": "measured"
+      },
+      "vector_files": {
+        "value": 10,
+        "text": "10",
+        "status": "measured"
+      },
+      "spec_files": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      }
     },
     {
       "slug": "knots-legacy",
@@ -123,7 +208,47 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found."
+      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found.",
+      "fuzz_targets": {
+        "value": 130,
+        "text": "130",
+        "status": "measured"
+      },
+      "test_unit": {
+        "value": 41763,
+        "text": "41,763",
+        "status": "measured"
+      },
+      "test_integration": {
+        "value": 68633,
+        "text": "68,633",
+        "status": "measured"
+      },
+      "test_fuzz": {
+        "value": 17814,
+        "text": "17,814",
+        "status": "measured"
+      },
+      "test_property": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "test_split_total": {
+        "value": 128210,
+        "text": "128,210",
+        "status": "measured"
+      },
+      "vector_files": {
+        "value": 9,
+        "text": "9",
+        "status": "measured"
+      },
+      "spec_files": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      }
     },
     {
       "slug": "bit-block",
@@ -145,7 +270,47 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found."
+      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found.",
+      "fuzz_targets": {
+        "value": 130,
+        "text": "130",
+        "status": "measured"
+      },
+      "test_unit": {
+        "value": 41184,
+        "text": "41,184",
+        "status": "measured"
+      },
+      "test_integration": {
+        "value": 67215,
+        "text": "67,215",
+        "status": "measured"
+      },
+      "test_fuzz": {
+        "value": 17793,
+        "text": "17,793",
+        "status": "measured"
+      },
+      "test_property": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "test_split_total": {
+        "value": 126192,
+        "text": "126,192",
+        "status": "measured"
+      },
+      "vector_files": {
+        "value": 9,
+        "text": "9",
+        "status": "measured"
+      },
+      "spec_files": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      }
     },
     {
       "slug": "bitcoin-roots",
@@ -167,7 +332,47 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found."
+      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found.",
+      "fuzz_targets": {
+        "value": 141,
+        "text": "141",
+        "status": "measured"
+      },
+      "test_unit": {
+        "value": 51210,
+        "text": "51,210",
+        "status": "measured"
+      },
+      "test_integration": {
+        "value": 80972,
+        "text": "80,972",
+        "status": "measured"
+      },
+      "test_fuzz": {
+        "value": 22278,
+        "text": "22,278",
+        "status": "measured"
+      },
+      "test_property": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "test_split_total": {
+        "value": 154460,
+        "text": "154,460",
+        "status": "measured"
+      },
+      "vector_files": {
+        "value": 10,
+        "text": "10",
+        "status": "measured"
+      },
+      "spec_files": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      }
     },
     {
       "slug": "bitcoin-rs",
@@ -189,7 +394,47 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "No plugin or loadable module system found in the tree's docs at 9b8e91ae."
+      "plugin_source": "No plugin or loadable module system found in the tree's docs at 9b8e91ae.",
+      "fuzz_targets": {
+        "value": 23,
+        "text": "23",
+        "status": "measured"
+      },
+      "test_unit": {
+        "value": 43050,
+        "text": "43,050",
+        "status": "measured"
+      },
+      "test_integration": {
+        "value": 111620,
+        "text": "111,620",
+        "status": "measured"
+      },
+      "test_fuzz": {
+        "value": 3813,
+        "text": "3,813",
+        "status": "measured"
+      },
+      "test_property": {
+        "value": 279,
+        "text": "279",
+        "status": "measured"
+      },
+      "test_split_total": {
+        "value": 158762,
+        "text": "158,762",
+        "status": "measured"
+      },
+      "vector_files": {
+        "value": 16,
+        "text": "16",
+        "status": "measured"
+      },
+      "spec_files": {
+        "value": 2,
+        "text": "2",
+        "status": "measured"
+      }
     },
     {
       "slug": "satd",
@@ -211,7 +456,47 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "No plugin or loadable module system found. In-tree MCP crate and webhooks are APIs, not loadable modules."
+      "plugin_source": "No plugin or loadable module system found. In-tree MCP crate and webhooks are APIs, not loadable modules.",
+      "fuzz_targets": {
+        "value": 7,
+        "text": "7",
+        "status": "measured"
+      },
+      "test_unit": {
+        "value": 114716,
+        "text": "114,716",
+        "status": "measured"
+      },
+      "test_integration": {
+        "value": 56124,
+        "text": "56,124",
+        "status": "measured"
+      },
+      "test_fuzz": {
+        "value": 626,
+        "text": "626",
+        "status": "measured"
+      },
+      "test_property": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "test_split_total": {
+        "value": 171466,
+        "text": "171,466",
+        "status": "measured"
+      },
+      "vector_files": {
+        "value": 13,
+        "text": "13",
+        "status": "measured"
+      },
+      "spec_files": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      }
     },
     {
       "slug": "libbitcoin",
@@ -233,7 +518,47 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "README: a toolkit of separately cloned C++ libraries, not a runtime module system in this libbitcoin-system row."
+      "plugin_source": "README: a toolkit of separately cloned C++ libraries, not a runtime module system in this libbitcoin-system row.",
+      "fuzz_targets": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "test_unit": {
+        "value": 10,
+        "text": "10",
+        "status": "measured"
+      },
+      "test_integration": {
+        "value": 109815,
+        "text": "109,815",
+        "status": "measured"
+      },
+      "test_fuzz": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "test_property": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "test_split_total": {
+        "value": 109825,
+        "text": "109,825",
+        "status": "measured"
+      },
+      "vector_files": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "spec_files": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      }
     },
     {
       "slug": "hornet",
@@ -255,7 +580,47 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "No plugin or loadable module system found in the tree's docs at 151462fa."
+      "plugin_source": "No plugin or loadable module system found in the tree's docs at 151462fa.",
+      "fuzz_targets": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "test_unit": {
+        "value": 127,
+        "text": "127",
+        "status": "measured"
+      },
+      "test_integration": {
+        "value": 7156,
+        "text": "7,156",
+        "status": "measured"
+      },
+      "test_fuzz": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "test_property": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "test_split_total": {
+        "value": 7283,
+        "text": "7,283",
+        "status": "measured"
+      },
+      "vector_files": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "spec_files": {
+        "value": 2,
+        "text": "2",
+        "status": "measured"
+      }
     },
     {
       "slug": "floresta",
@@ -277,7 +642,47 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "Compile-time Cargo features only (zmq-server, metrics, tokio-console; default json-rpc enables compact-filters) in bin/florestad/Cargo.toml. No loadable plugin API found."
+      "plugin_source": "Compile-time Cargo features only (zmq-server, metrics, tokio-console; default json-rpc enables compact-filters) in bin/florestad/Cargo.toml. No loadable plugin API found.",
+      "fuzz_targets": {
+        "value": 15,
+        "text": "15",
+        "status": "measured"
+      },
+      "test_unit": {
+        "value": 9436,
+        "text": "9,436",
+        "status": "measured"
+      },
+      "test_integration": {
+        "value": 12227,
+        "text": "12,227",
+        "status": "measured"
+      },
+      "test_fuzz": {
+        "value": 779,
+        "text": "779",
+        "status": "measured"
+      },
+      "test_property": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "test_split_total": {
+        "value": 22442,
+        "text": "22,442",
+        "status": "measured"
+      },
+      "vector_files": {
+        "value": 5,
+        "text": "5",
+        "status": "measured"
+      },
+      "spec_files": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      }
     },
     {
       "slug": "rbitcoin",
@@ -299,7 +704,47 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "No plugin or loadable module system found in the tree's docs at ca7bf804."
+      "plugin_source": "No plugin or loadable module system found in the tree's docs at ca7bf804.",
+      "fuzz_targets": {
+        "value": 21,
+        "text": "21",
+        "status": "measured"
+      },
+      "test_unit": {
+        "value": 1829,
+        "text": "1,829",
+        "status": "measured"
+      },
+      "test_integration": {
+        "value": 196931,
+        "text": "196,931",
+        "status": "measured"
+      },
+      "test_fuzz": {
+        "value": 8745,
+        "text": "8,745",
+        "status": "measured"
+      },
+      "test_property": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "test_split_total": {
+        "value": 207505,
+        "text": "207,505",
+        "status": "measured"
+      },
+      "vector_files": {
+        "value": 2,
+        "text": "2",
+        "status": "measured"
+      },
+      "spec_files": {
+        "value": 1,
+        "text": "1",
+        "status": "measured"
+      }
     },
     {
       "slug": "btcd",
@@ -321,7 +766,47 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "database/README.md: designed for different database backends (default ffldb). blockchain/indexers/README.md: two optional in-tree indexers (tx-by-hash, tx-by-address). Not a third-party plugin API. Independently maintained modules: not found."
+      "plugin_source": "database/README.md: designed for different database backends (default ffldb). blockchain/indexers/README.md: two optional in-tree indexers (tx-by-hash, tx-by-address). Not a third-party plugin API. Independently maintained modules: not found.",
+      "fuzz_targets": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "test_unit": {
+        "value": 67879,
+        "text": "67,879",
+        "status": "measured"
+      },
+      "test_integration": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "test_fuzz": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "test_property": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "test_split_total": {
+        "value": 67879,
+        "text": "67,879",
+        "status": "measured"
+      },
+      "vector_files": {
+        "value": 16,
+        "text": "16",
+        "status": "measured"
+      },
+      "spec_files": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      }
     }
   ]
 }
