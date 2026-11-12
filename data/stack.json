@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "as_of": "2026-11-12",
-  "method": "Read at each pinned commit. License: the repository's license file; no proprietary or non-OSI license file turned up in any tree. Languages: those with 5% or more of code lines (tokei 14; .h headers count with C and C++). Direct dependencies: direct third-party libraries of a default node build, excluding build tools, test and dev dependencies, off-by-default extras and the project's own crates; vendored source is counted separately; no transitive counts. C++: libraries the default bitcoind (or node binary) links, minus Qt and native build tools. Rust: third-party crates reached from the node binary through its own workspace crates, with default features (cargo tree). Go: go.mod require lines not marked indirect. BLVM, Bitcoin Core, Knots Legacy, Bit-Block, Bitcoin Roots, Hornet, libbitcoin, bitcoin-rs and satd were counted on separate checkouts at the code-count pins; Floresta, rbitcoin and btcd keep our earlier counts under the same rule. Vendored: library subtrees or vendor/ directories in the tree, with their code lines rounded.",
+  "method": "Read at each pinned commit. License: the repository's license file; no proprietary or non-OSI license file turned up in any tree. Languages: those with 5% or more of code lines (tokei 14; .h headers count with C and C++). Direct dependencies: direct third-party libraries of a default node build, excluding build tools, test and dev dependencies, off-by-default extras and the project's own crates; vendored source is counted separately; no transitive counts. C++: libraries the default bitcoind (or node binary) links, minus Qt and native build tools. Rust: third-party crates reached from the node binary through its own workspace crates, with default features (cargo tree). Go: go.mod require lines not marked indirect. Every row was counted on a separate checkout at its pinned commit. Vendored: library subtrees or vendor/ directories in the tree, with their code lines rounded.",
   "rows": [
     {
       "slug": "blvm",
@@ -147,8 +147,8 @@
       "license_source": "https://github.com/getfloresta/Floresta/blob/cdbcf5a13cba2b0aab505977ba413f707bc06290/LICENSE.md",
       "languages": "Rust, Python",
       "languages_source": "https://github.com/getfloresta/Floresta/tree/cdbcf5a13cba2b0aab505977ba413f707bc06290/",
-      "direct_deps": 35,
-      "deps_names": "Third-party crates of florestad and its workspace crates",
+      "direct_deps": 38,
+      "deps_names": "Third-party crates of florestad and its workspace crates, including proc-macro2, quote and syn through floresta-proc-macro",
       "deps_source": "https://github.com/getfloresta/Floresta/blob/cdbcf5a13cba2b0aab505977ba413f707bc06290/Cargo.lock",
       "vendored": "None found",
       "vendored_source": null
@@ -177,8 +177,8 @@
       "license_source": "https://github.com/btcsuite/btcd/blob/dd169fe0c32a56087d28b92fff3b8cf4fb43477a/LICENSE",
       "languages": "Go",
       "languages_source": "https://github.com/btcsuite/btcd/tree/dd169fe0c32a56087d28b92fff3b8cf4fb43477a/",
-      "direct_deps": 13,
-      "deps_names": "Direct require lines in go.mod, other btcd modules excluded",
+      "direct_deps": 11,
+      "deps_names": "Direct require lines in go.mod, excluding btcd's own modules and the test-only testify and rapid",
       "deps_source": "https://github.com/btcsuite/btcd/blob/dd169fe0c32a56087d28b92fff3b8cf4fb43477a/go.mod",
       "vendored": "None found",
       "vendored_source": null
