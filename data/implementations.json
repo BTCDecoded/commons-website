@@ -2,8 +2,8 @@
   "schema_version": 1,
   "measured_at": "2026-11-12",
   "internal_slug": "blvm",
-  "internal_name": "commons",
-  "class": "Bitcoin full-node source trees already compared on this machine, plus Bitcoin Core as the secsov baseline and Knots because that checkout uses Core's src layout. GridPool is outside this class. The 2026-10-01 Commons Pool note is a reward-network request.",
+  "internal_name": "BLVM",
+  "class": "Bitcoin full-node source trees already compared on this machine, plus Bitcoin Core as the secsov baseline and Knots Legacy, Bit-Block, and Bitcoin Roots because those checkouts use Core's src layout. GridPool is outside this class. The 2026-10-01 Commons Pool note is a reward-network request.",
   "tree_methods": [
     {
       "id": "implementation_code",
@@ -24,7 +24,7 @@
       "name": "Tooling",
       "unit": "lines",
       "compare": "same-counter",
-      "why": "Files the role map marks as tooling. Spec lock lives here on commons."
+      "why": "Files the role map marks as tooling. Spec lock lives here on BLVM."
     },
     {
       "id": "rules_share",
@@ -66,7 +66,7 @@
       "name": "Lines in files of 1,000 or more",
       "unit": "percent of program code",
       "compare": "same-counter",
-      "why": "How much of the program sits in large files. Tooling is outside this share. Spec lock is tooling on commons."
+      "why": "How much of the program sits in large files. Tooling is outside this share. Spec lock is tooling on BLVM."
     },
     {
       "id": "files_holding_half",
@@ -79,7 +79,7 @@
   "trees": [
     {
       "slug": "blvm",
-      "name": "commons",
+      "name": "BLVM",
       "side": "internal",
       "profile": "rust-workspace",
       "instrument": "crate-role cut",
@@ -200,22 +200,22 @@
       }
     },
     {
-      "slug": "knots",
-      "name": "Bitcoin Knots",
+      "slug": "knots-legacy",
+      "name": "Knots Legacy",
       "side": "external",
       "profile": "bitcoin-core",
-      "instrument": "Core file cut",
-      "commit": "5811235e3f5da687de1ac8ca731331a2fc24a350",
+      "instrument": "Rebuilt counter, no rules cut",
+      "commit": "7936c49b6739640eb71e55eb2b5f720179b9c3b4",
       "shallow": true,
       "values": {
         "implementation_code": {
-          "value": 155194,
-          "text": "155,194",
+          "value": 153823,
+          "text": "153,823",
           "status": "measured"
         },
         "program_code": {
-          "value": 155194,
-          "text": "155,194",
+          "value": 153823,
+          "text": "153,823",
           "status": "measured"
         },
         "tooling_code": {
@@ -224,23 +224,23 @@
           "status": "measured"
         },
         "rules_share": {
-          "value": 7,
-          "text": "7.0%",
-          "status": "measured"
+          "value": null,
+          "text": "not measured",
+          "status": "not-measured"
         },
         "mixed_share": {
-          "value": 0,
-          "text": "0.0%",
-          "status": "measured"
+          "value": null,
+          "text": "not measured",
+          "status": "not-measured"
         },
         "test_per_implementation": {
-          "value": 0.97,
-          "text": "0.97",
+          "value": 0.91,
+          "text": "0.91",
           "status": "measured"
         },
         "vendored_code": {
-          "value": 83466,
-          "text": "83,466",
+          "value": 82005,
+          "text": "82,005",
           "status": "measured"
         },
         "locale_code": {
@@ -254,8 +254,130 @@
           "status": "measured"
         },
         "files_holding_half": {
-          "value": 57,
-          "text": "57",
+          "value": 56,
+          "text": "56",
+          "status": "measured"
+        }
+      }
+    },
+    {
+      "slug": "bit-block",
+      "name": "Bit-Block",
+      "side": "external",
+      "profile": "bitcoin-core",
+      "instrument": "Rebuilt counter, no rules cut",
+      "commit": "c52f1161349e6a76463156fea39bce191951b915",
+      "shallow": true,
+      "values": {
+        "implementation_code": {
+          "value": 156636,
+          "text": "156,636",
+          "status": "measured"
+        },
+        "program_code": {
+          "value": 156636,
+          "text": "156,636",
+          "status": "measured"
+        },
+        "tooling_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "rules_share": {
+          "value": null,
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        "mixed_share": {
+          "value": null,
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        "test_per_implementation": {
+          "value": 0.88,
+          "text": "0.88",
+          "status": "measured"
+        },
+        "vendored_code": {
+          "value": 85142,
+          "text": "85,142",
+          "status": "measured"
+        },
+        "locale_code": {
+          "value": 330453,
+          "text": "330,453",
+          "status": "measured"
+        },
+        "share_lines_ge_1000": {
+          "value": 39.6,
+          "text": "39.6%",
+          "status": "measured"
+        },
+        "files_holding_half": {
+          "value": 56,
+          "text": "56",
+          "status": "measured"
+        }
+      }
+    },
+    {
+      "slug": "bitcoin-roots",
+      "name": "Bitcoin Roots",
+      "side": "external",
+      "profile": "bitcoin-core",
+      "instrument": "Rebuilt counter, no rules cut",
+      "commit": "f0393f2688656ba544b40fe508db909152201c18",
+      "shallow": true,
+      "values": {
+        "implementation_code": {
+          "value": 155040,
+          "text": "155,040",
+          "status": "measured"
+        },
+        "program_code": {
+          "value": 155040,
+          "text": "155,040",
+          "status": "measured"
+        },
+        "tooling_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "rules_share": {
+          "value": null,
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        "mixed_share": {
+          "value": null,
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        "test_per_implementation": {
+          "value": 1.08,
+          "text": "1.08",
+          "status": "measured"
+        },
+        "vendored_code": {
+          "value": 111244,
+          "text": "111,244",
+          "status": "measured"
+        },
+        "locale_code": {
+          "value": 286741,
+          "text": "286,741",
+          "status": "measured"
+        },
+        "share_lines_ge_1000": {
+          "value": 39.9,
+          "text": "39.9%",
+          "status": "measured"
+        },
+        "files_holding_half": {
+          "value": 55,
+          "text": "55",
           "status": "measured"
         }
       }
@@ -526,7 +648,19 @@
           "status": "recorded"
         },
         {
-          "slug": "knots",
+          "slug": "knots-legacy",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bit-block",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-roots",
           "side": "external",
           "text": "not measured",
           "status": "not-measured"
@@ -577,7 +711,19 @@
           "status": "recorded"
         },
         {
-          "slug": "knots",
+          "slug": "knots-legacy",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bit-block",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-roots",
           "side": "external",
           "text": "not measured",
           "status": "not-measured"
@@ -628,7 +774,19 @@
           "status": "recorded"
         },
         {
-          "slug": "knots",
+          "slug": "knots-legacy",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bit-block",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-roots",
           "side": "external",
           "text": "not measured",
           "status": "not-measured"
@@ -679,7 +837,19 @@
           "status": "recorded"
         },
         {
-          "slug": "knots",
+          "slug": "knots-legacy",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bit-block",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-roots",
           "side": "external",
           "text": "not measured",
           "status": "not-measured"
@@ -730,7 +900,19 @@
           "status": "recorded"
         },
         {
-          "slug": "knots",
+          "slug": "knots-legacy",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bit-block",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-roots",
           "side": "external",
           "text": "not measured",
           "status": "not-measured"
@@ -781,7 +963,19 @@
           "status": "recorded"
         },
         {
-          "slug": "knots",
+          "slug": "knots-legacy",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bit-block",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-roots",
           "side": "external",
           "text": "not measured",
           "status": "not-measured"
@@ -832,7 +1026,19 @@
           "status": "not-measured"
         },
         {
-          "slug": "knots",
+          "slug": "knots-legacy",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bit-block",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-roots",
           "side": "external",
           "text": "not measured",
           "status": "not-measured"
@@ -883,7 +1089,19 @@
           "status": "not-measured"
         },
         {
-          "slug": "knots",
+          "slug": "knots-legacy",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bit-block",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-roots",
           "side": "external",
           "text": "not measured",
           "status": "not-measured"
@@ -934,7 +1152,19 @@
           "status": "not-measured"
         },
         {
-          "slug": "knots",
+          "slug": "knots-legacy",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bit-block",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-roots",
           "side": "external",
           "text": "not measured",
           "status": "not-measured"
@@ -985,7 +1215,19 @@
           "status": "not-measured"
         },
         {
-          "slug": "knots",
+          "slug": "knots-legacy",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bit-block",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-roots",
           "side": "external",
           "text": "not measured",
           "status": "not-measured"
@@ -1036,7 +1278,19 @@
           "status": "not-measured"
         },
         {
-          "slug": "knots",
+          "slug": "knots-legacy",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bit-block",
+          "side": "external",
+          "text": "not measured",
+          "status": "not-measured"
+        },
+        {
+          "slug": "bitcoin-roots",
           "side": "external",
           "text": "not measured",
           "status": "not-measured"
@@ -1163,7 +1417,7 @@
       },
       {
         "slug": "blvm",
-        "name": "commons",
+        "name": "BLVM",
         "share": 96.6,
         "who": "one author, 825 of 854 in blvm-node",
         "instrument": "commits",
@@ -1194,12 +1448,28 @@
         "span": "merges since 2022"
       },
       {
-        "slug": "knots",
-        "name": "Bitcoin Knots",
-        "share": 42.8,
-        "who": "merge-script, commits since 2024",
+        "slug": "knots-legacy",
+        "name": "Knots Legacy",
+        "share": 100,
+        "who": "DimiH2025, 39 of 39 commits since Knots v29.3.knots20260507",
         "instrument": "commits",
-        "span": "commits since 2024"
+        "span": ""
+      },
+      {
+        "slug": "bit-block",
+        "name": "Bit-Block",
+        "share": 82.9,
+        "who": "DimiH2025, 121 of 146 commits",
+        "instrument": "commits",
+        "span": ""
+      },
+      {
+        "slug": "bitcoin-roots",
+        "name": "Bitcoin Roots",
+        "share": 5.8,
+        "who": "jaromil, 248 of 4,293 commits since Core v32.1",
+        "instrument": "commits",
+        "span": ""
       },
       {
         "slug": "floresta",
@@ -1229,7 +1499,7 @@
     "history": [
       {
         "slug": "blvm",
-        "name": "commons",
+        "name": "BLVM",
         "text": "One author wrote 825 of 854 commits in blvm-node, all 141 commits in the blvm checkout, 231 of 296 in blvm-consensus, 165 of 167 in the governance repository, and 34 of 55 in blvm-spec. The layer table is the written rule. Enforcement is off, so that quorum is the rule on paper and the history is one writer.",
         "basis": "git log. blvm-node is a complete history from 2025-10-19 to 2026-11-11. The blvm-consensus count treats an author's personal address and its GitHub noreply alias as one person. The other checkouts are shallow and begin in 2026."
       },
@@ -1240,10 +1510,22 @@
         "basis": "Merge shares from findings/GOVERNANCE_FRAMES.md, the 2022+ window. The guide sentence is CONTRIBUTING.md at f0de87f040."
       },
       {
-        "slug": "knots",
-        "name": "Bitcoin Knots",
-        "text": "Since 2024 this checkout holds 10,594 commits. 4,532 are authored by merge-script, which tree-merges patches and bumps the Knots version. 1,341 are authored by Luke Dashjr. The next authors are Core committers the branch still carries. The contributing file is Core's.",
-        "basis": "git log --since=2024-01-01 on the Knots checkout at 5811235e3f. The checkout is marked shallow and the log still reaches 2009."
+        "slug": "knots-legacy",
+        "name": "Knots Legacy",
+        "text": "Knots Legacy continues Bitcoin Knots v29.3.knots20260507. Per its docs, it makes no consensus changes of its own. Since that tag, all 39 commits are by DimiH2025. The README says one person maintains it and invites co-maintainers. The contributing file is Core's template, renamed.",
+        "basis": "GitHub compare v29.3.knots20260507...954823cfe8 on DimiH2025/KnotsLegacy, and the README at that commit, read 2026-11-12."
+      },
+      {
+        "slug": "bit-block",
+        "name": "Bit-Block",
+        "text": "Bit-Block is a fork of Bitcoin Knots v29.1.knots20250903 by the Knots Legacy maintainer. Per its docs, its changes are local relay and mining policy, not consensus. Its repository holds 146 commits: 121 by DimiH2025 and 25 under the git name dimitrihellemon. The contributing file is Core's template, renamed.",
+        "basis": "GitHub commit list for DimiH2025/Bit-Block at 16b8cd0932, and UPSTREAM.md at that commit, read 2026-11-12."
+      },
+      {
+        "slug": "bitcoin-roots",
+        "name": "Bitcoin Roots",
+        "text": "Bitcoin Roots is a patch series on Bitcoin Core v32.1 that carries selected policy features from the Knots 29.3.knots20260507 code line. Of 4,293 commits since Core v32.1, 3,315 were committed by luke-jr and 506 by fanquake, carried from Knots and Core. jaromil committed 248. The README names the Plan B Foundation as maintainer, under three named people, and the maintainer workflow requires every new commit to be signed with one key.",
+        "basis": "GitHub compare v32.1 (f0de87f040)...12a50ee10a on LuganoPlanB/bitcoin-roots, README, doc/website/content/README.md, and contrib/roots/README.md at that commit, read 2026-11-12."
       },
       {
         "slug": "bitcoin-rs",
@@ -1302,10 +1584,6 @@
         "note": "wallet 19,507. Rules lines are 9,510"
       },
       {
-        "slug": "knots",
-        "note": "GUI 25,587"
-      },
-      {
         "slug": "bitcoin-rs",
         "note": "p2p 76,218"
       },
@@ -1340,10 +1618,6 @@
         "note": "cut finished"
       },
       {
-        "slug": "knots",
-        "note": "cut finished"
-      },
-      {
         "slug": "bitcoin-rs",
         "note": "cut finished"
       }
@@ -1357,7 +1631,7 @@
         "title": "A stated consequence",
         "items": [
           {
-            "name": "commons",
+            "name": "BLVM",
             "text": "The design states a consequence. A non-conforming action is reversed when two of three governance nodes in a written set agree. Anyone may run a node and publish a conclusion. Only the written set binds. That consequence is Designed. It is not Running. Enforcement is off and the keys are test keys, so a commit stands when one author lands it."
           },
           {
@@ -1365,8 +1639,16 @@
             "text": "The contributing guide names repository maintainers as the people who merge. The review practice states no sanction, so that practice is a norm. The guide does not say who receives keys."
           },
           {
-            "name": "Bitcoin Knots",
-            "text": "The contributing file is Core's, so Knots does not add a separate stated consequence in this scan."
+            "name": "Knots Legacy",
+            "text": "The contributing file is Core's template, renamed, so it does not add a separate stated consequence in this scan."
+          },
+          {
+            "name": "Bit-Block",
+            "text": "The contributing file is Core's template, renamed, so it does not add a separate stated consequence in this scan."
+          },
+          {
+            "name": "Bitcoin Roots",
+            "text": "The maintainer workflow states a consequence for one step. Every new commit is signed with one named key, and a signing failure leaves the work pending, with no unsigned fallback."
           },
           {
             "name": "Hornet",
@@ -1390,16 +1672,16 @@
         "title": "Who lands the work",
         "items": [
           {
-            "name": "commons",
-            "text": "One author wrote 825 of 854 commits in blvm-node. The written rule names several signatures. The operating record and the written rule are different levels. That split is the peculiar form. It is not a guild. It is not a mixed constitution that is already operating. A mixed constitution in the institutional reading is a scored form with vetoes. commons on activation is a separate projection, and this page does not score that projection."
+            "name": "BLVM",
+            "text": "One author wrote 825 of 854 commits in blvm-node. The written rule names several signatures. The operating record and the written rule are different levels. BLVM on activation is a separate projection, and this page does not score that projection."
           },
           {
             "name": "Bitcoin Core",
-            "text": "Since 2022 one person merged 50.2% of pull requests and three people merged 82.2%, across 5,747 merged pull requests. That window is the current process. All-time, the top three hold 76.4% of merges, which is a different window. The small set that merges is the guild. The review norm did not disperse it."
+            "text": "Since 2022 one person merged 50.2% of pull requests and three people merged 82.2%, across 5,747 merged pull requests. That window is the current process. All-time, the top three hold 76.4% of merges, which is a different window."
           },
           {
             "name": "The other trees",
-            "text": "The landing chart is the operational record. Hornet, satd, libbitcoin, and bitcoin-rs are one account. Knots is one maintainer and a merge script. Floresta, rbitcoin, and btcd have a largest share under half. None of those histories is a written multi-party rule."
+            "text": "The landing chart is the operational record. Hornet, satd, libbitcoin, and bitcoin-rs are one account. Knots Legacy is one account. Bit-Block is one account for most commits. Bitcoin Roots signs new commits with one key. Floresta, rbitcoin, and btcd have a largest share under half. None of those histories is a written multi-party rule."
           }
         ]
       },
@@ -1407,7 +1689,7 @@
         "title": "Who may change the rule",
         "items": [
           {
-            "name": "commons",
+            "name": "BLVM",
             "text": "Tiers and layers are written. When a layer and a tier both apply, the more restrictive pair wins. Two Tier 5 pairs are both written. Meta-governance is 5 of 7 plus 2 of 3 over 90 days, with a 30 day public comment. The tier 5 row is 5 of 5 over 180 days. This page does not choose between them."
           },
           {
@@ -1424,7 +1706,7 @@
         "title": "Who receives keys",
         "items": [
           {
-            "name": "commons",
+            "name": "BLVM",
             "text": "Adding a maintainer is 5 of 7 where the roster lists 7 names. Removing one is 6 of 7 excluding the subject, on that same roster. Layers 3 and 4 list 5 names, and layer 5 lists 3. The names in the roster file are placeholders. Keyholder activation is 5 of 7 and is a different pool from maintainer signatures. The governance-node quorum is 2 of 3 in a written set. That quorum is not the layer 5 maintainer signature, which is also 2 of 3 and applies to blvm-sdk."
           },
           {
@@ -1441,7 +1723,7 @@
         "title": "Written clocks",
         "items": [
           {
-            "name": "commons",
+            "name": "BLVM",
             "text": "The layer chart writes 14, 60, 90, 180, and 365 day periods. Those clocks are the written rule. They are not the time a commit waits today, because enforcement is off."
           },
           {
@@ -1463,9 +1745,87 @@
           },
           {
             "name": "The other trees",
-            "text": "No other tree in this file has this outsider measurement. commons is not scored with Core's filter."
+            "text": "No other tree in this file has this outsider measurement. BLVM is not scored with Core's filter."
           }
         ]
+      }
+    ]
+  },
+  "governance_model": {
+    "as_of": "2026-11-12",
+    "note": "Labels are read from the institution board and the commit and merge shares on this page. They are redone with each reading.",
+    "labels": [
+      {
+        "slug": "blvm",
+        "label": "Commons governance",
+        "detail": "Written rule. Enforcement is off (Phase 1).",
+        "basis": "governance.status and written_rule: 6 of 7 signatures on the spec layer, enforcement off, test keys. landing: one author, 825 of 854 blvm-node commits."
+      },
+      {
+        "slug": "bitcoin-core",
+        "label": "Maintainer group with merge rights",
+        "detail": "Three people merged 82.2% since 2022.",
+        "basis": "Contributing guide: repository maintainers merge. process_methods top3_merge_share_2022: 82.2%."
+      },
+      {
+        "slug": "knots-legacy",
+        "label": "Single maintainer",
+        "detail": "One account, all 39 commits since its Knots base.",
+        "basis": "history: DimiH2025 39 of 39 since v29.3.knots20260507. README: maintained by one person."
+      },
+      {
+        "slug": "bit-block",
+        "label": "Single maintainer",
+        "detail": "One account, 121 of 146 commits.",
+        "basis": "history: DimiH2025 121 of 146; the other 25 carry the git name dimitrihellemon."
+      },
+      {
+        "slug": "bitcoin-roots",
+        "label": "Foundation, one signing key",
+        "detail": "Plan B Foundation. Every new commit is signed with one key.",
+        "basis": "README maintenance section and contrib/roots/README.md signing rule at 12a50ee10a."
+      },
+      {
+        "slug": "bitcoin-rs",
+        "label": "Single maintainer",
+        "detail": "One account, 75.3% of commits on dev.",
+        "basis": "landing: one account, 5,714 of 7,592 commits on dev."
+      },
+      {
+        "slug": "satd",
+        "label": "Single maintainer",
+        "detail": "One account, 97.2% of commits.",
+        "basis": "landing: bkeroack, 1,228 of 1,263."
+      },
+      {
+        "slug": "libbitcoin",
+        "label": "Single maintainer",
+        "detail": "One maintainer, 77.7% of commits.",
+        "basis": "landing: Eric Voskuil, 8,145 of 10,489."
+      },
+      {
+        "slug": "hornet",
+        "label": "Single maintainer",
+        "detail": "One author, every commit.",
+        "basis": "landing: Toby Sharp, every commit."
+      },
+      {
+        "slug": "floresta",
+        "label": "Not classified",
+        "detail": "Largest share under half. No rule file read.",
+        "basis": "landing: Davidson-Souza, 712 of 1,523 (46.7%)."
+      },
+      {
+        "slug": "rbitcoin",
+        "label": "Not classified",
+        "detail": "Largest share under half. No rule file read.",
+        "basis": "landing: rearden-grok bot, 2,576 of 6,930 (37.2%)."
+      },
+      {
+        "slug": "btcd",
+        "label": "Not classified",
+        "detail": "Largest share under half. No rule file read.",
+        "basis": "landing: davecgh, 1,662 of 4,517 (36.8%)."
       }
     ]
   }
