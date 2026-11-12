@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-11-12",
+  "window_start": "2025-11-12",
+  "window_end": "2026-11-12",
+  "window_label": "last 12 months",
+  "methods": {
+    "plugin_system": "yes / no / partial from the pinned tree's docs. own-team optional modules and independently maintained modules; not found when no source.",
+    "blvm_size": "Default node first-party crates plus blvm-sdk (blvm-storage-fence lives in the node tree; blvm-sdk-macros lives in the sdk tree). blvm-spec-lock non-test lines are tooling. Tests include spec-lock tests. Same tokei 14 and #[cfg(test)] rules as test_split."
+  },
+  "rows": [
+    {
+      "slug": "blvm",
+      "name": "BLVM",
+      "commit": "36bb40c7e9a3f805274fa7e1bda30d0a6c082560",
+      "crates": [
+        {
+          "name": "blvm-node",
+          "version": "0.1.92",
+          "commit": "36bb40c7e9a3f805274fa7e1bda30d0a6c082560",
+          "role": "program"
+        },
+        {
+          "name": "blvm-protocol",
+          "version": "0.1.48",
+          "commit": "0bc9307a2235831fff52548621301b6084a9e809",
+          "role": "program"
+        },
+        {
+          "name": "blvm-consensus",
+          "version": "0.1.82",
+          "commit": "f63c32856a2da874296524f40b8cbd35518d8096",
+          "role": "program"
+        },
+        {
+          "name": "blvm-primitives",
+          "version": "0.1.34",
+          "commit": "ede6efb409bdfc93cef9eb9a47a2be5e9094bc59",
+          "role": "program"
+        },
+        {
+          "name": "blvm-secp256k1",
+          "version": "0.1.17",
+          "commit": "441173f0fb1690f457f2c0292b77e3d4e34316dc",
+          "role": "program"
+        },
+        {
+          "name": "blvm-muhash",
+          "version": "0.1.11",
+          "commit": "b0031beba641737b6768d141ef26adc1edc0609f",
+          "role": "program"
+        },
+        {
+          "name": "blvm-sdk",
+          "version": "0.1.23",
+          "commit": "fcb1afdc5e28a2893717dd4b2c9548d83b35ec62",
+          "role": "program"
+        },
+        {
+          "name": "blvm-spec-lock",
+          "version": "0.1.54",
+          "commit": "bddfae4ac8063f78bf654d7a2245c810d89f98d1",
+          "role": "tooling"
+        }
+      ],
+      "measured_at": "2026-11-12",
+      "plugin_system": {
+        "value": "yes",
+        "text": "yes",
+        "status": "measured"
+      },
+      "plugin_own": {
+        "value": 8,
+        "text": "8",
+        "status": "measured"
+      },
+      "plugin_independent": {
+        "value": null,
+        "text": "not found",
+        "status": "not-found"
+      },
+      "plugin_source": "docs/MODULE_SYSTEM.md and modules/README.md at blvm-node 36bb40c7e9a3f805274fa7e1bda30d0a6c082560. Official registry https://raw.githubusercontent.com/BTCDecoded/blvm/main/registry/modules.json fetched 2026-11-12 (eight BTCDecoded modules). Independently maintained modules: not found."
+    },
+    {
+      "slug": "bitcoin-core",
+      "name": "Bitcoin Core",
+      "commit": "f0de87f040621468b956f01f526a43a010310501",
+      "measured_at": "2026-11-12",
+      "plugin_system": {
+        "value": "no",
+        "text": "no",
+        "status": "measured"
+      },
+      "plugin_own": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "plugin_independent": {
+        "value": null,
+        "text": "not found",
+        "status": "not-found"
+      },
+      "plugin_source": "No loadable plugin API found. doc/multiprocess.md describes IPC for supplemental bitcoin-node and bitcoin-gui binaries, not third-party modules."
+    },
+    {
+      "slug": "knots-legacy",
+      "name": "Knots Legacy",
+      "commit": "7936c49b6739640eb71e55eb2b5f720179b9c3b4",
+      "measured_at": "2026-11-12",
+      "plugin_system": {
+        "value": "no",
+        "text": "no",
+        "status": "measured"
+      },
+      "plugin_own": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "plugin_independent": {
+        "value": null,
+        "text": "not found",
+        "status": "not-found"
+      },
+      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found."
+    },
+    {
+      "slug": "bit-block",
+      "name": "Bit-Block",
+      "commit": "c52f1161349e6a76463156fea39bce191951b915",
+      "measured_at": "2026-11-12",
+      "plugin_system": {
+        "value": "no",
+        "text": "no",
+        "status": "measured"
+      },
+      "plugin_own": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "plugin_independent": {
+        "value": null,
+        "text": "not found",
+        "status": "not-found"
+      },
+      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found."
+    },
+    {
+      "slug": "bitcoin-roots",
+      "name": "Bitcoin Roots",
+      "commit": "f0393f2688656ba544b40fe508db909152201c18",
+      "measured_at": "2026-11-12",
+      "plugin_system": {
+        "value": "no",
+        "text": "no",
+        "status": "measured"
+      },
+      "plugin_own": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "plugin_independent": {
+        "value": null,
+        "text": "not found",
+        "status": "not-found"
+      },
+      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found."
+    },
+    {
+      "slug": "bitcoin-rs",
+      "name": "bitcoin-rs",
+      "commit": "9b8e91ae1aadfaad08e7fccbfa895bcbf41c6620",
+      "measured_at": "2026-11-12",
+      "plugin_system": {
+        "value": "no",
+        "text": "no",
+        "status": "measured"
+      },
+      "plugin_own": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "plugin_independent": {
+        "value": null,
+        "text": "not found",
+        "status": "not-found"
+      },
+      "plugin_source": "No plugin or loadable module system found in the tree's docs at 9b8e91ae."
+    },
+    {
+      "slug": "satd",
+      "name": "satd",
+      "commit": "f0ea0e5dfa8446d9cb63fef0a22eaf5f976216ce",
+      "measured_at": "2026-11-12",
+      "plugin_system": {
+        "value": "no",
+        "text": "no",
+        "status": "measured"
+      },
+      "plugin_own": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "plugin_independent": {
+        "value": null,
+        "text": "not found",
+        "status": "not-found"
+      },
+      "plugin_source": "No plugin or loadable module system found. In-tree MCP crate and webhooks are APIs, not loadable modules."
+    },
+    {
+      "slug": "libbitcoin",
+      "name": "libbitcoin",
+      "commit": "9f9cce3086074840951cedf1d381f08112275bfd",
+      "measured_at": "2026-11-12",
+      "plugin_system": {
+        "value": "no",
+        "text": "no",
+        "status": "measured"
+      },
+      "plugin_own": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "plugin_independent": {
+        "value": null,
+        "text": "not found",
+        "status": "not-found"
+      },
+      "plugin_source": "README: a toolkit of separately cloned C++ libraries, not a runtime module system in this libbitcoin-system row."
+    },
+    {
+      "slug": "hornet",
+      "name": "Hornet",
+      "commit": "151462fa5ceece39c159674886dcfa6cfe9b1234",
+      "measured_at": "2026-11-12",
+      "plugin_system": {
+        "value": "no",
+        "text": "no",
+        "status": "measured"
+      },
+      "plugin_own": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "plugin_independent": {
+        "value": null,
+        "text": "not found",
+        "status": "not-found"
+      },
+      "plugin_source": "No plugin or loadable module system found in the tree's docs at 151462fa."
+    },
+    {
+      "slug": "floresta",
+      "name": "Floresta",
+      "commit": "cdbcf5a13cba2b0aab505977ba413f707bc06290",
+      "measured_at": "2026-11-12",
+      "plugin_system": {
+        "value": "no",
+        "text": "no",
+        "status": "measured"
+      },
+      "plugin_own": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "plugin_independent": {
+        "value": null,
+        "text": "not found",
+        "status": "not-found"
+      },
+      "plugin_source": "Compile-time Cargo features only (zmq-server, metrics, tokio-console; default json-rpc enables compact-filters) in bin/florestad/Cargo.toml. No loadable plugin API found."
+    },
+    {
+      "slug": "rbitcoin",
+      "name": "rbitcoin",
+      "commit": "ca7bf804ed44d7efdca3da219ead6e644d35fd9e",
+      "measured_at": "2026-11-12",
+      "plugin_system": {
+        "value": "no",
+        "text": "no",
+        "status": "measured"
+      },
+      "plugin_own": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "plugin_independent": {
+        "value": null,
+        "text": "not found",
+        "status": "not-found"
+      },
+      "plugin_source": "No plugin or loadable module system found in the tree's docs at ca7bf804."
+    },
+    {
+      "slug": "btcd",
+      "name": "btcd",
+      "commit": "dd169fe0c32a56087d28b92fff3b8cf4fb43477a",
+      "measured_at": "2026-11-12",
+      "plugin_system": {
+        "value": "partial",
+        "text": "partial",
+        "status": "measured"
+      },
+      "plugin_own": {
+        "value": 2,
+        "text": "2",
+        "status": "measured"
+      },
+      "plugin_independent": {
+        "value": null,
+        "text": "not found",
+        "status": "not-found"
+      },
+      "plugin_source": "database/README.md: designed for different database backends (default ffldb). blockchain/indexers/README.md: two optional in-tree indexers (tx-by-hash, tx-by-address). Not a third-party plugin API. Independently maintained modules: not found."
+    }
+  ]
+}
