@@ -13,6 +13,7 @@ const pagePath = path.join(root, "ecosystem.html");
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/implementations.json"), "utf8"));
 const verification = JSON.parse(fs.readFileSync(path.join(root, "data/verification.json"), "utf8"));
 const stack = JSON.parse(fs.readFileSync(path.join(root, "data/stack.json"), "utf8"));
+const metrics = JSON.parse(fs.readFileSync(path.join(root, "data/metrics.json"), "utf8"));
 
 function esc(s) {
     return String(s).replace(/[&<>"]/g, function (c) {
@@ -101,7 +102,7 @@ const compBySlug = {}; comp.forEach(function (c) { compBySlug[c.slug] = c; });
 const compMax = comp[0].total;
 const blvmComp = comp.filter(function (r) { return r.internal; })[0];
 // Column captions state facts only. Rankings are left to the sortable table.
-slots["size-caption"] = "";
+slots["size-caption"] = esc("BLVM program, implementation, and test counts cover blvm-node, blvm-protocol, blvm-consensus, blvm-primitives, blvm-secp256k1, blvm-muhash, blvm-storage-fence (in the node tree), and blvm-sdk including blvm-sdk-macros. blvm-spec-lock is counted as tooling. libbitcoin is one repo: libbitcoin-system.");
 slots["comp-caption"] = esc(blvmComp && blvmComp.vend === 0 && blvmComp.loc === 0 ? blvmComp.name + " has neither vendored lines nor locale lines." : "");
 const halfOf = {}; trees.forEach(function (t) { var h = metric(t, "files_holding_half"); halfOf[t.slug] = h ? h.text : ""; });
 slots["files-caption"] = "";
@@ -278,6 +279,79 @@ slots["weekly-cuts"] = byInstrument(trees).map(function (g) {
     var shallowNote = shallow.length ? "<p>" + esc(englishList(shallow)) + (shallow.length === 1 ? " is a shallow checkout. The line counter still reads the files present." : " are shallow checkouts. The line counter still reads the files present.") + "</p>" : "";
     return "<section><h3>" + esc(g.name) + "</h3>" + shallowNote + wideTable(g.trees, cutMethods, "Rows in " + g.name + " only.") + "</section>";
 }).join("") + notes(cutMethods);
+
+const metricRows = metrics.rows || [];
+const metricBySlug = {};
+metricRows.forEach(function (r) { metricBySlug[r.slug] = r; });
+function metricCell(row, id) {
+    var c = row && row[id];
+    if (!c) return { text: "not measured", status: "not-measured", value: null };
+    return c;
+}
+function metricText(c) { return c && c.text ? c.text : "not measured"; }
+function metricVal(c, rankMap) {
+    if (!c || c.status !== "measured" || c.value === null || c.value === undefined) return "";
+    if (rankMap) return rankMap[c.value] !== undefined ? String(rankMap[c.value]) : "";
+    if (typeof c.value === "number") return String(c.value);
+    return "";
+}
+const pluginRank = { yes: 2, partial: 1, no: 0 };
+function pluginRow(slug) {
+    var r = metricBySlug[slug];
+    if (!r) throw new Error("metrics row missing for " + slug);
+    var sys = metricCell(r, "plugin_system");
+    var own = metricCell(r, "plugin_own");
+    var ind = metricCell(r, "plugin_independent");
+    var isInt = slug === internal;
+    var open = "<details><summary>Source<span class=\"visually-hidden\"> for " + esc(r.name) + " modules</span></summary><p>" + esc(r.plugin_source || "") + "</p></details>";
+    return "<tr data-slug=\"" + esc(slug) + "\" data-system=\"" + metricVal(sys, pluginRank) + "\" data-own=\"" + metricVal(own) + "\" data-independent=\"" + metricVal(ind) + "\"><th scope=\"row\"" + (isInt ? " class=\"internal\"" : "") + ">" + esc(r.name) + "</th>" +
+        "<td data-label=\"Module system\">" + esc(metricText(sys)) + "</td>" +
+        "<td data-label=\"Own-team modules\">" + esc(metricText(own)) + "</td>" +
+        "<td data-label=\"Independent modules\">" + esc(metricText(ind)) + "</td></tr>" +
+        "<tr data-slug=\"" + esc(slug) + "\" class=\"eco-open-row\"><td class=\"eco-open m-full\" colspan=\"4\">" + open + "</td></tr>";
+}
+slots.plugins = glanceOrder.map(pluginRow).join("");
+slots["plugins-caption"] = esc("Module or plugin system, own-team optional modules, and independently maintained modules. Statuses as of " + (metrics.as_of || data.measured_at) + ". Each row's source opens under it.");
+slots["plugins-note"] = esc(metrics.methods && metrics.methods.plugin_system ? metrics.methods.plugin_system : "");
+
+const depthCols = [
+    { id: "fuzz_targets", key: "fuzz", label: "Fuzz targets" },
+    { id: "test_unit", key: "unit", label: "Unit test lines" },
+    { id: "test_integration", key: "integration", label: "Integration test lines" },
+    { id: "test_fuzz", key: "fuzzlines", label: "Fuzz test lines" },
+    { id: "test_property", key: "property", label: "Property test lines" },
+    { id: "vector_files", key: "vectors", label: "Test-vector files" },
+    { id: "spec_files", key: "specs", label: "Spec files" },
+    { id: "authors_12m", key: "authors", label: "Authors, 12 months" },
+    { id: "releases_12m", key: "releases", label: "Tagged releases, 12 months" },
+    { id: "ci_workflows", key: "workflows", label: "CI workflows" },
+    { id: "ci_jobs", key: "jobs", label: "CI jobs" }
+];
+function depthRow(slug) {
+    var r = metricBySlug[slug];
+    if (!r) throw new Error("metrics row missing for " + slug);
+    var isInt = slug === internal;
+    var dataAttrs = depthCols.map(function (col) {
+        return "data-" + col.key + "=\"" + metricVal(metricCell(r, col.id)) + "\"";
+    }).join(" ");
+    var tds = depthCols.map(function (col) {
+        return "<td data-label=\"" + esc(col.label) + "\">" + esc(metricText(metricCell(r, col.id))) + "</td>";
+    }).join("");
+    var notes = depthCols.map(function (col) {
+        var c = metricCell(r, col.id);
+        if (!c.note) return "";
+        return "<li><span class=\"eco-meta\">" + esc(col.label) + ".</span> " + esc(c.note) + "</li>";
+    }).filter(Boolean).join("");
+    var open = notes ? "<details><summary>Notes<span class=\"visually-hidden\"> for " + esc(r.name) + " depth stats</span></summary><ul>" + notes + "</ul></details>" : "";
+    return "<tr data-slug=\"" + esc(slug) + "\" " + dataAttrs + "><th scope=\"row\"" + (isInt ? " class=\"internal\"" : "") + ">" + esc(r.name) + "</th>" + tds + "</tr>" +
+        (open ? "<tr data-slug=\"" + esc(slug) + "\" class=\"eco-open-row\"><td class=\"eco-open m-full\" colspan=\"" + (depthCols.length + 1) + "\">" + open + "</td></tr>" : "");
+}
+slots.depth = glanceOrder.map(depthRow).join("");
+slots["depth-caption"] = esc("Fuzz targets, test-line split, test-vector and spec file counts, unique commit authors and tagged releases in the 12 months from " + (metrics.window_start || "2025-11-12") + " to " + (metrics.window_end || "2026-11-12") + ", and GitHub Actions workflow and job counts. Measured " + (metrics.as_of || data.measured_at) + ". Sort buttons need JavaScript; the figures are in the table without it.");
+slots["depth-note"] = Object.keys(metrics.methods || {}).filter(function (k) { return k !== "plugin_system" && k !== "blvm_size"; }).map(function (k) {
+    return "<li>" + esc(k) + ". " + esc(metrics.methods[k]) + "</li>";
+}).join("");
+
 slots.omitted = esc(data.omitted || "");
 
 let html = fs.readFileSync(pagePath, "utf8");
