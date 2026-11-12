@@ -13,6 +13,7 @@ const pagePath = path.join(root, "ecosystem.html");
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/implementations.json"), "utf8"));
 const verification = JSON.parse(fs.readFileSync(path.join(root, "data/verification.json"), "utf8"));
 const stack = JSON.parse(fs.readFileSync(path.join(root, "data/stack.json"), "utf8"));
+const stability = JSON.parse(fs.readFileSync(path.join(root, "data/stability.json"), "utf8"));
 const metrics = JSON.parse(fs.readFileSync(path.join(root, "data/metrics.json"), "utf8"));
 
 function esc(s) {
@@ -153,6 +154,12 @@ const vCols = verification.columns || [];
 const statusClass = { "yes": "st-yes", "partial": "st-partial", "not found": "st-nf", "n/a": "st-na" };
 const glanceOrder = [internal].concat(["bitcoin-core", "knots-legacy", "bit-block", "bitcoin-roots", "bitcoin-rs", "satd", "libbitcoin", "hornet", "floresta", "rbitcoin", "btcd"].filter(function (s) { return s !== internal; }));
 const vBySlug = {}; (verification.rows || []).forEach(function (r) { vBySlug[r.slug] = r; });
+// Stability column: the checklist count, hatched while not measured.
+function stabCell(slug) {
+    const st = stabilityFor(slug);
+    const nm = st.measured === 0;
+    return "<td data-label=\"Stability\" class=\"stab" + (nm ? " stab-nm" : "") + "\"><span class=\"stab-mark\" aria-hidden=\"true\"></span>" + esc(nm ? "not measured" : st.met + " of " + st.total + " met, " + st.notMeasured + " not measured") + "</td>";
+}
 slots.glance = glanceOrder.map(function (slug) {
     var v = vBySlug[slug], g = govBySlug[slug];
     if (!v || !g) throw new Error("glance row missing for " + slug);
@@ -170,8 +177,8 @@ slots.glance = glanceOrder.map(function (slug) {
     }).join("");
     var open = "<details><summary>Sources<span class=\"visually-hidden\"> for " + esc(v.name) + "</span></summary><ul>" + notes + "</ul><p class=\"eco-meta\">" + esc(v.repo) + " at " + esc(v.commit) + ".</p></details>";
     return "<tr data-slug=\"" + esc(slug) + "\"><th scope=\"row\"" + (isInt ? " class=\"internal\"" : "") + ">" + esc(v.name) + "</th>" +
-        "<td class=\"gov m-full\" data-label=\"Governance model\"><span class=\"gov-label" + (isInt ? " internal" : "") + "\">" + esc(g.label) + "</span><small>" + esc(g.detail) + "</small></td>" + cells + "</tr>" +
-        "<tr data-slug=\"" + esc(slug) + "\" class=\"eco-open-row\"><td class=\"eco-open m-full\" colspan=\"" + (vCols.length + 2) + "\">" + open + "</td></tr>";
+        "<td class=\"gov m-full\" data-label=\"Governance model\"><span class=\"gov-label" + (isInt ? " internal" : "") + "\">" + esc(g.label) + "</span><small>" + esc(g.detail) + "</small></td>" + cells + stabCell(slug) + "</tr>" +
+        "<tr data-slug=\"" + esc(slug) + "\" class=\"eco-open-row\"><td class=\"eco-open m-full\" colspan=\"" + (vCols.length + 3) + "\">" + open + "</td></tr>";
 }).join("");
 slots["glance-caption"] = esc("Governance labels as of " + govModel.as_of + ". " + govModel.note + " Verification statuses as of " + verification.as_of + ". Each row's sources open under it.");
 slots["verify-note"] = esc(verification.note);
@@ -384,6 +391,37 @@ const ACCOUNT = [
     { rank: 3, match: "Foundation, one signing key", label: "Foundation key" },
     { rank: 4, match: "Commons governance", label: "Written rules" }
 ];
+// Stability: a checklist written by Research and scored by the metrics
+// script. A criterion a row does not carry is not measured. Met and not met
+// need an evidence link; anything else fails the render.
+function stabilityFor(slug) {
+    const STAB_STATUS = { met: 1, not_met: 1, not_measured: 1 };
+    const def = stability.definition || [];
+    const row = (stability.rows || {})[slug];
+    if (!row) throw new Error("stability: no row for " + slug);
+    Object.keys(row.criteria || {}).forEach(function (k) {
+        if (!def.some(function (c) { return c.id === k; })) throw new Error("stability: " + slug + " has unknown criterion " + k);
+    });
+    const all = def.map(function (c) {
+        const v = (row.criteria || {})[c.id] || { status: "not_measured" };
+        if (c.type === "tag") {
+            // Descriptive, not scored: a short tag with evidence, or not measured.
+            if (v.status !== "not_measured" && !(v.tag && /^https:\/\//.test(v.evidence_url || ""))) throw new Error("stability: tag " + slug + "/" + c.id + " needs tag and evidence_url");
+            return { id: c.id, label: c.label, why: c.why, type: "tag", status: v.status === "not_measured" ? "not_measured" : "tag", tag: v.tag || null, evidence_url: v.evidence_url || null };
+        }
+        if (!STAB_STATUS[v.status]) throw new Error("stability: bad status " + slug + "/" + c.id);
+        if (v.status !== "not_measured" && !/^https:\/\//.test(v.evidence_url || "")) throw new Error("stability: " + slug + "/" + c.id + " needs an evidence_url");
+        return { id: c.id, label: c.label, why: c.why, type: "check", status: v.status, evidence_url: v.evidence_url || null };
+    });
+    const cells = all.filter(function (c) { return c.type === "check"; });
+    const tags = all.filter(function (c) { return c.type === "tag"; });
+    const met = cells.filter(function (c) { return c.status === "met"; }).length;
+    const nm = cells.filter(function (c) { return c.status === "not_measured"; }).length;
+    const measured = cells.length - nm;
+    const text = cells.length ? met + " of " + cells.length + " met, " + nm + " not measured" : "not measured: the checklist is not written yet";
+    return { cells: cells, tags: tags, met: met, measured: measured, notMeasured: nm, total: cells.length, text: text };
+}
+
 function buildModel() {
     const hist = {}, gov = {}, ver = {}, trees = {}, met = {};
     data.governance.history.forEach(function (h) { hist[h.slug] = h.text; });
@@ -419,12 +457,18 @@ function buildModel() {
             size: t ? t.values.implementation_code : { value: null, text: "not measured", status: "not-measured" },
             shallow: t ? !!t.shallow : null,
             deps: { value: r.direct_deps, text: String(r.direct_deps) },
-            stack: r, metrics: met[r.slug] || null
+            stack: r, metrics: met[r.slug] || null,
+            stability: stabilityFor(r.slug)
         };
     });
-    return { rows: rows, pending: PENDING, points: POINTS, accountRanks: ACCOUNT };
+    const extra = Object.keys(stability.rows).filter(function (k) { return !rows.some(function (r) { return r.slug === k; }); }).map(function (k) {
+        const x = stability.rows[k];
+        if (x.on_page !== false) throw new Error("stability: row " + k + " has no implementation on the page; mark it on_page false");
+        return { slug: k, name: x.name, note: x.note, stability: stabilityFor(k) };
+    });
+    return { rows: rows, pending: PENDING, points: POINTS, accountRanks: ACCOUNT, stability: { note: stability.note, rule: stability.score_rule, definition: stability.definition, status: stability.status, extra: extra } };
 }
-const chartCtx = { root: root, data: data, verification: verification, stack: stack, metrics: metrics, model: buildModel(), readJson: function (rel) { return JSON.parse(fs.readFileSync(path.join(root, rel), "utf8")); } };
+const chartCtx = { root: root, data: data, verification: verification, stack: stack, metrics: metrics, stability: stability, model: buildModel(), readJson: function (rel) { return JSON.parse(fs.readFileSync(path.join(root, rel), "utf8")); } };
 for (const file of fs.existsSync(chartDir) ? fs.readdirSync(chartDir).filter(function (f) { return f.endsWith(".mjs"); }).sort() : []) {
     const def = (await import(pathToFileURL(path.join(chartDir, file)).href)).default;
     if (slots[def.slot] !== undefined) throw new Error("two charts fill slot " + def.slot);

@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "as_of": null,
+  "status": "definition pending",
+  "note": "Research writes the definition, a checklist of criteria a release line must meet to count as stable. scripts/measure-ecosystem-metrics.py fills the rows. Until both land, every cell is not measured.",
+  "score_rule": "Stability is shown as N of M met, K not measured. M counts every scored criterion in the definition, including the ones not measured, which are drawn hatched and never read as not met. Tag criteria, such as which upstream line a fork tracks, describe a project and are not scored.",
+  "statuses": {
+    "met": "The criterion holds, with an evidence link",
+    "not_met": "The criterion was checked and does not hold, with an evidence link",
+    "not_measured": "No reading yet; never read as not met"
+  },
+  "definition": [],
+  "definition_schema": {
+    "id": "short snake_case id",
+    "label": "what the criterion asks, in plain words",
+    "why": "one line on why it matters for a node operator",
+    "type": "check (scored met / not_met / not_measured) or tag (descriptive, not scored; for example tracks_upstream_line, forks only)"
+  },
+  "row_schema": {
+    "criteria": {
+      "<check id>": {
+        "status": "met | not_met | not_measured",
+        "evidence_url": "https URL pinned to a commit, tag or release; required unless not_measured",
+        "retrieved": "YYYY-MM-DD"
+      },
+      "<tag id>": {
+        "status": "tag | not_measured",
+        "tag": "short descriptive value, e.g. the upstream release line",
+        "evidence_url": "https URL; required unless not_measured",
+        "retrieved": "YYYY-MM-DD"
+      }
+    }
+  },
+  "rows": {
+    "blvm": {
+      "name": "BLVM",
+      "criteria": {}
+    },
+    "bitcoin-core": {
+      "name": "Bitcoin Core",
+      "criteria": {}
+    },
+    "knots-legacy": {
+      "name": "Knots Legacy",
+      "criteria": {}
+    },
+    "bit-block": {
+      "name": "Bit-Block",
+      "criteria": {}
+    },
+    "bitcoin-roots": {
+      "name": "Bitcoin Roots",
+      "criteria": {}
+    },
+    "bitcoin-rs": {
+      "name": "bitcoin-rs",
+      "criteria": {}
+    },
+    "satd": {
+      "name": "satd",
+      "criteria": {}
+    },
+    "libbitcoin": {
+      "name": "libbitcoin",
+      "criteria": {}
+    },
+    "hornet": {
+      "name": "Hornet",
+      "criteria": {}
+    },
+    "floresta": {
+      "name": "Floresta",
+      "criteria": {}
+    },
+    "rbitcoin": {
+      "name": "rbitcoin",
+      "criteria": {}
+    },
+    "btcd": {
+      "name": "btcd",
+      "criteria": {}
+    },
+    "bitcoin-untangled": {
+      "name": "Bitcoin Untangled",
+      "on_page": false,
+      "note": "Row reserved. Bitcoin Untangled has no lineage, governance or verification row on this page yet, so it has no card; its stability cells show here once measured.",
+      "criteria": {}
+    }
+  }
+}
