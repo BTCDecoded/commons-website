@@ -513,9 +513,9 @@
 
         <section class="eco-block" id="institution">
             <h2>Institution</h2>
-            <p id="eco-keyholders"></p>
-            <p class="eco-meta eco-follow" id="eco-jurisdiction"></p>
+            <p id="eco-rule-test"></p>
             <div id="chart-inst"></div>
+            <p class="eco-meta eco-follow" id="eco-jurisdiction"></p>
         </section>
 
         <section class="eco-block" id="rules">
@@ -528,6 +528,7 @@
             <h2>Written rule</h2>
             <p id="eco-gov-status"></p>
             <div id="chart-layers"></div>
+            <p class="eco-meta eco-follow" id="eco-layer-note"></p>
             <p class="eco-links"><a href="compact.html">The written rules</a> and <a href="whitepaper.html">the design argument</a> are the longer form.</p>
         </section>
 
@@ -738,13 +739,10 @@
                     var group = ruleRows.filter(function (row) { return row.instrument === instrument; }).sort(function (a, b) { return b.value - a.value; });
                     return "<section class=\"eco-group\"><h3>" + esc(instrument) + "</h3>" + bars(group, ruleScale) + "</section>";
                 }).join("") + "<p class=\"eco-meta\">Hornet has no rules cut on this clock, so it has no bar here.</p>";
-                document.getElementById("eco-keyholders").textContent = scan.keyholders || "";
+                document.getElementById("eco-rule-test").textContent = scan.rule_test || "";
                 document.getElementById("eco-jurisdiction").textContent = scan.jurisdiction || "";
-                var typeOrder = [];
-                (scan.institutions || []).forEach(function (item) { if (typeOrder.indexOf(item.type) < 0) typeOrder.push(item.type); });
-                document.getElementById("chart-inst").innerHTML = typeOrder.map(function (type) {
-                    var items = (scan.institutions || []).filter(function (item) { return item.type === type; });
-                    return "<section class=\"eco-group\"><h3>" + esc(type) + "</h3>" + items.map(function (item) {
+                document.getElementById("chart-inst").innerHTML = (scan.categories || []).map(function (cat) {
+                    return "<section class=\"eco-group\"><h3>" + esc(cat.title) + "</h3>" + (cat.items || []).map(function (item) {
                         return "<article class=\"eco-finding\"><h4>" + esc(item.name) + "</h4><p>" + esc(item.text) + "</p></article>";
                     }).join("") + "</section>";
                 }).join("");
@@ -752,6 +750,7 @@
                 document.getElementById("eco-gov-status").textContent = gov.status || "";
                 document.getElementById("eco-gov-quorum").textContent = gov.quorum || "";
                 var layers = gov.layers || [];
+                document.getElementById("eco-layer-note").textContent = gov.layer_note || "";
                 document.getElementById("chart-layers").innerHTML = bars(layers.map(function (layer) {
                     var review = layer.review_period_days + "-day review";
                     if (layer.consensus_review_period_days) review += ", " + layer.consensus_review_period_days + "-day consensus review";
