@@ -5,12 +5,16 @@
   "window_end": "2026-11-12",
   "window_label": "last 12 months",
   "methods": {
-    "plugin_system": "yes / no / partial from the pinned tree's docs. own-team optional modules and independently maintained modules; not found when no source.",
-    "blvm_size": "Default node first-party crates plus blvm-sdk (blvm-storage-fence lives in the node tree; blvm-sdk-macros lives in the sdk tree). blvm-spec-lock non-test lines are tooling. Tests include spec-lock tests. Same tokei 14 and #[cfg(test)] rules as test_split.",
     "test_split": "tokei 14 code lines in programming languages only. A file under tests/, test/, e2e/, qa/, or functional/, or named *_test/_tests/test_*, counts as tests. Rust lines inside a #[cfg(test)] or #[cfg(all(..., test))] item count as tests. Partition: fuzz paths (fuzz/, fuzz_targets/, src/test/fuzz/); property (path or name contains property/proptest/quickcheck/hypothesis/orange_paper_property); C++ src/test as unit; remaining integration dirs as integration; other in-source tests as unit. Benches under bench(es)/ are grouped with unit. Vendored and locale paths are excluded.",
     "fuzz_targets": "Count of cargo-fuzz targets in fuzz/fuzz_targets/*.rs (excluding mod.rs) plus Bitcoin Core-style src/test/fuzz/*.cpp (excluding util helpers). Measured at the pinned checkout.",
     "vector_files": "Files whose path or name looks like a test vector (vector, tx_valid, tx_invalid, script_tests, sighash, bipN) with suffix .json, .csv, or .hex.",
-    "spec_files": "Documentation or model files whose name looks like a spec (spec, THE_ORANGE_PAPER, orange paper, bipN) with suffix .md, .rst, .txt, .lean, or .tex. LICENSE and contributing files are excluded."
+    "spec_files": "Documentation or model files whose name looks like a spec (spec, THE_ORANGE_PAPER, orange paper, bipN) with suffix .md, .rst, .txt, .lean, or .tex. LICENSE and contributing files are excluded.",
+    "authors_12m": "Unique git author names (%aN) on the landing-share repo set from 2025-11-12 to 2026-11-12 inclusive. Names are not merged. A shallow clone that does not reach the window start is not measured.",
+    "releases_12m": "Git tags whose creatordate falls in 2025-11-12 to 2026-11-12. Annotated tags use the tagger date; lightweight tags use the tagged commit date.",
+    "ci_workflows": "Number of .github/workflows/*.{yml,yaml} files at the pin.",
+    "ci_jobs": "GitHub Actions jobs at the pin, expanding a static matrix of lists (including include/, minus exclude/). Dynamic ${{ }} matrices are not expanded and are noted.",
+    "plugin_system": "yes / no / partial from the pinned tree's docs. own-team optional modules and independently maintained modules; not found when no source.",
+    "blvm_size": "Default node first-party crates plus blvm-sdk (blvm-storage-fence lives in the node tree; blvm-sdk-macros lives in the sdk tree). blvm-spec-lock non-test lines are tooling. Tests include spec-lock tests. Same tokei 14 and #[cfg(test)] rules as test_split."
   },
   "rows": [
     {
@@ -68,22 +72,6 @@
         }
       ],
       "measured_at": "2026-11-12",
-      "plugin_system": {
-        "value": "yes",
-        "text": "yes",
-        "status": "measured"
-      },
-      "plugin_own": {
-        "value": 8,
-        "text": "8",
-        "status": "measured"
-      },
-      "plugin_independent": {
-        "value": null,
-        "text": "not found",
-        "status": "not-found"
-      },
-      "plugin_source": "docs/MODULE_SYSTEM.md and modules/README.md at blvm-node 36bb40c7e9a3f805274fa7e1bda30d0a6c082560. Official registry https://raw.githubusercontent.com/BTCDecoded/blvm/main/registry/modules.json fetched 2026-11-12 (eight BTCDecoded modules). Independently maintained modules: not found.",
       "fuzz_targets": {
         "value": 156,
         "text": "156",
@@ -124,21 +112,39 @@
         "value": 6,
         "text": "6",
         "status": "measured"
-      }
-    },
-    {
-      "slug": "bitcoin-core",
-      "name": "Bitcoin Core",
-      "commit": "f0de87f040621468b956f01f526a43a010310501",
-      "measured_at": "2026-11-12",
+      },
+      "authors_12m": {
+        "value": 8,
+        "text": "8",
+        "status": "measured",
+        "note": "landing share repo: blvm-node only. oldest visible 2025-10-19"
+      },
+      "releases_12m": {
+        "value": 85,
+        "text": "85",
+        "status": "measured",
+        "note": "git tags in the window by creatordate, excluding names that contain / (Go module subpath tags) (blvm-node tags)"
+      },
+      "ci_workflows": {
+        "value": 2,
+        "text": "2",
+        "status": "measured"
+      },
+      "ci_jobs": {
+        "value": 13,
+        "text": "13",
+        "status": "measured",
+        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists"
+      },
+      "repo_set": "authors/releases/CI: landing share (blvm-node). test/fuzz/vectors: composite crate set",
       "plugin_system": {
-        "value": "no",
-        "text": "no",
+        "value": "yes",
+        "text": "yes",
         "status": "measured"
       },
       "plugin_own": {
-        "value": 0,
-        "text": "0",
+        "value": 8,
+        "text": "8",
         "status": "measured"
       },
       "plugin_independent": {
@@ -146,7 +152,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "No loadable plugin API found. doc/multiprocess.md describes IPC for supplemental bitcoin-node and bitcoin-gui binaries, not third-party modules.",
+      "plugin_source": "docs/MODULE_SYSTEM.md and modules/README.md at blvm-node 36bb40c7e9a3f805274fa7e1bda30d0a6c082560. Official registry https://raw.githubusercontent.com/BTCDecoded/blvm/main/registry/modules.json fetched 2026-11-12 (eight BTCDecoded modules). Independently maintained modules: not found."
+    },
+    {
+      "slug": "bitcoin-core",
+      "name": "Bitcoin Core",
+      "commit": "f0de87f040621468b956f01f526a43a010310501",
+      "measured_at": "2026-11-12",
       "fuzz_targets": {
         "value": 140,
         "text": "140",
@@ -186,13 +198,31 @@
         "value": 0,
         "text": "0",
         "status": "measured"
-      }
-    },
-    {
-      "slug": "knots-legacy",
-      "name": "Knots Legacy",
-      "commit": "7936c49b6739640eb71e55eb2b5f720179b9c3b4",
-      "measured_at": "2026-11-12",
+      },
+      "authors_12m": {
+        "value": 153,
+        "text": "153",
+        "status": "measured",
+        "note": "oldest visible 2009-08-30"
+      },
+      "releases_12m": {
+        "value": 34,
+        "text": "34",
+        "status": "measured",
+        "note": "git tags in the window by creatordate, excluding names that contain / (Go module subpath tags)"
+      },
+      "ci_workflows": {
+        "value": 1,
+        "text": "1",
+        "status": "measured"
+      },
+      "ci_jobs": {
+        "value": 38,
+        "text": "38",
+        "status": "measured",
+        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists"
+      },
+      "repo_set": "landing share repo (single tree)",
       "plugin_system": {
         "value": "no",
         "text": "no",
@@ -208,7 +238,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found.",
+      "plugin_source": "No loadable plugin API found. doc/multiprocess.md describes IPC for supplemental bitcoin-node and bitcoin-gui binaries, not third-party modules."
+    },
+    {
+      "slug": "knots-legacy",
+      "name": "Knots Legacy",
+      "commit": "7936c49b6739640eb71e55eb2b5f720179b9c3b4",
+      "measured_at": "2026-11-12",
       "fuzz_targets": {
         "value": 130,
         "text": "130",
@@ -248,13 +284,31 @@
         "value": 0,
         "text": "0",
         "status": "measured"
-      }
-    },
-    {
-      "slug": "bit-block",
-      "name": "Bit-Block",
-      "commit": "c52f1161349e6a76463156fea39bce191951b915",
-      "measured_at": "2026-11-12",
+      },
+      "authors_12m": {
+        "value": 47,
+        "text": "47",
+        "status": "measured",
+        "note": "oldest visible 2009-08-30"
+      },
+      "releases_12m": {
+        "value": 1,
+        "text": "1",
+        "status": "measured",
+        "note": "git tags in the window by creatordate, excluding names that contain / (Go module subpath tags)"
+      },
+      "ci_workflows": {
+        "value": 4,
+        "text": "4",
+        "status": "measured"
+      },
+      "ci_jobs": {
+        "value": 29,
+        "text": "29",
+        "status": "measured",
+        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists"
+      },
+      "repo_set": "landing share repo (single tree)",
       "plugin_system": {
         "value": "no",
         "text": "no",
@@ -270,7 +324,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found.",
+      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found."
+    },
+    {
+      "slug": "bit-block",
+      "name": "Bit-Block",
+      "commit": "c52f1161349e6a76463156fea39bce191951b915",
+      "measured_at": "2026-11-12",
       "fuzz_targets": {
         "value": 130,
         "text": "130",
@@ -310,13 +370,31 @@
         "value": 0,
         "text": "0",
         "status": "measured"
-      }
-    },
-    {
-      "slug": "bitcoin-roots",
-      "name": "Bitcoin Roots",
-      "commit": "f0393f2688656ba544b40fe508db909152201c18",
-      "measured_at": "2026-11-12",
+      },
+      "authors_12m": {
+        "value": 2,
+        "text": "2",
+        "status": "measured",
+        "note": "oldest visible 2025-08-23"
+      },
+      "releases_12m": {
+        "value": 2,
+        "text": "2",
+        "status": "measured",
+        "note": "git tags in the window by creatordate, excluding names that contain / (Go module subpath tags)"
+      },
+      "ci_workflows": {
+        "value": 3,
+        "text": "3",
+        "status": "measured"
+      },
+      "ci_jobs": {
+        "value": 5,
+        "text": "5",
+        "status": "measured",
+        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists"
+      },
+      "repo_set": "landing share repo (single tree)",
       "plugin_system": {
         "value": "no",
         "text": "no",
@@ -332,7 +410,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found.",
+      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found."
+    },
+    {
+      "slug": "bitcoin-roots",
+      "name": "Bitcoin Roots",
+      "commit": "f0393f2688656ba544b40fe508db909152201c18",
+      "measured_at": "2026-11-12",
       "fuzz_targets": {
         "value": 141,
         "text": "141",
@@ -372,13 +456,31 @@
         "value": 0,
         "text": "0",
         "status": "measured"
-      }
-    },
-    {
-      "slug": "bitcoin-rs",
-      "name": "bitcoin-rs",
-      "commit": "9b8e91ae1aadfaad08e7fccbfa895bcbf41c6620",
-      "measured_at": "2026-11-12",
+      },
+      "authors_12m": {
+        "value": 154,
+        "text": "154",
+        "status": "measured",
+        "note": "oldest visible 2009-08-30"
+      },
+      "releases_12m": {
+        "value": 14,
+        "text": "14",
+        "status": "measured",
+        "note": "git tags in the window by creatordate, excluding names that contain / (Go module subpath tags)"
+      },
+      "ci_workflows": {
+        "value": 4,
+        "text": "4",
+        "status": "measured"
+      },
+      "ci_jobs": {
+        "value": 32,
+        "text": "32",
+        "status": "measured",
+        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists. nightly.yml/linux-assurance: matrix not expanded; nightly.yml/sanitizers: matrix not expanded"
+      },
+      "repo_set": "landing share repo (single tree)",
       "plugin_system": {
         "value": "no",
         "text": "no",
@@ -394,7 +496,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "No plugin or loadable module system found in the tree's docs at 9b8e91ae.",
+      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found."
+    },
+    {
+      "slug": "bitcoin-rs",
+      "name": "bitcoin-rs",
+      "commit": "9b8e91ae1aadfaad08e7fccbfa895bcbf41c6620",
+      "measured_at": "2026-11-12",
       "fuzz_targets": {
         "value": 23,
         "text": "23",
@@ -434,13 +542,31 @@
         "value": 2,
         "text": "2",
         "status": "measured"
-      }
-    },
-    {
-      "slug": "satd",
-      "name": "satd",
-      "commit": "f0ea0e5dfa8446d9cb63fef0a22eaf5f976216ce",
-      "measured_at": "2026-11-12",
+      },
+      "authors_12m": {
+        "value": 32,
+        "text": "32",
+        "status": "measured",
+        "note": "repository begins 2026-05-19 (inside window; full history)"
+      },
+      "releases_12m": {
+        "value": 0,
+        "text": "0",
+        "status": "measured",
+        "note": "git tags in the window by creatordate, excluding names that contain / (Go module subpath tags)"
+      },
+      "ci_workflows": {
+        "value": 12,
+        "text": "12",
+        "status": "measured"
+      },
+      "ci_jobs": {
+        "value": 27,
+        "text": "27",
+        "status": "measured",
+        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists. main.yml: parse error; daily-fuzz.yml/fuzz: matrix not expanded"
+      },
+      "repo_set": "landing share repo (single tree)",
       "plugin_system": {
         "value": "no",
         "text": "no",
@@ -456,7 +582,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "No plugin or loadable module system found. In-tree MCP crate and webhooks are APIs, not loadable modules.",
+      "plugin_source": "No plugin or loadable module system found in the tree's docs at 9b8e91ae."
+    },
+    {
+      "slug": "satd",
+      "name": "satd",
+      "commit": "f0ea0e5dfa8446d9cb63fef0a22eaf5f976216ce",
+      "measured_at": "2026-11-12",
       "fuzz_targets": {
         "value": 7,
         "text": "7",
@@ -496,13 +628,31 @@
         "value": 0,
         "text": "0",
         "status": "measured"
-      }
-    },
-    {
-      "slug": "libbitcoin",
-      "name": "libbitcoin",
-      "commit": "9f9cce3086074840951cedf1d381f08112275bfd",
-      "measured_at": "2026-11-12",
+      },
+      "authors_12m": {
+        "value": 2,
+        "text": "2",
+        "status": "measured",
+        "note": "repository begins 2026-03-16 (inside window; full history)"
+      },
+      "releases_12m": {
+        "value": 20,
+        "text": "20",
+        "status": "measured",
+        "note": "git tags in the window by creatordate, excluding names that contain / (Go module subpath tags)"
+      },
+      "ci_workflows": {
+        "value": 18,
+        "text": "18",
+        "status": "measured"
+      },
+      "ci_jobs": {
+        "value": 81,
+        "text": "81",
+        "status": "measured",
+        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists. appliance.yml/image: matrix not expanded; mutants.yml/mutate: matrix not expanded"
+      },
+      "repo_set": "landing share repo (single tree)",
       "plugin_system": {
         "value": "no",
         "text": "no",
@@ -518,7 +668,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "README: a toolkit of separately cloned C++ libraries, not a runtime module system in this libbitcoin-system row.",
+      "plugin_source": "No plugin or loadable module system found. In-tree MCP crate and webhooks are APIs, not loadable modules."
+    },
+    {
+      "slug": "libbitcoin",
+      "name": "libbitcoin",
+      "commit": "9f9cce3086074840951cedf1d381f08112275bfd",
+      "measured_at": "2026-11-12",
       "fuzz_targets": {
         "value": 0,
         "text": "0",
@@ -558,13 +714,31 @@
         "value": 0,
         "text": "0",
         "status": "measured"
-      }
-    },
-    {
-      "slug": "hornet",
-      "name": "Hornet",
-      "commit": "151462fa5ceece39c159674886dcfa6cfe9b1234",
-      "measured_at": "2026-11-12",
+      },
+      "authors_12m": {
+        "value": 17,
+        "text": "17",
+        "status": "measured",
+        "note": "oldest visible 2011-05-19"
+      },
+      "releases_12m": {
+        "value": 9,
+        "text": "9",
+        "status": "measured",
+        "note": "git tags in the window by creatordate, excluding names that contain / (Go module subpath tags)"
+      },
+      "ci_workflows": {
+        "value": 2,
+        "text": "2",
+        "status": "measured"
+      },
+      "ci_jobs": {
+        "value": 26,
+        "text": "26",
+        "status": "measured",
+        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists"
+      },
+      "repo_set": "landing share repo (single tree)",
       "plugin_system": {
         "value": "no",
         "text": "no",
@@ -580,7 +754,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "No plugin or loadable module system found in the tree's docs at 151462fa.",
+      "plugin_source": "README: a toolkit of separately cloned C++ libraries, not a runtime module system in this libbitcoin-system row."
+    },
+    {
+      "slug": "hornet",
+      "name": "Hornet",
+      "commit": "151462fa5ceece39c159674886dcfa6cfe9b1234",
+      "measured_at": "2026-11-12",
       "fuzz_targets": {
         "value": 0,
         "text": "0",
@@ -620,13 +800,31 @@
         "value": 2,
         "text": "2",
         "status": "measured"
-      }
-    },
-    {
-      "slug": "floresta",
-      "name": "Floresta",
-      "commit": "cdbcf5a13cba2b0aab505977ba413f707bc06290",
-      "measured_at": "2026-11-12",
+      },
+      "authors_12m": {
+        "value": 2,
+        "text": "2",
+        "status": "measured",
+        "note": "oldest visible 2025-05-03"
+      },
+      "releases_12m": {
+        "value": 0,
+        "text": "0",
+        "status": "measured",
+        "note": "git tags in the window by creatordate, excluding names that contain / (Go module subpath tags)"
+      },
+      "ci_workflows": {
+        "value": 0,
+        "text": "0",
+        "status": "measured"
+      },
+      "ci_jobs": {
+        "value": 0,
+        "text": "0",
+        "status": "measured",
+        "note": "no .github/workflows directory"
+      },
+      "repo_set": "landing share repo (single tree)",
       "plugin_system": {
         "value": "no",
         "text": "no",
@@ -642,7 +840,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "Compile-time Cargo features only (zmq-server, metrics, tokio-console; default json-rpc enables compact-filters) in bin/florestad/Cargo.toml. No loadable plugin API found.",
+      "plugin_source": "No plugin or loadable module system found in the tree's docs at 151462fa."
+    },
+    {
+      "slug": "floresta",
+      "name": "Floresta",
+      "commit": "cdbcf5a13cba2b0aab505977ba413f707bc06290",
+      "measured_at": "2026-11-12",
       "fuzz_targets": {
         "value": 15,
         "text": "15",
@@ -682,13 +886,31 @@
         "value": 0,
         "text": "0",
         "status": "measured"
-      }
-    },
-    {
-      "slug": "rbitcoin",
-      "name": "rbitcoin",
-      "commit": "ca7bf804ed44d7efdca3da219ead6e644d35fd9e",
-      "measured_at": "2026-11-12",
+      },
+      "authors_12m": {
+        "value": 47,
+        "text": "47",
+        "status": "measured",
+        "note": "author history from a blobless clone, shallow; oldest visible 2025-11-19 (window starts 2025-11-12; count may miss the first days)"
+      },
+      "releases_12m": {
+        "value": 4,
+        "text": "4",
+        "status": "measured",
+        "note": "git tags in the window by creatordate, excluding names that contain / (Go module subpath tags)"
+      },
+      "ci_workflows": {
+        "value": 7,
+        "text": "7",
+        "status": "measured"
+      },
+      "ci_jobs": {
+        "value": 16,
+        "text": "16",
+        "status": "measured",
+        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists"
+      },
+      "repo_set": "landing share repo (single tree)",
       "plugin_system": {
         "value": "no",
         "text": "no",
@@ -704,7 +926,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "No plugin or loadable module system found in the tree's docs at ca7bf804.",
+      "plugin_source": "Compile-time Cargo features only (zmq-server, metrics, tokio-console; default json-rpc enables compact-filters) in bin/florestad/Cargo.toml. No loadable plugin API found."
+    },
+    {
+      "slug": "rbitcoin",
+      "name": "rbitcoin",
+      "commit": "ca7bf804ed44d7efdca3da219ead6e644d35fd9e",
+      "measured_at": "2026-11-12",
       "fuzz_targets": {
         "value": 21,
         "text": "21",
@@ -744,21 +972,39 @@
         "value": 1,
         "text": "1",
         "status": "measured"
-      }
-    },
-    {
-      "slug": "btcd",
-      "name": "btcd",
-      "commit": "dd169fe0c32a56087d28b92fff3b8cf4fb43477a",
-      "measured_at": "2026-11-12",
+      },
+      "authors_12m": {
+        "value": 38,
+        "text": "38",
+        "status": "measured",
+        "note": "author history from a blobless clone, repository begins 2026-07-14 (inside window; full history)"
+      },
+      "releases_12m": {
+        "value": 10,
+        "text": "10",
+        "status": "measured",
+        "note": "git tags in the window by creatordate, excluding names that contain / (Go module subpath tags)"
+      },
+      "ci_workflows": {
+        "value": 12,
+        "text": "12",
+        "status": "measured"
+      },
+      "ci_jobs": {
+        "value": 57,
+        "text": "57",
+        "status": "measured",
+        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists"
+      },
+      "repo_set": "landing share repo (single tree)",
       "plugin_system": {
-        "value": "partial",
-        "text": "partial",
+        "value": "no",
+        "text": "no",
         "status": "measured"
       },
       "plugin_own": {
-        "value": 2,
-        "text": "2",
+        "value": 0,
+        "text": "0",
         "status": "measured"
       },
       "plugin_independent": {
@@ -766,7 +1012,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "database/README.md: designed for different database backends (default ffldb). blockchain/indexers/README.md: two optional in-tree indexers (tx-by-hash, tx-by-address). Not a third-party plugin API. Independently maintained modules: not found.",
+      "plugin_source": "No plugin or loadable module system found in the tree's docs at ca7bf804."
+    },
+    {
+      "slug": "btcd",
+      "name": "btcd",
+      "commit": "dd169fe0c32a56087d28b92fff3b8cf4fb43477a",
+      "measured_at": "2026-11-12",
       "fuzz_targets": {
         "value": 0,
         "text": "0",
@@ -806,7 +1058,47 @@
         "value": 0,
         "text": "0",
         "status": "measured"
-      }
+      },
+      "authors_12m": {
+        "value": 23,
+        "text": "23",
+        "status": "measured",
+        "note": "author history from a blobless clone, shallow; oldest visible 2025-11-14 (window starts 2025-11-12; count may miss the first days)"
+      },
+      "releases_12m": {
+        "value": 5,
+        "text": "5",
+        "status": "measured",
+        "note": "git tags in the window by creatordate, excluding names that contain / (Go module subpath tags)"
+      },
+      "ci_workflows": {
+        "value": 3,
+        "text": "3",
+        "status": "measured"
+      },
+      "ci_jobs": {
+        "value": 8,
+        "text": "8",
+        "status": "measured",
+        "note": "GitHub Actions workflow files; jobs count expands a static matrix of lists"
+      },
+      "repo_set": "landing share repo (single tree)",
+      "plugin_system": {
+        "value": "partial",
+        "text": "partial",
+        "status": "measured"
+      },
+      "plugin_own": {
+        "value": 2,
+        "text": "2",
+        "status": "measured"
+      },
+      "plugin_independent": {
+        "value": null,
+        "text": "not found",
+        "status": "not-found"
+      },
+      "plugin_source": "database/README.md: designed for different database backends (default ffldb). blockchain/indexers/README.md: two optional in-tree indexers (tx-by-hash, tx-by-address). Not a third-party plugin API. Independently maintained modules: not found."
     }
   ]
 }
