@@ -6,7 +6,7 @@
 // Usage: node scripts/render-ecosystem.mjs   (run after the data file changes)
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const pagePath = path.join(root, "ecosystem.html");
@@ -280,9 +280,21 @@ slots["weekly-cuts"] = byInstrument(trees).map(function (g) {
 }).join("") + notes(cutMethods);
 slots.omitted = esc(data.omitted || "");
 
+// Summary charts: one definition file per chart in scripts/ecosystem-charts/,
+// each exporting { slot, build(ctx) }. Removing a file drops its chart; its
+// slot then renders empty.
+const chartDir = path.join(root, "scripts/ecosystem-charts");
+const chartCtx = { root: root, data: data, verification: verification, stack: stack, readJson: function (rel) { return JSON.parse(fs.readFileSync(path.join(root, rel), "utf8")); } };
+for (const file of fs.existsSync(chartDir) ? fs.readdirSync(chartDir).filter(function (f) { return f.endsWith(".mjs"); }).sort() : []) {
+    const def = (await import(pathToFileURL(path.join(chartDir, file)).href)).default;
+    if (slots[def.slot] !== undefined) throw new Error("two charts fill slot " + def.slot);
+    slots[def.slot] = def.build(chartCtx);
+}
+
 let html = fs.readFileSync(pagePath, "utf8");
 const seen = new Set();
 html = html.replace(/<!--slot:([a-z-]+)-->[\s\S]*?<!--\/slot:\1-->/g, function (all, name) {
+    if (!(name in slots) && name.indexOf("chart-") === 0) slots[name] = "";
     if (!(name in slots)) throw new Error("no renderer for slot " + name);
     seen.add(name);
     return "<!--slot:" + name + "-->" + slots[name] + "<!--/slot:" + name + "-->";

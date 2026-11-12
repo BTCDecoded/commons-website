@@ -739,6 +739,53 @@
             .eco-key { grid-template-columns: 1fr; }
             .eco-measures { grid-template-columns: 1fr; }
         }
+        /* Summary charts (scripts/charts.mjs). */
+        .ch { margin: 0.75rem 0 1.25rem; padding: 0.9rem 1rem 0.75rem; border: 1px solid var(--rule); border-radius: 10px; background: #111113; max-width: 52rem; }
+        .ch figcaption { margin: 0 0 0.75rem; color: var(--text); line-height: 1.45; }
+        .ch-head { display: block; color: var(--white); font-weight: 500; font-size: 1.05rem; margin-bottom: 0.2rem; }
+        .ch-cap { color: #c4c4cc; font-size: 0.9rem; }
+        .ch-svg { display: block; width: 100%; height: auto; overflow: visible; }
+        .ch-narrow { display: none; }
+        @media (max-width: 640px) { .ch-wide { display: none; } .ch-narrow { display: block; } .ch { padding: 0.75rem 0.7rem 0.6rem; } }
+        .eco .ch-note, .eco .ch-src { margin: 0.6rem 0 0; font-size: 0.85rem; color: #c4c4cc; max-width: none; }
+        @media (max-width: 768px) { #content .ch-note, #content .ch-src, #content .ch-cap { font-size: 1rem; } }
+        .ch-t { font-family: var(--font-sans); fill: var(--text); }
+        .ch-label { fill: var(--text); }
+        .ch-val { fill: var(--white); font-family: var(--font-mono); }
+        .ch-muted { fill: #a8a8b3; }
+        .ch-hl { fill: var(--orange); font-weight: 600; }
+        .ch-track { fill: #1d1d21; }
+        .ch-fill { fill: #b9b9c2; }
+        .ch-fill-hl { fill: var(--orange); }
+        .ch-seg-hl { fill: var(--orange); }
+        .ch-seg-a { fill: #b9b9c2; }
+        .ch-seg-b { fill: #7eb6ff; }
+        .ch-seg-c { fill: #c4a574; }
+        .ch-seg-muted { fill: #3a3a42; }
+        .ch-colh { fill: #c4c4cc; }
+        .ch-cell.st-yes { fill: var(--orange); }
+        .ch-cell.st-partial { fill: #6b3a10; stroke: var(--orange); stroke-width: 1; }
+        .ch-cell.st-nf { fill: #1d1d21; stroke: #3a3a42; stroke-width: 1; }
+        .ch-cell.st-na { fill: none; stroke: #2a2a2f; stroke-dasharray: 3 3; }
+        .ch-cellt { font-size: 12px; }
+        .st-yes-t { fill: #111113; font-weight: 600; }
+        .st-partial-t { fill: #ffd9b3; }
+        .st-nf-t { fill: #a8a8b3; }
+        .st-na-t { fill: #a8a8b3; }
+        .ch-grid { stroke: #222227; stroke-width: 1; }
+        .ch-dot { fill: #b9b9c2; stroke: #111113; stroke-width: 1.5; }
+        .ch-dot-hl { fill: var(--orange); stroke: #111113; stroke-width: 1.5; }
+        .ch-leader { stroke: #5a5a64; stroke-width: 1; }
+        .ch-group { fill: #17171a; stroke: var(--rule); }
+        .ch-group-core { stroke: #6d7c8a; }
+        .ch-ghead { fill: #c4c4cc; font-size: 12px; letter-spacing: 0.03em; text-transform: uppercase; }
+        .ch-node { fill: #1d1d21; stroke: #4a4a52; }
+        .ch-node-hl { stroke: var(--orange); }
+        .ch-node-muted { fill: none; stroke: #4a4a52; stroke-dasharray: 4 3; }
+        .ch-nodet { fill: var(--white); }
+        .ch-edge { fill: none; stroke: #8a8a94; stroke-width: 1.5; }
+        .ch-edge-dash { stroke-dasharray: 5 4; }
+        .ch-arrowhead { fill: #8a8a94; }
     </style>
 </head>
 <body>
@@ -798,6 +845,8 @@
 
         <section class="eco-block wide eco-why" id="why" aria-labelledby="why-h">
             <h2 id="why-h">Why the ecosystem matters</h2>
+            <!--slot:chart-node-share--><!--/slot:chart-node-share-->
+            <!--slot:chart-lineage--><!--/slot:chart-lineage-->
             <h3>Bitcoin is a commons</h3>
             <p>Anyone can run a node, transact, or mine. The code most of the network runs is a commons too: many depend on it and no one owns it. Elinor Ostrom found that commons last when their rules are visible, the people bound by the rules take part in changing them, those who decide answer to the people affected, and exit is real rather than theoretical. A commons without those properties runs down.</p>
             <h3>One lineage runs the network</h3>
@@ -813,6 +862,8 @@
 
         <section class="eco-block wide" id="commons" aria-labelledby="commons-h">
             <h2 id="commons-h">Governance and verification</h2>
+            <!--slot:chart-verification--><!--/slot:chart-verification-->
+            <!--slot:chart-spec-proof--><!--/slot:chart-spec-proof-->
             <div class="eco-tools" id="eco-tools" hidden>
                 <p class="eco-tools-label" id="eco-show-label">Show</p>
                 <div class="eco-chips" role="group" aria-labelledby="eco-show-label" id="eco-chips"></div>
@@ -845,6 +896,7 @@
         <section class="eco-block wide eco-foldable" id="stack" aria-labelledby="stack-h">
             <details class="eco-fold">
             <summary><h2 id="stack-h">Stack and dependencies</h2><span class="eco-fold-hint">License, languages, dependencies, vendored code</span></summary>
+            <!--slot:chart-deps--><!--/slot:chart-deps-->
             <p class="eco-meta">Direct deps: direct third-party libraries of a default node build, excluding build tools, test and dev dependencies, off-by-default extras and the project&rsquo;s own crates. Vendored source is counted separately. No transitive counts.</p>
             <div class="eco-scroll" tabindex="0" role="region" aria-label="Stack and dependencies table">
                 <table class="eco-glance eco-deps" id="eco-deps">
@@ -901,6 +953,7 @@
 
         <section class="eco-block wide" id="institution" aria-labelledby="institution-h">
             <h2 id="institution-h">Institution</h2>
+            <!--slot:chart-concentration--><!--/slot:chart-concentration-->
             <p id="eco-inst-lead"><!--slot:inst-lead-->BLVM: one author, 825 of 854 in blvm-node. The written rule is 6 of 7 signatures, 180-day review, 365-day consensus review. Phase 1 is current. Enforcement is off and the keys are test keys. The signature counts are the written rule.<!--/slot:inst-lead--></p>
             <p class="eco-follow" id="eco-rule-test"><!--slot:rule-test-->A statement that names a consequence is a rule, and a statement that names none is a norm. The rows below use that test on the files and the history this scan actually has. Judgment scores are not printed here, because they are not measurements.<!--/slot:rule-test--></p>
             <div class="eco-scroll" tabindex="0" role="region" aria-label="Institution board" id="chart-inst">
