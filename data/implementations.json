@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "measured_at": "2026-11-11",
+  "measured_at": "2026-11-12",
   "internal_slug": "blvm",
   "internal_name": "commons",
   "class": "Bitcoin full-node source trees already compared on this machine, plus Bitcoin Core as the secsov baseline and Knots because that checkout uses Core's src layout. GridPool is outside this class. The 2026-10-01 Commons Pool note is a reward-network request.",
@@ -64,16 +64,16 @@
     {
       "id": "share_lines_ge_1000",
       "name": "Lines in files of 1,000 or more",
-      "unit": "percent of implementation files' code",
+      "unit": "percent of program code",
       "compare": "same-counter",
-      "why": "How much of the implementation sits in large files."
+      "why": "How much of the program sits in large files. Tooling is outside this share. Spec lock is tooling on commons."
     },
     {
       "id": "files_holding_half",
-      "name": "Files holding half the implementation",
+      "name": "Files holding half the program",
       "unit": "files",
       "compare": "same-counter",
-      "why": "Smallest set of implementation files whose code lines reach half the implementation."
+      "why": "Smallest set of program files whose code lines reach half the program code. Tooling is outside this count."
     }
   ],
   "trees": [
@@ -127,13 +127,13 @@
           "status": "measured"
         },
         "share_lines_ge_1000": {
-          "value": 71.7,
-          "text": "71.7%",
+          "value": 64.2,
+          "text": "64.2%",
           "status": "measured"
         },
         "files_holding_half": {
-          "value": 36,
-          "text": "36",
+          "value": 39,
+          "text": "39",
           "status": "measured"
         }
       }
@@ -432,13 +432,13 @@
           "status": "measured"
         },
         "share_lines_ge_1000": {
-          "value": 17.1,
-          "text": "17.1%",
+          "value": 16.5,
+          "text": "16.5%",
           "status": "measured"
         },
         "files_holding_half": {
-          "value": 259,
-          "text": "259",
+          "value": 253,
+          "text": "253",
           "status": "measured"
         }
       }
