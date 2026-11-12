@@ -6,10 +6,10 @@
   "window_label": "last 12 months",
   "methods": {
     "test_split": "tokei 14 code lines in programming languages only. A file under tests/, test/, e2e/, qa/, or functional/, or named *_test/_tests/test_*, counts as tests. Rust lines inside a #[cfg(test)] or #[cfg(all(..., test))] item count as tests. Partition: fuzz paths (fuzz/, fuzz_targets/, src/test/fuzz/); property (path or name contains property/proptest/quickcheck/hypothesis/orange_paper_property); in-source tests (files next to program sources, including in-file #[cfg(test)] and C++ src/test); test-folder tests (remaining files under tests/, test/, e2e/, qa/, or functional/). This is a folder split, not a unit-vs-integration classification. Benches under bench(es)/ are grouped with in-source tests. Vendored and locale paths are excluded. test_insource / test_folder are the canonical fields; test_unit / test_integration are aliases of those values.",
-    "fuzz_targets": "Declared fuzz targets at the pin, not a count of files in a fuzz directory. C++: invocations of the FUZZ_TARGET( macro, excluding the #define in fuzz.h. Go: func FuzzXxx(f *testing.F). Rust: cargo-fuzz [[bin]] entries when a fuzz Cargo.toml is present, otherwise fuzz_target! uses (the two Rust counts match on every tree measured here).",
+    "fuzz_targets": "Declared fuzz targets at the pin, not a count of files in a fuzz directory. C++: invocations of FUZZ_TARGET( and wrappers such as FUZZ_TARGET_DESERIALIZE(, skipping #define lines and lines that continue a macro body (the previous line ends with a backslash). Go: func FuzzXxx(f *testing.F). Rust: cargo-fuzz [[bin]] entries when a fuzz Cargo.toml is present, otherwise fuzz_target! uses (the two Rust counts match on every tree measured here).",
     "vector_files": "Files whose path or name looks like a test vector (vector, tx_valid, tx_invalid, script_tests, sighash, bipN) with suffix .json, .csv, or .hex.",
     "spec_files": "Documentation or model files whose name looks like a spec (spec, THE_ORANGE_PAPER, orange paper, bipN) with suffix .md, .rst, .txt, .lean, or .tex. LICENSE and contributing files are excluded.",
-    "authors_12m": "Human commit authors on the landing-share repo set from 2025-11-12 to 2026-11-12 inclusive. Aliases are merged through the committed mailmap data/author-mailmap (for example BLVM's Josh / SecSov / Secure Sovereign, Hornet's Toby Sharp mailboxes, Bit-Block's Dimitri names). Bots and agents are excluded: any name or email containing [bot], merge-script, github-actions, dependabot, Cursor Agent, Claude, Grok Bot Engineer, Devin AI, OpenAI, and other obvious agent identities (rbitcoin-grok, Tau Agent, and similar). Unique names are compared case-insensitively after the mailmap. A shallow clone that does not reach the window start is not measured.",
+    "authors_12m": "Human commit authors on the landing-share repo set from 2025-11-12 to 2026-11-12 inclusive. Aliases are merged through the committed mailmap data/author-mailmap (for example BLVM's Josh / SecSov / Secure Sovereign, Hornet's Toby Sharp mailboxes, Bit-Block's Dimitri names). Bots and agents are excluded: any name or email containing [bot], merge-script, github-actions, dependabot, Cursor Agent, Claude, Grok Bot Engineer, Devin AI, OpenAI, and other obvious agent identities (rbitcoin-grok, Tau Agent, and similar), plus authors whose email host is localhost, local, or omp. Unique names are compared case-insensitively after the mailmap. A shallow clone that does not reach the window start is not measured.",
     "releases_12m": "Git tags whose creatordate falls in 2025-11-12 to 2026-11-12. Annotated tags use the tagger date; lightweight tags use the tagged commit date.",
     "ci_workflows": "Number of .github/workflows/*.{yml,yaml} files at the pin.",
     "ci_jobs": "GitHub Actions jobs at the pin, expanding a static matrix of lists (an include-only matrix is just the include rows, not one implicit job plus those rows; minus exclude/). A fromJSON(needs.job.outputs.x) matrix is expanded when the default non-PR value is written in the same workflow (suite=all, schedule/push flavors and arches, default mutant PARTS) or when the producer reads this tree's fuzz/Cargo.toml [[bin]] list. Unquoted run: scalars that break PyYAML are quoted and retried. If a matrix still cannot be expanded or a file still fails to parse, the cell is partial and the value is a lower bound.",
@@ -174,10 +174,10 @@
       "commit": "f0de87f040621468b956f01f526a43a010310501",
       "measured_at": "2026-11-12",
       "fuzz_targets": {
-        "value": 206,
-        "text": "206",
+        "value": 238,
+        "text": "238",
         "status": "measured",
-        "note": "Declared fuzz targets at the pin. bitcoin-core: 206 FUZZ_TARGET("
+        "note": "Declared fuzz targets at the pin. bitcoin-core: 238 FUZZ_TARGET("
       },
       "test_insource": {
         "value": 48500,
@@ -275,10 +275,10 @@
       "commit": "7936c49b6739640eb71e55eb2b5f720179b9c3b4",
       "measured_at": "2026-11-12",
       "fuzz_targets": {
-        "value": 186,
-        "text": "186",
+        "value": 218,
+        "text": "218",
         "status": "measured",
-        "note": "Declared fuzz targets at the pin. knots-legacy: 186 FUZZ_TARGET("
+        "note": "Declared fuzz targets at the pin. knots-legacy: 218 FUZZ_TARGET("
       },
       "test_insource": {
         "value": 41763,
@@ -376,10 +376,10 @@
       "commit": "c52f1161349e6a76463156fea39bce191951b915",
       "measured_at": "2026-11-12",
       "fuzz_targets": {
-        "value": 185,
-        "text": "185",
+        "value": 217,
+        "text": "217",
         "status": "measured",
-        "note": "Declared fuzz targets at the pin. bit-block: 185 FUZZ_TARGET("
+        "note": "Declared fuzz targets at the pin. bit-block: 217 FUZZ_TARGET("
       },
       "test_insource": {
         "value": 41184,
@@ -477,10 +477,10 @@
       "commit": "f0393f2688656ba544b40fe508db909152201c18",
       "measured_at": "2026-11-12",
       "fuzz_targets": {
-        "value": 210,
-        "text": "210",
+        "value": 242,
+        "text": "242",
         "status": "measured",
-        "note": "Declared fuzz targets at the pin. bitcoin-roots: 210 FUZZ_TARGET("
+        "note": "Declared fuzz targets at the pin. bitcoin-roots: 242 FUZZ_TARGET("
       },
       "test_insource": {
         "value": 51210,
@@ -633,8 +633,8 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 14,
-        "text": "14",
+        "value": 10,
+        "text": "10",
         "status": "measured",
         "note": "human authors (aliases merged via data/author-mailmap, bots and agents excluded). Raw unique %aN names before the filter: 32. repository begins 2026-05-19 (inside window; full history)"
       },
