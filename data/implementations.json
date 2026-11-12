@@ -1295,7 +1295,7 @@
     "systems": [
       {
         "slug": "blvm",
-        "note": "blvm-node 208,311, left unsplit"
+        "note": "blvm-node is split. Mixed share is 0."
       },
       {
         "slug": "bitcoin-core",
@@ -1311,7 +1311,7 @@
       },
       {
         "slug": "satd",
-        "note": "node crate 172,878, left unsplit"
+        "note": "The node crate is still unsplit. Mixed lines are 99,111."
       },
       {
         "slug": "libbitcoin",
@@ -1325,11 +1325,11 @@
     "unsplit": [
       {
         "slug": "blvm",
-        "note": "208,311 lines unsplit"
+        "note": "split. Mixed share is 0."
       },
       {
         "slug": "satd",
-        "note": "172,878 lines unsplit"
+        "note": "99,111 lines still unsplit"
       },
       {
         "slug": "libbitcoin",
@@ -1348,7 +1348,7 @@
         "note": "cut finished"
       }
     ],
-    "test_placement": "Files named like tests.rs that sit outside a tests directory stay in the implementation count. bitcoin-rs has 111,525 such lines. Moving them into the test bucket would print 1.55 instead of 0.50. commons has 21,758. Moving them would print 0.34 instead of 0.27. Core's tests already sit in the test bucket.",
+    "test_placement": "A Rust file named *_test.rs or *_tests.rs counts as tests. Lines inside a #[cfg(test)] item count as tests.",
     "test_basis": "Same tokei 14 bucket rule, replayed on the 2026-11-11 pins.",
     "jurisdiction": "This scan does not record where a maintainer sits. There is no jurisdiction chart.",
     "rule_test": "A statement that names a consequence is a rule, and a statement that names none is a norm. The rows below use that test on the files and the history this scan actually has. Judgment scores are not printed here, because they are not measurements.",

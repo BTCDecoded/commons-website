@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self';">
     <title>Ecosystem</title>
-    <meta name="description" content="Three comparisons of full-node trees. Size, test lines, and who lands the commits, plus the written rule for commons.">
+    <meta name="description" content="Program size, test lines, and the operating record of each full-node tree. The written rule for commons is a separate record.">
     <link rel="canonical" href="https://thebitcoincommons.org/ecosystem.html" />
     <meta property="og:title" content="Ecosystem">
-    <meta property="og:description" content="Three comparisons of full-node trees. Size, test lines, and who lands the commits, plus the written rule for commons.">
+    <meta property="og:description" content="Program size, test lines, and the operating record of each full-node tree. The written rule for commons is a separate record.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://thebitcoincommons.org/ecosystem.html">
     <meta property="og:image" content="https://thebitcoincommons.org/assets/og-image.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Ecosystem">
-    <meta name="twitter:description" content="Three comparisons of full-node trees. Size, test lines, and who lands the commits, plus the written rule for commons.">
+    <meta name="twitter:description" content="Program size, test lines, and the operating record of each full-node tree. The written rule for commons is a separate record.">
     <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
     <link rel="stylesheet" href="style.css?v=25" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -82,6 +82,7 @@
             font-size: 0.9rem;
         }
         .eco .eco-jump a:hover, .eco .eco-jump a:focus-visible { border-color: var(--orange); color: var(--white); }
+        .eco-block.wide { max-width: none; }
         .eco-block {
             max-width: 42rem;
             margin-top: 1rem;
@@ -381,6 +382,64 @@
         }
         .eco-finding h4 { margin: 0; font-size: 1rem; }
         .eco-finding ul li { padding: 0.35rem 0; }
+        .eco-board th, .eco-board td {
+            text-align: left;
+            white-space: normal;
+            vertical-align: top;
+        }
+        .eco-board th:first-child, .eco-board td:first-child {
+            max-width: 11rem;
+            min-width: 7.5rem;
+        }
+        .eco-board .eco-open { border-bottom: 0; padding-top: 0; }
+        .eco-board details > summary {
+            cursor: pointer;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            color: var(--text);
+            list-style: none;
+        }
+        .eco-board details > summary::-webkit-details-marker { display: none; }
+        .eco-board details p { margin: 0.35rem 0 0; max-width: none; }
+        .eco-types {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        .eco-type {
+            border: 1px solid var(--rule);
+            border-radius: 8px;
+            padding: 0.85rem 1rem;
+            background: #111113;
+        }
+        .eco-type h3 { margin: 0 0 0.35rem; font-size: 1rem; color: var(--white); font-weight: 500; }
+        .eco-type p { margin: 0; max-width: none; }
+        .eco-measures { margin: 0.75rem 0 0; }
+        .eco-measures div { margin-top: 0.7rem; }
+        .eco-measures dt { color: var(--white); }
+        .eco-measures dd { margin: 0.15rem 0 0; }
+        .eco h3.eco-sub { margin: 1.25rem 0 0.4rem; font-size: 1rem; font-weight: 500; color: var(--white); }
+        @media (min-width: 800px) {
+            .eco-types { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .eco-board thead { display: none; }
+            .eco-board, .eco-board tbody, .eco-board tr, .eco-board th, .eco-board td { display: block; width: auto; max-width: none; min-width: 0; box-shadow: none; position: static; }
+            .eco-board tr { border-bottom: 1px solid var(--rule); padding: 0.85rem 0; }
+            .eco-board td, .eco-board th[scope="row"] { border-bottom: 0; padding: 0.25rem 0; }
+            .eco-board td[data-label]::before {
+                content: attr(data-label);
+                display: block;
+                margin-bottom: 0.1rem;
+                color: #c4c4cc;
+                font-family: var(--font-sans);
+                font-size: 0.75rem;
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+            }
+        }
         @media (max-width: 768px) {
             nav.site-nav { padding: 0 1rem; }
             .eco { padding: 1.5rem 1rem 3rem; }
@@ -470,10 +529,9 @@
                 <a href="#checkout">Checkout</a>
                 <a href="#files">Large files</a>
                 <a href="#tests">Tests</a>
-                <a href="#landing">Who lands the work</a>
-                <a href="#institution">Institution</a>
                 <a href="#rules">Rules share</a>
-                <a href="#rule">Written rule</a>
+                <a href="#institution">Institution</a>
+                <a href="#forms">Forms</a>
                 <a href="#directory">Directory</a>
             </nav>
         </header>
@@ -493,7 +551,7 @@
 
         <section class="eco-block" id="files">
             <h2>Large files</h2>
-            <p id="eco-files-caption">Share of implementation lines that sit in files of 1,000 lines or more.</p>
+            <p id="eco-files-caption">Share of program lines that sit in files of 1,000 lines or more.</p>
             <div id="chart-files"></div>
         </section>
 
@@ -504,37 +562,71 @@
             <p class="eco-meta eco-follow" id="eco-test-note"></p>
         </section>
 
-        <section class="eco-block" id="landing">
-            <h2>Who lands the work</h2>
-            <p id="eco-land-caption">The longest bar is the largest single share of that tree's record.</p>
-            <p class="chart-legend"><span><i class="swatch internal"></i>commons</span><span><i class="swatch other"></i>commits</span><span><i class="swatch merges"></i>merges</span></p>
-            <div id="chart-land"></div>
-        </section>
-
-        <section class="eco-block" id="institution">
-            <h2>Institution</h2>
-            <p id="eco-rule-test"></p>
-            <div id="chart-inst"></div>
-            <p class="eco-meta eco-follow" id="eco-jurisdiction"></p>
-        </section>
-
         <section class="eco-block" id="rules">
             <h2>Rules share</h2>
-            <p>Share of the tree on the rules side of its cut. The bars share a scale. The cuts do not, so read each group on its own. A note of unsplit lines means that crate stayed in the denominator and was not called rules.</p>
+            <p>Share of the tree on the rules side of its cut. The bars share a scale. The cuts do not, so read each group on its own.</p>
             <div id="chart-rules"></div>
         </section>
 
-        <section class="eco-block" id="rule">
-            <h2>Written rule</h2>
-            <p id="eco-gov-status"></p>
-            <div id="chart-layers"></div>
-            <p class="eco-meta eco-follow" id="eco-layer-note"></p>
-            <p class="eco-links"><a href="compact.html">The written rules</a> and <a href="whitepaper.html">the design argument</a> are the longer form.</p>
+        <section class="eco-block wide" id="institution">
+            <h2>Institution</h2>
+            <p id="eco-inst-lead"></p>
+            <p class="eco-follow" id="eco-rule-test"></p>
+            <div id="chart-inst"></div>
+            <p class="eco-meta eco-follow" id="eco-jurisdiction"></p>
+            <div id="rule">
+                <h3 class="eco-sub">Written pairs</h3>
+                <p id="eco-gov-status"></p>
+                <div id="chart-layers"></div>
+                <p class="eco-meta eco-follow" id="eco-layer-note"></p>
+                <p class="eco-links"><a href="compact.html">The written rules</a> and <a href="whitepaper.html">the design argument</a> are the longer form.</p>
+            </div>
+        </section>
+
+        <section class="eco-block wide" id="forms">
+            <h2>Forms</h2>
+            <p>These cards are the codebook from <a href="https://secsovereign.github.io/articles/bitcoin-has-governance/">Bitcoin Has Governance</a>. Each score is a judgment of a form, not a measurement of a tree. The order is the article's. A higher total is not a rank of the implementations above.</p>
+            <dl class="eco-measures">
+                <div><dt>Capture resistance</dt><dd>The smallest set of actors whose assent changes the rules, and how concentrated merges are.</dd></div>
+                <div><dt>Exit cost</dt><dd>The share of economic weight that followed a fork. A higher score means leaving is cheaper.</dd></div>
+                <div><dt>Legibility</dt><dd>A named decider, and a written rule for who decides. Neither part scores 1. One part scores 2 or 3. Both score 4 or 5.</dd></div>
+                <div><dt>Error correction</dt><dd>Time from a bad decision to a rollback, and who had to agree.</dd></div>
+                <div><dt>Credible commitment</dt><dd>How many veto players there are, and how far apart they sit.</dd></div>
+                <div><dt>Decision cost</dt><dd>Time from proposal to decision. A higher score means the decision is cheaper.</dd></div>
+            </dl>
+            <div class="eco-types">
+                <article class="eco-type"><h3>Direct democracy</h3><p>Cannot apply. Participants are pseudonymous, and identities are free to create, so votes cannot be counted.</p></article>
+                <article class="eco-type"><h3>Token-weighted voting</h3><p>Cannot apply. Bitcoin has no governance token.</p></article>
+                <article class="eco-type"><h3>Single maintainer</h3><p>Can apply, at a legitimacy cost. One obvious author and no written rule. 15 of 30, low confidence.</p></article>
+                <article class="eco-type"><h3>Foundation steward</h3><p>Can apply, with legal exposure. A legal entity is one place a suit or a rule can land. 19 of 30, low confidence.</p></article>
+                <article class="eco-type"><h3>Informal oligarchy</h3><p>The current repository form in the article. A few people merge, chosen by pull request and a meeting, with no written rule for keys or review. 15 of 30, medium confidence.</p></article>
+                <article class="eco-type"><h3>Formal oligarchy</h3><p>The same small set, with published rules for selection, review, and removal. 18 of 30, low confidence.</p></article>
+                <article class="eco-type"><h3>Elected council</h3><p>Can apply, with limits. Bitcoin has no agreed electorate. 19 of 30, medium confidence.</p></article>
+                <article class="eco-type"><h3>Mixed constitution</h3><p>Separate powers and written thresholds. 21 of 30, low confidence. Untested at Bitcoin's scale. The commons layer table is a written version of this shape. This page does not score that projection.</p></article>
+                <article class="eco-type"><h3>Ostrom commons</h3><p>Bounded membership, monitoring, and a cheap way to dispute. 22 of 30, low confidence. The cases behind the principles were small and local.</p></article>
+            </div>
+            <h3 class="eco-sub">Where informal and formal oligarchy differ</h3>
+            <div class="eco-scroll" tabindex="0">
+                <table class="eco-board">
+                    <caption>Score from 1, worst, to 5, best. Higher is better. For exit cost and decision cost, higher means cheaper. Source: the article's comparison of these two forms. The other forms have a total and no published six-cell row.</caption>
+                    <thead>
+                        <tr><th scope="col">Measure</th><th scope="col">Informal oligarchy</th><th scope="col">Formal oligarchy</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><th scope="row">Legibility</th><td data-label="Informal oligarchy">2</td><td data-label="Formal oligarchy">4</td></tr>
+                        <tr><th scope="row">Credible commitment</th><td data-label="Informal oligarchy">2</td><td data-label="Formal oligarchy">3</td></tr>
+                        <tr><th scope="row">Capture resistance</th><td data-label="Informal oligarchy">2</td><td data-label="Formal oligarchy">2</td></tr>
+                        <tr><th scope="row">Exit cost</th><td data-label="Informal oligarchy">3</td><td data-label="Formal oligarchy">3</td></tr>
+                        <tr><th scope="row">Error correction</th><td data-label="Informal oligarchy">3</td><td data-label="Formal oligarchy">3</td></tr>
+                        <tr><th scope="row">Decision cost</th><td data-label="Informal oligarchy">3</td><td data-label="Formal oligarchy">3</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
         <section class="eco-block" id="directory">
             <h2>Directory</h2>
-            <p>Bitcoin Untangled keeps <a href="https://www.bitcoinuntangled.org/node-software/">a directory of node software</a>. The line charts are this week's measured trees. btcd, Floresta, and rbitcoin are on the landing chart from GitHub contributor counts, and their line counts are not on this week's cut.</p>
+            <p>Bitcoin Untangled keeps <a href="https://www.bitcoinuntangled.org/node-software/">a directory of node software</a>. The line charts are this week's measured trees. btcd, Floresta, and rbitcoin are on the institution list from GitHub contributor counts, and their line counts are not on this week's cut.</p>
             <ul class="eco-dir">
                 <li><a href="https://bit-block.org/bit-block-bitcoin-development/">Bit-Block</a><small>In their directory</small></li>
                 <li><a href="https://gosuda.org/">bitcoin-rs</a><small>On the charts</small></li>
@@ -553,7 +645,7 @@
         </section>
 
         <details class="eco-more">
-            <summary>How the landing bars were counted</summary>
+            <summary>How each institution row was counted</summary>
             <p id="eco-history-note" class="eco-meta"></p>
             <p id="eco-gov-quorum"></p>
             <div id="eco-history"></div>
@@ -681,14 +773,7 @@
                     }).filter(Boolean).sort(function (a, b) { return b.value - a.value; });
                 }
                 var scan = data.scan || {};
-                function noteFor(list, slug) {
-                    var hit = (list || []).filter(function (row) { return row.slug === slug; })[0];
-                    return hit ? hit.note : "";
-                }
-                var sizeRows = ranked("program_code").map(function (row) {
-                    row.note = noteFor(scan.systems, row.slug);
-                    return row;
-                });
+                var sizeRows = ranked("program_code");
                 var testRows = ranked("test_per_implementation");
                 document.getElementById("chart-size").innerHTML = bars(sizeRows, sizeRows[0].value);
                 document.getElementById("chart-tests").innerHTML = bars(testRows, testRows[0].value);
@@ -717,20 +802,11 @@
                 document.getElementById("eco-files-caption").textContent = (commonsFiles ? commonsFiles.name + " keeps " + commonsFiles.text + " of its program in files of 1,000 lines or more, and half of that program sits in " + halfCount(commonsFiles) + " files." : "") + (spread ? " " + spread.name + " spreads half of its program over " + halfCount(spread) + " files." : "");
                 document.getElementById("eco-size-caption").textContent = sizeRows[0].name + " is the largest program, at " + sizeRows[0].text + " lines. Implementation minus tooling. " + sizeRows[sizeRows.length - 1].name + " is the smallest, at " + sizeRows[sizeRows.length - 1].text + ".";
                 document.getElementById("eco-test-caption").textContent = testRows[0].name + " has " + testRows[0].text + " test lines for each implementation line. " + testRows[testRows.length - 1].name + " has " + testRows[testRows.length - 1].text + ".";
-                document.getElementById("eco-test-note").textContent = scan.test_placement || "";
-                var landing = (data.governance && data.governance.landing ? data.governance.landing : []).slice().sort(function (a, b) { return b.share - a.share; });
-                document.getElementById("chart-land").innerHTML = bars(landing.map(function (row) {
-                    return { name: row.name, value: row.share, text: shareText(row.share), note: [row.who, row.span].filter(Boolean).join(". "), internal: row.slug === internal, merges: row.instrument === "merges" };
-                }), 100);
-                var core = landing.filter(function (row) { return row.instrument === "merges"; })[0];
-                var topCommit = landing.filter(function (row) { return row.instrument === "commits"; })[0];
-                if (topCommit && core) {
-                    document.getElementById("eco-land-caption").textContent = topCommit.name + " is " + shareText(topCommit.share) + " of commits. " + core.name + " is " + shareText(core.share) + " of merges since 2022. The blue bar is merges. The others are commits.";
-                }
+                document.getElementById("eco-test-note").textContent = "A Rust file named *_test.rs or *_tests.rs counts as tests. Lines inside a #[cfg(test)] item count as tests.";
                 var ruleRows = trees.map(function (tree) {
                     var cell = metric(tree, "rules_share");
                     if (!cell || cell.text === "no cut") return null;
-                    return { name: tree.name, value: cell.value, text: cell.text, internal: tree.slug === internal, instrument: tree.instrument, note: noteFor(scan.unsplit, tree.slug) };
+                    return { name: tree.name, value: cell.value, text: cell.text, internal: tree.slug === internal, instrument: tree.instrument };
                 }).filter(Boolean);
                 var ruleScale = Math.max.apply(null, ruleRows.map(function (row) { return row.value; }));
                 var seen = [];
@@ -741,30 +817,67 @@
                 }).join("") + "<p class=\"eco-meta\">Hornet has no rules cut on this clock, so it has no bar here.</p>";
                 document.getElementById("eco-rule-test").textContent = scan.rule_test || "";
                 document.getElementById("eco-jurisdiction").textContent = scan.jurisdiction || "";
-                document.getElementById("chart-inst").innerHTML = (scan.categories || []).map(function (cat) {
-                    return "<section class=\"eco-group\"><h3>" + esc(cat.title) + "</h3>" + (cat.items || []).map(function (item) {
-                        return "<article class=\"eco-finding\"><h4>" + esc(item.name) + "</h4><p>" + esc(item.text) + "</p></article>";
-                    }).join("") + "</section>";
-                }).join("");
                 var gov = data.governance || {};
+                var landingOrder = ["bitcoin-core", "knots", "bitcoin-rs", "satd", "blvm", "libbitcoin", "hornet", "floresta", "rbitcoin", "btcd"];
+                var board = {
+                    "bitcoin-core": { operating: "Informal oligarchy", rule: "Norm. No written sanction.", href: "https://secsovereign.github.io/articles/bitcoin-has-governance/", link: "The long article" },
+                    "knots": { operating: "One maintainer and a merge script", rule: "The contributing file is Core's." },
+                    "bitcoin-rs": { operating: "One account", rule: "Not read as a consequence." },
+                    "satd": { operating: "One account", rule: "Not read." },
+                    "blvm": { operating: "One writer. The written rule is separate.", rule: "Designed, not running.", href: "compact.html", link: "The written rules" },
+                    "libbitcoin": { operating: "One maintainer", rule: "Not read as a consequence." },
+                    "hornet": { operating: "One account", rule: "No contributing file." },
+                    "floresta": { operating: "Largest share under half", rule: "Not read. Landing only." },
+                    "rbitcoin": { operating: "Largest share under half", rule: "Not read. Landing only." },
+                    "btcd": { operating: "Largest share under half", rule: "Not read. Landing only." }
+                };
+                var bySlug = {};
+                (gov.landing || []).forEach(function (row) { bySlug[row.slug] = row; });
+                var historyByName = {};
+                (gov.history || []).forEach(function (item) { historyByName[item.name] = item; });
+                function categoryBits(name) {
+                    var bits = [];
+                    (scan.categories || []).forEach(function (cat) {
+                        (cat.items || []).forEach(function (item) {
+                            if (item.name === name) bits.push("<p><span class=\"eco-meta\">" + esc(cat.title) + "</span><br>" + esc(item.text) + "</p>");
+                        });
+                    });
+                    return bits.join("");
+                }
+                function recordedProcess(slug) {
+                    return (data.process_methods || []).filter(function (method) {
+                        return (method.cells || []).some(function (cell) { return cell.slug === slug && cell.status === "recorded"; });
+                    }).map(function (method) {
+                        var cell = method.cells.filter(function (item) { return item.slug === slug; })[0];
+                        return "<li>" + esc(method.name) + ". " + esc(cell.text) + ". " + esc(method.window) + ".</li>";
+                    }).join("");
+                }
+                document.getElementById("chart-inst").innerHTML = "<div class=\"eco-scroll\" tabindex=\"0\"><table class=\"eco-board\"><caption>Catalog order, then the three directory rows. A blank is not measured. Commits and merges stay in different cells.</caption><thead><tr><th scope=\"col\">Implementation</th><th scope=\"col\">Operating record</th><th scope=\"col\">Who lands the work</th><th scope=\"col\">Written rule</th></tr></thead><tbody>" + landingOrder.map(function (slug) {
+                    var row = bySlug[slug];
+                    var fact = board[slug] || { operating: "Not classified", rule: "Not read." };
+                    if (!row) return "";
+                    var lands = row.instrument === "merges" ? shareText(row.share) + " of merges since 2022. " + row.who : shareText(row.share) + " of commits. " + row.who;
+                    var past = historyByName[row.name];
+                    var process = recordedProcess(slug);
+                    var link = fact.href ? "<p><a href=\"" + esc(fact.href) + "\">" + esc(fact.link) + "</a></p>" : "";
+                    var open = "<details><summary>The record</summary>" + (past ? "<p>" + esc(past.text) + "</p><p class=\"eco-meta\">" + esc(past.basis) + "</p>" : "") + categoryBits(row.name) + (process ? "<ul>" + process + "</ul>" : "") + link + "</details>";
+                    var nameCell = row.slug === internal ? "<th scope=\"row\" class=\"internal\">" + esc(row.name) + "</th>" : "<th scope=\"row\">" + esc(row.name) + "</th>";
+                    return "<tr>" + nameCell + "<td data-label=\"Operating record\">" + esc(fact.operating) + "</td><td data-label=\"Who lands the work\">" + esc(lands) + (row.span ? "<br><span class=\"eco-meta\">" + esc(row.span) + "</span>" : "") + "</td><td data-label=\"Written rule\">" + esc(fact.rule) + "</td></tr><tr><td class=\"eco-open\" colspan=\"4\">" + open + "</td></tr>";
+                }).join("") + "</tbody></table></div>";
+                var commonsLand = bySlug[internal];
+                var written = data.written_rule;
+                document.getElementById("eco-inst-lead").textContent = (commonsLand ? commonsLand.who + ". " : "") + (written ? "The written rule is " + written.text + ". " : "") + (gov.status || "");
                 document.getElementById("eco-gov-status").textContent = gov.status || "";
                 document.getElementById("eco-gov-quorum").textContent = gov.quorum || "";
-                var layers = gov.layers || [];
                 document.getElementById("eco-layer-note").textContent = gov.layer_note || "";
-                document.getElementById("chart-layers").innerHTML = bars(layers.map(function (layer) {
+                document.getElementById("chart-layers").innerHTML = "<ul class=\"eco-layers\">" + (gov.layers || []).map(function (layer) {
                     var review = layer.review_period_days + "-day review";
                     if (layer.consensus_review_period_days) review += ", " + layer.consensus_review_period_days + "-day consensus review";
-                    return {
-                        name: (layer.repositories || []).join(", "),
-                        value: layer.signatures_required,
-                        text: layer.signatures_required + " of " + layer.signatures_total,
-                        note: review,
-                        internal: true
-                    };
-                }), 7);
+                    return "<li><strong>" + esc((layer.repositories || []).join(", ")) + "</strong><span>" + esc(layer.signatures_required + " of " + layer.signatures_total) + ". " + esc(review) + ".</span><span class=\"eco-meta\">" + esc(layer.name) + ". " + esc(layer.purpose || "") + "</span></li>";
+                }).join("") + "</ul>";
                 var sizeMethods = methods.filter(function (m) { return m.compare === "same-counter"; });
                 var cutMethods = methods.filter(function (m) { return m.compare === "same-profile"; });
-                document.getElementById("eco-size").innerHTML = wideTable(trees, sizeMethods, "One counter on every tree. The figure is the size of the files in that checkout.") + notes(sizeMethods);
+                document.getElementById("eco-size").innerHTML = wideTable(trees, sizeMethods, "One counter on every tree. A line count, a ratio, and a file count are different rows.") + notes(sizeMethods);
                 document.getElementById("eco-cuts").innerHTML = byInstrument(trees).map(function (g) {
                     var shallow = g.trees.filter(function (t) { return t.shallow; }).map(function (t) { return t.name; });
                     var shallowNote = shallow.length ? "<p>" + esc(englishList(shallow)) + (shallow.length === 1 ? " is a shallow checkout. The line counter still reads the files present." : " are shallow checkouts. The line counter still reads the files present.") + "</p>" : "";
@@ -774,7 +887,7 @@
                 document.getElementById("eco-history").innerHTML = (gov.history || []).map(function (item) {
                     return "<article class=\"eco-finding\"><h4>" + esc(item.name) + "</h4><p>" + esc(item.text) + "</p><p class=\"eco-meta\">" + esc(item.basis) + "</p></article>";
                 }).join("");
-                document.getElementById("eco-lead").textContent = sizeRows[0].name + " has the largest program, at " + sizeRows[0].text + " lines. " + comp[0].name + " is the largest checkout once locale and vendored lines are counted. The landing record is concentrated, and Core's bar counts merges.";
+                document.getElementById("eco-lead").textContent = sizeRows[0].name + " has the largest program, at " + sizeRows[0].text + " lines. Implementation minus tooling.";
                 document.getElementById("eco-omitted").textContent = data.omitted || "";
             })
             .catch(function () {
