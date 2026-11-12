@@ -1086,7 +1086,9 @@
         "id": "layer_1_constitutional",
         "purpose": "Constitutional documents and mathematical specifications",
         "name": "Constitutional Layer",
-        "repositories": ["blvm-spec"],
+        "repositories": [
+          "blvm-spec"
+        ],
         "signatures_required": 6,
         "signatures_total": 7,
         "review_period_days": 180,
@@ -1096,7 +1098,11 @@
         "id": "layer_2_constitutional",
         "purpose": "Consensus proof implementations and the crates beneath them",
         "name": "Constitutional Layer",
-        "repositories": ["blvm-consensus", "blvm-primitives", "blvm-secp256k1"],
+        "repositories": [
+          "blvm-consensus",
+          "blvm-primitives",
+          "blvm-secp256k1"
+        ],
         "signatures_required": 6,
         "signatures_total": 7,
         "review_period_days": 180,
@@ -1106,7 +1112,9 @@
         "id": "layer_3_implementation",
         "purpose": "Core protocol implementation",
         "name": "Implementation Layer",
-        "repositories": ["blvm-protocol"],
+        "repositories": [
+          "blvm-protocol"
+        ],
         "signatures_required": 4,
         "signatures_total": 5,
         "review_period_days": 90
@@ -1115,7 +1123,10 @@
         "id": "layer_4_application",
         "purpose": "Reference implementation and applications",
         "name": "Application Layer",
-        "repositories": ["blvm-node", "blvm"],
+        "repositories": [
+          "blvm-node",
+          "blvm"
+        ],
         "signatures_required": 3,
         "signatures_total": 5,
         "review_period_days": 60
@@ -1124,7 +1135,9 @@
         "id": "layer_5_extension",
         "purpose": "Developer tools and extensions",
         "name": "Extension Layer",
-        "repositories": ["blvm-sdk"],
+        "repositories": [
+          "blvm-sdk"
+        ],
         "signatures_required": 2,
         "signatures_total": 3,
         "review_period_days": 14
@@ -1132,13 +1145,86 @@
     ],
     "history_note": "Each reading uses the history that tree actually has. Where the checkout is shallow, the count is the GitHub contributor total.",
     "landing": [
-      {"slug": "hornet", "name": "Hornet", "share": 100, "who": "Toby Sharp, every commit", "instrument": "commits"},
-      {"slug": "satd", "name": "satd", "share": 97.2, "who": "bkeroack, 1,228 of 1,263", "instrument": "commits"},
-      {"slug": "blvm", "name": "commons", "share": 96.6, "who": "one author, 825 of 854 in blvm-node", "instrument": "commits"},
-      {"slug": "libbitcoin", "name": "libbitcoin", "share": 77.7, "who": "Eric Voskuil, 8,145 of 10,489", "instrument": "commits"},
-      {"slug": "bitcoin-rs", "name": "bitcoin-rs", "share": 75.3, "who": "one account, 5,714 of 7,592 on dev", "instrument": "commits"},
-      {"slug": "bitcoin-core", "name": "Bitcoin Core", "share": 50.2, "who": "fanquake, merges since 2022", "instrument": "merges"},
-      {"slug": "knots", "name": "Bitcoin Knots", "share": 42.8, "who": "merge-script, commits since 2024", "instrument": "commits"}
+      {
+        "slug": "hornet",
+        "name": "Hornet",
+        "share": 100,
+        "who": "Toby Sharp, every commit",
+        "instrument": "commits",
+        "span": "2025-05-03 to 2026-04-15"
+      },
+      {
+        "slug": "satd",
+        "name": "satd",
+        "share": 97.2,
+        "who": "bkeroack, 1,228 of 1,263",
+        "instrument": "commits",
+        "span": "repository from 2026-03-17"
+      },
+      {
+        "slug": "blvm",
+        "name": "commons",
+        "share": 96.6,
+        "who": "one author, 825 of 854 in blvm-node",
+        "instrument": "commits",
+        "span": "blvm-node from 2025-10-19"
+      },
+      {
+        "slug": "libbitcoin",
+        "name": "libbitcoin",
+        "share": 77.7,
+        "who": "Eric Voskuil, 8,145 of 10,489",
+        "instrument": "commits",
+        "span": "repository from 2013"
+      },
+      {
+        "slug": "bitcoin-rs",
+        "name": "bitcoin-rs",
+        "share": 75.3,
+        "who": "one account, 5,714 of 7,592 on dev",
+        "instrument": "commits",
+        "span": "2026-05-19 to 2026-11-06"
+      },
+      {
+        "slug": "bitcoin-core",
+        "name": "Bitcoin Core",
+        "share": 50.2,
+        "who": "fanquake, merges since 2022",
+        "instrument": "merges",
+        "span": "merges since 2022"
+      },
+      {
+        "slug": "knots",
+        "name": "Bitcoin Knots",
+        "share": 42.8,
+        "who": "merge-script, commits since 2024",
+        "instrument": "commits",
+        "span": "commits since 2024"
+      },
+      {
+        "slug": "floresta",
+        "name": "Floresta",
+        "share": 46.7,
+        "who": "Davidson-Souza, 712 of 1,523",
+        "instrument": "commits",
+        "span": "repository from 2022-11-22"
+      },
+      {
+        "slug": "rbitcoin",
+        "name": "rbitcoin",
+        "share": 37.2,
+        "who": "rearden-grok bot, 2,576 of 6,930",
+        "instrument": "commits",
+        "span": "repository from 2026-08-07"
+      },
+      {
+        "slug": "btcd",
+        "name": "btcd",
+        "share": 36.8,
+        "who": "davecgh, 1,662 of 4,517",
+        "instrument": "commits",
+        "span": "repository from 2013-08-06"
+      }
     ],
     "history": [
       {
@@ -1182,6 +1268,24 @@
         "name": "Hornet",
         "text": "The repository holds 268 commits, from 2025-05-03 to 2026-04-15. All of them are Toby Sharp, under four email addresses. 32 commits name a pull request. The tree has no contributing file and no code owners file.",
         "basis": "git log on tobysharp/hornet at 151462f. The checkout is not shallow."
+      },
+      {
+        "slug": "floresta",
+        "name": "Floresta",
+        "text": "GitHub attributes 712 of 1,523 contributor commits to Davidson-Souza, across 75 people. The repository dates from 2022-11-22. Line counts for this tree are not on this week's cut.",
+        "basis": "GitHub contributors for getfloresta/Floresta, read 2026-11-12."
+      },
+      {
+        "slug": "rbitcoin",
+        "name": "rbitcoin",
+        "text": "GitHub attributes 2,576 of 6,930 contributor commits to the rearden-grok bot. The next account, reardencode, has 1,707. The repository dates from 2026-08-07. Line counts for this tree are not on this week's cut.",
+        "basis": "GitHub contributors for reardencode/rbitcoin, read 2026-11-12."
+      },
+      {
+        "slug": "btcd",
+        "name": "btcd",
+        "text": "GitHub attributes 1,662 of 4,517 contributor commits to davecgh, across 265 people. The repository dates from 2013-08-06. Line counts for this tree are not on this week's cut.",
+        "basis": "GitHub contributors for btcsuite/btcd, read 2026-11-12."
       }
     ]
   },
