@@ -304,3 +304,170 @@ export function lineage(groups, nodes, edges) {
         return { body: defs + "<g font-size=\"" + fs + "\">" + out + "</g>", height: height + 2 };
     };
 }
+
+// ---------- layered diagram (dependency tree, module map) ----------
+// bands: [{ label, sub, rows: [[id, ...], ...] }] top to bottom. Each band is a
+//   shaded strip; on wide screens its label sits in a left column, on narrow
+//   screens above its nodes. Rows inside a band are laid out centred.
+// nodes: { id: { label, short, sub, cls: "hl"|"muted"|"" } }; `short` replaces
+//   `label` on narrow screens, `sub` is a smaller second line (wrapped).
+// edges: [{ from, to, dashed }] from a higher row to a lower one. Edges run
+//   down from the source, along a track in the gap below it, down a free lane
+//   past any rows in between, and into the target's top edge.
+// opts: { labelWidth (wide), maxNodeW, narrowPerRow }
+export function layered(bands, nodes, edges, opts) {
+    opts = opts || {};
+    return function (width, uid) {
+        var arrow = (uid || "ch") + "-arrow";
+        var narrow = width < 500, fs = narrow ? 12 : 13, ss = narrow ? 11 : 11.5;
+        var labelW = narrow ? 0 : (opts.labelWidth || 150), pad = 8, gapX = narrow ? 8 : 12;
+        var areaX = labelW ? labelW + pad : pad, areaW = width - areaX - pad;
+        var maxNodeW = opts.maxNodeW || 170;
+        // 1. Rows (narrow screens may split a band row further).
+        var rows = [];
+        bands.forEach(function (b, bi) {
+            b.rows.forEach(function (r, ri) {
+                var per = narrow && opts.narrowPerRow ? opts.narrowPerRow : r.length;
+                for (var i = 0; i < r.length; i += per) rows.push({ band: bi, first: ri === 0 && i === 0, ids: r.slice(i, i + per) });
+            });
+        });
+        // 2. x positions and node heights.
+        var pos = {};
+        rows.forEach(function (row) {
+            var n = row.ids.length;
+            var w = Math.min(maxNodeW, (areaW - (n - 1) * gapX) / n);
+            var total = n * w + (n - 1) * gapX, x0 = areaX + (areaW - total) / 2;
+            var h = 0;
+            row.ids.forEach(function (id, i) {
+                var nd = nodes[id]; if (!nd) throw new Error("layered: no node " + id);
+                var subLines = nd.sub ? wrap(nd.sub, ss, w - 12) : [];
+                var nh = 30 + subLines.length * (ss + 3);
+                pos[id] = { x: x0 + i * (w + gapX), w: w, sub: subLines, row: rows.indexOf(row) };
+                h = Math.max(h, nh);
+            });
+            row.h = h;
+        });
+        // 3. Ports and lanes.
+        var out = {}, inc = {};
+        edges.forEach(function (e) {
+            if (!pos[e.from] || !pos[e.to]) throw new Error("layered: edge without node " + e.from + " -> " + e.to);
+            if (pos[e.to].row <= pos[e.from].row) throw new Error("layered: edge must point down " + e.from + " -> " + e.to);
+            (out[e.from] = out[e.from] || []).push(e); (inc[e.to] = inc[e.to] || []).push(e);
+        });
+        function cx(id) { return pos[id].x + pos[id].w / 2; }
+        Object.keys(out).forEach(function (id) {
+            out[id].sort(function (a, b) { return cx(a.to) - cx(b.to); });
+            out[id].forEach(function (e, k) { e._sx = pos[id].x + pos[id].w * (k + 1) / (out[id].length + 1); });
+        });
+        Object.keys(inc).forEach(function (id) {
+            inc[id].sort(function (a, b) { return cx(a.from) - cx(b.from); });
+            inc[id].forEach(function (e, k) { e._tx = pos[id].x + pos[id].w * (k + 1) / (inc[id].length + 1); });
+        });
+        var laneUse = {};
+        edges.forEach(function (e) {
+            var r1 = pos[e.from].row, r2 = pos[e.to].row;
+            e._lane = null;
+            if (r2 === r1 + 1) return;
+            var blocked = [];
+            for (var r = r1 + 1; r < r2; r++) rows[r].ids.forEach(function (id) { blocked.push([pos[id].x - 6, pos[id].x + pos[id].w + 6]); });
+            function free(x) { return blocked.every(function (b) { return x < b[0] || x > b[1]; }); }
+            var want = e._tx;
+            if (free(want)) { e._lane = want; return; }
+            var cands = [areaX - 2, width - pad + 2];
+            blocked.forEach(function (b) { cands.push(b[0] - 1, b[1] + 1); });
+            blocked.forEach(function (b) { blocked.forEach(function (c) { if (c[0] > b[1]) cands.push((b[1] + c[0]) / 2); }); });
+            cands = cands.filter(free).sort(function (a, b) { return Math.abs(a - want) - Math.abs(b - want) || a - b; });
+            var lane = cands.length ? cands[0] : want;
+            var key = Math.round(lane), k = laneUse[key] = (laneUse[key] || 0) + 1;
+            e._lane = lane + (k - 1) * 5 * (lane < want ? -1 : 1);
+        });
+        // 4. Tracks in each gap, then y positions.
+        var gapEdges = rows.map(function () { return []; });
+        edges.forEach(function (e) {
+            var r1 = pos[e.from].row, r2 = pos[e.to].row;
+            e._g1 = r1; e._g2 = r2 - 1;
+            gapEdges[r1].push(e); if (r2 - 1 !== r1) gapEdges[r2 - 1].push({ ref: e });
+        });
+        var y = 0, out2 = "", bandRects = [];
+        rows.forEach(function (row, ri) {
+            var band = bands[row.band];
+            if (row.first) {
+                if (ri > 0) y += 6;
+                var top = y;
+                var subL = band.sub ? wrap(band.sub, ss, narrow ? width - 2 * pad - 4 : labelW - 12) : [];
+                if (narrow) y += 20 + subL.length * (ss + 3) + 4; else y += 10;
+                bandRects.push({ band: row.band, top: top, subL: subL });
+            }
+            row.y = y;
+            row.ids.forEach(function (id) { pos[id].y = y; pos[id].h = row.h; });
+            y += row.h;
+            var last = ri === rows.length - 1 || rows[ri + 1].band !== row.band;
+            var tracks = gapEdges[ri].length;
+            row.gapTop = y;
+            y += Math.max(last ? 18 : 22, 12 + tracks * 6) + (last ? 8 : 0);
+            if (last) bandRects[bandRects.length - 1].bottom = y - 6 - (ri === rows.length - 1 ? 0 : 0);
+        });
+        var height = rows[rows.length - 1].gapTop + 10;
+        bandRects[bandRects.length - 1].bottom = height;
+        gapEdges.forEach(function (list, ri) {
+            list.forEach(function (item, k) {
+                var e = item.ref || item, ty = rows[ri].gapTop + 9 + k * 6;
+                if (item.ref) e._ty2 = ty; else e._ty1 = ty;
+            });
+        });
+        // 5. Draw: band strips, edges, nodes.
+        // Band labels are drawn after the edges with a halo in the band colour,
+        // so an edge that passes behind a label never strikes through it.
+        var strips = "", heads = "";
+        bandRects.forEach(function (br, i) {
+            var b = bands[br.band], bottom = i < bandRects.length - 1 ? bandRects[i + 1].top - 4 : br.bottom;
+            strips += "<rect x=\"0.5\" y=\"" + fmt(br.top + 0.5) + "\" width=\"" + (width - 1) + "\" height=\"" + fmt(bottom - br.top - 1) + "\" rx=\"8\" class=\"ch-group" + (b.cls ? " ch-group-" + b.cls : "") + "\"/>";
+            var lx = narrow ? pad + 2 : pad + 2, ly = br.top + 17;
+            heads += t(lx, ly, b.label, "ch-t ch-ghead ch-halo");
+            br.subL.forEach(function (l, j) { heads += t(lx, ly + 3 + (j + 1) * (ss + 3), l, "ch-t ch-bsub ch-halo", " font-size=\"" + ss + "\""); });
+        });
+        var paths = "";
+        edges.forEach(function (e) {
+            var a = pos[e.from], b = pos[e.to];
+            var sy = a.y + a.h, ey = b.y - 2, d;
+            if (e._lane === null) d = "M" + fmt(e._sx) + " " + fmt(sy) + " V" + fmt(e._ty1) + " H" + fmt(e._tx) + " V" + fmt(ey);
+            else d = "M" + fmt(e._sx) + " " + fmt(sy) + " V" + fmt(e._ty1) + " H" + fmt(e._lane) + " V" + fmt(e._ty2) + " H" + fmt(e._tx) + " V" + fmt(ey);
+            paths += "<path d=\"" + d + "\" class=\"ch-edge" + (e.dashed ? " ch-edge-dash" : "") + "\" marker-end=\"url(#" + arrow + ")\"/>";
+        });
+        var boxes = "";
+        Object.keys(pos).forEach(function (id) {
+            var p = pos[id], n = nodes[id], label = narrow && n.short ? n.short : n.label;
+            boxes += "<rect x=\"" + fmt(p.x) + "\" y=\"" + fmt(p.y) + "\" width=\"" + fmt(p.w) + "\" height=\"" + fmt(p.h) + "\" rx=\"6\" class=\"ch-node" + (n.cls ? " ch-node-" + n.cls : "") + "\"/>";
+            boxes += t(p.x + p.w / 2, p.y + 19, label, "ch-t ch-nodet" + (n.cls === "hl" ? " ch-hl" : n.cls === "muted" ? " ch-muted" : ""), " text-anchor=\"middle\"");
+            p.sub.forEach(function (l, j) { boxes += t(p.x + p.w / 2, p.y + 19 + (j + 1) * (ss + 3) + 1, l, "ch-t ch-nsub", " text-anchor=\"middle\" font-size=\"" + ss + "\""); });
+        });
+        var defs = "<defs><marker id=\"" + arrow + "\" viewBox=\"0 0 8 8\" refX=\"7\" refY=\"4\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L8 4 L0 8 z\" class=\"ch-arrowhead\"/></marker></defs>";
+        return { body: defs + "<g font-size=\"" + fs + "\">" + strips + paths + heads + boxes + "</g>", height: height + 1 };
+    };
+}
+
+// ---------- k-of-n rows (signature thresholds) ----------
+// rows: [{ label, sub, k, n, valueText, cls }] Each row draws n dots with k
+// filled, so thresholds of different sizes read side by side.
+export function kOfN(rows, opts) {
+    opts = opts || {};
+    return function (width) {
+        var narrow = width < 500, fs = narrow ? 13 : 13, r = narrow ? 7 : 8, step = r * 2 + (narrow ? 5 : 6);
+        var maxN = Math.max.apply(null, rows.map(function (x) { return x.n; }));
+        var labelW = narrow ? 0 : (opts.labelWidth || 220);
+        var out = "", y = 0;
+        rows.forEach(function (row, i) {
+            if (row.gap) y += 10;
+            var lx = 0, dotsX = narrow ? 0 : labelW;
+            if (narrow) { out += t(0, y + 14, row.label, "ch-t ch-label"); if (row.sub) out += t(width, y + 14, row.sub, "ch-t ch-muted", " text-anchor=\"end\" font-size=\"12\""); y += 22; }
+            else { out += t(lx, y + r + 5, row.label, "ch-t ch-label"); if (row.sub) out += t(lx, y + r + 21, row.sub, "ch-t ch-muted", " font-size=\"12\""); }
+            for (var j = 0; j < row.n; j++) {
+                var on = j < row.k;
+                out += "<circle cx=\"" + fmt(dotsX + r + j * step) + "\" cy=\"" + fmt(y + r + 1) + "\" r=\"" + r + "\" class=\"ch-kdot" + (on ? " ch-kdot-on" + (row.cls ? "-" + row.cls : "") : "") + "\"/>";
+            }
+            out += t(dotsX + maxN * step + 8, y + r + 6, row.valueText || (row.k + " of " + row.n), "ch-t ch-val");
+            y += narrow ? 2 * r + 14 : Math.max(2 * r + 14, row.sub ? 34 : 0);
+        });
+        return { body: "<g font-size=\"" + fs + "\">" + out + "</g>", height: y };
+    };
+}
