@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "as_of": "2026-11-12",
-  "status": "definition from Research; cells only where Research cites an https source",
-  "note": "Definition and readings from Research's stability brief (2026-11-12). A cell is met or not met only where the brief cites an https source for it; a reading the brief takes from a file in the tree without a link is not measured here until a pinned link is added.",
+  "status": "measured",
+  "note": "Seven mechanically checkable requisites for a stable release line, scored by scripts/measure-ecosystem-metrics.py from the GitHub API and the repo at the same pins as the other ecosystem metrics. The checklist definition is from Research's stability brief (2026-11-12). Score is met out of 7; not-measured stays in the denominator and is never read as not met. Citations: Semantic Versioning 2.0.0 and the OpenSSF Best Practices criteria for version tags, vulnerability reporting, release notes, and signed or reproducible releases. Bitcoin Untangled's Status field is not the source of the grade.",
   "score_rule": "Score = met / total criteria, with not measured counted in the total so it never inflates a score. Shown as N of 7 met, K not measured. Tracks an upstream line is descriptive and not scored.",
   "statuses": {
     "met": "The criterion holds, with an evidence link",
@@ -19,7 +19,7 @@
     {
       "id": "docs_not_pre_release",
       "label": "docs not pre-release",
-      "why": "The project’s own operator-facing docs are the right place to read a maturity claim, not our grade and not Untangled’s Status field.",
+      "why": "The project\u2019s own operator-facing docs are the right place to read a maturity claim, not our grade and not Untangled\u2019s Status field.",
       "type": "check"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "id": "version_or_lts_policy",
-      "label": "version ≥1.0 or LTS",
+      "label": "version \u22651.0 or LTS",
       "why": "SemVer treats 0.y.z as initial development, not a stable public API.",
       "type": "check"
     },
@@ -95,9 +95,19 @@
           "evidence_url": "https://github.com/BTCDecoded/blvm-node/releases/tag/v0.1.92",
           "retrieved": "2026-11-12"
         },
+        "docs_not_pre_release": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/BTCDecoded/blvm-node/blob/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/SECURITY.md",
+          "retrieved": "2026-11-12"
+        },
         "version_or_lts_policy": {
           "status": "not_met",
           "evidence_url": "https://github.com/BTCDecoded/blvm-node/releases/tag/v0.1.92",
+          "retrieved": "2026-11-12"
+        },
+        "vulnerability_disclosure": {
+          "status": "met",
+          "evidence_url": "https://github.com/BTCDecoded/blvm-node/blob/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/SECURITY.md",
           "retrieved": "2026-11-12"
         },
         "release_notes": {
@@ -129,14 +139,24 @@
           "evidence_url": "https://github.com/bitcoin/bitcoin/releases/tag/v32.1",
           "retrieved": "2026-11-12"
         },
+        "docs_not_pre_release": {
+          "status": "met",
+          "evidence_url": "https://github.com/bitcoin/bitcoin/blob/f0de87f040621468b956f01f526a43a010310501/README.md",
+          "retrieved": "2026-11-12"
+        },
         "version_or_lts_policy": {
           "status": "met",
-          "evidence_url": "https://bitcoincore.org/en/lifecycle/#schedule",
+          "evidence_url": "https://github.com/bitcoin/bitcoin/releases/tag/v32.1",
+          "retrieved": "2026-11-12"
+        },
+        "vulnerability_disclosure": {
+          "status": "met",
+          "evidence_url": "https://github.com/bitcoin/bitcoin/blob/f0de87f040621468b956f01f526a43a010310501/SECURITY.md",
           "retrieved": "2026-11-12"
         },
         "release_notes": {
           "status": "met",
-          "evidence_url": "https://bitcoincore.org/en/releases/32.1/",
+          "evidence_url": "https://github.com/bitcoin/bitcoin/releases/tag/v32.1",
           "retrieved": "2026-11-12"
         },
         "signed_or_reproducible": {
@@ -163,9 +183,19 @@
           "evidence_url": "https://github.com/DimiH2025/KnotsLegacy/releases/tag/V29.3.0.20260920",
           "retrieved": "2026-11-12"
         },
+        "docs_not_pre_release": {
+          "status": "met",
+          "evidence_url": "https://github.com/DimiH2025/KnotsLegacy/blob/7936c49b6739640eb71e55eb2b5f720179b9c3b4/README.md",
+          "retrieved": "2026-11-12"
+        },
         "version_or_lts_policy": {
           "status": "met",
           "evidence_url": "https://github.com/DimiH2025/KnotsLegacy/releases/tag/V29.3.0.20260920",
+          "retrieved": "2026-11-12"
+        },
+        "vulnerability_disclosure": {
+          "status": "met",
+          "evidence_url": "https://github.com/DimiH2025/KnotsLegacy/blob/7936c49b6739640eb71e55eb2b5f720179b9c3b4/SECURITY.md",
           "retrieved": "2026-11-12"
         },
         "release_notes": {
@@ -181,7 +211,7 @@
         "upstream_track": {
           "status": "tag",
           "tag": "tracks-knots-non-rdts",
-          "evidence_url": "https://github.com/DimiH2025/KnotsLegacy/releases/tag/V29.3.0.20260920",
+          "evidence_url": "https://github.com/DimiH2025/KnotsLegacy/blob/7936c49b6739640eb71e55eb2b5f720179b9c3b4/README.md",
           "retrieved": "2026-11-12"
         }
       }
@@ -199,9 +229,19 @@
           "evidence_url": "https://github.com/DimiH2025/Bit-Block/releases/tag/V3.1",
           "retrieved": "2026-11-12"
         },
+        "docs_not_pre_release": {
+          "status": "met",
+          "evidence_url": "https://github.com/DimiH2025/Bit-Block/blob/c52f1161349e6a76463156fea39bce191951b915/README.md",
+          "retrieved": "2026-11-12"
+        },
         "version_or_lts_policy": {
           "status": "met",
           "evidence_url": "https://github.com/DimiH2025/Bit-Block/releases/tag/V3.1",
+          "retrieved": "2026-11-12"
+        },
+        "vulnerability_disclosure": {
+          "status": "met",
+          "evidence_url": "https://github.com/DimiH2025/Bit-Block/blob/c52f1161349e6a76463156fea39bce191951b915/SECURITY.md",
           "retrieved": "2026-11-12"
         },
         "release_notes": {
@@ -213,6 +253,10 @@
           "status": "not_met",
           "evidence_url": "https://github.com/DimiH2025/Bit-Block/releases/tag/V3.1",
           "retrieved": "2026-11-12"
+        },
+        "upstream_track": {
+          "status": "n/a",
+          "reason": "README at the pin does not state a base line"
         }
       }
     },
@@ -229,9 +273,19 @@
           "evidence_url": "https://github.com/LuganoPlanB/bitcoin-roots/releases/tag/v31.1-roots.6",
           "retrieved": "2026-11-12"
         },
+        "docs_not_pre_release": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/LuganoPlanB/bitcoin-roots/blob/f0393f2688656ba544b40fe508db909152201c18/README.md",
+          "retrieved": "2026-11-12"
+        },
         "version_or_lts_policy": {
           "status": "met",
           "evidence_url": "https://github.com/LuganoPlanB/bitcoin-roots/releases/tag/v31.1-roots.6",
+          "retrieved": "2026-11-12"
+        },
+        "vulnerability_disclosure": {
+          "status": "met",
+          "evidence_url": "https://github.com/LuganoPlanB/bitcoin-roots/blob/f0393f2688656ba544b40fe508db909152201c18/SECURITY.md",
           "retrieved": "2026-11-12"
         },
         "release_notes": {
@@ -242,6 +296,12 @@
         "signed_or_reproducible": {
           "status": "met",
           "evidence_url": "https://github.com/LuganoPlanB/bitcoin-roots/releases/tag/v31.1-roots.6",
+          "retrieved": "2026-11-12"
+        },
+        "upstream_track": {
+          "status": "tag",
+          "tag": "tracks-core",
+          "evidence_url": "https://github.com/LuganoPlanB/bitcoin-roots/blob/f0393f2688656ba544b40fe508db909152201c18/README.md",
           "retrieved": "2026-11-12"
         }
       }
@@ -251,22 +311,37 @@
       "criteria": {
         "has_stable_release": {
           "status": "not_met",
-          "evidence_url": "https://github.com/gosuda/bitcoin-rs",
+          "evidence_url": "https://github.com/gosuda/bitcoin-rs/releases",
           "retrieved": "2026-11-12"
         },
         "stable_release_in_12m": {
           "status": "not_met",
-          "evidence_url": "https://github.com/gosuda/bitcoin-rs",
+          "evidence_url": "https://github.com/gosuda/bitcoin-rs/releases",
+          "retrieved": "2026-11-12"
+        },
+        "docs_not_pre_release": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/gosuda/bitcoin-rs/blob/9b8e91ae1aadfaad08e7fccbfa895bcbf41c6620/README.md",
+          "retrieved": "2026-11-12"
+        },
+        "version_or_lts_policy": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/gosuda/bitcoin-rs/releases",
+          "retrieved": "2026-11-12"
+        },
+        "vulnerability_disclosure": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/gosuda/bitcoin-rs/security/policy",
           "retrieved": "2026-11-12"
         },
         "release_notes": {
           "status": "not_met",
-          "evidence_url": "https://github.com/gosuda/bitcoin-rs",
+          "evidence_url": "https://github.com/gosuda/bitcoin-rs/releases",
           "retrieved": "2026-11-12"
         },
         "signed_or_reproducible": {
           "status": "not_met",
-          "evidence_url": "https://github.com/gosuda/bitcoin-rs",
+          "evidence_url": "https://github.com/gosuda/bitcoin-rs/releases",
           "retrieved": "2026-11-12"
         },
         "upstream_track": {
@@ -288,8 +363,23 @@
           "evidence_url": "https://github.com/epochbtc/satd/releases/tag/v0.7.1",
           "retrieved": "2026-11-12"
         },
+        "docs_not_pre_release": {
+          "status": "met",
+          "evidence_url": "https://github.com/epochbtc/satd/blob/f0ea0e5dfa8446d9cb63fef0a22eaf5f976216ce/README.md",
+          "retrieved": "2026-11-12"
+        },
         "version_or_lts_policy": {
           "status": "not_met",
+          "evidence_url": "https://github.com/epochbtc/satd/releases/tag/v0.7.1",
+          "retrieved": "2026-11-12"
+        },
+        "vulnerability_disclosure": {
+          "status": "met",
+          "evidence_url": "https://github.com/epochbtc/satd/blob/f0ea0e5dfa8446d9cb63fef0a22eaf5f976216ce/SECURITY.md",
+          "retrieved": "2026-11-12"
+        },
+        "release_notes": {
+          "status": "met",
           "evidence_url": "https://github.com/epochbtc/satd/releases/tag/v0.7.1",
           "retrieved": "2026-11-12"
         },
@@ -309,12 +399,37 @@
       "criteria": {
         "has_stable_release": {
           "status": "met",
-          "evidence_url": "https://github.com/libbitcoin/libbitcoin-system/releases/tag/v3.8.0",
+          "evidence_url": "https://github.com/libbitcoin/libbitcoin-system/releases/tag/v4.0.10491",
+          "retrieved": "2026-11-12"
+        },
+        "stable_release_in_12m": {
+          "status": "met",
+          "evidence_url": "https://github.com/libbitcoin/libbitcoin-system/releases/tag/v4.0.10491",
+          "retrieved": "2026-11-12"
+        },
+        "docs_not_pre_release": {
+          "status": "met",
+          "evidence_url": "https://github.com/libbitcoin/libbitcoin-system/blob/9f9cce3086074840951cedf1d381f08112275bfd/README.md",
           "retrieved": "2026-11-12"
         },
         "version_or_lts_policy": {
           "status": "met",
-          "evidence_url": "https://github.com/libbitcoin/libbitcoin-system/releases/tag/v3.8.0",
+          "evidence_url": "https://github.com/libbitcoin/libbitcoin-system/releases/tag/v4.0.10491",
+          "retrieved": "2026-11-12"
+        },
+        "vulnerability_disclosure": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/libbitcoin/libbitcoin-system/security/policy",
+          "retrieved": "2026-11-12"
+        },
+        "release_notes": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/libbitcoin/libbitcoin-system/releases/tag/v4.0.10491",
+          "retrieved": "2026-11-12"
+        },
+        "signed_or_reproducible": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/libbitcoin/libbitcoin-system/releases/tag/v4.0.10491",
           "retrieved": "2026-11-12"
         },
         "upstream_track": {
@@ -328,27 +443,37 @@
       "criteria": {
         "has_stable_release": {
           "status": "not_met",
-          "evidence_url": "https://github.com/tobysharp/hornet",
+          "evidence_url": "https://github.com/tobysharp/hornet/releases",
           "retrieved": "2026-11-12"
         },
         "stable_release_in_12m": {
           "status": "not_met",
-          "evidence_url": "https://github.com/tobysharp/hornet",
+          "evidence_url": "https://github.com/tobysharp/hornet/releases",
+          "retrieved": "2026-11-12"
+        },
+        "docs_not_pre_release": {
+          "status": "met",
+          "evidence_url": "https://github.com/tobysharp/hornet/blob/151462fa5ceece39c159674886dcfa6cfe9b1234/README.md",
           "retrieved": "2026-11-12"
         },
         "version_or_lts_policy": {
           "status": "not_met",
-          "evidence_url": "https://github.com/tobysharp/hornet",
+          "evidence_url": "https://github.com/tobysharp/hornet/releases",
+          "retrieved": "2026-11-12"
+        },
+        "vulnerability_disclosure": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/tobysharp/hornet/security/policy",
           "retrieved": "2026-11-12"
         },
         "release_notes": {
           "status": "not_met",
-          "evidence_url": "https://github.com/tobysharp/hornet",
+          "evidence_url": "https://github.com/tobysharp/hornet/releases",
           "retrieved": "2026-11-12"
         },
         "signed_or_reproducible": {
           "status": "not_met",
-          "evidence_url": "https://github.com/tobysharp/hornet",
+          "evidence_url": "https://github.com/tobysharp/hornet/releases",
           "retrieved": "2026-11-12"
         },
         "upstream_track": {
@@ -370,13 +495,23 @@
           "evidence_url": "https://github.com/getfloresta/Floresta/releases/tag/v0.9.1",
           "retrieved": "2026-11-12"
         },
-        "release_notes": {
+        "docs_not_pre_release": {
           "status": "met",
-          "evidence_url": "https://github.com/getfloresta/Floresta/releases/tag/v0.9.1",
+          "evidence_url": "https://github.com/getfloresta/Floresta/blob/cdbcf5a13cba2b0aab505977ba413f707bc06290/README.md",
           "retrieved": "2026-11-12"
         },
         "version_or_lts_policy": {
           "status": "not_met",
+          "evidence_url": "https://github.com/getfloresta/Floresta/releases/tag/v0.9.1",
+          "retrieved": "2026-11-12"
+        },
+        "vulnerability_disclosure": {
+          "status": "met",
+          "evidence_url": "https://github.com/getfloresta/Floresta/blob/cdbcf5a13cba2b0aab505977ba413f707bc06290/SECURITY.md",
+          "retrieved": "2026-11-12"
+        },
+        "release_notes": {
+          "status": "met",
           "evidence_url": "https://github.com/getfloresta/Floresta/releases/tag/v0.9.1",
           "retrieved": "2026-11-12"
         },
@@ -404,13 +539,23 @@
           "evidence_url": "https://github.com/rbitcoin-org/rbitcoin/releases/tag/v0.9.2",
           "retrieved": "2026-11-12"
         },
-        "release_notes": {
-          "status": "met",
-          "evidence_url": "https://github.com/rbitcoin-org/rbitcoin/releases/tag/v0.9.2",
+        "docs_not_pre_release": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/rbitcoin-org/rbitcoin/blob/ca7bf804ed44d7efdca3da219ead6e644d35fd9e/README.md",
           "retrieved": "2026-11-12"
         },
         "version_or_lts_policy": {
           "status": "not_met",
+          "evidence_url": "https://github.com/rbitcoin-org/rbitcoin/releases/tag/v0.9.2",
+          "retrieved": "2026-11-12"
+        },
+        "vulnerability_disclosure": {
+          "status": "met",
+          "evidence_url": "https://github.com/rbitcoin-org/rbitcoin/blob/ca7bf804ed44d7efdca3da219ead6e644d35fd9e/SECURITY.md",
+          "retrieved": "2026-11-12"
+        },
+        "release_notes": {
+          "status": "met",
           "evidence_url": "https://github.com/rbitcoin-org/rbitcoin/releases/tag/v0.9.2",
           "retrieved": "2026-11-12"
         },
@@ -438,6 +583,21 @@
           "evidence_url": "https://github.com/btcsuite/btcd/releases/tag/v0.27.0",
           "retrieved": "2026-11-12"
         },
+        "docs_not_pre_release": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/btcsuite/btcd/blob/dd169fe0c32a56087d28b92fff3b8cf4fb43477a/README.md",
+          "retrieved": "2026-11-12"
+        },
+        "version_or_lts_policy": {
+          "status": "not_met",
+          "evidence_url": "https://github.com/btcsuite/btcd/releases/tag/v0.27.0",
+          "retrieved": "2026-11-12"
+        },
+        "vulnerability_disclosure": {
+          "status": "met",
+          "evidence_url": "https://github.com/btcsuite/btcd/blob/dd169fe0c32a56087d28b92fff3b8cf4fb43477a/SECURITY.md",
+          "retrieved": "2026-11-12"
+        },
         "release_notes": {
           "status": "met",
           "evidence_url": "https://github.com/btcsuite/btcd/releases/tag/v0.27.0",
@@ -445,11 +605,6 @@
         },
         "signed_or_reproducible": {
           "status": "met",
-          "evidence_url": "https://github.com/btcsuite/btcd/releases/tag/v0.27.0",
-          "retrieved": "2026-11-12"
-        },
-        "version_or_lts_policy": {
-          "status": "not_met",
           "evidence_url": "https://github.com/btcsuite/btcd/releases/tag/v0.27.0",
           "retrieved": "2026-11-12"
         },
@@ -467,7 +622,7 @@
     }
   },
   "source": {
-    "label": "Research, ecosystem-stability-brief.md, sections 3 to 5",
+    "label": "Research, ecosystem-stability-brief.md, sections 3 to 5; cells scored by scripts/measure-ecosystem-metrics.py",
     "retrieved": "2026-11-12"
   }
 }

@@ -2,7 +2,8 @@
 """Measure comparable ecosystem stats from pinned checkouts (tokei 14).
 
 Reproduces BLVM size/test buckets and adds depth metrics for every
-implementation. Read-only against the trees; writes JSON on stdout or --out.
+implementation. Also scores the seven stability checks into data/stability.json.
+Read-only against the trees; writes metrics JSON on stdout or --out.
 """
 from __future__ import annotations
 
@@ -13,8 +14,11 @@ import re
 import subprocess
 import sys
 from collections import defaultdict
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
+from zoneinfo import ZoneInfo
 
 TOKEI = os.environ.get("TOKEI", "/workspace/uiux-eco/tools/bin/tokei")
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -1233,11 +1237,1044 @@ def plugin_fields(slug):
     }
 
 
+# --- Stability checklist (data/stability.json) --------------------------------
+# Seven pass/fail checks plus a descriptive upstream-track tag. The file shape
+# matches the #6 renderer schema: each check is {status, evidence_url, retrieved}
+# and a tag is {status, tag, evidence_url, retrieved}, or {status: n/a, reason}
+# when the row does not track an upstream line. Score is met out of 7;
+# not_measured stays in the denominator. "Tracks an upstream line" is not scored.
+# Definition ids, labels and why-text are the ones the renderer and charts read.
+
+ET = ZoneInfo("America/New_York")
+STABILITY_STATUSES = {
+    "met": "The criterion holds, with an evidence link",
+    "not_met": "The criterion was checked and does not hold, with an evidence link",
+    "not_measured": "No reading yet; never read as not met",
+}
+STABILITY_SCORE_RULE = (
+    "Score = met / total criteria, with not measured counted in the total so it "
+    "never inflates a score. Shown as N of 7 met, K not measured. Tracks an "
+    "upstream line is descriptive and not scored."
+)
+STABILITY_DEFINITION_SCHEMA = {
+    "id": "short snake_case id",
+    "label": "what the criterion asks, in plain words",
+    "why": "one line on why it matters for a node operator",
+    "type": "check (scored met / not_met / not_measured) or tag (descriptive, not scored; for example tracks_upstream_line, forks only)",
+}
+STABILITY_ROW_SCHEMA = {
+    "criteria": {
+        "<check id>": {
+            "status": "met | not_met | not_measured",
+            "evidence_url": "https URL pinned to a commit, tag or release; required unless not_measured",
+            "retrieved": "YYYY-MM-DD",
+        },
+        "<tag id>": {
+            "status": "tag | n/a | not_measured",
+            "tag": "short descriptive value, e.g. the upstream release line",
+            "evidence_url": "https URL; required unless not_measured",
+            "retrieved": "YYYY-MM-DD",
+            "reason": "required for n/a",
+        },
+    }
+}
+# Ids and labels follow the research brief section 3. The PR #6 schema
+# example used tracks_upstream_line for the tag; the brief's id is upstream_track.
+# Ids, labels and why-text are those already on main from #6, which the
+# renderer and charts display. The brief's tag id is upstream_track.
+STABILITY_DEFINITION = [
+    {
+        "id": "has_stable_release",
+        "label": "tagged non-pre release",
+        "why": "A project that has never cut a non-prerelease tagged release has no stable artifact for operators to pin.",
+        "type": "check",
+    },
+    {
+        "id": "docs_not_pre_release",
+        "label": "docs not pre-release",
+        "why": "The project’s own operator-facing docs are the right place to read a maturity claim, not our grade and not Untangled’s Status field.",
+        "type": "check",
+    },
+    {
+        "id": "stable_release_in_12m",
+        "label": "stable release in 12m",
+        "why": "A past stable tag is not the same as a release still being cut. Operators need a current channel.",
+        "type": "check",
+    },
+    {
+        "id": "version_or_lts_policy",
+        "label": "version ≥1.0 or LTS",
+        "why": "SemVer treats 0.y.z as initial development, not a stable public API.",
+        "type": "check",
+    },
+    {
+        "id": "vulnerability_disclosure",
+        "label": "vuln disclosure",
+        "why": "A stable node needs a published way to report a consensus or security bug privately.",
+        "type": "check",
+    },
+    {
+        "id": "release_notes",
+        "label": "release notes",
+        "why": "Operators need a human-readable summary of what changed, not a tag and not a git log.",
+        "type": "check",
+    },
+    {
+        "id": "signed_or_reproducible",
+        "label": "signed or reproducible",
+        "why": "A release that cannot be verified is not a trustworthy stable channel, even if the tag exists.",
+        "type": "check",
+    },
+    {
+        "id": "upstream_track",
+        "label": "tracks an upstream line",
+        "why": "For forks only: which line the fork follows. Descriptive, not scored.",
+        "type": "tag",
+    },
+]
+RESERVED_STABILITY_ROWS = {
+    "bitcoin-untangled": {
+        "name": "Bitcoin Untangled",
+        "on_page": False,
+        "note": (
+            "Row reserved. Bitcoin Untangled has no lineage, governance or "
+            "verification row on this page yet, so it has no card; its "
+            "stability cells show here once measured."
+        ),
+        "criteria": {},
+    }
+}
+# Documented download-site signed SUMS for the latest stable version.
+# {version} is the numeric leading x.y (or x.y.z) taken from the tag, without a v prefix.
+DOWNLOAD_SUMS = {
+    "bitcoin-core": "https://bitcoincore.org/bin/bitcoin-core-{version}/SHA256SUMS.asc",
+}
+GUIX_SIGS = {
+    "bitcoin-core": "https://github.com/bitcoin-core/guix.sigs",
+}
+LTS_PAGES = {
+    "bitcoin-core": "https://bitcoincore.org/en/lifecycle/#schedule",
+}
+
+PRE_TAG = re.compile(
+    r"(?i)(^|[.\-_/])(alpha|beta|rc\d*|pre|preview|dev|nightly|snapshot)([.\-_/]|$)|rc\d+$"
+)
+VERSION_RE = re.compile(r"(?i)^v?(\d+)\.(\d+)")
+AUTOMATED_NOTES = re.compile(r"(?i)^\s*automated release of \S+\.?\s*$")
+GIT_LOG_NOTES = re.compile(
+    r"(?m)^(commit [0-9a-f]{40}|Author: |Date: |\* [0-9a-f]{7,}\s+\S)"
+)
+# Project-level current-state claims. Feature-level "experimental" and
+# remarks about the master/development branch are ignored by the scanner.
+PRE_RELEASE_CLAIM = re.compile(
+    r"(?is)("
+    r"not\s+(?:suitable\s+for|for|intended\s+for)\s+production"
+    r"|not\s+production[-\s]?ready"
+    r"|pre[-\s]?production"
+    r"|pre[-\s]?1\.0"
+    r"|development\s+candidate"
+    r"|in\s+an?\s+(?:alpha|beta)\s+state"
+    r"|\bin\s+a\s+beta\s+state\b"
+    r"|(?:this\s+project\s+is\s+currently\s+under\s+(?:active\s+)?development)"
+    r"|(?:^|[.!?]\s+)(?:(?:this\s+project|the\s+software|it)\s+is\s+)?(?:still\s+)?(?:in|under)\s+development\b"
+    r"|no\s+(?:parity,\s+)?production(?:\s*,\s*|\s+or\s+)?(?:or\s+)?(?:mainnet\s+)?claims"
+    r"|no\s+production(?:\s+or\s+mainnet)?(?:\s+or\s+mainnet)?\s+claims"
+    r"|(?:this\s+)?(?:implementation|software|project)\s+is\s+(?:alpha|beta|experimental|unstable)"
+    r"|0\.x\s+experimental(?:\s+line)?"
+    r"|experimental\s+line"
+    r")"
+)
+PRE_1_0_PLANNED = re.compile(
+    r"(?is)(\b1\.0\b.{0,160}(planned|support\s+window)|(support\s+window|signed\s+release\s+binaries).{0,160}\b1\.0\b)"
+)
+MASTER_BRANCH_TALK = re.compile(
+    r"(?i)\b(master|main|development)\s+branch\b"
+)
+FEATURE_EXPERIMENTAL = re.compile(
+    r"(?i)\b(experimental\s+bip|bip\d+\b.{0,40}experimental|rpc\b.{0,40}experimental|"
+    r"optional\s+\w+.{0,20}experimental|are experimental|behind .{0,40}not recommended for production)\b"
+)
+SECURITY_PATHS = (
+    "SECURITY.md",
+    ".github/SECURITY.md",
+    "docs/SECURITY.md",
+    "doc/SECURITY.md",
+    "security.md",
+)
+README_PATHS = (
+    "README.md",
+    "README.rst",
+    "README",
+    "docs/README.md",
+    "doc/README.md",
+)
+NOTES_CANDIDATES = (
+    "doc/release-notes.md",
+    "docs/release-notes.md",
+    "CHANGELOG.md",
+    "CHANGELOG",
+    "NEWS.md",
+    "NEWS",
+    "CHANGES.md",
+)
+SIG_ASSET = re.compile(r"(?i)(\.(asc|sig|minisig)$|SHA(256|512)SUMS\.asc$)")
+GITHUB_REMOTE = re.compile(r"github\.com[:/]([^/]+)/([^/]+?)(?:\.git)?/?$", re.I)
+
+_GH_CACHE: dict[str, object] = {}
+
+
+def _check(status, evidence_url=None):
+    cell = {"status": status}
+    if status != "not_measured":
+        cell["evidence_url"] = evidence_url
+        cell["retrieved"] = AS_OF
+    return cell
+
+
+def _tag_cell(tag, evidence_url, reason=None):
+    """A scored-check companion for the descriptive upstream_track tag.
+
+    The #6 renderer accepts status "tag" (needs tag + https evidence_url),
+    "n/a" (needs reason, no evidence_url), or "not_measured".
+    """
+    if tag == "n/a":
+        return {"status": "n/a", "reason": reason or "independent tree"}
+    if tag == "not-found":
+        return {
+            "status": "n/a",
+            "reason": reason or "README at the pin does not state a base line",
+        }
+    return {
+        "status": "tag",
+        "tag": tag,
+        "evidence_url": evidence_url,
+        "retrieved": AS_OF,
+    }
+
+
+def pin_for(slug: str) -> tuple[Path, str]:
+    if slug == "blvm":
+        root, rev = LANDING_GIT["blvm"]
+        return Path(root), rev
+    root, rev = TREES[slug]
+    return Path(root), rev
+
+
+def parse_github_repo(url: str) -> str | None:
+    m = GITHUB_REMOTE.search((url or "").strip())
+    if not m:
+        return None
+    return f"{m.group(1)}/{m.group(2)}"
+
+
+def origin_repo(cwd: Path) -> str | None:
+    return parse_github_repo(git(cwd, "remote", "get-url", "origin", check=False))
+
+
+def gh_api(endpoint: str, default=None, paginate=False):
+    """GET a GitHub API path with the already-authenticated gh CLI. Never logs tokens."""
+    key = ("GET", endpoint, paginate)
+    if key in _GH_CACHE:
+        return _GH_CACHE[key]
+    cmd = ["gh", "api"]
+    if paginate:
+        cmd.append("--paginate")
+    cmd.append(endpoint)
+    r = subprocess.run(cmd, text=True, capture_output=True)
+    if r.returncode != 0:
+        _GH_CACHE[key] = default
+        return default
+    try:
+        data = json.loads(r.stdout) if r.stdout.strip() else default
+    except json.JSONDecodeError:
+        data = default
+    _GH_CACHE[key] = data
+    return data
+
+
+def canonical_repo(cwd: Path) -> str | None:
+    origin = origin_repo(cwd)
+    if not origin:
+        return None
+    data = gh_api(f"repos/{origin}", default=None)
+    if isinstance(data, dict) and data.get("full_name"):
+        return data["full_name"]
+    return origin
+
+
+def github_url(repo: str, *parts: str) -> str:
+    return "https://github.com/" + "/".join([repo, *parts])
+
+
+def blob_url(repo: str, rev: str, path: str) -> str:
+    return github_url(repo, "blob", rev, path)
+
+
+def release_url(repo: str, tag: str) -> str:
+    return github_url(repo, "releases", "tag", tag)
+
+
+def to_et_date(value) -> date | None:
+    if value is None or value == "":
+        return None
+    if isinstance(value, date) and not isinstance(value, datetime):
+        return value
+    text = str(value).strip()
+    if text.endswith("Z"):
+        text = text[:-1] + "+00:00"
+    try:
+        dt = datetime.fromisoformat(text)
+    except ValueError:
+        if len(text) >= 10 and text[4] == "-" and text[7] == "-":
+            try:
+                return date.fromisoformat(text[:10])
+            except ValueError:
+                return None
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(ET).date()
+
+
+def in_window(d: date | None) -> bool:
+    if d is None:
+        return False
+    return date.fromisoformat(WINDOW_START) <= d <= date.fromisoformat(WINDOW_END)
+
+
+def is_prerelease_tag(name: str) -> bool:
+    if name.lower().startswith("untagged-"):
+        return True
+    if "/" in name:
+        return True
+    return bool(PRE_TAG.search(name))
+
+
+def git_show(cwd: Path, rev: str, path: str) -> str | None:
+    r = subprocess.run(
+        ["git", "-C", str(cwd), "cat-file", "-e", f"{rev}:{path}"],
+        capture_output=True,
+    )
+    if r.returncode != 0:
+        return None
+    return git(cwd, "show", f"{rev}:{path}", check=False)
+
+
+def list_tree_paths(cwd: Path, rev: str, prefix: str = "") -> list[str] | None:
+    args = ["ls-tree", "-r", "--name-only", rev]
+    if prefix:
+        args.append(prefix)
+    out = git(cwd, *args, check=False)
+    # Distinguish empty tree from git failure: git() returns "" on failure too.
+    r = subprocess.run(
+        ["git", "-C", str(cwd), "ls-tree", "-r", "--name-only", rev],
+        text=True,
+        capture_output=True,
+    )
+    if r.returncode != 0:
+        return None
+    paths = [ln for ln in r.stdout.splitlines() if ln]
+    if prefix:
+        paths = [p for p in paths if p.startswith(prefix)]
+    return paths
+
+
+def local_tag_records(cwd: Path) -> list[dict] | None:
+    r = subprocess.run(
+        [
+            "git", "-C", str(cwd), "for-each-ref",
+            "--format=%(creatordate:iso-strict)%09%(objecttype)%09%(refname:short)",
+            "refs/tags",
+        ],
+        text=True,
+        capture_output=True,
+    )
+    if r.returncode != 0:
+        return None
+    rows = []
+    for line in r.stdout.splitlines():
+        parts = line.split("\t")
+        if len(parts) != 3:
+            continue
+        when, _kind, name = parts
+        if "/" in name:
+            continue
+        rows.append({"name": name, "date": to_et_date(when)})
+    return rows
+
+
+def http_ok(url: str) -> bool | None:
+    """True/False if the URL could be fetched; None if the request itself failed."""
+    req = Request(url, method="GET", headers={"User-Agent": "commons-website-stability-check"})
+    try:
+        with urlopen(req, timeout=20) as resp:
+            return 200 <= getattr(resp, "status", 200) < 300
+    except HTTPError as exc:
+        if exc.code == 404:
+            return False
+        return None
+    except (URLError, TimeoutError, OSError):
+        return None
+
+
+def collect_stable_releases(slug: str, cwd: Path, repo: str | None) -> tuple[list[dict], str | None]:
+    """Return (stable releases newest-first, error if nothing could be read)."""
+    releases = None
+    if repo:
+        releases = gh_api(f"repos/{repo}/releases?per_page=100", default=None, paginate=True)
+        if releases is not None and not isinstance(releases, list):
+            releases = None
+    tags = local_tag_records(cwd)
+    api_tags = None
+    if repo and tags is None:
+        api_tags = gh_api(f"repos/{repo}/tags?per_page=100", default=None, paginate=True)
+        if isinstance(api_tags, list):
+            tags = [{"name": t.get("name", ""), "date": None} for t in api_tags if t.get("name")]
+        else:
+            api_tags = None
+    if releases is None and tags is None:
+        return [], "releases API and local/API tags could not be read"
+    tag_names = {t["name"] for t in (tags or [])}
+    tag_dates = {t["name"]: t.get("date") for t in (tags or [])}
+    # Also accept tags only visible via the API when the local clone missed some.
+    if repo and tags is not None:
+        extra = gh_api(f"repos/{repo}/tags?per_page=100", default=None, paginate=True)
+        if isinstance(extra, list):
+            for t in extra:
+                name = t.get("name") or ""
+                if name and name not in tag_names and "/" not in name:
+                    tag_names.add(name)
+                    tag_dates.setdefault(name, None)
+
+    found: dict[str, dict] = {}
+
+    def remember(tag, when, url, body, assets, from_gh):
+        if not tag or tag.lower().startswith("untagged-") or "/" in tag:
+            return
+        rec = {
+            "tag": tag,
+            "date": when,
+            "url": url or (release_url(repo, tag) if repo else None),
+            "body": body or "",
+            "assets": assets or [],
+            "from_github_release": from_gh,
+        }
+        prev = found.get(tag)
+        if prev is None or (from_gh and not prev["from_github_release"]):
+            if prev and rec["date"] is None:
+                rec["date"] = prev["date"]
+            found[tag] = rec
+        elif prev["date"] is None and when is not None:
+            prev["date"] = when
+
+    for rel in releases or []:
+        if not isinstance(rel, dict) or rel.get("draft"):
+            continue
+        tag = rel.get("tag_name") or ""
+        if rel.get("prerelease") or is_prerelease_tag(tag):
+            # A prerelease GitHub flag or name does not count, even if a tag exists.
+            continue
+        if tag_names and tag not in tag_names:
+            continue
+        remember(
+            tag,
+            to_et_date(rel.get("published_at")) or tag_dates.get(tag),
+            rel.get("html_url") or (release_url(repo, tag) if repo else None),
+            rel.get("body") or "",
+            [a.get("name") or "" for a in (rel.get("assets") or []) if a.get("name")],
+            True,
+        )
+
+    # Tags without (or in addition to) GitHub Releases, including a current
+    # v4 line when only an older v3 GitHub Release exists (libbitcoin).
+    if not releases:
+        tag_source = tags or []
+    else:
+        tag_source = tags or []
+    for t in tag_source:
+        name = t["name"]
+        if is_prerelease_tag(name):
+            continue
+        # If a GitHub release exists for this tag and was marked prerelease,
+        # it was skipped above and must stay out.
+        remember(
+            name,
+            t.get("date") or tag_dates.get(name),
+            release_url(repo, name) if repo else None,
+            "",
+            [],
+            False,
+        )
+        # If we already stored a GitHub release for this tag, remember() keeps it.
+
+    # If a GitHub release for a tag was prerelease=true, drop any tag-only copy.
+    if releases:
+        pre = {
+            (rel.get("tag_name") or "")
+            for rel in releases
+            if isinstance(rel, dict) and not rel.get("draft") and rel.get("prerelease")
+        }
+        for name in list(found):
+            if name in pre:
+                del found[name]
+
+    items = list(found.values())
+
+    def sort_key(rec):
+        d = rec["date"] or date.min
+        return (d, 1 if rec["from_github_release"] else 0, rec["tag"])
+
+    items.sort(key=sort_key, reverse=True)
+    return items, None
+
+
+def leading_version(tag: str) -> tuple[int, int, str] | None:
+    m = VERSION_RE.match(tag)
+    if not m:
+        return None
+    return int(m.group(1)), int(m.group(2)), f"{int(m.group(1))}.{int(m.group(2))}"
+
+
+def core_family_version(tag: str) -> str | None:
+    """Numeric version used in Core-family download paths (32.1 from v32.1)."""
+    m = re.match(r"(?i)^v?(\d+\.\d+(?:\.\d+)?)", tag)
+    return m.group(1) if m else None
+
+
+def scan_docs_for_prerelease(texts: list[tuple[str, str]]) -> tuple[str, str] | None:
+    """Return (path, short quote) if a current-state pre-release claim is found."""
+    for path, text in texts:
+        if not text:
+            continue
+        # Walk paragraphs so a feature-level "experimental" does not smear.
+        parts = re.split(r"\n{2,}", text)
+        for part in parts:
+            stripped = part.strip()
+            if not stripped:
+                continue
+            if FEATURE_EXPERIMENTAL.search(stripped) and not PRE_RELEASE_CLAIM.search(stripped):
+                continue
+            if MASTER_BRANCH_TALK.search(stripped) and re.search(
+                r"(?i)not guaranteed to be\s+(?:completely\s+)?stable", stripped
+            ):
+                continue
+            # Generic principle, not a self-label (satd).
+            if re.search(r"(?i)an unstable node that (?:doesn'?t|does not) work", stripped):
+                stripped = PRE_RELEASE_CLAIM.sub("", stripped)
+            m = PRE_RELEASE_CLAIM.search(stripped)
+            if m:
+                quote = re.sub(r"\s+", " ", m.group(0)).strip()
+                return path, quote[:200]
+            if PRE_1_0_PLANNED.search(stripped) and re.search(
+                r"(?i)(support window|hardening|signed release binaries).{0,160}1\.0|1\.0.{0,160}(planned|support window)",
+                stripped,
+            ):
+                return path, "1.0 support/hardening described as planned (current line is pre-1.0)"
+    return None
+
+
+def is_product_version_tag(tag: str) -> bool:
+    """True for tags that start with a product version (v32.1, V3.1, 0.7.1)."""
+    return bool(re.match(r"(?i)^v?\d+\.\d+", tag or ""))
+
+
+def latest_product_release(stable: list[dict]) -> dict | None:
+    """Newest stable tag that looks like a product version; else newest stable."""
+    for rec in stable:
+        if is_product_version_tag(rec.get("tag") or ""):
+            return rec
+    return stable[0] if stable else None
+
+
+def notes_substance(text: str) -> str:
+    """Strip boilerplate so an automated stub plus a git-compare link does not count."""
+    body = text or ""
+    lines = []
+    for raw in body.splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        if re.match(r"^#+\s*", line):
+            line = re.sub(r"^#+\s*", "", line).strip()
+            # Bare version headings ("v0.1.92", "Changes") are not notes.
+            if re.match(r"(?i)^v?\d+\.\d+[\w.-]*$", line) or re.match(r"(?i)^(changes|changelog|release notes)$", line):
+                continue
+        if AUTOMATED_NOTES.match(line):
+            continue
+        if re.search(r"(?i)published to crates\.io", line):
+            continue
+        if re.search(r"(?i)^see (the )?(commit history|git log|full (changelog|diff|history))", line):
+            continue
+        if re.search(r"(?i)github\.com/[^/]+/[^/]+/compare/", line) and re.search(r"(?i)^(see |changes)", line):
+            continue
+        lines.append(line)
+    return "\n".join(lines).strip()
+
+
+def human_release_notes(text: str) -> bool:
+    body = (text or "").strip()
+    if not body:
+        return False
+    if GIT_LOG_NOTES.search(body) and len(re.findall(r"(?m)^commit [0-9a-f]{40}", body)) >= 2:
+        return False
+    substance = notes_substance(body)
+    if not substance:
+        return False
+    compact = re.sub(r"\s+", " ", substance).strip()
+    # Tag-only messages like "Add release build tags., regenerate." are not a
+    # summary of major changes.
+    if len(compact) < 80 and compact.count(".") <= 2 and "\n" not in substance:
+        return False
+    if len(compact) >= 80 or substance.count("\n") >= 2 or compact.count(".") >= 2:
+        return True
+    return False
+
+
+def notes_from_tree(cwd: Path, rev: str, tag: str) -> tuple[str, str] | None:
+    versions = {tag}
+    if tag.startswith(("v", "V")):
+        versions.add(tag[1:])
+    else:
+        versions.add("v" + tag)
+        versions.add("V" + tag)
+    ver = core_family_version(tag)
+    if ver:
+        versions.add(ver)
+    tree = list_tree_paths(cwd, rev)
+    if tree is None:
+        # Fall back to well-known paths only; caller treats a total fetch
+        # failure separately when even these are unreadable.
+        tree = list(NOTES_CANDIDATES)
+        fallback = True
+    else:
+        fallback = False
+    wanted = []
+    for path in tree:
+        base = path.rsplit("/", 1)[-1]
+        lower = path.lower()
+        if any(
+            lower.startswith(prefix) and any(v.lower() in base.lower() for v in versions)
+            for prefix in (
+                "doc/release-notes/",
+                "docs/release-notes/",
+                "doc/release-notes-",
+            )
+        ):
+            wanted.append(path)
+        elif path in NOTES_CANDIDATES or base in ("CHANGELOG.md", "CHANGELOG", "NEWS", "NEWS.md"):
+            wanted.append(path)
+    # Always try the well-known files.
+    for path in NOTES_CANDIDATES:
+        if path not in wanted:
+            wanted.append(path)
+    for path in wanted:
+        text = git_show(cwd, rev, path)
+        if text is None:
+            continue
+        base = path.rsplit("/", 1)[-1]
+        if any(v.lower() in base.lower() for v in versions) and human_release_notes(text):
+            return path, text
+        # CHANGELOG / NEWS / combined notes file: a section headed with this version.
+        if any(k in base.upper() for k in ("CHANGELOG", "NEWS", "RELEASE-NOTES", "RELEASE_NOTES")):
+            for v in versions:
+                sec = re.search(
+                    rf"(?ims)^(?:#+|\*+)\s*\[?v?{re.escape(v.lstrip('vV'))}\]?.*?(?=^(?:#+|\*+)\s|\Z)",
+                    text,
+                )
+                if sec and human_release_notes(sec.group(0)):
+                    return path, sec.group(0)
+    if fallback and not any(git_show(cwd, rev, p) is not None for p in NOTES_CANDIDATES):
+        return None
+    return None
+
+
+def has_report_path(text: str) -> bool:
+    if not text or not text.strip():
+        return False
+    return bool(re.search(
+        r"(?i)(security@|report|vulnerabilit|responsible disclosure|security advisory|"
+        r"hackerone|github.com/.+/security|please email|contact)",
+        text,
+    ))
+
+
+def has_sig_assets(names: list[str]) -> bool:
+    return any(SIG_ASSET.search(n) for n in names if n)
+
+
+def sums_match_assets(cwd: Path, rev: str, names: list[str]) -> bool | None:
+    """If a SHA256SUMS/SHA512SUMS asset list is readable, require listed names to overlap published artifacts."""
+    return None  # GH asset names are already in `names`; mismatch check needs the sums body.
+
+
+def measure_one_stability(slug: str) -> dict:
+    cwd, rev = pin_for(slug)
+    criteria: dict[str, dict] = {}
+    if not cwd.is_dir():
+        nm = _check("not_measured")
+        for item in STABILITY_DEFINITION:
+            if item["type"] == "check":
+                criteria[item["id"]] = dict(nm)
+            else:
+                criteria[item["id"]] = {"status": "not_measured"}
+        return {"name": NAMES[slug], "criteria": criteria}
+
+    repo = canonical_repo(cwd)
+    repo_home = f"https://github.com/{repo}" if repo else None
+    releases_page = f"{repo_home}/releases" if repo else None
+    pin_url = blob_url(repo, rev, "README.md") if repo else None
+
+    # --- S1 / S3 pool ---
+    stable, read_err = collect_stable_releases(slug, cwd, repo)
+    latest = latest_product_release(stable)
+    latest_url = (latest or {}).get("url") or releases_page or repo_home
+    in_win = [r for r in stable if in_window(r.get("date"))]
+    in_win_product = [r for r in in_win if is_product_version_tag(r.get("tag") or "")] or in_win
+    dates_known = any(r.get("date") is not None for r in stable)
+
+    if read_err:
+        criteria["has_stable_release"] = _check("not_measured")
+        criteria["stable_release_in_12m"] = _check("not_measured")
+    else:
+        criteria["has_stable_release"] = _check(
+            "met" if stable else "not_met",
+            latest_url if stable else releases_page or repo_home,
+        )
+        if stable and not dates_known and not in_win:
+            criteria["stable_release_in_12m"] = _check("not_measured")
+        else:
+            ev = ((in_win_product[0]["url"] if in_win_product else None)
+                  or latest_url or releases_page or repo_home)
+            criteria["stable_release_in_12m"] = _check("met" if in_win else "not_met", ev)
+
+    # --- S2 docs ---
+    docs = []
+    docs_failed = 0
+    docs_tried = 0
+    for path in README_PATHS + ("SECURITY.md", ".github/SECURITY.md", "docs/SECURITY.md", "doc/SECURITY.md", "security.md"):
+        # Only the S2 set: README variants + SECURITY.md (any of the usual locations).
+        pass
+    s2_paths = README_PATHS + SECURITY_PATHS
+    any_success = False
+    readme_or_security_present = False
+    for path in s2_paths:
+        docs_tried += 1
+        text = git_show(cwd, rev, path)
+        if text is None:
+            # Missing file is not a fetch failure.
+            continue
+        any_success = True
+        if path.upper().endswith("README.MD") or path in ("README", "README.rst") or path.endswith("README.md") or path.upper().endswith("SECURITY.MD") or path.endswith("security.md"):
+            readme_or_security_present = True
+        docs.append((path, text))
+    # If the pin is readable at all, a missing README is still a completed check.
+    pin_readable = git(cwd, "cat-file", "-t", rev, check=False) == "commit"
+    if not pin_readable:
+        criteria["docs_not_pre_release"] = _check("not_measured")
+    else:
+        hit = scan_docs_for_prerelease(docs)
+        if hit:
+            path, _quote = hit
+            criteria["docs_not_pre_release"] = _check("not_met", blob_url(repo, rev, path) if repo else pin_url)
+        else:
+            ev_path = docs[0][0] if docs else "README.md"
+            ev = blob_url(repo, rev, ev_path) if repo else pin_url
+            # Prefer the primary README when met.
+            for cand in ("README.md", "README.rst", "README"):
+                if any(p == cand for p, _ in docs):
+                    ev = blob_url(repo, rev, cand) if repo else ev
+                    break
+            criteria["docs_not_pre_release"] = _check("met", ev or repo_home)
+
+    # --- S4 version or LTS ---
+    ver = leading_version(latest["tag"]) if latest else None
+    lts_url = LTS_PAGES.get(slug)
+    lts_ok = None
+    # In-tree lifecycle / supported-releases / LTS policy at the pin.
+    tree = list_tree_paths(cwd, rev) if pin_readable else None
+    policy_hit = None
+    policy_content = re.compile(
+        r"(?i)(supported\s+versions?|support\s+(schedule|window|policy)|"
+        r"long[- ]term\s+support|\bLTS\b|end[- ]of[- ]life|\bEOL\b|"
+        r"lifecycle\s+schedule)"
+    )
+    if tree is not None:
+        for path in tree:
+            low = path.lower()
+            base = path.rsplit("/", 1)[-1].lower()
+            # Word-bounded path tokens only (do not match "lts" inside "altstack").
+            if not re.search(r"(?i)(^|/)(lifecycle|supported[-_]?releases|lts)(/|\.|$)", low):
+                continue
+            if not base.endswith((".md", ".rst", ".txt", ".html")):
+                continue
+            body = git_show(cwd, rev, path) or ""
+            # A file named lifecycle.md about process start/stop is not an
+            # operator support schedule.
+            if policy_content.search(body):
+                policy_hit = path
+                break
+    if lts_url:
+        lts_ok = http_ok(lts_url)
+    if not pin_readable and ver is None and lts_ok is None and tree is None:
+        criteria["version_or_lts_policy"] = _check("not_measured")
+    elif ver and ver[0] >= 1:
+        criteria["version_or_lts_policy"] = _check("met", latest_url)
+    elif lts_ok or policy_hit:
+        ev = lts_url if lts_ok else (blob_url(repo, rev, policy_hit) if repo and policy_hit else latest_url or repo_home)
+        criteria["version_or_lts_policy"] = _check("met", ev)
+    elif ver is None and tree is None and (lts_url and lts_ok is None):
+        criteria["version_or_lts_policy"] = _check("not_measured")
+    else:
+        ev = latest_url or (blob_url(repo, rev, "README.md") if repo else repo_home)
+        criteria["version_or_lts_policy"] = _check("not_met", ev)
+
+    # --- S5 vulnerability disclosure ---
+    sec_path = None
+    sec_text = None
+    for path in SECURITY_PATHS:
+        text = git_show(cwd, rev, path)
+        if text is not None:
+            sec_path, sec_text = path, text
+            break
+    if sec_path is not None:
+        # A file in the tree is enough; still record it when a report path is present.
+        ev = blob_url(repo, rev, sec_path) if repo else repo_home
+        criteria["vulnerability_disclosure"] = _check("met", ev)
+    else:
+        profile = gh_api(f"repos/{repo}/community/profile", default=None) if repo else None
+        sec_file = None
+        if isinstance(profile, dict):
+            files = profile.get("files") or {}
+            sec_file = (files.get("security") or None)
+        if isinstance(sec_file, dict) and (sec_file.get("url") or sec_file.get("html_url")):
+            ev = sec_file.get("html_url") or (f"{repo_home}/security/policy" if repo else None)
+            criteria["vulnerability_disclosure"] = _check("met", ev)
+        elif pin_readable and (profile is not None or not repo):
+            ev = f"{repo_home}/security/policy" if repo else repo_home
+            criteria["vulnerability_disclosure"] = _check("not_met", ev)
+        elif not pin_readable and profile is None:
+            criteria["vulnerability_disclosure"] = _check("not_measured")
+        else:
+            ev = f"{repo_home}/security/policy" if repo else repo_home
+            criteria["vulnerability_disclosure"] = _check("not_met", ev)
+
+    # --- S6 release notes ---
+    if read_err and not latest:
+        criteria["release_notes"] = _check("not_measured")
+    elif not latest:
+        criteria["release_notes"] = _check("not_met", releases_page or repo_home)
+    else:
+        notes_ok = human_release_notes(latest.get("body") or "")
+        ev = latest_url
+        if not notes_ok:
+            # Notes at the tag when present, otherwise at the pin (tag may not be in this clone).
+            tag_rev = latest["tag"]
+            has_tag = git(cwd, "rev-parse", "--verify", "--quiet", f"refs/tags/{tag_rev}", check=False)
+            use_rev = tag_rev if has_tag else rev
+            found = notes_from_tree(cwd, use_rev, latest["tag"])
+            if found is None and use_rev != rev:
+                found = notes_from_tree(cwd, rev, latest["tag"])
+            if found:
+                path, text = found
+                if human_release_notes(text):
+                    notes_ok = True
+                    ev = blob_url(repo, use_rev if has_tag else rev, path) if repo else ev
+        if notes_ok:
+            criteria["release_notes"] = _check("met", ev)
+        else:
+            # If we could not read the release body and could not read the notes paths, not measured.
+            body_known = latest.get("from_github_release") or latest.get("body") is not None
+            tree_read = list_tree_paths(cwd, rev) is not None
+            if not body_known and not tree_read and not (latest.get("body") or ""):
+                criteria["release_notes"] = _check("not_measured")
+            else:
+                criteria["release_notes"] = _check("not_met", ev or releases_page or repo_home)
+
+    # --- S7 signed or reproducible ---
+    if read_err and not latest:
+        criteria["signed_or_reproducible"] = _check("not_measured")
+    elif not latest:
+        criteria["signed_or_reproducible"] = _check("not_met", releases_page or repo_home)
+    else:
+        assets = latest.get("assets") or []
+        signed = has_sig_assets(assets)
+        ev = latest_url
+        probe_failed = False
+        if not signed:
+            ver_s = core_family_version(latest["tag"])
+            tmpl = DOWNLOAD_SUMS.get(slug)
+            if tmpl and ver_s:
+                url = tmpl.format(version=ver_s)
+                ok = http_ok(url)
+                if ok is True:
+                    signed = True
+                    ev = url
+                elif ok is None:
+                    probe_failed = True
+            guix = GUIX_SIGS.get(slug)
+            if not signed and guix:
+                # In-tree contrib/guix/ alone is not enough; published signatures are.
+                ok = http_ok(guix)
+                if ok is True:
+                    signed = True
+                    ev = guix
+                elif ok is None:
+                    probe_failed = True
+        if signed:
+            criteria["signed_or_reproducible"] = _check("met", ev)
+        elif probe_failed and not assets and not latest.get("from_github_release"):
+            criteria["signed_or_reproducible"] = _check("not_measured")
+        else:
+            criteria["signed_or_reproducible"] = _check("not_met", ev or releases_page or repo_home)
+
+    # --- descriptive tag: upstream_track ---
+    readme = None
+    readme_path = None
+    for path in ("README.md", "README.rst", "README"):
+        text = git_show(cwd, rev, path)
+        if text is not None:
+            readme, readme_path = text, path
+            break
+    ev = blob_url(repo, rev, readme_path or "README.md") if repo else repo_home
+    if not pin_readable and readme is None:
+        criteria["upstream_track"] = {"status": "not_measured"}
+    else:
+        tag_val = "n/a"
+        body = readme or ""
+        # Forks only: classify from the README at the pin.
+        if re.search(r"(?i)non[-\s]?rdts", body) and re.search(r"(?i)\bknots\b", body):
+            tag_val = "tracks-knots-non-rdts"
+        elif re.search(r"(?i)based directly on (?:the exact )?bitcoin core", body) or re.search(
+            r"(?i)based on bitcoin core", body
+        ):
+            tag_val = "tracks-core"
+        elif re.search(r"(?i)continue non-rdts knots|last non-rdts", body):
+            tag_val = "tracks-knots-non-rdts"
+        # Independent trees are n/a with reason "independent tree". Known
+        # Core/Knots-layout forks that state a base are tagged above. If a
+        # fork README is silent, emit n/a with that reason (not scored).
+        # Bit-Block is in this silent-fork set: upstream_track stays n/a.
+        reason = None
+        if tag_val == "n/a" and slug in ("knots-legacy", "bit-block", "bitcoin-roots"):
+            tag_val = "not-found" if not body else "n/a"
+            reason = "README at the pin does not state a base line"
+        elif tag_val == "n/a":
+            reason = "independent tree"
+        criteria["upstream_track"] = _tag_cell(tag_val, ev or repo_home, reason=reason)
+
+    return {"name": NAMES[slug], "criteria": criteria}
+
+
+def load_reserved_rows(existing_path: Path) -> dict:
+    reserved = {k: json.loads(json.dumps(v)) for k, v in RESERVED_STABILITY_ROWS.items()}
+    if not existing_path.is_file():
+        return reserved
+    try:
+        doc = json.loads(existing_path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return reserved
+    for slug, row in (doc.get("rows") or {}).items():
+        if isinstance(row, dict) and row.get("on_page") is False:
+            reserved[slug] = {
+                "name": row.get("name") or slug,
+                "on_page": False,
+                "note": row.get("note", ""),
+                "criteria": row.get("criteria") or {},
+            }
+    return reserved
+
+
+def build_stability_doc(out_path: Path | None = None) -> dict:
+    slugs = ["blvm"] + [
+        "bitcoin-core", "knots-legacy", "bit-block", "bitcoin-roots",
+        "bitcoin-rs", "satd", "libbitcoin", "hornet", "floresta", "rbitcoin", "btcd",
+    ]
+    rows = {}
+    for slug in slugs:
+        print(f"stability: measuring {slug}…", flush=True)
+        rows[slug] = measure_one_stability(slug)
+    reserved = load_reserved_rows(out_path) if out_path else dict(RESERVED_STABILITY_ROWS)
+    for slug, row in reserved.items():
+        if slug not in rows:
+            rows[slug] = row
+    note = (
+        "Seven mechanically checkable requisites for a stable release line, "
+        "scored by scripts/measure-ecosystem-metrics.py from the GitHub API and "
+        "the repo at the same pins as the other ecosystem metrics. The checklist "
+        "definition is from Research's stability brief (2026-11-12). Score is "
+        "met out of 7; not-measured stays in the denominator and is never read "
+        "as not met. Citations: Semantic Versioning 2.0.0 and the OpenSSF Best "
+        "Practices criteria for version tags, vulnerability reporting, release "
+        "notes, and signed or reproducible releases. Bitcoin Untangled's Status "
+        "field is not the source of the grade."
+    )
+    return {
+        "schema_version": 1,
+        "as_of": AS_OF,
+        "status": "measured",
+        "note": note,
+        "score_rule": STABILITY_SCORE_RULE,
+        "statuses": STABILITY_STATUSES,
+        "definition": STABILITY_DEFINITION,
+        "definition_schema": STABILITY_DEFINITION_SCHEMA,
+        "row_schema": STABILITY_ROW_SCHEMA,
+        "rows": rows,
+        "source": {
+            "label": (
+                "Research, ecosystem-stability-brief.md, sections 3 to 5; "
+                "cells scored by scripts/measure-ecosystem-metrics.py"
+            ),
+            "retrieved": AS_OF,
+        },
+    }
+
+
+def stability_score_table(doc: dict) -> list[tuple[str, int, int, int]]:
+    checks = [c["id"] for c in doc["definition"] if c["type"] == "check"]
+    table = []
+    for slug, row in doc["rows"].items():
+        if row.get("on_page") is False:
+            continue
+        cells = (row.get("criteria") or {})
+        met = sum(1 for i in checks if (cells.get(i) or {}).get("status") == "met")
+        nm = sum(1 for i in checks if (cells.get(i) or {}).get("status") == "not_measured")
+        table.append((slug, met, len(checks), nm))
+    return table
+
+
+def write_stability(path: str) -> dict:
+    dest = Path(path)
+    doc = build_stability_doc(dest)
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(json.dumps(doc, indent=2) + "\n")
+    print(f"wrote {dest}", flush=True)
+    for slug, met, total, nm in stability_score_table(doc):
+        extra = f", {nm} not measured" if nm else ""
+        print(f"  {slug}: {met} of {total} met{extra}", flush=True)
+    return doc
+
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", default="-")
     parser.add_argument("--size-out", default="")
+    parser.add_argument(
+        "--stability-out",
+        default=str(REPO_ROOT / "data/stability.json"),
+        help="Write the stability checklist JSON (PR #6 schema). Empty string skips it.",
+    )
+    parser.add_argument(
+        "--stability-only",
+        action="store_true",
+        help="Only compute data/stability.json; skip size and metrics measurement.",
+    )
     args = parser.parse_args()
+
+    if args.stability_out:
+        write_stability(args.stability_out)
+    if args.stability_only:
+        return
 
     if not MAILMAP.is_file():
         print(
