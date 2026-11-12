@@ -21,6 +21,11 @@ export default {
         ctx.data.governance.history.forEach(function (h) { hist[h.slug] = h.text; });
         EDGES.forEach(function (e) { if ((hist[e.slug] || "").indexOf(e.quote) < 0) throw new Error("lineage: data no longer states: " + e.quote); });
         if (ctx.data.class.indexOf(LAYOUT_QUOTE) < 0) throw new Error("lineage: class note changed");
+        // Upstream projects that are not rows (Bitcoin Knots) and what they
+        // derive from, each with its own quote and source.
+        const upstream = (ctx.data.upstream || []).filter(function (u) { return u.derives_from && u.quote && u.sources && u.sources.length; });
+        const edges = upstream.map(function (u) { return { from: u.derives_from, to: u.slug }; }).concat(EDGES);
+        const knotsUp = upstream.filter(function (u) { return u.slug === "knots"; })[0];
         const internal = ctx.data.internal_slug;
         const rows = ctx.stack.rows;
         const derived = { "bitcoin-core": 1, "knots-legacy": 1, "bit-block": 1, "bitcoin-roots": 1 };
@@ -47,13 +52,13 @@ export default {
         return figure({
             id: "fig-lineage",
             headline: separate.length + " of " + rows.length + " implementations are separate codebases. The other " + (rows.length - separate.length) + " are Bitcoin Core and clients built from it.",
-            caption: "Arrows show derivation as each project's history on this page states it; the dashed arrow is Bitcoin Roots carrying Knots policy features onto Core. Bitcoin Knots itself is not a row on this page. Separate codebases are grouped by primary language.",
+            caption: "Arrows show derivation as each project's history on this page states it; the dashed arrow is Bitcoin Roots carrying Knots policy features onto Core. Bitcoin Knots itself is not a row on this page" + (knotsUp ? "; its arrow from Core cites the Knots README" : "") + ". Separate codebases are grouped by primary language.",
             title: "Lineage of the " + rows.length + " implementations",
-            desc: "Core family: Bitcoin Core; Bitcoin Roots, a patch series on Core that also carries Knots features; Knots Legacy and Bit-Block, both from Bitcoin Knots. Separate codebases: " + langs.map(function (l) { return l + ": " + byLang[l].map(function (s) { return nodes[s].label; }).join(", "); }).join("; ") + ".",
-            chart: lineage(groups, nodes, EDGES),
+            desc: "Core family: Bitcoin Core; " + (knotsUp ? "Bitcoin Knots, a fork of Core; " : "") + "Bitcoin Roots, a patch series on Core that also carries Knots features; Knots Legacy and Bit-Block, both from Bitcoin Knots. Separate codebases: " + langs.map(function (l) { return l + ": " + byLang[l].map(function (s) { return nodes[s].label; }).join(", "); }).join("; ") + ".",
+            chart: lineage(groups, nodes, edges),
             notes: ["&ldquo;Separate&rdquo; means the data on this page states no derivation from Core or Knots. rbitcoin carries Bitcoin Core as a git submodule for tests (stack table); that is not a derivation."],
-            sources: [{ label: "data/implementations.json (history, class)" }, { label: "data/stack.json (languages)" }],
-            table: { caption: "Lineage of each implementation", columns: ["Implementation", "Group", "Stated relationship", "Languages"], rows: tableRows }
+            sources: (knotsUp ? knotsUp.sources.slice(0, 1) : []).concat([{ label: "data/implementations.json (history, class, upstream)" }]).concat([ { label: "data/stack.json (languages)" }]),
+            table: { caption: "Lineage of each implementation", columns: ["Implementation", "Group", "Stated relationship", "Languages"], rows: tableRows.concat(knotsUp ? [[knotsUp.name + " (not a row)", "Core family", knotsUp.quote + " (" + knotsUp.sources[0].label + ")", "not measured"]] : []) }
         });
     }
 };
