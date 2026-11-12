@@ -61,7 +61,7 @@ function byInstrument(trees) {
     return order.map(function (key) { return { name: key, trees: map[key] }; });
 }
 function wideTable(trees, methods, caption) {
-    return "<div class=\"eco-scroll\" tabindex=\"0\" role=\"region\" aria-label=\"" + esc(caption) + "\"><table><caption>" + esc(caption) + "</caption>" + head(trees) + methods.map(function (m) {
+    return "<p class=\"eco-scroll-hint\" aria-hidden=\"true\">Scroll sideways for every column.</p><div class=\"eco-scroll\" tabindex=\"0\" role=\"region\" aria-label=\"" + esc(caption) + "\"><table><caption>" + esc(caption) + "</caption>" + head(trees) + methods.map(function (m) {
         return row(m.name, trees, function (t) { return cellText(t, m); });
     }).join("") + "</table></div>";
 }
@@ -99,10 +99,10 @@ const comp = trees.map(function (tree) {
 }).sort(function (a, b) { return b.total - a.total; });
 const compBySlug = {}; comp.forEach(function (c) { compBySlug[c.slug] = c; });
 const compMax = comp[0].total;
-const commonsComp = comp.filter(function (r) { return r.internal; })[0];
+const blvmComp = comp.filter(function (r) { return r.internal; })[0];
 // Column captions state facts only. Rankings are left to the sortable table.
 slots["size-caption"] = "";
-slots["comp-caption"] = esc(commonsComp && commonsComp.vend === 0 && commonsComp.loc === 0 ? commonsComp.name + " has neither vendored lines nor locale lines." : "");
+slots["comp-caption"] = esc(blvmComp && blvmComp.vend === 0 && blvmComp.loc === 0 ? blvmComp.name + " has neither vendored lines nor locale lines." : "");
 const halfOf = {}; trees.forEach(function (t) { var h = metric(t, "files_holding_half"); halfOf[t.slug] = h ? h.text : ""; });
 slots["files-caption"] = "";
 slots["test-caption"] = "";
@@ -258,9 +258,9 @@ slots.institution = landingOrder.map(function (slug) {
     return "<tr data-slug=\"" + esc(slug) + "\">" + nameCell + "<td data-label=\"Operating record\">" + esc(fact.operating) + "</td><td class=\"m-full\" data-label=\"Who lands the work\">" + esc(lands) + (span ? "<br><span class=\"eco-meta\">" + esc(span) + "</span>" : "") + "</td><td data-label=\"Written rule\">" + esc(fact.rule) + "</td></tr><tr data-slug=\"" + esc(slug) + "\" class=\"eco-open-row\"><td class=\"eco-open m-full\" colspan=\"4\">" + open + "</td></tr>";
 }).join("");
 
-const commonsLand = bySlug[internal];
+const blvmLand = bySlug[internal];
 const written = data.written_rule;
-slots["inst-lead"] = esc((commonsLand ? commonsLand.who + ". " : "") + (written ? "The written rule is " + written.text + ". " : "") + (gov.status || ""));
+slots["inst-lead"] = esc((blvmLand ? blvmLand.name + ": " + blvmLand.who + ". " : "") + (written ? "The written rule is " + written.text + ". " : "") + (gov.status || ""));
 slots["gov-quorum"] = esc(gov.quorum || "");
 slots["layer-note"] = esc(gov.layer_note || "");
 slots.layers = (gov.layers || []).map(function (layer) {
