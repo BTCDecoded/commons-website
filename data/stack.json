@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "as_of": "2026-11-12",
-  "method": "Read at each pinned commit. License: the repository's license file; no proprietary or non-OSI license file turned up in any tree. Languages: those with 5% or more of code lines (tokei 14; .h headers count with C and C++). Direct dependencies: third-party libraries a default node build pulls in directly, no transitive ones. Build tools, test and dev dependencies, off-by-default extras such as the GUI, and a project's own crates or modules are left out. C++: the libraries CMake requires with default options, minus Qt and native build tools. Rust: normal dependencies of the node binary and the workspace crates it uses (cargo metadata, Linux target). Go: go.mod require lines not marked indirect. Vendored: library subtrees or vendor/ directories in the tree, with their code lines rounded.",
+  "method": "Read at each pinned commit. License: the repository's license file; no proprietary or non-OSI license file turned up in any tree. Languages: those with 5% or more of code lines (tokei 14; .h headers count with C and C++). Direct dependencies: direct third-party libraries of a default node build, excluding build tools, test and dev dependencies, off-by-default extras and the project's own crates; vendored source is counted separately; no transitive counts. C++: libraries the default bitcoind (or node binary) links, minus Qt and native build tools. Rust: third-party crates reached from the node binary through its own workspace crates, with default features (cargo tree). Go: go.mod require lines not marked indirect. BLVM, Bitcoin Core, Knots Legacy, Bit-Block, Bitcoin Roots, Hornet, libbitcoin, bitcoin-rs and satd were counted on separate checkouts at the code-count pins; Floresta, rbitcoin and btcd keep our earlier counts under the same rule. Vendored: library subtrees or vendor/ directories in the tree, with their code lines rounded.",
   "rows": [
     {
       "slug": "blvm",
@@ -27,9 +27,9 @@
       "license_source": "https://github.com/bitcoin/bitcoin/blob/9183edd25e60aa410bc3e4728989a1d75c309a09/COPYING",
       "languages": "C++, Python, C",
       "languages_source": "https://github.com/bitcoin/bitcoin/tree/9183edd25e60aa410bc3e4728989a1d75c309a09/",
-      "direct_deps": 3,
-      "deps_names": "Boost, SQLite, Cap'n Proto",
-      "deps_source": "https://github.com/bitcoin/bitcoin/blob/9183edd25e60aa410bc3e4728989a1d75c309a09/CMakeLists.txt",
+      "direct_deps": 2,
+      "deps_names": "Boost, SQLite. Cap'n Proto links only into the multiprocess binaries, not the default bitcoind",
+      "deps_source": "https://github.com/bitcoin/bitcoin/blob/f0de87f040621468b956f01f526a43a010310501/depends/packages/packages.mk",
       "vendored": "6 subtrees, about 112,000 lines",
       "vendored_source": "https://github.com/bitcoin/bitcoin/tree/9183edd25e60aa410bc3e4728989a1d75c309a09/src"
     },
@@ -72,8 +72,8 @@
       "license_source": "https://github.com/LuganoPlanB/bitcoin-roots/blob/f0393f2688656ba544b40fe508db909152201c18/COPYING",
       "languages": "C++, Python, C",
       "languages_source": "https://github.com/LuganoPlanB/bitcoin-roots/tree/f0393f2688656ba544b40fe508db909152201c18/",
-      "direct_deps": 3,
-      "deps_names": "Boost, SQLite, Cap'n Proto",
+      "direct_deps": 2,
+      "deps_names": "Boost, SQLite. Cap'n Proto links only into the multiprocess binaries, not the default bitcoind",
       "deps_source": "https://github.com/LuganoPlanB/bitcoin-roots/blob/f0393f2688656ba544b40fe508db909152201c18/CMakeLists.txt",
       "vendored": "6 subtrees, about 111,000 lines",
       "vendored_source": "https://github.com/LuganoPlanB/bitcoin-roots/tree/f0393f2688656ba544b40fe508db909152201c18/src"
@@ -87,9 +87,9 @@
       "license_source": "https://github.com/gosuda/bitcoin-rs/blob/60b33f6be7c55eb27e6892cdb7770687a8e40276/LICENSE",
       "languages": "Rust",
       "languages_source": "https://github.com/gosuda/bitcoin-rs/tree/60b33f6be7c55eb27e6892cdb7770687a8e40276/",
-      "direct_deps": 45,
+      "direct_deps": 46,
       "deps_names": "Third-party crates of the bitcoin-rs binary and its workspace crates",
-      "deps_source": "https://github.com/gosuda/bitcoin-rs/blob/60b33f6be7c55eb27e6892cdb7770687a8e40276/Cargo.lock",
+      "deps_source": "https://github.com/gosuda/bitcoin-rs/blob/9b8e91ae1aadfaad08e7fccbfa895bcbf41c6620/Cargo.lock",
       "vendored": "None found",
       "vendored_source": null
     },
@@ -104,7 +104,7 @@
       "languages_source": "https://github.com/epochbtc/satd/tree/d2dc5cf78c086db7d8de555050ae52539cd82d5a/",
       "direct_deps": 65,
       "deps_names": "Third-party crates of the satd binary and its workspace crates",
-      "deps_source": "https://github.com/epochbtc/satd/blob/d2dc5cf78c086db7d8de555050ae52539cd82d5a/Cargo.lock",
+      "deps_source": "https://github.com/epochbtc/satd/blob/f0ea0e5dfa8446d9cb63fef0a22eaf5f976216ce/Cargo.lock",
       "vendored": "None found",
       "vendored_source": null
     },
@@ -117,9 +117,9 @@
       "license_source": "https://github.com/libbitcoin/libbitcoin-system/blob/b243223933c6cdb38eb59e32d6110f60743aa9c8/COPYING",
       "languages": "C++",
       "languages_source": "https://github.com/libbitcoin/libbitcoin-system/tree/b243223933c6cdb38eb59e32d6110f60743aa9c8/",
-      "direct_deps": 1,
-      "deps_names": "libsecp256k1",
-      "deps_source": "https://github.com/libbitcoin/libbitcoin-system/blob/b243223933c6cdb38eb59e32d6110f60743aa9c8/builds/cmake/CMakeLists.txt",
+      "direct_deps": 0,
+      "deps_names": "None. Its secp256k1 code is its own, in src/crypto/secp256k1",
+      "deps_source": "https://github.com/libbitcoin/libbitcoin-system/tree/9f9cce3086074840951cedf1d381f08112275bfd/src/crypto/secp256k1",
       "vendored": "None found",
       "vendored_source": null
     },
@@ -132,8 +132,8 @@
       "license_source": "https://github.com/tobysharp/hornet/blob/151462fa5ceece39c159674886dcfa6cfe9b1234/LICENSE",
       "languages": "C++, Python",
       "languages_source": "https://github.com/tobysharp/hornet/tree/151462fa5ceece39c159674886dcfa6cfe9b1234/",
-      "direct_deps": 0,
-      "deps_names": "None outside tests and benchmarks",
+      "direct_deps": 1,
+      "deps_names": "liburing",
       "deps_source": "https://github.com/tobysharp/hornet/blob/151462fa5ceece39c159674886dcfa6cfe9b1234/CMakeLists.txt",
       "vendored": "None in the tree. googletest and benchmark are git submodules for tests",
       "vendored_source": "https://github.com/tobysharp/hornet/tree/151462fa5ceece39c159674886dcfa6cfe9b1234/extern"
