@@ -83,37 +83,37 @@
       "side": "internal",
       "profile": "rust-workspace",
       "instrument": "crate-role cut",
-      "commit": "70b8562522b53dce01ba0435211252a44f156a91",
+      "commit": "36bb40c7e9a3f805274fa7e1bda30d0a6c082560",
       "shallow": false,
       "values": {
         "implementation_code": {
-          "value": 397862,
-          "text": "397,862",
+          "value": 303558,
+          "text": "303,558",
           "status": "measured"
         },
         "program_code": {
-          "value": 273510,
-          "text": "273,510",
+          "value": 195990,
+          "text": "195,990",
           "status": "measured"
         },
         "tooling_code": {
-          "value": 124352,
-          "text": "124,352",
+          "value": 107568,
+          "text": "107,568",
           "status": "measured"
         },
         "rules_share": {
-          "value": 11.3,
-          "text": "11.3%",
+          "value": 10.7,
+          "text": "10.7%",
           "status": "measured"
         },
         "mixed_share": {
-          "value": 52.4,
-          "text": "52.4%",
+          "value": 0,
+          "text": "0.0%",
           "status": "measured"
         },
         "test_per_implementation": {
-          "value": 0.27,
-          "text": "0.27",
+          "value": 0.67,
+          "text": "0.67",
           "status": "measured"
         },
         "vendored_code": {
@@ -127,13 +127,13 @@
           "status": "measured"
         },
         "share_lines_ge_1000": {
-          "value": 64.2,
-          "text": "64.2%",
+          "value": 55.6,
+          "text": "55.6%",
           "status": "measured"
         },
         "files_holding_half": {
-          "value": 39,
-          "text": "39",
+          "value": 42,
+          "text": "42",
           "status": "measured"
         }
       }
@@ -270,13 +270,13 @@
       "shallow": false,
       "values": {
         "implementation_code": {
-          "value": 271469,
-          "text": "271,469",
+          "value": 229374,
+          "text": "229,374",
           "status": "measured"
         },
         "program_code": {
-          "value": 271469,
-          "text": "271,469",
+          "value": 229374,
+          "text": "229,374",
           "status": "measured"
         },
         "tooling_code": {
@@ -285,8 +285,8 @@
           "status": "measured"
         },
         "rules_share": {
-          "value": 5.6,
-          "text": "5.6%",
+          "value": 5.5,
+          "text": "5.5%",
           "status": "measured"
         },
         "mixed_share": {
@@ -295,8 +295,8 @@
           "status": "measured"
         },
         "test_per_implementation": {
-          "value": 0.5,
-          "text": "0.50",
+          "value": 0.78,
+          "text": "0.78",
           "status": "measured"
         },
         "vendored_code": {
@@ -310,13 +310,13 @@
           "status": "measured"
         },
         "share_lines_ge_1000": {
-          "value": 42.1,
-          "text": "42.1%",
+          "value": 42.2,
+          "text": "42.2%",
           "status": "measured"
         },
         "files_holding_half": {
-          "value": 94,
-          "text": "94",
+          "value": 79,
+          "text": "79",
           "status": "measured"
         }
       }
@@ -331,13 +331,13 @@
       "shallow": true,
       "values": {
         "implementation_code": {
-          "value": 291203,
-          "text": "291,203",
+          "value": 191292,
+          "text": "191,292",
           "status": "measured"
         },
         "program_code": {
-          "value": 291203,
-          "text": "291,203",
+          "value": 191292,
+          "text": "191,292",
           "status": "measured"
         },
         "tooling_code": {
@@ -346,18 +346,18 @@
           "status": "measured"
         },
         "rules_share": {
-          "value": 7.9,
-          "text": "7.9%",
+          "value": 11.9,
+          "text": "11.9%",
           "status": "measured"
         },
         "mixed_share": {
-          "value": 59.4,
-          "text": "59.4%",
+          "value": 51.8,
+          "text": "51.8%",
           "status": "measured"
         },
         "test_per_implementation": {
-          "value": 0.23,
-          "text": "0.23",
+          "value": 0.86,
+          "text": "0.86",
           "status": "measured"
         },
         "vendored_code": {
@@ -371,13 +371,13 @@
           "status": "measured"
         },
         "share_lines_ge_1000": {
-          "value": 51.8,
-          "text": "51.8%",
+          "value": 47.6,
+          "text": "47.6%",
           "status": "measured"
         },
         "files_holding_half": {
-          "value": 38,
-          "text": "38",
+          "value": 28,
+          "text": "28",
           "status": "measured"
         }
       }
