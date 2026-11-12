@@ -75,7 +75,8 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: [self-hosted, Linux, X64, builds]
+    # Publish does not need the rust runners. Those stay busy with CI and leave this job queued.
+    runs-on: ubuntu-latest
 
     needs: build
     steps:
