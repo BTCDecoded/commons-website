@@ -13,7 +13,7 @@
       "languages": "Rust",
       "languages_source": "https://github.com/BTCDecoded/blvm-node/tree/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/",
       "direct_deps": 62,
-      "deps_names": "Third-party crates of blvm-node and the published BLVM crates it uses",
+      "deps_names": "Third-party crates of blvm-node and the published BLVM crates it uses; resolved 2026-11-12, no Cargo.lock",
       "deps_source": "https://github.com/BTCDecoded/blvm-node/blob/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/Cargo.toml",
       "vendored": "None found",
       "vendored_source": null
