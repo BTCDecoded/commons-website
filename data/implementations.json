@@ -1131,6 +1131,15 @@
       }
     ],
     "history_note": "Each reading uses the history that tree actually has. Where the checkout is shallow, the count is the GitHub contributor total.",
+    "landing": [
+      {"slug": "hornet", "name": "Hornet", "share": 100, "who": "Toby Sharp, every commit", "instrument": "commits"},
+      {"slug": "satd", "name": "satd", "share": 97.2, "who": "bkeroack, 1,228 of 1,263", "instrument": "commits"},
+      {"slug": "blvm", "name": "commons", "share": 96.6, "who": "one author, 825 of 854 in blvm-node", "instrument": "commits"},
+      {"slug": "libbitcoin", "name": "libbitcoin", "share": 77.7, "who": "Eric Voskuil, 8,145 of 10,489", "instrument": "commits"},
+      {"slug": "bitcoin-rs", "name": "bitcoin-rs", "share": 75.3, "who": "one account, 5,714 of 7,592 on dev", "instrument": "commits"},
+      {"slug": "bitcoin-core", "name": "Bitcoin Core", "share": 50.2, "who": "fanquake, merges since 2022", "instrument": "merges"},
+      {"slug": "knots", "name": "Bitcoin Knots", "share": 42.8, "who": "merge-script, commits since 2024", "instrument": "commits"}
+    ],
     "history": [
       {
         "slug": "blvm",
