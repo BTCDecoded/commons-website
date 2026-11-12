@@ -1287,7 +1287,8 @@
         "text": "GitHub attributes 1,662 of 4,517 contributor commits to davecgh, across 265 people. The repository dates from 2013-08-06. Line counts for this tree are not on this week's cut.",
         "basis": "GitHub contributors for btcsuite/btcd, read 2026-11-12."
       }
-    ]
+    ],
+    "layer_note": "These bars are repository layers. Layers 1 and 2 share the constitutional name. Layer 1 is the specification and layer 2 is the proof crates, and both use 6 of 7 with a 180 day review and a 365 day consensus review. The 2 of 3 bar is the layer 5 maintainer signature on blvm-sdk. It is not the governance-node quorum. Action tiers are a second written table and are not drawn here. Tier 5 has two written pairs. Meta-governance is 5 of 7 plus 2 of 3 over 90 days, with a 30 day public comment. The tier 5 row is 5 of 5 over 180 days. Neither pair is chosen."
   },
   "omitted": "Left off this page: attention effects E2, E3, E5, E7, and E12, and the size-adjusted residual. Comparison dumps do not host those effects the same way, and the residual intervals cover zero. They are not a weekly score.",
   "scan": {
@@ -1349,68 +1350,122 @@
     ],
     "test_placement": "Files named like tests.rs that sit outside a tests directory stay in the implementation count. bitcoin-rs has 111,525 such lines. Moving them into the test bucket would print 1.55 instead of 0.50. commons has 21,758. Moving them would print 0.34 instead of 0.27. Core's tests already sit in the test bucket.",
     "test_basis": "Same tokei 14 bucket rule, replayed on the 2026-11-11 pins.",
-    "keyholders": "commons is the only tree in this file with a written keyholder process. The written-rule bars are that process. The keys are test keys and enforcement is off, so a commit stands when one author lands it. The other trees have no keyholder scan here.",
     "jurisdiction": "This scan does not record where a maintainer sits. There is no jurisdiction chart.",
-    "institutions": [
+    "rule_test": "A statement that names a consequence is a rule, and a statement that names none is a norm. The rows below use that test on the files and the history this scan actually has. Judgment scores are not printed here, because they are not measurements.",
+    "categories": [
       {
-        "type": "Mixed constitution",
-        "slug": "blvm",
-        "name": "commons",
-        "text": "The written rule requires several signatures. One author lands the commits. Enforcement is off."
+        "title": "A stated consequence",
+        "items": [
+          {
+            "name": "commons",
+            "text": "The design states a consequence. A non-conforming action is reversed when two of three governance nodes in a written set agree. Anyone may run a node and publish a conclusion. Only the written set binds. That consequence is Designed. It is not Running. Enforcement is off and the keys are test keys, so a commit stands when one author lands it."
+          },
+          {
+            "name": "Bitcoin Core",
+            "text": "The contributing guide names repository maintainers as the people who merge. The review practice states no sanction, so that practice is a norm. The guide does not say who receives keys."
+          },
+          {
+            "name": "Bitcoin Knots",
+            "text": "The contributing file is Core's, so Knots does not add a separate stated consequence in this scan."
+          },
+          {
+            "name": "Hornet",
+            "text": "The tree has no contributing file and no code owners file. There is no stated consequence to read."
+          },
+          {
+            "name": "libbitcoin",
+            "text": "A code owners file is in the tree. This scan did not read it as a stated consequence."
+          },
+          {
+            "name": "bitcoin-rs",
+            "text": "A contributing file is in the tree. This scan did not read it as a stated consequence."
+          },
+          {
+            "name": "satd, Floresta, rbitcoin, and btcd",
+            "text": "These trees are in this file as contributor history. This scan did not read a rule file for them."
+          }
+        ]
       },
       {
-        "type": "Guild",
-        "slug": "bitcoin-core",
-        "name": "Bitcoin Core",
-        "text": "The contributing guide names repository maintainers as the people who merge. Since 2022 one person merged 50.2% and three people merged 82.2%."
+        "title": "Who lands the work",
+        "items": [
+          {
+            "name": "commons",
+            "text": "One author wrote 825 of 854 commits in blvm-node. The written rule names several signatures. The operating record and the written rule are different levels. That split is the peculiar form. It is not a guild. It is not a mixed constitution that is already operating. A mixed constitution in the institutional reading is a scored form with vetoes. commons on activation is a separate projection, and this page does not score that projection."
+          },
+          {
+            "name": "Bitcoin Core",
+            "text": "Since 2022 one person merged 50.2% of pull requests and three people merged 82.2%, across 5,747 merged pull requests. That window is the current process. All-time, the top three hold 76.4% of merges, which is a different window. The small set that merges is the guild. The review norm did not disperse it."
+          },
+          {
+            "name": "The other trees",
+            "text": "The landing chart is the operational record. Hornet, satd, libbitcoin, and bitcoin-rs are one account. Knots is one maintainer and a merge script. Floresta, rbitcoin, and btcd have a largest share under half. None of those histories is a written multi-party rule."
+          }
+        ]
       },
       {
-        "type": "Single maintainer",
-        "slug": "hornet",
-        "name": "Hornet",
-        "text": "Every commit is one person."
+        "title": "Who may change the rule",
+        "items": [
+          {
+            "name": "commons",
+            "text": "Tiers and layers are written. When a layer and a tier both apply, the more restrictive pair wins. Two Tier 5 pairs are both written. Meta-governance is 5 of 7 plus 2 of 3 over 90 days, with a 30 day public comment. The tier 5 row is 5 of 5 over 180 days. This page does not choose between them."
+          },
+          {
+            "name": "Bitcoin Core",
+            "text": "The contributing guide does not state a signature count for changing who may merge."
+          },
+          {
+            "name": "The other trees",
+            "text": "No other tree in this file has a written pair for changing its own rule."
+          }
+        ]
       },
       {
-        "type": "Single maintainer",
-        "slug": "satd",
-        "name": "satd",
-        "text": "One person has 1,228 of 1,263 contributor commits."
+        "title": "Who receives keys",
+        "items": [
+          {
+            "name": "commons",
+            "text": "Adding a maintainer is 5 of 7 where the roster lists 7 names. Removing one is 6 of 7 excluding the subject, on that same roster. Layers 3 and 4 list 5 names, and layer 5 lists 3. The names in the roster file are placeholders. Keyholder activation is 5 of 7 and is a different pool from maintainer signatures. The governance-node quorum is 2 of 3 in a written set. That quorum is not the layer 5 maintainer signature, which is also 2 of 3 and applies to blvm-sdk."
+          },
+          {
+            "name": "Bitcoin Core",
+            "text": "The contributing guide governs how a key holder judges consensus. It does not say who receives keys. The 2022 merge concentration is the record of who already has them."
+          },
+          {
+            "name": "The other trees",
+            "text": "No other tree in this file has a keyholder process in the scan."
+          }
+        ]
       },
       {
-        "type": "Single maintainer",
-        "slug": "libbitcoin",
-        "name": "libbitcoin",
-        "text": "One maintainer has 8,145 of 10,489 commits, and a code owners file is in the tree."
+        "title": "Written clocks",
+        "items": [
+          {
+            "name": "commons",
+            "text": "The layer chart writes 14, 60, 90, 180, and 365 day periods. Those clocks are the written rule. They are not the time a commit waits today, because enforcement is off."
+          },
+          {
+            "name": "Bitcoin Core",
+            "text": "This scan has no written 180 day or 365 day clock for Core. The review series is a change in recorded review, not a clock."
+          },
+          {
+            "name": "The other trees",
+            "text": "No other tree in this file has a written review period in the scan."
+          }
+        ]
       },
       {
-        "type": "Single maintainer",
-        "slug": "bitcoin-rs",
-        "name": "bitcoin-rs",
-        "text": "One account authored 5,714 of 7,592 commits on a branch that starts in 2026-05."
-      },
-      {
-        "type": "Single maintainer",
-        "slug": "knots",
-        "name": "Bitcoin Knots",
-        "text": "One maintainer and a merge script land the Knots history. The contributing file is Core's."
-      },
-      {
-        "type": "Contributor set",
-        "slug": "floresta",
-        "name": "Floresta",
-        "text": "No written role is in this file. The largest account has 46.7% of contributor commits, across 75 people."
-      },
-      {
-        "type": "Contributor set",
-        "slug": "rbitcoin",
-        "name": "rbitcoin",
-        "text": "No written role is in this file. The largest share is a bot, 37.2%, and the next account has 24.6%."
-      },
-      {
-        "type": "Contributor set",
-        "slug": "btcd",
-        "name": "btcd",
-        "text": "No written role is in this file. The largest account has 36.8% of contributor commits, across 265 people."
+        "title": "What reaches an outsider",
+        "items": [
+          {
+            "name": "Bitcoin Core",
+            "text": "First pull requests by non-maintainers have landed at 16.1% since 2022. Among closed outsider pull requests of 2,000 lines or more, 5.0% landed since 2022. Non-maintainers with five or more prior merges have landed at 68.6% in that window. On a merge outcome that includes self-merges, the maintainer odds ratio is 3.63 before prior merges are controlled and 1.36 after. The gate those findings support is at entry and on large new work. The comparison classes that newcomer pattern as ambient, including secp256k1, BDK, LND, and Eclair. Zero-review self-merges fell from 42.2% in 2017 to 4.0% in the 2026 partial year. Maintainer-authored pull requests that someone else merged with no review fell from 32.4% in 2017 to 8.8% in 2026. That fall is among work that reached review. It is not the filter before review. On the 2026-09-10 roster snapshot, 45.1% of maintainer self-merges have no review object, 1,129 of 2,501. That roster share is not the 2026 yearly rate."
+          },
+          {
+            "name": "The other trees",
+            "text": "No other tree in this file has this outsider measurement. commons is not scored with Core's filter."
+          }
+        ]
       }
     ]
   }
