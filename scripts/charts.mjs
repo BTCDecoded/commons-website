@@ -464,14 +464,14 @@ export function kOfN(rows, opts) {
         rows.forEach(function (row, i) {
             if (row.gap) y += 10;
             var lx = 0, dotsX = narrow ? 0 : labelW;
-            if (narrow) { out += t(0, y + 14, row.label, "ch-t ch-label"); if (row.sub) out += t(width, y + 14, row.sub, "ch-t ch-muted", " text-anchor=\"end\" font-size=\"12\""); y += 22; }
+            if (narrow) { out += t(0, y + 14, row.label, "ch-t ch-label"); y += 22; if (row.sub) out += t(width, y + r + 6, row.sub, "ch-t ch-muted", " text-anchor=\"end\" font-size=\"12\""); }
             else { out += t(lx, y + r + 5, row.label, "ch-t ch-label"); if (row.sub) out += t(lx, y + r + 21, row.sub, "ch-t ch-muted", " font-size=\"12\""); }
             for (var j = 0; j < row.n; j++) {
                 var on = j < row.k;
                 out += "<circle cx=\"" + fmt(dotsX + r + j * step) + "\" cy=\"" + fmt(y + r + 1) + "\" r=\"" + r + "\" class=\"ch-kdot" + (on ? " ch-kdot-on" + (row.cls ? "-" + row.cls : "") : "") + "\"/>";
             }
             out += t(dotsX + maxN * step + 8, y + r + 6, row.valueText || (row.k + " of " + row.n), "ch-t ch-val");
-            y += narrow ? 2 * r + 14 : Math.max(2 * r + 14, row.sub ? 34 : 0);
+            y += narrow ? 2 * r + 14 : Math.max(2 * r + 14, row.sub ? 40 : 0);
         });
         return { body: "<g font-size=\"" + fs + "\">" + out + "</g>", height: y };
     };

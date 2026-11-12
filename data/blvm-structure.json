@@ -283,5 +283,16 @@
   "layers_source": {
     "label": "governance/config/repository-layers.yml at d235edb",
     "href": "https://github.com/BTCDecoded/governance/blob/d235edb93e57737fdb13a13647dc09362f681b2f/config/repository-layers.yml"
+  },
+  "quorum": {
+    "k": 2,
+    "n": 3,
+    "label": "Governance nodes",
+    "quote": "Two of the three governance nodes in a written set must each conclude that an action, or a reversal, conforms before that action stands.",
+    "phase": "Enforcement of these rules, once Phase 2 begins, is a quorum of governance nodes.",
+    "source": {
+      "label": "GOVERNANCE.md at d235edb",
+      "href": "https://github.com/BTCDecoded/governance/blob/d235edb93e57737fdb13a13647dc09362f681b2f/GOVERNANCE.md"
+    }
   }
 }
