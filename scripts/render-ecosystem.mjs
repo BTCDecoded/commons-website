@@ -358,7 +358,73 @@ slots.omitted = esc(data.omitted || "");
 // each exporting { slot, build(ctx) }. Removing a file drops its chart; its
 // slot then renders empty.
 const chartDir = path.join(root, "scripts/ecosystem-charts");
-const chartCtx = { root: root, data: data, verification: verification, stack: stack, readJson: function (rel) { return JSON.parse(fs.readFileSync(path.join(root, rel), "utf8")); } };
+// The three page axes, computed once from the data files so every chart and
+// card reads the same classification.
+//   Independence: Core, a fork of Core or Knots (stated in governance.history),
+//     or its own codebase (no derivation stated).
+//   Assurance: the six verification checks, yes = 2, partial = 1,
+//     not found = 0; n/a is left out of both score and maximum.
+//   Accountability: governance_model labels, ranked single maintainer (1),
+//     maintainer group (2), foundation key (3), written rules (4).
+// PENDING lists metrics a separate PR is correcting; charts mark them
+// "pending fix" and never draw their values as final.
+const PENDING = {
+    fuzz_targets: "fuzz target counts", authors_12m: "authors in 12 months", ci_workflows: "CI workflows",
+    ci_jobs: "CI jobs", rules_share: "rules share"
+};
+const POINTS = { "yes": 2, "partial": 1, "not found": 0 };
+const FORKS = {
+    "knots-legacy": "Knots Legacy continues Bitcoin Knots",
+    "bit-block": "Bit-Block is a fork of Bitcoin Knots",
+    "bitcoin-roots": "Bitcoin Roots is a patch series on Bitcoin Core"
+};
+const ACCOUNT = [
+    { rank: 1, match: "Single maintainer", label: "Single maintainer" },
+    { rank: 2, match: "Maintainer group", label: "Maintainer group" },
+    { rank: 3, match: "Foundation, one signing key", label: "Foundation key" },
+    { rank: 4, match: "Commons governance", label: "Written rules" }
+];
+function buildModel() {
+    const hist = {}, gov = {}, ver = {}, trees = {}, met = {};
+    data.governance.history.forEach(function (h) { hist[h.slug] = h.text; });
+    data.governance_model.labels.forEach(function (l) { gov[l.slug] = l; });
+    verification.rows.forEach(function (r) { ver[r.slug] = r; });
+    data.trees.forEach(function (t) { trees[t.slug] = t; });
+    metricRows.forEach(function (r) { met[r.slug] = r; });
+    const rows = stack.rows.map(function (r) {
+        let lineage;
+        if (r.slug === "bitcoin-core") lineage = { cls: "core", label: "Bitcoin Core", text: "The reference implementation." };
+        else if (FORKS[r.slug]) {
+            if ((hist[r.slug] || "").indexOf(FORKS[r.slug]) < 0) throw new Error("model: history no longer states " + FORKS[r.slug]);
+            lineage = { cls: "fork", label: "Core lineage", text: FORKS[r.slug] + "." };
+        } else lineage = { cls: "own", label: "Own codebase", text: "No derivation from Core or Knots is stated in the data." };
+        const g = gov[r.slug];
+        const acc = ACCOUNT.filter(function (a) { return g && g.label.indexOf(a.match) === 0; })[0];
+        const v = ver[r.slug];
+        if (!v) throw new Error("model: no verification row for " + r.slug);
+        const cells = verification.columns.map(function (c) {
+            const cell = v.cells[c.id];
+            const pts = cell.status in POINTS ? POINTS[cell.status] : null;
+            if (pts === null && cell.status !== "n/a") throw new Error("model: unknown status " + cell.status);
+            return { id: c.id, name: c.name, short: c.short, what: c.what, status: cell.status, points: pts, text: cell.text, source: cell.source };
+        });
+        const scored = cells.filter(function (c) { return c.points !== null; });
+        const score = scored.reduce(function (a, c) { return a + c.points; }, 0), max = 2 * scored.length;
+        const t = trees[r.slug];
+        return {
+            slug: r.slug, name: r.name, internal: r.slug === data.internal_slug,
+            lineage: lineage,
+            accountability: acc ? { rank: acc.rank, label: acc.label, full: g.label, detail: g.detail } : { rank: null, label: "Not classified", full: g ? g.label : "Not classified", detail: g ? g.detail : "" },
+            assurance: { cells: cells, score: score, max: max, pct: Math.round(100 * score / max) },
+            size: t ? t.values.implementation_code : { value: null, text: "not measured", status: "not-measured" },
+            shallow: t ? !!t.shallow : null,
+            deps: { value: r.direct_deps, text: String(r.direct_deps) },
+            stack: r, metrics: met[r.slug] || null
+        };
+    });
+    return { rows: rows, pending: PENDING, points: POINTS, accountRanks: ACCOUNT };
+}
+const chartCtx = { root: root, data: data, verification: verification, stack: stack, metrics: metrics, model: buildModel(), readJson: function (rel) { return JSON.parse(fs.readFileSync(path.join(root, rel), "utf8")); } };
 for (const file of fs.existsSync(chartDir) ? fs.readdirSync(chartDir).filter(function (f) { return f.endsWith(".mjs"); }).sort() : []) {
     const def = (await import(pathToFileURL(path.join(chartDir, file)).href)).default;
     if (slots[def.slot] !== undefined) throw new Error("two charts fill slot " + def.slot);

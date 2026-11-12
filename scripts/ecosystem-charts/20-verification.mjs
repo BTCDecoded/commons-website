@@ -30,6 +30,8 @@ export default {
             id: "fig-verification",
             headline: top.label + " has the most evidence: " + top.yes + " of " + cols.length + " checks found" + (top.partial ? ", " + top.partial + " partial" : "") + ". " + (full ? full + " implementations have all six." : "No implementation has all six."),
             caption: "One row per implementation, sorted by checks found. Each cell is the status in the verification table below, as of " + v.as_of + ". \u201CNot found\u201D means no public source turned up, not that the project lacks it.",
+            measures: "Which of six kinds of evidence each project shows, column by column; it matters because the rarest checks are where projects can disagree unnoticed.",
+            takeaway: "Formal specs and proofs are the rare columns; test vectors and fuzzing are common.",
             title: "Verification evidence by implementation",
             desc: rows.map(function (r) { return r.label + ": " + r.yes + " yes, " + r.partial + " partial"; }).join("; ") + ".",
             chart: heatmap(rows, cols, STATUS),

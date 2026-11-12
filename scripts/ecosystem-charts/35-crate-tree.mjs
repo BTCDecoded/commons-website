@@ -64,6 +64,8 @@ export default {
             id: "fig-crates",
             headline: "The default blvm binary is " + linked.length + " BLVM crates. The governance config writes " + cons.signatures_required + " of " + cons.signatures_total + " signatures for the consensus crates, but " + noLayer.join(" and ") + ", linked into every node, is in no layer.",
             caption: "Arrows point from a crate to a crate it depends on, read from each Cargo.toml (node pinned at " + s.crates.node_pin.slice(0, 7) + "). Dashed arrows and outlined boxes are off in the default build: blvm-spec-lock is proof tooling behind an optional feature, and blvm-sdk builds modules against the node. Bands are the repository layers in the governance config, with their written signature rule; enforcement is off.",
+            measures: "What the default BLVM binary is built from and which governance layer covers each part; it matters because a crate outside every layer has no written signature rule.",
+            takeaway: "The consensus crates carry the strictest written rule, but one crate in every node sits outside the layers.",
             title: "BLVM crate dependencies by governance layer",
             desc: bands.map(function (b) { return b.label + " (" + b.sub + "): " + [].concat.apply([], b.rows).join(", "); }).join(". ") + ". Edges: " + edges.map(function (e) { return e.from + " to " + e.to + (e.dashed ? " (optional, off by default)" : ""); }).join("; ") + ".",
             chart: layered(bands, nodes, edges, { labelWidth: 170, maxNodeW: 160, narrowPerRow: 2 }),
