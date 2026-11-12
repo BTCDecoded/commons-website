@@ -1,6 +1,6 @@
 // Field map: independence (columns) by assurance (up). Each dot and label is
 // a link to that implementation's card. No script.
-import { figure, fieldMap } from "../charts.mjs";
+import { figure, fieldMap, median } from "../charts.mjs";
 
 export default {
     slot: "chart-fieldmap",
@@ -17,7 +17,7 @@ export default {
         const below = ownRows.filter(function (r) { return r.assurance.pct < core.assurance.pct; }).length;
         return figure({
             id: "fig-fieldmap",
-            headline: "Own codebases range from " + own[0] + "% to " + own[1] + "% on assurance; the Core lineage sits between " + lin[0] + "% and " + lin[1] + "%.",
+            headline: (function () { const med = median(rows.map(function (r) { return r.assurance.pct; })); const above = ownRows.filter(function (r) { return r.assurance.pct > med; }).length; return "The median assurance score is " + med + "%. The Core lineage sits between " + lin[0] + "% and " + lin[1] + "%; " + above + " of " + ownRows.length + " own codebases score above the median."; })(),
             caption: "Left column: Bitcoin Core and its forks. Right column: separate codebases. Height is the assurance score as a share of possible points. Select a name to open its card.",
             measures: "Independence against assurance; it matters because a separate codebase only adds safety if it can show it follows the same rules.",
             takeaway: (function () {

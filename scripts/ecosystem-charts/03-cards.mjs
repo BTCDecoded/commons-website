@@ -43,7 +43,6 @@ export default {
     build: function (ctx) {
         const rows = ctx.model.rows;
         const med = median(rows.map(function (r) { return r.assurance.pct; }));
-        const top = rows.slice().sort(function (a, b) { return b.assurance.pct - a.assurance.pct; })[0];
         const pendFuzz = "fuzz_targets" in ctx.model.pending;
         const cards = rows.map(function (r) {
             const id = "card-" + r.slug;
@@ -69,12 +68,12 @@ export default {
         return figure({
             id: "fig-cards",
             cls: "ch-wide-fig",
-            headline: "One card per implementation. " + top.name + " scores " + top.assurance.score + " of " + top.assurance.max + " on assurance; the median card scores " + med + "%.",
+            headline: "The median implementation scores " + med + "% on assurance. One card per implementation, each with its own score.",
             caption: "Each card shows where the code comes from (lineage badge), who answers for it (accountability badge), and the six assurance checks as a radial: a full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a.",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),
             html: "<div class=\"eco-cards\">" + cards + "</div>",
-            notes: ["Release stability asks whether a project has a release line an operator can run and expect to stay fixed; it matters because a node that changes under you can drift from the network. " + esc(ctx.model.stability.rule) + " " + esc(ctx.model.stability.note) + ctx.model.stability.extra.map(function (x) { return " " + esc(x.name) + ": " + esc(x.note); }).join(""), "Fuzz target counts are being corrected in a separate change and are shown as &ldquo;pending fix&rdquo;. Code size is tokei code lines from the Size table. Direct deps are from the Stack table."],
+            notes: ["Release stability asks whether a project has a release line an operator can run and expect to stay fixed; it matters because a node that changes under you can drift from the network. " + esc(ctx.model.stability.rule) + " " + esc(ctx.model.stability.note) + ctx.model.stability.extra.map(function (x) { return " " + esc(x.name) + ": " + esc(x.note); }).join(""), (pendFuzz ? "Fuzz target counts are being corrected in a separate change and are shown as &ldquo;pending fix&rdquo;. " : "Fuzz targets are declared harnesses at the pinned commit, from the Depth table. ") + "Code size is tokei code lines from the Size table. Direct deps are from the Stack table."],
             sources: [{ label: "data/verification.json" }, { label: "data/implementations.json" }, { label: "data/stack.json" }, { label: "data/metrics.json" }, { label: "data/stability.json" }],
             table: {
                 caption: "Implementation cards",

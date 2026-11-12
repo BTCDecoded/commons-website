@@ -29,7 +29,7 @@ export default {
             gl += "<h4 class=\"eco-gloss-g\">" + esc(g.name) + "</h4><dl class=\"eco-gloss\">";
             g.entries.forEach(function (e) {
                 const k = key(e.field);
-                const isPend = k in pend || !!e.revision;
+                const isPend = k in pend;
                 const how = e.how ? md(e.how) : esc(methodFor(k) || "See the linked table, where each row's sources open under it.");
                 gl += "<dt>" + esc(e.name) + (STAR[k] ? " <span class=\"eco-gloss-tag\">star axis</span>" : "") + (isPend ? " <span class=\"ch-pendt-html\">(pending fix)</span>" : "") + "</dt><dd><b>What:</b> " + md(e.what) + (e.why ? " <b>Why:</b> " + md(e.why) : "") + " <b>How:</b> " + how + (e.caveats ? " <b>Caveats:</b> " + md(e.caveats) : "") + " <a href=\"" + esc(e.link) + "\">Open the table<span class=\"visually-hidden\">: " + esc(e.name) + "</span></a></dd>";
             });
@@ -56,7 +56,7 @@ export default {
             "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u25CB</span> not found, 0 points</li>" +
             "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u2013</span> n/a, left out of the score</li>" +
             "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u2571</span> grey hatching: not measured</li>" +
-            "<li><span class=\"eco-key-g eco-key-med\" aria-hidden=\"true\">\u2571</span> yellow hatching: pending fix, not final</li>" +
+            (Object.keys(pend).length ? "<li><span class=\"eco-key-g eco-key-med\" aria-hidden=\"true\">\u2571</span> yellow hatching: pending fix, not final</li>" : "") +
             "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u2713 \u2715 ?</span> stability checklist: met, not met, not measured (hatched)</li>" +
             "<li><span class=\"eco-key-g eco-key-hl\" aria-hidden=\"true\">\u25CF</span> orange: BLVM</li>" +
             "<li><span class=\"eco-key-g eco-key-core\" aria-hidden=\"true\">\u25A0</span> blue square: Bitcoin Core</li>" +

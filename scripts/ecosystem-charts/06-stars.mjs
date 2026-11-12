@@ -16,11 +16,11 @@ export default {
             { key: "test_split_total", label: "Test lines", short: "Tests", get: function (r) { return mval(r, "test_split_total"); } },
             { key: "vector_files", label: "Vector files", short: "Vectors", get: function (r) { return mval(r, "vector_files"); } },
             { key: "spec_files", label: "Spec files", short: "Specs", get: function (r) { return mval(r, "spec_files"); } },
-            { key: "releases_12m", label: "Releases, 12 months", short: "Releases", get: function (r) { return r.shallow ? { pending: true } : mval(r, "releases_12m"); } },
+            { key: "releases_12m", label: "Releases, 12 months", short: "Releases", get: function (r) { return mval(r, "releases_12m"); } },
             { key: "plugin", label: "Plug-in support", short: "Plug-ins", get: function (r) { const c = r.metrics && r.metrics.plugin_system; return c && c.value in PLUG ? PLUG[c.value] : null; }, max: 2, fmt: function (v) { return ["no", "partial", "yes"][v]; } },
             { key: "direct_deps", label: "Dependency surface (fewer is outward)", short: "Few deps", get: function (r) { return typeof r.stack.direct_deps === "number" ? r.stack.direct_deps : null; }, invert: true },
-            { key: "fuzz_targets", label: "Fuzz targets", short: "Fuzz", get: function () { return null; } },
-            { key: "authors_12m", label: "Authors, 12 months", short: "Authors", get: function () { return null; } }
+            { key: "fuzz_targets", label: "Fuzz targets", short: "Fuzz", get: function (r) { return mval(r, "fuzz_targets"); } },
+            { key: "authors_12m", label: "Authors, 12 months", short: "Authors", get: function (r) { return mval(r, "authors_12m"); } }
         ];
         const axes = AX.map(function (a) {
             const vals = rows.map(a.get).filter(function (v) { return typeof v === "number"; });
@@ -50,10 +50,14 @@ export default {
         const shallowNames = rows.filter(function (r) { return r.shallow; }).map(function (r) { return r.name; });
         return figure({
             id: "fig-stars",
-            headline: "On measured code-health axes, BLVM is above the median on " + axes.filter(function (a, i) { const b = series(blvm, "").values[i], m = med.values[i]; if (b.v === null || m.v === null) return false; return a.invert ? b.v < m.v : b.v > m.v; }).length + " of " + axes.filter(function (a, i) { return series(blvm, "").values[i].v !== null && med.values[i].v !== null; }).length + " and Bitcoin Core on " + axes.filter(function (a, i) { const b = series(core, "").values[i], m = med.values[i]; if (b.v === null || m.v === null) return false; return a.invert ? b.v < m.v : b.v > m.v; }).length + ".",
+            headline: (function () {
+                const measured = axes.filter(function (a, i) { return med.values[i].v !== null; });
+                const coreAbove = axes.filter(function (a, i) { const b = series(core, "").values[i], m = med.values[i]; if (b.v === null || m.v === null) return false; return a.invert ? b.v < m.v : b.v > m.v; }).length;
+                return "The median star is drawn on " + measured.length + " measured code-health axes; Bitcoin Core is above the median on " + coreAbove + " of them.";
+            })(),
             caption: "Each spoke is one measure, scaled from 0 at the centre to the largest value among the 12 at the rim; dependency surface is reversed so fewer libraries sit further out. Orange circles: BLVM. Blue squares: Bitcoin Core. Yellow dashed triangles: median. The grid below shows every implementation on the same scales; select one to open its card.",
             measures: "Code health from the Depth, Modules and Stack tables; it matters because it shows the work behind a project, not whether its rules are right.",
-            takeaway: "A bigger star means more measured activity on these axes, not more correct code; yellow-hatched spokes are being corrected and are not shown.",
+            takeaway: "A bigger star means more measured activity on these axes, not more correct code" + (Object.keys(pend).length ? "; yellow-hatched spokes are being corrected and are not shown." : "."),
             title: "Code-health star charts",
             desc: [med, series(core, ""), series(blvm, "")].map(function (s) { return s.name + ": " + axes.map(function (a, i) { return a.label + " " + s.values[i].text; }).join(", "); }).join(". ") + ".",
             chart: compose([{ heading: "BLVM, Bitcoin Core and the median", chart: overlay }, { heading: "All " + rows.length + ", same scales", chart: grid }]),
