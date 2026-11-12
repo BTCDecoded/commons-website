@@ -11,6 +11,7 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const pagePath = path.join(root, "ecosystem.html");
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/implementations.json"), "utf8"));
+const verification = JSON.parse(fs.readFileSync(path.join(root, "data/verification.json"), "utf8"));
 
 function esc(s) {
     return String(s).replace(/[&<>"]/g, function (c) {
@@ -87,7 +88,7 @@ const testRows = ranked("test_per_implementation");
 const fileRows = ranked("share_lines_ge_1000");
 
 slots.status = "Measured " + esc(data.measured_at) + ".";
-slots.lead = esc(sizeRows[0].name + " has the largest program, at " + sizeRows[0].text + " lines. Implementation minus tooling.");
+slots.lead = "Bitcoin node implementations, with each one's governance model, verification work, and code counts. Bitcoin Core is the reference.";
 
 // Captions (the text of the old chart sections, now the column key).
 const comp = trees.map(function (tree) {
@@ -98,13 +99,13 @@ const comp = trees.map(function (tree) {
 const compBySlug = {}; comp.forEach(function (c) { compBySlug[c.slug] = c; });
 const compMax = comp[0].total;
 const commonsComp = comp.filter(function (r) { return r.internal; })[0];
-slots["size-caption"] = esc(sizeRows[0].name + " is the largest program, at " + sizeRows[0].text + " lines. Implementation minus tooling. " + sizeRows[sizeRows.length - 1].name + " is the smallest, at " + sizeRows[sizeRows.length - 1].text + ".");
-slots["comp-caption"] = esc(comp[0].name + " is the largest checkout once vendored libraries and locale files are counted, at " + comp[0].total.toLocaleString("en-US") + " lines. " + (commonsComp && commonsComp.vend === 0 && commonsComp.loc === 0 ? "commons has neither vendored lines nor locale lines." : ""));
+// Column captions state facts only. Rankings are left to the sortable table.
+slots["size-caption"] = "";
+slots["comp-caption"] = esc(commonsComp && commonsComp.vend === 0 && commonsComp.loc === 0 ? commonsComp.name + " has neither vendored lines nor locale lines." : "");
 const halfOf = {}; trees.forEach(function (t) { var h = metric(t, "files_holding_half"); halfOf[t.slug] = h ? h.text : ""; });
-const commonsFiles = fileRows.filter(function (r) { return r.internal; })[0];
-const spread = fileRows.slice().sort(function (a, b) { return parseInt(halfOf[b.slug] || 0, 10) - parseInt(halfOf[a.slug] || 0, 10); })[0];
-slots["files-caption"] = esc((commonsFiles ? commonsFiles.name + " keeps " + commonsFiles.text + " of its program in files of 1,000 lines or more, and half of that program sits in " + halfOf[commonsFiles.slug] + " files." : "") + (spread ? " " + spread.name + " spreads half of its program over " + halfOf[spread.slug] + " files." : ""));
-slots["test-caption"] = esc(testRows[0].name + " has " + testRows[0].text + " test lines for each implementation line. " + testRows[testRows.length - 1].name + " has " + testRows[testRows.length - 1].text + ".");
+slots["files-caption"] = "";
+slots["test-caption"] = "";
+slots["rules-asof"] = esc(data.measured_at);
 slots["test-note"] = "A Rust file named *_test.rs or *_tests.rs counts as tests. Lines inside a #[cfg(test)] item count as tests.";
 
 // Rules share: scale shared, cut order as first seen; sort groups by cut then value.
@@ -140,6 +141,41 @@ slots.compare = defaultOrder.map(function (slug, i) {
         "<td data-label=\"Tests\"><span class=\"num\">" + esc(test.text) + "</span>" + bar(test.value, testScale, isInt.trim()) + "</td>" +
         "<td data-label=\"Rules share\"><span class=\"num\">" + esc(hasCut ? rules.text : "no cut") + "</span>" + (hasCut ? bar(rules.value, ruleScale, isInt.trim()) : "") + "<small>" + esc(t.instrument) + "</small></td>" +
         "</tr>";
+}).join("");
+
+// Governance and verification at a glance: one row per implementation.
+const govModel = data.governance_model || { labels: [] };
+const govBySlug = {}; govModel.labels.forEach(function (g) { govBySlug[g.slug] = g; });
+const vCols = verification.columns || [];
+const statusClass = { "yes": "st-yes", "partial": "st-partial", "not found": "st-nf", "n/a": "st-na" };
+const glanceOrder = [internal].concat(["bitcoin-core", "knots", "bitcoin-rs", "satd", "libbitcoin", "hornet", "floresta", "rbitcoin", "btcd"].filter(function (s) { return s !== internal; }));
+const vBySlug = {}; (verification.rows || []).forEach(function (r) { vBySlug[r.slug] = r; });
+slots.glance = glanceOrder.map(function (slug) {
+    var v = vBySlug[slug], g = govBySlug[slug];
+    if (!v || !g) throw new Error("glance row missing for " + slug);
+    var isInt = slug === internal;
+    var cells = vCols.map(function (col) {
+        var cell = v.cells[col.id];
+        if (!cell || !statusClass[cell.status]) throw new Error("bad verification cell " + slug + "/" + col.id);
+        return "<td data-label=\"" + esc(col.short || col.name) + "\" class=\"st " + statusClass[cell.status] + "\"><span class=\"st-mark\" aria-hidden=\"true\"></span>" + esc(cell.status) + "</td>";
+    }).join("");
+    var notes = vCols.map(function (col) {
+        var cell = v.cells[col.id];
+        if (!cell.text && !cell.source) return "";
+        var src = cell.source ? " <a href=\"" + esc(cell.source) + "\">Source<span class=\"visually-hidden\">: " + esc(v.name + ", " + col.name) + "</span></a>" : "";
+        return "<li><span class=\"eco-meta\">" + esc(col.name) + ", " + esc(cell.status) + ".</span> " + esc(cell.text || "") + (cell.text ? "." : "") + src + "</li>";
+    }).join("");
+    var open = "<details><summary>Sources<span class=\"visually-hidden\"> for " + esc(v.name) + "</span></summary><ul>" + notes + "</ul><p class=\"eco-meta\">" + esc(v.repo) + " at " + esc(v.commit) + ".</p></details>";
+    return "<tr data-slug=\"" + esc(slug) + "\"><th scope=\"row\"" + (isInt ? " class=\"internal\"" : "") + ">" + esc(v.name) + "</th>" +
+        "<td class=\"gov m-full\" data-label=\"Governance model\"><span class=\"gov-label" + (isInt ? " internal" : "") + "\">" + esc(g.label) + "</span><small>" + esc(g.detail) + "</small></td>" + cells + "</tr>" +
+        "<tr data-slug=\"" + esc(slug) + "\" class=\"eco-open-row\"><td class=\"eco-open m-full\" colspan=\"" + (vCols.length + 2) + "\">" + open + "</td></tr>";
+}).join("");
+slots["glance-caption"] = esc("Governance labels as of " + govModel.as_of + ". " + govModel.note + " Verification statuses as of " + verification.as_of + ". Each row's sources open under it.");
+slots["verify-note"] = esc(verification.note);
+slots["verify-key"] = vCols.map(function (col) {
+    return "<div><dt>" + esc(col.name) + "</dt><dd>" + esc(col.what) + "</dd></div>";
+}).join("") + Object.keys(verification.statuses).map(function (k) {
+    return "<div><dt>" + esc(k) + "</dt><dd>" + esc(verification.statuses[k]) + ".</dd></div>";
 }).join("");
 
 slots["rule-test"] = esc(scan.rule_test || "");
