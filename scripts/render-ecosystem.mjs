@@ -88,7 +88,7 @@ const testRows = ranked("test_per_implementation");
 const fileRows = ranked("share_lines_ge_1000");
 
 slots.status = "Measured " + esc(data.measured_at) + ".";
-slots.lead = "Bitcoin node implementations, with each one's governance model, verification work, and code counts. Bitcoin Core is the reference.";
+slots.lead = "Bitcoin node implementations: who governs each one, how far each has got in showing it follows Bitcoin's rules, and what its code looks like. Bitcoin Core is the reference.";
 
 // Captions (the text of the old chart sections, now the column key).
 const comp = trees.map(function (tree) {

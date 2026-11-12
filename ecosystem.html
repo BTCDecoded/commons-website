@@ -616,6 +616,8 @@
             .eco-board details > summary { min-height: 40px; }
         }
         /* Governance and verification at a glance. */
+        .eco-why h3 { color: var(--white); font-size: 0.95rem; font-weight: 500; margin: 1.1rem 0 0.3rem; }
+        .eco-why h2 + h3 { margin-top: 0.6rem; }
         .eco-frame { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 0.6rem 1.5rem; margin: 0.75rem 0 0; }
         .eco-frame > div { border-left: 2px solid var(--rule); padding-left: 0.85rem; }
         .eco-frame dt { color: var(--white); font-weight: 500; }
@@ -695,11 +697,12 @@
         <main class="eco" id="content">
         <header class="eco-head">
             <h1>Ecosystem</h1>
-            <p class="eco-lead" id="eco-lead"><!--slot:lead-->Bitcoin node implementations, with each one's governance model, verification work, and code counts. Bitcoin Core is the reference.<!--/slot:lead--></p>
+            <p class="eco-lead" id="eco-lead"><!--slot:lead-->Bitcoin node implementations: who governs each one, how far each has got in showing it follows Bitcoin's rules, and what its code looks like. Bitcoin Core is the reference.<!--/slot:lead--></p>
             <p id="eco-status"><!--slot:status-->Measured 2026-11-12.<!--/slot:status--></p>
         </header>
         <nav class="eco-jump" aria-label="On this page">
-            <a href="#commons">Commons</a>
+            <a href="#why">Why</a>
+            <a href="#commons">Verification</a>
             <a href="#size">Size</a>
             <a href="#checkout">Checkout</a>
             <a href="#files">Large files</a>
@@ -711,12 +714,23 @@
             <a href="#counts">Every count</a>
         </nav>
 
+        <section class="eco-block wide eco-why" id="why" aria-labelledby="why-h">
+            <h2 id="why-h">Why the ecosystem matters</h2>
+            <h3>Bitcoin is a commons</h3>
+            <p>Anyone can run a node, transact, or mine. The code most of the network runs is a commons too: many depend on it and no one owns it. Elinor Ostrom found that commons last when their rules are visible, the people bound by the rules take part in changing them, those who decide answer to the people affected, and exit is real rather than theoretical. A commons without those properties runs down.</p>
+            <h3>One lineage runs the network</h3>
+            <p>On November 3, 2026, about 89% of reachable nodes ran Bitcoin Core and about 10% ran Knots, which shares about 95% of Core&rsquo;s code. About 99% ran one code lineage. A flaw travels with the lineage that carries it: the 2018 inflation bug hit Core and Knots alike. Moving to a Core-derived client changes policy, not the code underneath, so it shows demand for an alternative rather than diversity. The structural fix is several independent implementations, each proven to enforce the same rules, under different governance models.</p>
+            <h3>What this page measures</h3>
+            <p>An independent node only helps if it can show it enforces the same rules as everyone else. Without a written consensus spec, an alternative has to copy Core&rsquo;s behavior from Core, which keeps it tied to Core. The engineering answer is a stack: a spec to check against, then formal verification, fuzzing, differential testing against Core, and property tests. The table below tracks that stack, plus shared test vectors, for each implementation, next to who governs it. The sections after it count the code and read each project&rsquo;s written rules. Every reading is dated and redone periodically. Governance labels and the rules share are qualitative readings.</p>
+            <dl class="eco-frame">
+                <div><dt>commons</dt><dd>Every node implementation built for Bitcoin only and roughly compatible with the Bitcoin network, whether written from scratch or forked from Core. No altcoins. Its health is what this page measures.</dd></div>
+                <div><dt>Commons governance</dt><dd>Written rules for how node software changes, published by Bitcoin Commons following Ostrom&rsquo;s principles: signatures by repository layer, review periods, and a governance-node quorum. The rules are built into BLVM and can be forked or adopted by other projects. BLVM is the only implementation here that uses them, and enforcement is not on yet.</dd></div>
+            </dl>
+            <p class="eco-meta eco-follow">Further reading: the Bitcoin Commons <a href="whitepaper.html#2-problem-statement">white paper</a>, <a href="https://secsov.com/articles/who-governs-bitcoins-code/#bitcoin-s-code-is-a-commons-and-a-commons-without-rules-runs-down">Who Governs Bitcoin&rsquo;s Code</a>, <a href="https://secsov.com/articles/making-core-irrelevant/#iv-the-two-tracks-and-why-both-are-required">Making Core Irrelevant</a>, and <a href="https://secsov.com/articles/why-bitcoin-needs-a-specification/">Why Bitcoin Needs a Specification</a>.</p>
+        </section>
+
         <section class="eco-block wide" id="commons" aria-labelledby="commons-h">
             <h2 id="commons-h">Governance and verification</h2>
-            <dl class="eco-frame">
-                <div><dt>commons</dt><dd>Every alternative node implementation built for Bitcoin only, roughly compatible with the Bitcoin network, and not an altcoin.</dd></div>
-                <div><dt>Commons governance</dt><dd>The written governance model built into BLVM: signatures by repository layer, review periods, and a governance-node quorum. Other projects can adopt it. BLVM is the only implementation here that uses it.</dd></div>
-            </dl>
             <div class="eco-scroll" tabindex="0" role="region" aria-label="Governance and verification table">
                 <table class="eco-glance" id="eco-glance">
                     <caption><!--slot:glance-caption-->Governance labels as of 2026-11-12. Labels are read from the institution board and the commit and merge shares on this page. They are redone with each reading. Verification statuses as of 2026-11-12. Each row's sources open under it.<!--/slot:glance-caption--></caption>
