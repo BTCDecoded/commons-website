@@ -18,7 +18,7 @@ export const NARROW = 336;
 // compare menu. The shapes are the kind. A count beside one is separate.
 export function govBody(kind) {
     var body = {
-        single: "<circle cx=\"7\" cy=\"7\" r=\"3.2\"/>",
+        single: "<circle cx=\"7\" cy=\"7\" r=\"2\"/>",
         group: "<circle cx=\"2.6\" cy=\"8.2\" r=\"2\"/><circle cx=\"7\" cy=\"4.6\" r=\"2\"/><circle cx=\"11.4\" cy=\"8.2\" r=\"2\"/>",
         foundation: "<circle cx=\"4.2\" cy=\"7\" r=\"2.1\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\"/><path d=\"M6.2 7 H12.2 M9.4 7 V5.2 M11.4 7 V5.6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\"/>",
         commons: "<path d=\"M1.5 3.2 H12.5 M1.5 7 H12.5 M1.5 10.8 H8\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/>",
