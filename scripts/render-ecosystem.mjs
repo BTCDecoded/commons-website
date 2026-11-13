@@ -95,17 +95,29 @@ slots.status = "Measured " + esc(data.measured_at) + ".";
 slots.lead = "Bitcoin node implementations: who governs each one, how far each has got in showing it follows Bitcoin's rules, and what its code looks like. Bitcoin Core is the reference.";
 
 // Captions (the text of the old chart sections, now the column key).
+function testLinesOf(slug) {
+    var row = (metrics.rows || []).filter(function (r) { return r.slug === slug; })[0];
+    if (!row) throw new Error("checkout tests missing for " + slug);
+    var sum = 0;
+    ["test_insource", "test_folder", "test_fuzz", "test_property"].forEach(function (key) {
+        var cell = row[key];
+        if (!cell || cell.status !== "measured" || typeof cell.value !== "number") throw new Error("checkout tests missing for " + slug + " " + key);
+        sum += cell.value;
+    });
+    return sum;
+}
 const comp = trees.map(function (tree) {
     function n(id) { var cell = metric(tree, id); return cell ? cell.value : 0; }
-    var impl = n("implementation_code"), vend = n("vendored_code"), loc = n("locale_code");
-    return { slug: tree.slug, name: tree.name, impl: impl, vend: vend, loc: loc, total: impl + vend + loc, internal: tree.slug === internal };
+    var program = n("program_code"), tooling = n("tooling_code"), vend = n("vendored_code"), loc = n("locale_code");
+    var tests = testLinesOf(tree.slug);
+    return { slug: tree.slug, name: tree.name, program: program, tests: tests, tooling: tooling, vend: vend, loc: loc, total: program + tests + tooling + vend + loc, internal: tree.slug === internal };
 }).sort(function (a, b) { return b.total - a.total; });
 const compBySlug = {}; comp.forEach(function (c) { compBySlug[c.slug] = c; });
 const compMax = comp[0].total;
 const blvmComp = comp.filter(function (r) { return r.internal; })[0];
 // Column captions state facts only. Rankings are left to the sortable table.
 slots["size-caption"] = esc("BLVM program, implementation, and test counts cover blvm-node, blvm-protocol, blvm-consensus, blvm-primitives, blvm-secp256k1, blvm-muhash, blvm-storage-fence (in the node tree), and blvm-sdk including blvm-sdk-macros. blvm-spec-lock is counted as tooling. BLVM rules share and left-mixed are not measured: the crate-role map used for the earlier 10.7% and 0.0% figures was not found, and those cells were not kept from the previous crate set. libbitcoin is one repo: libbitcoin-system.");
-slots["comp-caption"] = esc(blvmComp && blvmComp.vend === 0 && blvmComp.loc === 0 ? blvmComp.name + " has neither vendored lines nor locale lines." : "");
+slots["comp-caption"] = esc(blvmComp && blvmComp.vend === 0 && blvmComp.loc === 0 ? blvmComp.name + " has " + blvmComp.tests.toLocaleString("en-US") + " test lines and " + blvmComp.tooling.toLocaleString("en-US") + " tooling lines, and neither vendored lines nor locale lines." : "");
 const halfOf = {}; trees.forEach(function (t) { var h = metric(t, "files_holding_half"); halfOf[t.slug] = h ? h.text : ""; });
 slots["files-caption"] = "";
 slots["test-caption"] = "";
@@ -137,7 +149,8 @@ slots.compare = defaultOrder.map(function (slug, i) {
     var hasCut = rules && rules.status === "measured";
     var rulesText = hasCut ? rules.text : (rules && rules.status === "not-measured" ? "not measured" : "no cut");
     var cutIdx = hasCut ? cutOrder.indexOf(t.instrument) : cutOrder.length;
-    var stack = "<span class=\"mini\" aria-hidden=\"true\"><span class=\"mini-fill seg impl" + isInt + "\" style=\"width:" + pct(c.impl, compMax) + "%\"></span><span class=\"mini-fill seg vend\" style=\"width:" + pct(c.vend, compMax) + "%\"></span><span class=\"mini-fill seg loc\" style=\"width:" + pct(c.loc, compMax) + "%\"></span></span>";
+    function seg(cls, lines) { return "<span class=\"mini-fill " + cls + "\" style=\"width:" + pct(lines, compMax) + "%\"></span>"; }
+    var stack = "<span class=\"mini\" aria-hidden=\"true\">" + seg("program", c.program) + seg("tests", c.tests) + seg("tool", c.tooling) + seg("vend", c.vend) + seg("loc", c.loc) + "</span>";
     return "<tr data-slug=\"" + esc(slug) + "\" data-order=\"" + i + "\" data-size=\"" + prog.value + "\" data-checkout=\"" + c.total + "\" data-files=\"" + big.value + "\" data-tests=\"" + test.value + "\" data-rules=\"" + (hasCut ? (cutIdx * 1000 - rules.value) : 99999) + "\">" +
         "<th scope=\"row\" class=\"cmp-name" + isInt + "\">" + esc(t.name) + "</th>" +
         "<td data-label=\"Program lines\"><span class=\"num\">" + esc(prog.text) + "</span>" + bar(prog.value, sizeScale, isInt.trim()) + "</td>" +
@@ -322,7 +335,10 @@ function pluginRow(slug) {
     var own = metricCell(r, "plugin_own");
     var ind = metricCell(r, "plugin_independent");
     var isInt = slug === internal;
-    var open = "<details><summary>Source<span class=\"visually-hidden\"> for " + esc(r.name) + " modules</span></summary><p>" + esc(r.plugin_source || "") + "</p></details>";
+    var names = Array.isArray(r.plugin_names) ? r.plugin_names : [];
+    if (names.length && names.length !== own.value) throw new Error("plugin names for " + slug + " do not match the own-team count");
+    var named = names.length ? " Named here: " + names.join(", ") + "." : "";
+    var open = "<details><summary>Source<span class=\"visually-hidden\"> for " + esc(r.name) + " modules</span></summary><p>" + esc((r.plugin_source || "") + named) + "</p></details>";
     return "<tr data-slug=\"" + esc(slug) + "\" data-system=\"" + metricVal(sys, pluginRank) + "\" data-own=\"" + metricVal(own) + "\" data-independent=\"" + metricVal(ind) + "\"><th scope=\"row\"" + (isInt ? " class=\"internal\"" : "") + ">" + esc(r.name) + "</th>" +
         "<td data-label=\"Module system\">" + esc(metricText(sys)) + "</td>" +
         "<td data-label=\"Own-team modules\">" + esc(metricText(own)) + "</td>" +

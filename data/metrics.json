@@ -166,7 +166,8 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "docs/MODULE_SYSTEM.md and modules/README.md at blvm-node 36bb40c7e9a3f805274fa7e1bda30d0a6c082560. Official registry https://raw.githubusercontent.com/BTCDecoded/blvm/main/registry/modules.json fetched 2026-11-12 (eight BTCDecoded modules). Independently maintained modules: not found."
+      "plugin_source": "docs/MODULE_SYSTEM.md and modules/README.md at blvm-node 36bb40c7e9a3f805274fa7e1bda30d0a6c082560. Official registry https://raw.githubusercontent.com/BTCDecoded/blvm/main/registry/modules.json fetched 2026-11-12 (eight BTCDecoded modules). Independently maintained modules: not found.",
+      "plugin_names": ["blvm-miniscript", "blvm-marketplace", "blvm-governance", "blvm-zmq", "blvm-index", "blvm-wallet-index", "blvm-payment", "blvm-selective-sync"]
     },
     {
       "slug": "bitcoin-core",
@@ -1277,7 +1278,8 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "database/README.md: designed for different database backends (default ffldb). blockchain/indexers/README.md: two optional in-tree indexers (tx-by-hash, tx-by-address). Not a third-party plugin API. Independently maintained modules: not found."
+      "plugin_source": "database/README.md: designed for different database backends (default ffldb). blockchain/indexers/README.md: two optional in-tree indexers (tx-by-hash, tx-by-address). Not a third-party plugin API. Independently maintained modules: not found.",
+      "plugin_names": ["tx-by-hash indexer", "tx-by-address indexer"]
     }
   ]
 }

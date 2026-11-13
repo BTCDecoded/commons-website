@@ -65,14 +65,14 @@ export function figure(spec) {
         return s.href ? "<a href=\"" + esc(s.href) + "\">" + esc(s.label) + "</a>" : esc(s.label);
     }).join(", ") + ".</p>" : "";
     var notes = (spec.notes || []).map(function (n) { return "<p class=\"ch-note\">" + n + "</p>"; }).join("");
-    // measures: one line on what the chart measures and why it matters.
-    // takeaway: one plain sentence under the chart for a first-time reader.
-    var measures = spec.measures ? " <span class=\"ch-why\"><b>What this measures:</b> " + esc(spec.measures) + "</span>" : "";
-    var take = spec.takeaway ? "<p class=\"ch-take\"><b>Takeaway:</b> " + esc(spec.takeaway) + "</p>" : "";
+    var reading = (spec.caption ? "<p>" + esc(spec.caption) + "</p>" : "") +
+        (spec.measures ? "<p>" + esc(spec.measures) + "</p>" : "") +
+        (spec.takeaway ? "<p>" + esc(spec.takeaway) + "</p>" : "") +
+        notes + sources;
+    var more = reading ? "<details class=\"ch-more\"><summary>How to read this</summary>" + reading + "</details>" : "";
     var body = spec.html ? spec.html : variant(WIDE, "wide") + variant(NARROW, "narrow");
-    var cap = spec.caption ? " <span class=\"ch-cap\">" + esc(spec.caption) + "</span>" : "";
-    return "<figure class=\"ch" + (spec.cls ? " " + spec.cls : "") + "\" id=\"" + esc(spec.id) + "\"><figcaption><strong class=\"ch-head\">" + esc(spec.headline) + "</strong>" + cap + measures + "</figcaption>" +
-        body + take + notes + sources + table + "</figure>";
+    return "<figure class=\"ch" + (spec.cls ? " " + spec.cls : "") + "\" id=\"" + esc(spec.id) + "\"><figcaption><strong class=\"ch-head\">" + esc(spec.headline) + "</strong></figcaption>" +
+        body + more + table + "</figure>";
 }
 
 // ---------- horizontal bars ----------

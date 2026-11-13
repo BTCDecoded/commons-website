@@ -48,7 +48,7 @@ export default {
             if (/^Assurance radials score/.test(l)) return l.replace("A not-measured, partial, or n/a cell", "A not-measured or n/a cell");
             return l;
         });
-        return "<div class=\"eco-howto\" id=\"howto\"><h3>How to read this page</h3>" +
+        return "<details class=\"eco-howto ch-more\" id=\"howto\"><summary>How to read this page</summary>" +
             "<ul class=\"eco-howto-lines\">" + lines.map(function (l) { return "<li>" + md(l) + "</li>"; }).join("") + "</ul>" +
             "<ul class=\"eco-keys\" aria-label=\"Key\">" +
             "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u25CF</span> yes, 2 points</li>" +
@@ -63,6 +63,6 @@ export default {
             "<li><span class=\"eco-key-g eco-key-med\" aria-hidden=\"true\">\u25B2</span> yellow dashed: median of all " + ctx.model.rows.length + "</li>" +
             "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u25C6 \u25C7</span> own codebase, Core lineage</li>" +
             "</ul>" +
-            "<details><summary>Glossary: what each measure is, why it matters, how it is measured</summary><div class=\"eco-gloss-wrap\">" + gl + "<p class=\"eco-meta\">" + esc(G.note) + "</p></div></details></div>";
+            "<details><summary>Glossary</summary><div class=\"eco-gloss-wrap\">" + gl + "<p class=\"eco-meta\">" + esc(G.note) + "</p></div></details></details>";
     }
 };
