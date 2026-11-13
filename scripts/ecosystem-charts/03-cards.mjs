@@ -202,12 +202,11 @@ export default {
             const markkey = "<ul class=\"eco-markkey\">" + ["yes", "partial", "not found", "n/a"].filter(function (s) { return seen[s]; }).map(function (s) {
                 return "<li>" + wedge(s) + " " + wedgeLabel[s] + "</li>";
             }).join("") + "</ul>";
-            const layers = "<p class=\"eco-layers\">" + cells.map(function (c) { return "<span><b>" + esc(c.label) + "</b> " + esc(c.status) + "</span>"; }).join("") + "</p>";
             const implShape = r.internal || r.lineage.cls !== "core" ? "circle" : "square";
             const implTone = r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "all";
             const healthKey = "<p class=\"eco-series\"><span><i class=\"eco-swatch " + implShape + " " + implTone + "\" aria-hidden=\"true\"></i>" + esc(r.name) + "</span><span><i class=\"eco-swatch tri\" aria-hidden=\"true\"></i>Median</span></p>";
             const charts = "<div class=\"eco-card-charts\">" +
-                zoomChart("Assurance", radialThumb, radial, "", markkey + layers) +
+                zoomChart("Assurance", radialThumb, radial, "", markkey) +
                 zoomChart("Health", starThumb, star, healthData, healthKey) +
                 (cmpMeasured ? zoomChart("Compare", cmpThumb, cmpStar, cmpData) : "") +
                 "</div>";
@@ -233,28 +232,33 @@ export default {
                 "<li class=\"eco-badge\">Modules: " + esc(metricText(r.metrics, "plugin_system")) + "</li></ul>" +
                 charts +
                 stabMeter(r.stability) +
-                "<details class=\"ch-more\"><summary>Counts</summary><dl>" +
+                "<details class=\"ch-more eco-onchart-fold\"><summary>On the charts</summary><dl class=\"eco-counts\">" +
                 group("Code") +
                 fact("Program", counted(tree, "program_code")) +
-                fact("Implementation", counted(tree, "implementation_code")) +
                 fact("Tests / line", counted(tree, "test_per_implementation")) +
+                fact("Large files", counted(tree, "share_lines_ge_1000"), half === "not measured" ? "" : half + " files hold half") +
+                fact("Rules share", counted(tree, "rules_share"), tree && tree.instrument ? tree.instrument : "") +
+                group("Stack") +
+                fact("Direct deps", r.deps.text) +
+                group("Last 12 months") +
+                fact("Authors", metricText(r.metrics, "authors_12m")) +
+                fact("Releases", metricText(r.metrics, "releases_12m")) +
+                fact("Fuzz targets", fuzzText) +
+                "</dl></details>" +
+                "<details class=\"ch-more eco-rest\"><summary>Not on the charts</summary><dl class=\"eco-counts\">" +
+                group("Code") +
+                fact("Implementation", counted(tree, "implementation_code")) +
                 fact("Tooling", counted(tree, "tooling_code")) +
                 fact("Vendored", vendored) +
                 fact("Locale", counted(tree, "locale_code")) +
-                fact("Large files", counted(tree, "share_lines_ge_1000"), half === "not measured" ? "" : half + " files hold half") +
-                fact("Rules share", counted(tree, "rules_share"), tree && tree.instrument ? tree.instrument : "") +
                 group("Modules") +
                 fact("Modules", own, names.length ? names.join(", ") : "") +
                 fact("Independent", metricText(r.metrics, "plugin_independent")) +
                 group("Stack") +
                 fact("License", r.stack && r.stack.license ? r.stack.license : "not measured") +
                 fact("Languages", r.stack && r.stack.languages ? r.stack.languages : "not measured") +
-                fact("Direct deps", r.deps.text) +
                 group("Last 12 months") +
-                fact("Authors", metricText(r.metrics, "authors_12m")) +
-                fact("Releases", metricText(r.metrics, "releases_12m")) +
                 fact("CI jobs", metricText(r.metrics, "ci_jobs")) +
-                fact("Fuzz targets", fuzzText) +
                 "</dl></details>" +
                 "</article>";
         }).join("");
