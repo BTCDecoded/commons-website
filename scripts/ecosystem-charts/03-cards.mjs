@@ -1,5 +1,5 @@
-// One card per implementation. The face is a short count row and three
-// small charts. The same counts as the tables open under Counts, in the
+// One card per implementation. The face is three labeled charts. The same
+// counts as the tables open under Counts, in the
 // same order on every card. A missing count says "not measured" and is not
 // drawn as zero. A comparison chart with no measured spoke is left off the
 // card. n/a stays out of the assurance score. Fuzz targets listed in
@@ -145,7 +145,7 @@ export default {
             const desc = r.name + ". Assurance " + a.score + " of " + a.max + ": " + a.cells.map(function (c) { return c.name + " " + c.status; }).join(", ") + ".";
             const NARROW_LABEL = { formal_spec: "Spec", test_vectors: "Vectors", property_tests: "Property", fuzzing: "Fuzz", formal_verification: "Proofs", differential: "Diff" };
             const cells = a.cells.map(function (c) { return Object.assign({}, c, { label: NARROW_LABEL[c.id] || c.short }); });
-            const radial = svgOnce(id + "-r", 168, assuranceRadial(cells, { size: 160, labels: "none", center: a.score + "/" + a.max, centerSub: "assurance", cls: r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "" }), r.name + " assurance radial", desc);
+            const radial = svgOnce(id + "-r", 360, assuranceRadial(cells, { size: 300, labelSize: 14, center: a.score + "/" + a.max, centerSub: "assurance", cls: r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "" }), r.name + " assurance radial", desc);
             const tree = treeOf(ctx, r.slug);
             const half = counted(tree, "files_holding_half");
             const names = r.metrics && Array.isArray(r.metrics.plugin_names) ? r.metrics.plugin_names : [];
@@ -154,22 +154,14 @@ export default {
             const vendored = tree ? counted(tree, "vendored_code") : (r.stack && r.stack.vendored ? r.stack.vendored : "not measured");
             const starSeries = health.series(r, r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "");
             const starDesc = r.name + " code health. " + health.axes.map(function (axis, i) { return axis.short + " " + starSeries.values[i].text; }).join(", ") + ". Median of " + rows.length + ": " + health.axes.map(function (axis, i) { return axis.short + " " + health.median.values[i].text; }).join(", ") + ".";
-            const star = svgOnce(id + "-s", 168, radar(health.axes, [starSeries, health.median], { labels: "none", size: 168 }), r.name + " code-health star", starDesc, "eco-star");
+            const star = svgOnce(id + "-s", 360, radar(health.axes, [starSeries, health.median], { labels: "short", values: true, pad: 64, size: 360 }), r.name + " code-health star", starDesc, "eco-star");
             const cmpValues = cmpAxes.map(function (a) {
                 var v = a.get(checkouts[idx], tree);
                 return { v: v, text: a.text(checkouts[idx], tree) };
             });
             const cmpDesc = r.name + " comparisons. " + cmpAxes.map(function (a, i) { return a.short + " " + cmpValues[i].text; }).join(", ") + ".";
-const cmpMeasured = cmpValues.some(function (v) { return typeof v.v === "number"; });
-            const cmpStar = cmpMeasured ? svgOnce(id + "-cmp", 168, radar(cmpAxes, [{ name: r.name, cls: r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "", values: cmpValues }], { labels: "none", size: 168 }), r.name + " comparison star", cmpDesc, "eco-star") : "";
-            function chip(label, text, title) {
-                return "<li" + (title ? " title=\"" + esc(title) + "\"" : "") + "><span class=\"k\">" + esc(label) + "</span><span class=\"v\">" + esc(text) + "</span></li>";
-            }
-            const nums = "<ul class=\"eco-card-nums\">" +
-                chip("Assurance", a.score + "/" + a.max) +
-                cmpAxes.map(function (axis, i) { return chip(axis.short, cmpValues[i].text); }).join("") +
-                chip("Modules", own, (names.length ? names.join(", ") + ". " : "") + HINT["Modules"]) +
-                "</ul>";
+            const cmpMeasured = cmpValues.some(function (v) { return typeof v.v === "number"; });
+            const cmpStar = cmpMeasured ? svgOnce(id + "-cmp", 380, radar(cmpAxes, [{ name: r.name, cls: r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "", values: cmpValues }], { labels: "short", values: true, pad: 78, size: 380 }), r.name + " comparison star", cmpDesc, "eco-star") : "";
             const charts = "<div class=\"eco-card-charts\">" +
                 "<figure>" + radial + "<figcaption>Assurance</figcaption></figure>" +
                 "<figure>" + star + "<figcaption>Health</figcaption></figure>" +
@@ -181,7 +173,7 @@ const cmpMeasured = cmpValues.some(function (v) { return typeof v.v === "number"
                 "<li class=\"eco-badge eco-badge-" + r.lineage.cls + "\"><span aria-hidden=\"true\">" + LIN_GLYPH[r.lineage.cls] + " </span>" + esc(r.lineage.label) + "</li>" +
                 "<li class=\"eco-badge\">" + esc(r.accountability.full) + "</li>" +
                 "<li class=\"eco-badge\">Modules: " + esc(metricText(r.metrics, "plugin_system")) + "</li></ul>" +
-                nums + charts +
+                charts +
                 stabMeter(r.stability) +
                 "<details class=\"ch-more\"><summary>Counts</summary><dl>" +
                 group("Code") +
@@ -212,7 +204,7 @@ const cmpMeasured = cmpValues.some(function (v) { return typeof v.v === "number"
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-caption: "Selecting an implementation in the charts above opens this card over the page. The face is a short row of counts and three small charts: assurance, code health, and the five comparisons. A full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a or not measured. Dashed triangles on the health chart are the median. A hatched spoke is not measured, and it is not drawn as zero. When none of the five comparisons is measured, that chart is left off the card. The full list opens under Counts.",
+caption: "Selecting an implementation in the charts above opens this card over the page. The card is the three charts: assurance, with each check named, code health, and the five comparisons with their values. A full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a or not measured. Dashed triangles on the health chart are the median. A hatched spoke is not measured, and it is not drawn as zero. When none of the five comparisons is measured, that chart is left off the card. The full list opens under Counts.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),
