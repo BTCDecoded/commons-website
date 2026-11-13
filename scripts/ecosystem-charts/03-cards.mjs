@@ -1,4 +1,5 @@
-// One card per implementation. The face is three labeled charts. The same
+// One card per implementation. The face is three thumbnail charts. Selecting
+// a thumbnail opens that chart with its labels and values. The same
 // counts as the tables open under Counts, in the
 // same order on every card. A missing count says "not measured" and is not
 // drawn as zero. A comparison chart with no measured spoke is left off the
@@ -145,7 +146,9 @@ export default {
             const desc = r.name + ". Assurance " + a.score + " of " + a.max + ": " + a.cells.map(function (c) { return c.name + " " + c.status; }).join(", ") + ".";
             const NARROW_LABEL = { formal_spec: "Spec", test_vectors: "Vectors", property_tests: "Property", fuzzing: "Fuzz", formal_verification: "Proofs", differential: "Diff" };
             const cells = a.cells.map(function (c) { return Object.assign({}, c, { label: NARROW_LABEL[c.id] || c.short }); });
-            const radial = svgOnce(id + "-r", 360, assuranceRadial(cells, { size: 300, labelSize: 14, center: a.score + "/" + a.max, centerSub: "assurance", cls: r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "" }), r.name + " assurance radial", desc);
+            const radialCls = r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "";
+            const radialThumb = svgOnce(id + "-r-sm", 168, assuranceRadial(cells, { size: 160, labels: "none", center: a.score + "/" + a.max, centerSub: "assurance", cls: radialCls }), r.name + " assurance thumbnail", desc);
+            const radial = svgOnce(id + "-r", 360, assuranceRadial(cells, { size: 300, labelSize: 14, center: a.score + "/" + a.max, centerSub: "assurance", cls: radialCls }), r.name + " assurance radial", desc);
             const tree = treeOf(ctx, r.slug);
             const half = counted(tree, "files_holding_half");
             const names = r.metrics && Array.isArray(r.metrics.plugin_names) ? r.metrics.plugin_names : [];
@@ -154,6 +157,7 @@ export default {
             const vendored = tree ? counted(tree, "vendored_code") : (r.stack && r.stack.vendored ? r.stack.vendored : "not measured");
             const starSeries = health.series(r, r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "");
             const starDesc = r.name + " code health. " + health.axes.map(function (axis, i) { return axis.short + " " + starSeries.values[i].text; }).join(", ") + ". Median of " + rows.length + ": " + health.axes.map(function (axis, i) { return axis.short + " " + health.median.values[i].text; }).join(", ") + ".";
+            const starThumb = svgOnce(id + "-s-sm", 168, radar(health.axes, [starSeries, health.median], { labels: "none", size: 168 }), r.name + " code-health thumbnail", starDesc, "eco-star");
             const star = svgOnce(id + "-s", 360, radar(health.axes, [starSeries, health.median], { labels: "short", values: true, pad: 64, size: 360 }), r.name + " code-health star", starDesc, "eco-star");
             const cmpValues = cmpAxes.map(function (a) {
                 var v = a.get(checkouts[idx], tree);
@@ -161,11 +165,16 @@ export default {
             });
             const cmpDesc = r.name + " comparisons. " + cmpAxes.map(function (a, i) { return a.short + " " + cmpValues[i].text; }).join(", ") + ".";
             const cmpMeasured = cmpValues.some(function (v) { return typeof v.v === "number"; });
-            const cmpStar = cmpMeasured ? svgOnce(id + "-cmp", 380, radar(cmpAxes, [{ name: r.name, cls: r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "", values: cmpValues }], { labels: "short", values: true, pad: 78, size: 380 }), r.name + " comparison star", cmpDesc, "eco-star") : "";
+            const cmpCls = r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "";
+            const cmpThumb = cmpMeasured ? svgOnce(id + "-cmp-sm", 168, radar(cmpAxes, [{ name: r.name, cls: cmpCls, values: cmpValues }], { labels: "none", size: 168 }), r.name + " comparison thumbnail", cmpDesc, "eco-star") : "";
+            const cmpStar = cmpMeasured ? svgOnce(id + "-cmp", 380, radar(cmpAxes, [{ name: r.name, cls: cmpCls, values: cmpValues }], { labels: "short", values: true, pad: 78, size: 380 }), r.name + " comparison star", cmpDesc, "eco-star") : "";
+            function zoomChart(caption, thumb, full) {
+                return "<details class=\"eco-zoom\"><summary><span class=\"eco-zoom-shut\">" + thumb + "<span class=\"eco-thumb-cap\">" + caption + "</span></span><span class=\"eco-zoom-open\">Close chart</span></summary><div class=\"eco-zoom-body\">" + full + "</div></details>";
+            }
             const charts = "<div class=\"eco-card-charts\">" +
-                "<figure>" + radial + "<figcaption>Assurance</figcaption></figure>" +
-                "<figure>" + star + "<figcaption>Health</figcaption></figure>" +
-                (cmpMeasured ? "<figure>" + cmpStar + "<figcaption>Compare</figcaption></figure>" : "") +
+                zoomChart("Assurance", radialThumb, radial) +
+                zoomChart("Health", starThumb, star) +
+                (cmpMeasured ? zoomChart("Compare", cmpThumb, cmpStar) : "") +
                 "</div>";
             return "<article class=\"eco-card" + (r.internal ? " internal" : "") + "\" id=\"" + id + "\" aria-labelledby=\"" + id + "-h\">" +
                 "<h3 id=\"" + id + "-h\">" + esc(r.name) + "</h3>" +
@@ -204,7 +213,7 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-caption: "Selecting an implementation in the charts above opens this card over the page. The card is the three charts: assurance, with each check named, code health, and the five comparisons with their values. A full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a or not measured. Dashed triangles on the health chart are the median. A hatched spoke is not measured, and it is not drawn as zero. When none of the five comparisons is measured, that chart is left off the card. The full list opens under Counts.",
+caption: "Selecting an implementation in the charts above opens this card over the page. On a wide screen the card uses that width, and the face is three thumbnail charts in a row. Selecting a thumbnail opens that chart with its labels and values. A full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a or not measured. Dashed triangles on the health chart are the median. A hatched spoke is not measured, and it is not drawn as zero. When none of the five comparisons is measured, that chart is left off the card. The full list opens under Counts.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),
