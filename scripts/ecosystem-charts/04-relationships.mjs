@@ -12,6 +12,8 @@ const STEPS = [
 export default {
     slot: "chart-relationships",
     build: function () {
+        // Not drawn. The implementation graph is the navigation. Remove this return to draw the card again.
+        return "";
         return figure({
             id: "fig-relationships",
             headline: "Start with the graph. The card is one implementation. Institution names who can change the code. The tables are the sources.",

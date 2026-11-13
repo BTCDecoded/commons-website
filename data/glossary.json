@@ -402,10 +402,10 @@
         {
           "name": "Direct third-party dependencies",
           "field": "stack.json` `rows[].direct_deps",
-          "what": "Direct third-party libraries of a default node build.",
+          "what": "Direct third-party libraries of a default node build. BLVM is the minimal release instead of the default feature set.",
           "why": "Each direct dependency is code the node pulls in from outside the project.",
           "how_omitted": "contains figures; the page shows them from data",
-          "caveats": "Counts are not transitive. BLVM has no lockfile in that cell, so the resolve is dated.",
+          "caveats": "Counts are not transitive. BLVM's cell is the minimal feature, counted 2026-11-12 from the local trees named in that row. The node pin on the row is the rest of the cut, not this dependency resolve.",
           "link": "#stack"
         },
         {

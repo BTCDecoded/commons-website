@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "as_of": "2026-11-12",
-  "method": "Read at each pinned commit. License: the repository's license file; no proprietary or non-OSI license file turned up in any tree. Languages: those with 5% or more of code lines (tokei 14; .h headers count with C and C++). Direct dependencies: direct third-party libraries of a default node build, excluding build tools, test and dev dependencies, off-by-default extras and the project's own crates; vendored source is counted separately; no transitive counts. C++: libraries the default bitcoind (or node binary) links, minus Qt and native build tools. Rust: third-party crates reached from the node binary through its own workspace crates, with default features (cargo tree). Go: go.mod require lines not marked indirect. Every row was counted on a separate checkout at its pinned commit. Vendored: library subtrees or vendor/ directories in the tree, with their code lines rounded.",
+  "method": "Read at each pinned commit. License: the repository's license file; no proprietary or non-OSI license file turned up in any tree. Languages: those with 5% or more of code lines (tokei 14; .h headers count with C and C++). Direct dependencies: direct third-party libraries of a default node build, excluding build tools, test and dev dependencies, off-by-default extras and the project's own crates; vendored source is counted separately; no transitive counts. C++: libraries the default bitcoind (or node binary) links, minus Qt and native build tools. Rust: third-party crates reached from the node binary through its own workspace crates, with default features (cargo tree). BLVM is the exception: the same count on the minimal release (`--no-default-features --features minimal`), not default features. Go: go.mod require lines not marked indirect. Every row was counted on a separate checkout at its pinned commit. Vendored: library subtrees or vendor/ directories in the tree, with their code lines rounded.",
   "rows": [
     {
       "slug": "blvm",
@@ -12,9 +12,9 @@
       "license_source": "https://github.com/BTCDecoded/blvm-node/blob/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/LICENSE",
       "languages": "Rust",
       "languages_source": "https://github.com/BTCDecoded/blvm-node/tree/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/",
-      "direct_deps": 62,
-      "deps_names": "Third-party crates of blvm-node and the published BLVM crates it uses; resolved 2026-11-12, no Cargo.lock",
-      "deps_source": "https://github.com/BTCDecoded/blvm-node/blob/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/Cargo.toml",
+      "direct_deps": 54,
+      "deps_names": "Third-party crates reached from the blvm binary through its own crates on the minimal release (--no-default-features --features minimal). Counted 2026-11-13 from blvm 3a3ea87, blvm-node 0096b5c, blvm-consensus 0a17b13, blvm-protocol 17f9af3, blvm-primitives fa1cd69, blvm-secp256k1 56c9288, and blvm-muhash a627928. Off this feature: quinn-proto, rustls, ed25519, pkcs8, h2, crossbeam-epoch, aes-gcm, hkdf, dirs, and reqwest. The CLI posts JSON-RPC with hyper. h2 still arrives through hyper, and crossbeam-epoch through rayon. This is not the pinned node commit, and those commits are the local trees",
+      "deps_source": null,
       "vendored": "None found",
       "vendored_source": null
     },
