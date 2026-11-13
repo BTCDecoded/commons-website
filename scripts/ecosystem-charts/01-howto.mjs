@@ -48,21 +48,21 @@ export default {
             if (/^Assurance radials score/.test(l)) return l.replace("A not-measured, partial, or n/a cell", "A not-measured or n/a cell");
             return l;
         });
-        return "<details class=\"eco-howto ch-more\" id=\"howto\"><summary>How to read this page</summary>" +
-            "<ul class=\"eco-howto-lines\">" + lines.map(function (l) { return "<li>" + md(l) + "</li>"; }).join("") + "</ul>" +
-            "<ul class=\"eco-keys\" aria-label=\"Key\">" +
+        return "<ul class=\"eco-keys\" id=\"eco-key\" aria-label=\"Key\">" +
             "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u25CF</span> yes, 2 points</li>" +
             "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u25D0</span> partial, 1 point</li>" +
             "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u25CB</span> not found, 0 points</li>" +
             "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u2013</span> n/a, left out of the score</li>" +
             "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u2571</span> grey hatching: not measured</li>" +
             (Object.keys(pend).length ? "<li><span class=\"eco-key-g eco-key-med\" aria-hidden=\"true\">\u2571</span> yellow hatching: pending fix, not final</li>" : "") +
-            "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u2713 \u2715 ?</span> stability checklist: met, not met, not measured (hatched)</li>" +
+            "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u2713 \u2715 ?</span> stability checklist: met, not met, not measured</li>" +
             "<li><span class=\"eco-key-g eco-key-hl\" aria-hidden=\"true\">\u25CF</span> orange: BLVM</li>" +
             "<li><span class=\"eco-key-g eco-key-core\" aria-hidden=\"true\">\u25A0</span> blue square: Bitcoin Core</li>" +
             "<li><span class=\"eco-key-g eco-key-med\" aria-hidden=\"true\">\u25B2</span> yellow dashed: median of all " + ctx.model.rows.length + "</li>" +
             "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u25C6 \u25C7</span> own codebase, Core lineage</li>" +
             "</ul>" +
+            "<details class=\"eco-howto ch-more\" id=\"howto\"><summary>How to read this page</summary>" +
+            "<ul class=\"eco-howto-lines\">" + lines.map(function (l) { return "<li>" + md(l) + "</li>"; }).join("") + "</ul>" +
             "<details><summary>Glossary</summary><div class=\"eco-gloss-wrap\">" + gl + "<p class=\"eco-meta\">" + esc(G.note) + "</p></div></details></details>";
     }
 };

@@ -3,10 +3,10 @@
 import { figure, flow } from "../charts.mjs";
 
 const STEPS = [
-    { label: "Lineage", sub: "Where the code comes from: Core, a fork, or its own codebase.", href: "#why" },
-    { label: "Governance", sub: "Who can change that code, and who must agree.", href: "#institution" },
-    { label: "Verification", sub: "What evidence shows the code follows Bitcoin's rules.", href: "#commons" },
-    { label: "Code health", sub: "How the code is built, sized, tested and released.", href: "#compare" }
+    { label: "Lineage", sub: "Where the code comes from. Select a name to open its card.", href: "#overview" },
+    { label: "The card", sub: "Assurance, code health, and the five comparisons.", href: "#overview" },
+    { label: "Who decides", sub: "Who can change that code, and who must agree.", href: "#institution" },
+    { label: "The tables", sub: "The same cells, with the source for each one.", href: "#tables" }
 ];
 
 export default {
@@ -14,10 +14,10 @@ export default {
     build: function () {
         return figure({
             id: "fig-relationships",
-            headline: "Read the measures in order: lineage, then governance, then verification, then code health.",
-            caption: "Each step narrows the next question. Select a step to jump to its section.",
-            measures: "How the page's sections relate; it matters because a count in one section only makes sense with the step before it.",
-            takeaway: "Shared lineage means shared bugs; governance decides who fixes them; verification shows how they would be caught; code health shows the work behind it.",
+            headline: "Start with the graph. The card is one implementation. Institution names who can change the code. The tables are the sources.",
+            caption: "Select a step to jump there. The card holds assurance, code health, and the five comparisons. Institution, forms, and the directory name who can change the code.",
+            measures: "How the page fits together: the graph, the card, who decides, and the source tables.",
+            takeaway: "Shared lineage means shared bugs. The card shows the evidence and the code. Institution names who can change it.",
             title: "How the measures connect",
             desc: STEPS.map(function (s, i) { return (i + 1) + ". " + s.label + ": " + s.sub; }).join(" "),
             chart: flow(STEPS),
