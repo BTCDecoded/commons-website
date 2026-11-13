@@ -26,22 +26,42 @@ export default {
         const pct = function (k) { return (Math.round(1000 * k / sentences.total) / 10) + "%"; };
         const levels = cell.levels || [];
         const body = levels.filter(function (level) { return level.id === "body_proof"; })[0];
+        const attrs = levels.filter(function (level) { return level.id === "spec_locked_attributes"; })[0];
         const leanProved = sentences.both + sentences.lean;
-        const segs = [
-            { label: "Proved in Rust and Lean", value: sentences.both, valueText: sentences.both + " (" + pct(sentences.both) + ")", cls: "hl" },
-            { label: "Lean only", value: sentences.lean, valueText: sentences.lean + " (" + pct(sentences.lean) + ")", cls: "c" },
-            { label: "Not yet", value: sentences.notYet, valueText: sentences.notYet + " (" + pct(sentences.notYet) + ")", cls: "muted" }
-        ];
-        const leanHead = "Lean has proved " + leanProved + " of " + sentences.total + " Orange Paper sentences (" + pct(leanProved) + ").";
+        const reasons = sentences.reasons || null;
+        let segs;
+        if (reasons) {
+            const other = reasons.emitter_shape_missing + reasons.out_of_scope + reasons.spec_disputed;
+            segs = [
+                { label: "Proved in Rust and Lean", value: sentences.both, valueText: sentences.both + " (" + pct(sentences.both) + ")", cls: "hl" },
+                { label: "Lean only", value: sentences.lean, valueText: sentences.lean + " (" + pct(sentences.lean) + ")", cls: "c" },
+                { label: "Prose the inventory cannot check", value: reasons.parse_failed, valueText: reasons.parse_failed + " (" + pct(reasons.parse_failed) + ")", cls: "muted" },
+                { label: "No Lean model yet", value: reasons.model_unwritten, valueText: reasons.model_unwritten + " (" + pct(reasons.model_unwritten) + ")", cls: "muted" },
+                { label: "Not a Lean proof", value: other, valueText: other + " (" + pct(other) + ")", cls: "muted" }
+            ].filter(function (s) { return s.value > 0; });
+            const sum = segs.reduce(function (n, s) { return n + s.value; }, 0);
+            if (sum !== sentences.total) throw new Error("spec-proof chart: reason parts do not add up to " + sentences.total);
+        } else {
+            segs = [
+                { label: "Proved in Rust and Lean", value: sentences.both, valueText: sentences.both + " (" + pct(sentences.both) + ")", cls: "hl" },
+                { label: "Lean only", value: sentences.lean, valueText: sentences.lean + " (" + pct(sentences.lean) + ")", cls: "c" },
+                { label: "Not yet", value: sentences.notYet, valueText: sentences.notYet + " (" + pct(sentences.notYet) + ")", cls: "muted" }
+            ];
+        }
+        const headline = (attrs && body)
+            ? row.name + ": " + attrs.count + " consensus functions carry a spec_locked annotation. The spec-lock prover and Z3 check that surface. " + body.count + " functions are proved from the body on this pass."
+            : row.name + ": Lean sentence inventory, " + leanProved + " of " + sentences.total + ". This is not the spec-lock coverage figure.";
+        const caption = (attrs ? attrs.count + " is the number of spec_locked attributes. It is not a proof count. A body proof passes on the written body and fails after two edits of that body. " : "") +
+            (reasons
+                ? "The bar is a different list, the Lean sentence inventory. " + reasons.parse_failed + " of " + sentences.total + " rows are prose that inventory cannot turn into a check, and " + reasons.model_unwritten + " have no Lean model yet. " + leanProved + " Lean proofs are not a coverage score for the spec-locked functions. Lean does not check the Rust."
+                : "The bar is the Lean sentence inventory. Lean does not check the Rust.");
         const sentenceFigure = figure({
             id: "fig-spec-proof",
-            headline: body
-                ? row.name + ": the spec-lock prover and Z3 have proved " + body.count + " Rust functions from the body. " + leanHead + " Those counts are separate lists."
-                : row.name + ": " + leanHead + " This bar is the Lean sentence inventory.",
-            caption: "This bar is the Lean sentence inventory. Lean does not check the Rust. Not yet includes sentences the inventory marks spec_disputed. The spec-lock prover and Z3 are the function table.",
-            measures: "The bar counts Orange Paper sentences with a Lean proof. The function table counts spec-lock checks of the Rust.",
-            takeaway: "Most Orange Paper sentences have no Lean proof yet. Rust proofs are the spec-lock table, not this percentage.",
-            title: row.name + " Orange Paper sentences by Lean proof status",
+            headline: headline,
+            caption: caption,
+            measures: "The headline is the spec-lock surface. The bar is only the Lean inventory, and most of that inventory is prose it cannot check.",
+            takeaway: "Spec-lock coverage is the annotation count. The Lean percentage is not that coverage.",
+            title: row.name + " Lean sentence inventory, not spec-lock coverage",
             desc: segs.map(function (s) { return s.label + ": " + s.valueText; }).join("; ") + ". Total " + sentences.total + ".",
             chart: progress(segs, { total: sentences.total }),
             sources: [{ label: "sentence inventory", href: cell.source }, { label: "data/verification-evidence.json" }],

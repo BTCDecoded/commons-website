@@ -29,21 +29,28 @@ function commit(dir) {
 function countSentences(tsv) {
     const lines = tsv.split(/\n/).filter(function (line) { return line && !line.startsWith("id\t"); });
     const tally = { both: 0, lean: 0, disputed: 0, unsupported: 0 };
+    const reasons = { parse_failed: 0, model_unwritten: 0, emitter_shape_missing: 0, out_of_scope: 0, spec_disputed: 0 };
     for (const line of lines) {
         const parts = line.split("\t");
         const cls = parts[3] || "";
         const reason = parts[4] || "";
-        if (cls === "both") tally.both += 1;
-        else if (cls === "lean_statement" && reason === "spec_disputed") tally.disputed += 1;
-        else if (cls === "lean_statement") tally.lean += 1;
-        else if (cls === "unsupported") tally.unsupported += 1;
-        else throw new Error("sentence inventory: unknown class " + cls + " on " + parts[0]);
+        if (cls === "both" && reason === "") tally.both += 1;
+        else if (cls === "lean_statement" && reason === "spec_disputed") {
+            tally.disputed += 1;
+            reasons.spec_disputed += 1;
+        } else if (cls === "lean_statement" && reason === "") tally.lean += 1;
+        else if (cls === "unsupported" && Object.prototype.hasOwnProperty.call(reasons, reason) && reason !== "spec_disputed") {
+            tally.unsupported += 1;
+            reasons[reason] += 1;
+        } else throw new Error("sentence inventory: unknown class " + cls + " reason " + reason + " on " + parts[0]);
     }
     const total = tally.both + tally.lean + tally.disputed + tally.unsupported;
     if (total !== lines.length) throw new Error("sentence inventory: tally " + total + " != rows " + lines.length);
     const notYet = tally.disputed + tally.unsupported;
     if (tally.both + tally.lean + notYet !== total) throw new Error("sentence parts do not add up");
-    return { total, both: tally.both, lean: tally.lean, disputed: tally.disputed, unsupported: tally.unsupported, notYet };
+    const reasonTotal = reasons.parse_failed + reasons.model_unwritten + reasons.emitter_shape_missing + reasons.out_of_scope + reasons.spec_disputed;
+    if (reasonTotal !== notYet) throw new Error("sentence reasons " + reasonTotal + " != not yet " + notYet);
+    return { total, both: tally.both, lean: tally.lean, disputed: tally.disputed, unsupported: tally.unsupported, notYet, reasons };
 }
 
 const readme = read(specLock, "README.md");
@@ -51,7 +58,7 @@ const body = /This pass proves (\d+) functions from the function body:/.exec(rea
 if (!body) throw new Error("spec-lock README: body-proof sentence missing");
 const names = /The functions are (.+?)\. Older counts:/.exec(readme);
 if (!names) throw new Error("spec-lock README: function list missing");
-const provedNames = names[1].split(", ").map(function (s) { return s.replace(/`/g, "").trim(); });
+const provedNames = names[1].split(", ").map(function (s) { return s.replace(/`/g, "").replace(/^and /, "").trim(); });
 const provedCount = Number(body[1]);
 if (provedNames.length !== provedCount) {
     throw new Error("body-proof count " + provedCount + " != list " + provedNames.length);
@@ -111,13 +118,14 @@ const levels = [
 const sentenceText = "Of " + sentences.total + " Orange Paper sentences, " + sentences.both +
     " is proved in Rust and Lean, " + sentences.lean + " in Lean only, " + sentences.notYet + " not yet";
 const text = [
-    "Body proofs: " + provedCount + " functions. The check passes, and two edits of the body make it fail.",
+    "spec_locked attributes: " + attrs[1] + ". That is the spec-lock surface. It is not a passing-check count and not a proof.",
+    "Body proofs: " + provedCount + " functions. The spec-lock prover and Z3 pass on the written body, and two edits of the body make the check fail.",
     "Tool mutation list: " + tool[1] + " of " + tool[2] + ", a different list.",
     "Older written mutation list: " + written[1] + " of " + written[2] + ", not this pass.",
-    "spec_locked attributes: " + attrs[1] + ". That is not a passing-check count and not a proof.",
     sentenceText + ".",
-    sentences.disputed + " of the not-yet sentences is spec_disputed (theorem 6.2.3 real series) and is not a Lean proof.",
-    "These lists overlap. They are not a sum."
+    sentences.reasons.parse_failed + " of those rows are prose the inventory cannot turn into a check, and " + sentences.reasons.model_unwritten + " have no Lean model yet.",
+    sentences.disputed + " row is spec_disputed (theorem 6.2.3 real series) and is not a Lean proof.",
+    "The Lean count is not a coverage score for the spec-locked functions. These lists overlap. They are not a sum."
 ].join(" ");
 
 const evidence = {

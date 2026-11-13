@@ -7,7 +7,8 @@ The Pages build writes these. A committed copy can be stale until the next build
 | BLVM release badge and `assets/blvm-release.json` | `scripts/fetch-blvm-release-meta.mjs` | GitHub releases for `BTCDecoded/blvm` |
 | Ecosystem size, rules, and author rows | `scripts/render-ecosystem.mjs` | `data/implementations.json` |
 | Formal verification levels | `scripts/build-verification-evidence.mjs`, then the render | spec-lock README body-proof list, `docs/MUTATION_COVERAGE.md`, `docs/sentence-inventory.tsv`, `SPEC_LOCK_COVERAGE.md`, and `blvm-consensus/docs/VERIFICATION.md` |
-| Orange Paper sentence chart | `scripts/ecosystem-charts/25-spec-proof.mjs` | The Lean sentence inventory only. Parts must add up. `spec_disputed` stays in "not yet". Spec-lock’s prover and Z3 are the function table, and those lists are not added to the Lean count. |
+| Spec-lock surface | `scripts/ecosystem-charts/25-spec-proof.mjs` | The headline is the `spec_locked` attribute count. That count is not a proof. Body proofs are the stricter pass. |
+| Orange Paper sentence chart | `scripts/ecosystem-charts/25-spec-proof.mjs` | The Lean inventory only. Most rows are prose that inventory cannot check, so the Lean share is not a spec-lock coverage score. |
 
 Function lists are labeled and are not added together. A passing spec-lock contract check is not a proof. The `spec_locked` attribute count is not a count of passing checks.
 
