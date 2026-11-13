@@ -1468,5 +1468,184 @@
         ]
       }
     ]
+  },
+  "machine": {
+    "parts": [
+      { "id": "rules", "name": "Rules" },
+      { "id": "chain", "name": "Chain" },
+      { "id": "mempool", "name": "Mempool" },
+      { "id": "network", "name": "Network" },
+      { "id": "rpc", "name": "RPC" },
+      { "id": "rest", "name": "Rest" }
+    ],
+    "jobs": [
+      { "id": "wallet", "name": "Wallet" },
+      { "id": "gui", "name": "GUI" },
+      { "id": "mining", "name": "Mining" },
+      { "id": "index", "name": "Index" },
+      { "id": "zmq", "name": "ZMQ" },
+      { "id": "miniscript", "name": "Miniscript" }
+    ],
+    "trees": [
+      {
+        "slug": "blvm",
+        "parts": { "rules": 32598, "chain": 26615, "mempool": 7660, "network": 63436, "rpc": 15626, "rest": 50055 },
+        "largest": {
+          "rules": { "file": "src/script/mod.rs", "lines": 6690 },
+          "chain": { "file": "src/storage/ibd_utxo_store.rs", "lines": 2382 },
+          "mempool": { "file": "src/node/mempool.rs", "lines": 4137 },
+          "network": { "file": "src/node/parallel_ibd/mod.rs", "lines": 8855 },
+          "rpc": { "file": "src/rpc/rest/server.rs", "lines": 2251 },
+          "rest": { "file": "src/module/timers/service.rs", "lines": 3175 }
+        },
+        "checkout": { "program": 195990, "tests": 202814, "tooling": 107571, "vendored": 0, "locale": 0 },
+        "rest": [
+          { "name": "Module host", "lines": 22531 },
+          { "name": "Protocol", "lines": 10589 },
+          { "name": "Node shell", "lines": 4569 },
+          { "name": "Mining", "lines": 1393 },
+          { "name": "Other", "lines": 10973 }
+        ],
+        "support": {
+          "mining": { "state": "program", "lines": 1393, "place": "Mining" },
+          "index": { "state": "separate" },
+          "zmq": { "state": "separate" },
+          "miniscript": { "state": "separate" }
+        }
+      },
+      {
+        "slug": "bitcoin-core",
+        "parts": { "rules": 12669, "chain": 12490, "mempool": 3948, "network": 17791, "rpc": 15496, "rest": 88610 },
+        "largest": {
+          "rules": { "file": "src/script/descriptor.cpp", "lines": 2534 },
+          "chain": { "file": "src/validation.cpp", "lines": 4247 },
+          "mempool": { "file": "src/txmempool.cpp", "lines": 915 },
+          "network": { "file": "src/net_processing.cpp", "lines": 4220 },
+          "rpc": { "file": "src/rpc/blockchain.cpp", "lines": 3172 },
+          "rest": { "file": "src/wallet/wallet.cpp", "lines": 3488 }
+        },
+        "checkout": { "program": 151004, "tests": 154273, "tooling": 0, "vendored": 112703, "locale": 286741 },
+        "rest": [
+          { "name": "Other", "lines": 24424 },
+          { "name": "Wallet", "lines": 19507 },
+          { "name": "GUI", "lines": 19188 },
+          { "name": "Support", "lines": 10991 },
+          { "name": "Crypto", "lines": 6183 },
+          { "name": "Smaller", "lines": 8317 }
+        ],
+        "support": {
+          "wallet": { "state": "program", "lines": 19507, "place": "Wallet" },
+          "gui": { "state": "program", "lines": 19188, "place": "GUI" },
+          "mining": { "state": "program", "lines": 651, "place": "Smaller" },
+          "index": { "state": "program", "lines": 2140, "place": "Smaller" },
+          "zmq": { "state": "program", "lines": 639, "place": "Smaller" }
+        }
+      },
+      {
+        "slug": "knots",
+        "parts": { "rules": 13086, "chain": 10370, "mempool": 4217, "network": 16934, "rpc": 15385, "rest": 95202 },
+        "largest": {
+          "rules": { "file": "src/script/descriptor.cpp", "lines": 2034 },
+          "chain": { "file": "src/validation.cpp", "lines": 5100 },
+          "mempool": { "file": "src/txmempool.cpp", "lines": 1189 },
+          "network": { "file": "src/net_processing.cpp", "lines": 3872 },
+          "rpc": { "file": "src/rpc/blockchain.cpp", "lines": 3830 },
+          "rest": { "file": "src/wallet/wallet.cpp", "lines": 3715 }
+        },
+        "checkout": { "program": 155194, "tests": 151218, "tooling": 0, "vendored": 83466, "locale": 330453 },
+        "rest": [
+          { "name": "GUI", "lines": 25587 },
+          { "name": "Wallet", "lines": 23797 },
+          { "name": "Other", "lines": 20467 },
+          { "name": "Support", "lines": 11050 },
+          { "name": "Crypto", "lines": 6808 },
+          { "name": "Smaller", "lines": 7493 }
+        ],
+        "support": {
+          "wallet": { "state": "program", "lines": 23797, "place": "Wallet" },
+          "gui": { "state": "program", "lines": 25587, "place": "GUI" },
+          "mining": { "state": "program", "lines": 517, "place": "Smaller" },
+          "index": { "state": "program", "lines": 1729, "place": "Smaller" },
+          "zmq": { "state": "program", "lines": 707, "place": "Smaller" }
+        }
+      },
+      {
+        "slug": "bitcoin-rs",
+        "parts": { "rules": 12659, "chain": 40888, "mempool": 22353, "network": 64102, "rpc": 31464, "rest": 57908 },
+        "largest": {
+          "rules": { "file": "crates/script/src/eval.rs", "lines": 1042 },
+          "chain": { "file": "crates/storage/src/redb_impl.rs", "lines": 1456 },
+          "mempool": { "file": "crates/mempool/src/pool.rs", "lines": 2046 },
+          "network": { "file": "crates/p2p/src/listener.rs", "lines": 2594 },
+          "rpc": { "file": "crates/rpc/src/handlers/chain.rs", "lines": 1858 },
+          "rest": { "file": "crates/mining/src/pool/ledger/store.rs", "lines": 2611 }
+        },
+        "checkout": { "program": 229374, "tests": 179049, "tooling": 0, "vendored": 0, "locale": 0 },
+        "rest": [
+          { "name": "Node", "lines": 18821 },
+          { "name": "Mining", "lines": 15707 },
+          { "name": "Index", "lines": 14083 },
+          { "name": "Tools", "lines": 8031 },
+          { "name": "Binary", "lines": 1266 }
+        ],
+        "support": {
+          "mining": { "state": "program", "lines": 15707, "place": "Mining" },
+          "index": { "state": "program", "lines": 14083, "place": "Index" }
+        }
+      },
+      {
+        "slug": "satd",
+        "parts": { "rules": 22774, "chain": 0, "mempool": 3714, "network": 0, "rpc": 0, "rest": 164804 },
+        "largest": {
+          "rules": { "file": "consensus/src/eval.rs", "lines": 1033 },
+          "mempool": { "file": "satd-policy/src/parser.rs", "lines": 599 },
+          "rest": { "file": "node/src/net/manager.rs", "lines": 13334 }
+        },
+        "checkout": { "program": 191292, "tests": 165444, "tooling": 0, "vendored": 0, "locale": 0 },
+        "rest": [
+          { "name": "Node", "lines": 99111 },
+          { "name": "Clients", "lines": 17071 },
+          { "name": "satd", "lines": 14696 },
+          { "name": "Events", "lines": 6842 },
+          { "name": "Smaller", "lines": 27084 }
+        ],
+        "support": {
+          "index": { "state": "program", "lines": 1513, "place": "Smaller" }
+        }
+      },
+      {
+        "slug": "libbitcoin",
+        "parts": { "rules": 15541, "chain": 34082, "mempool": 0, "network": 42961, "rpc": 0, "rest": 209755 },
+        "largest": {
+          "rules": { "file": "bindings/python/wrap/consensus.cpp", "lines": 4006 },
+          "chain": { "file": "include/bitcoin/database/query.hpp", "lines": 965 },
+          "network": { "file": "src/io/socket.cpp", "lines": 803 },
+          "rest": { "file": "src/words/catalogs/mnemonic.cpp", "lines": 20549 }
+        },
+        "checkout": { "program": 302339, "tests": 221741, "tooling": 11987, "vendored": 58669, "locale": 0 },
+        "rest": [
+          { "name": "System", "lines": 117526 },
+          { "name": "Server", "lines": 40424 },
+          { "name": "Explorer", "lines": 27466 },
+          { "name": "Node", "lines": 14143 },
+          { "name": "Client", "lines": 5856 },
+          { "name": "Protocol", "lines": 4340 }
+        ]
+      },
+      {
+        "slug": "hornet",
+        "parts": { "rules": 0, "chain": 0, "mempool": 0, "network": 0, "rpc": 0, "rest": 14200 },
+        "largest": {
+          "rest": { "file": "tools/generate_spec.py", "lines": 931 }
+        },
+        "checkout": { "program": 14200, "tests": 7401, "tooling": 0, "vendored": 81041, "locale": 0 },
+        "rest": [
+          { "name": "Library", "lines": 9895 },
+          { "name": "Node library", "lines": 2149 },
+          { "name": "Tools", "lines": 1968 },
+          { "name": "Other", "lines": 188 }
+        ]
+      }
+    ]
   }
 }

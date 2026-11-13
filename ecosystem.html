@@ -160,6 +160,76 @@
         .swatch.merges { background: #7eb6ff; }
         .swatch.vend { background: #6d7c8a; }
         .swatch.loc { background: #c4a574; }
+        .swatch.program { background: #b9b9c2; }
+        .swatch.tests { background: #7eb6ff; }
+        .swatch.tool { background: #c47c6a; }
+        .swatch.rules { background: #d4b483; }
+        .swatch.chain { background: #8fafc4; }
+        .swatch.mempool { background: #b9a0c8; }
+        .swatch.network { background: #8aab8e; }
+        .swatch.rpc { background: #c4b07a; }
+        .swatch.rest { background: #8d8d96; }
+        .seg.program { background: #b9b9c2; }
+        .seg.tests { background: #7eb6ff; }
+        .seg.tool { background: #c47c6a; }
+        .seg.rules { background: #d4b483; }
+        .seg.chain { background: #8fafc4; }
+        .seg.mempool { background: #b9a0c8; }
+        .seg.network { background: #8aab8e; }
+        .seg.rpc { background: #c4b07a; }
+        .seg.rest { background: #8d8d96; }
+        .seg.r1 { background: #d4b483; }
+        .seg.r2 { background: #8fafc4; }
+        .seg.r3 { background: #b9a0c8; }
+        .seg.r4 { background: #8aab8e; }
+        .seg.r5 { background: #c4b07a; }
+        .seg.r6 { background: #6d7c8a; }
+        .bar-name.internal, .heat-name.internal { color: var(--orange); }
+        .heat-scroll { overflow-x: auto; margin-top: 0.85rem; }
+        .heat {
+            display: grid;
+            grid-template-columns: 7.5rem repeat(6, minmax(4.4rem, 1fr));
+            gap: 4px;
+            min-width: 38rem;
+        }
+        .heat-head, .heat-name {
+            font-size: 0.78rem;
+            color: #c4c4cc;
+            align-self: end;
+        }
+        .heat-name { font-size: 0.92rem; color: var(--white); align-self: center; }
+        .heat-cell {
+            min-height: 2.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            background: color-mix(in srgb, #e4e4ea calc(var(--a, 0) * 100%), #1a1a1d);
+            color: #f2f2f4;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+        }
+        .heat-cell.strong { color: #111113; }
+        .heat-cell.empty { background: #111113; color: #8a8a93; }
+        .support-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem 0.75rem;
+            align-items: center;
+            margin-top: 0.7rem;
+        }
+        .support-row .bar-name { min-width: 7.5rem; }
+        .eco-badges { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+        .eco-badge {
+            font-size: 0.75rem;
+            line-height: 1.4;
+            border: 1px solid #8a8a93;
+            border-radius: 999px;
+            padding: 0.05rem 0.5rem;
+            color: var(--white);
+        }
+        .eco-badge.separate { border-style: dashed; color: #c4c4cc; }
+        .eco-dir .eco-badges { margin-top: 0.3rem; }
         .eco-dir {
             list-style: none;
             margin: 0.9rem 0 0;
@@ -522,12 +592,14 @@
     <main class="eco" id="content">
         <header class="eco-head">
             <h1>Ecosystem</h1>
-            <p class="eco-lead" id="eco-lead">Three comparisons. Size and tests use one counter. Who lands the work uses each tree's own record.</p>
+            <p class="eco-lead" id="eco-lead">How the program splits, how large it is, and what else is in the checkout. Who lands the work uses each tree's own record.</p>
             <p id="eco-status" role="status">Loading this week's file.</p>
             <nav class="eco-jump" aria-label="On this page">
+                <a href="#machine">Program</a>
+                <a href="#concentration">Largest file</a>
                 <a href="#size">Size</a>
                 <a href="#checkout">Checkout</a>
-                <a href="#files">Large files</a>
+                <a href="#rest">Rest</a>
                 <a href="#tests">Tests</a>
                 <a href="#rules">Rules share</a>
                 <a href="#institution">Institution</a>
@@ -535,6 +607,21 @@
                 <a href="#directory">Directory</a>
             </nav>
         </header>
+
+        <section class="eco-block" id="machine">
+            <h2>The program</h2>
+            <p id="eco-machine-caption">Share of program lines in the same parts. Each bar is that tree's whole program.</p>
+            <p class="chart-legend"><span><i class="swatch rules"></i>rules</span><span><i class="swatch chain"></i>chain</span><span><i class="swatch mempool"></i>mempool</span><span><i class="swatch network"></i>network</span><span><i class="swatch rpc"></i>RPC</span><span><i class="swatch rest"></i>rest</span></p>
+            <div id="chart-machine"></div>
+            <p class="eco-meta eco-follow">Rules is consensus, primitives, and script. Chain is storage, chainstate, and validation. commons initial block download sits in the peer network, because the other trees do not split sync out. A missing part was not split out of a larger system.</p>
+        </section>
+
+        <section class="eco-block" id="concentration">
+            <h2>Largest file in each part</h2>
+            <p id="eco-heat-caption">The largest implementation file as a share of that part. The share uses the whole part.</p>
+            <div id="chart-heat"></div>
+            <p class="eco-meta eco-follow">Test files named tests.rs, test.rs, *_test.rs, or *_tests.rs are left out, and so are test-data corpora. An empty cell means that part was not split out. The file path is on the cell.</p>
+        </section>
 
         <section class="eco-block" id="size">
             <h2>Size</h2>
@@ -544,15 +631,19 @@
 
         <section class="eco-block" id="checkout">
             <h2>Checkout</h2>
-            <p id="eco-comp-caption">Implementation, vendored libraries, and locale files. The same counter on every tree.</p>
-            <p class="chart-legend"><span><i class="swatch other"></i>implementation</span><span><i class="swatch internal"></i>commons implementation</span><span><i class="swatch vend"></i>vendored</span><span><i class="swatch loc"></i>locale</span></p>
+            <p id="eco-comp-caption">Program, tests, tooling, vendored libraries, and locale files. The same counter on every tree.</p>
+            <p class="chart-legend"><span><i class="swatch program"></i>program</span><span><i class="swatch tests"></i>tests</span><span><i class="swatch tool"></i>tooling</span><span><i class="swatch vend"></i>vendored</span><span><i class="swatch loc"></i>locale</span></p>
             <div id="chart-comp"></div>
         </section>
 
-        <section class="eco-block" id="files">
-            <h2>Large files</h2>
-            <p id="eco-files-caption">Share of program lines that sit in files of 1,000 lines or more.</p>
-            <div id="chart-files"></div>
+        <section class="eco-block" id="rest">
+            <h2>The rest of the program</h2>
+            <p id="eco-rest-caption">What the rest segment contains. Each bar is that tree's rest.</p>
+            <div id="chart-rest"></div>
+            <p class="eco-meta eco-follow">Smaller is the tail under the named pieces. Other is the report's own other system, or the tail when a tree has no finer name.</p>
+            <h3 class="eco-sub">Same jobs</h3>
+            <p id="eco-support-caption">Wallet, GUI, mining, index, ZMQ, and miniscript, in that order. A solid badge is code in this cut. A dashed badge is a separate module and is not in the program lines. A missing badge was not named in this cut.</p>
+            <div id="chart-support"></div>
         </section>
 
         <section class="eco-block" id="tests">
@@ -629,18 +720,18 @@
             <p>Bitcoin Untangled keeps <a href="https://www.bitcoinuntangled.org/node-software/">a directory of node software</a>. The line charts are this week's measured trees. btcd, Floresta, and rbitcoin are on the institution list from GitHub contributor counts, and their line counts are not on this week's cut.</p>
             <ul class="eco-dir">
                 <li><a href="https://bit-block.org/bit-block-bitcoin-development/">Bit-Block</a><small>In their directory</small></li>
-                <li><a href="https://gosuda.org/">bitcoin-rs</a><small>On the charts</small></li>
-                <li><a href="https://btcdecoded.org/">BLVM</a><small>On the charts as commons</small></li>
+                <li data-slug="bitcoin-rs"><a href="https://gosuda.org/">bitcoin-rs</a><small>On the charts</small><span class="eco-badges"></span></li>
+                <li data-slug="blvm"><a href="https://btcdecoded.org/">BLVM</a><small>On the charts as commons</small><span class="eco-badges"></span></li>
                 <li><a href="https://github.com/btcsuite/btcd">btcd</a><small>Contributor count</small></li>
-                <li><a href="https://bitcoincore.org/">Bitcoin Core</a><small>On the charts</small></li>
+                <li data-slug="bitcoin-core"><a href="https://bitcoincore.org/">Bitcoin Core</a><small>On the charts</small><span class="eco-badges"></span></li>
                 <li><a href="https://www.getfloresta.org/">Floresta</a><small>Contributor count</small></li>
-                <li><a href="https://github.com/tobysharp/hornet">Hornet</a><small>Measured here</small></li>
+                <li data-slug="hornet"><a href="https://github.com/tobysharp/hornet">Hornet</a><small>Measured here</small><span class="eco-badges"></span></li>
                 <li><a href="https://bit-block.org/knots-legacy/">Knots Legacy</a><small>In their directory</small></li>
                 <li><a href="https://www.bitcoinuntangled.org/">Knots Untangled</a><small>In their directory</small></li>
-                <li><a href="https://github.com/bitcoinknots/bitcoin">Bitcoin Knots</a><small>On the charts</small></li>
-                <li><a href="https://libbitcoin.info/">libbitcoin</a><small>On the charts</small></li>
+                <li data-slug="knots"><a href="https://github.com/bitcoinknots/bitcoin">Bitcoin Knots</a><small>On the charts</small><span class="eco-badges"></span></li>
+                <li data-slug="libbitcoin"><a href="https://libbitcoin.info/">libbitcoin</a><small>On the charts</small><span class="eco-badges"></span></li>
                 <li><a href="https://www.rbitcoin.org/">rbitcoin</a><small>Contributor count</small></li>
-                <li><a href="https://github.com/epochbtc/satd">satd</a><small>Measured here</small></li>
+                <li data-slug="satd"><a href="https://github.com/epochbtc/satd">satd</a><small>Measured here</small><span class="eco-badges"></span></li>
             </ul>
         </section>
 
@@ -777,29 +868,148 @@
                 var testRows = ranked("test_per_implementation");
                 document.getElementById("chart-size").innerHTML = bars(sizeRows, sizeRows[0].value);
                 document.getElementById("chart-tests").innerHTML = bars(testRows, testRows[0].value);
-                var comp = trees.map(function (tree) {
-                    function n(id) { var cell = metric(tree, id); return cell ? cell.value : 0; }
-                    var impl = n("implementation_code"), vend = n("vendored_code"), loc = n("locale_code");
-                    return { name: tree.name, impl: impl, vend: vend, loc: loc, total: impl + vend + loc, internal: tree.slug === internal };
-                }).sort(function (a, b) { return b.total - a.total; });
-                var compMax = comp[0].total;
-                document.getElementById("chart-comp").innerHTML = "<div class=\"chart\">" + comp.map(function (row) {
-                    function w(v) { return (v / compMax * 100).toFixed(1); }
-                    var implClass = "seg impl" + (row.internal ? " internal" : "");
-                    return "<div class=\"bar-row\"><div class=\"bar-label\"><span class=\"bar-name\">" + esc(row.name) + "</span></div><span class=\"bar-value\">" + row.total.toLocaleString("en-US") + "</span><div class=\"bar-track stack-track\"><span class=\"" + implClass + "\" style=\"width:" + w(row.impl) + "%\"></span><span class=\"seg vend\" style=\"width:" + w(row.vend) + "%\"></span><span class=\"seg loc\" style=\"width:" + w(row.loc) + "%\"></span></div></div>";
-                }).join("") + "</div>";
-                var commonsComp = comp.filter(function (row) { return row.internal; })[0];
-                document.getElementById("eco-comp-caption").textContent = comp[0].name + " is the largest checkout once vendored libraries and locale files are counted, at " + comp[0].total.toLocaleString("en-US") + " lines. " + (commonsComp && commonsComp.vend === 0 && commonsComp.loc === 0 ? "commons has neither vendored lines nor locale lines." : "");
-                var fileRows = ranked("share_lines_ge_1000").map(function (row) {
-                    var tree = trees.filter(function (t) { return t.name === row.name; })[0];
-                    var half = metric(tree, "files_holding_half");
-                    return { name: row.name, value: row.value, text: row.text, internal: row.internal, note: half ? half.text + " files hold half" : "" };
+                var treeBySlug = {};
+                trees.forEach(function (tree) { treeBySlug[tree.slug] = tree; });
+                var machine = data.machine || { parts: [], trees: [] };
+                var machineRows = machine.trees.map(function (row) {
+                    var tree = treeBySlug[row.slug];
+                    if (!tree) return null;
+                    return { name: tree.name, slug: tree.slug, internal: tree.slug === internal, parts: row.parts || {}, largest: row.largest || {}, checkout: row.checkout || {}, rest: row.rest || [], support: row.support || {} };
+                }).filter(Boolean);
+                function segTotal(segs) {
+                    return segs.reduce(function (sum, seg) { return sum + seg.lines; }, 0);
+                }
+                function stack(rows, scaleOf) {
+                    return "<div class=\"chart\">" + rows.map(function (row) {
+                        var total = segTotal(row.segs);
+                        var scale = scaleOf === "row" ? total : scaleOf;
+                        var bits = row.segs.filter(function (seg) { return seg.lines > 0; }).map(function (seg) {
+                            var width = scale ? seg.lines / scale * 100 : 0;
+                            return "<span class=\"seg " + seg.cls + "\" style=\"width:" + width.toFixed(1) + "%\" title=\"" + esc(seg.name + " " + seg.lines.toLocaleString("en-US")) + "\"></span>";
+                        }).join("");
+                        var note = row.note ? "<span class=\"bar-note\">" + esc(row.note) + "</span>" : "";
+                        var nameClass = "bar-name" + (row.internal ? " internal" : "");
+                        return "<div class=\"bar-row\"><div class=\"bar-label\"><span class=\"" + nameClass + "\">" + esc(row.name) + "</span>" + note + "</div><span class=\"bar-value\">" + esc(row.text) + "</span><div class=\"bar-track stack-track\">" + bits + "</div></div>";
+                    }).join("") + "</div>";
+                }
+                var partRows = machineRows.map(function (row) {
+                    var segs = machine.parts.map(function (part) {
+                        return { name: part.name, id: part.id, cls: part.id, lines: row.parts[part.id] || 0 };
+                    });
+                    return { name: row.name, internal: row.internal, segs: segs, text: segTotal(segs).toLocaleString("en-US") };
                 });
-                document.getElementById("chart-files").innerHTML = bars(fileRows, 100);
-                var commonsFiles = fileRows.filter(function (row) { return row.internal; })[0];
-                var spread = fileRows.slice().sort(function (a, b) { return parseInt(b.note, 10) - parseInt(a.note, 10); })[0];
-                var halfCount = function (row) { return row && row.note ? row.note.replace(" files hold half", "") : ""; };
-                document.getElementById("eco-files-caption").textContent = (commonsFiles ? commonsFiles.name + " keeps " + commonsFiles.text + " of its program in files of 1,000 lines or more, and half of that program sits in " + halfCount(commonsFiles) + " files." : "") + (spread ? " " + spread.name + " spreads half of its program over " + halfCount(spread) + " files." : "");
+                document.getElementById("chart-machine").innerHTML = stack(partRows, "row");
+                function biggest(segs) {
+                    return segs.reduce(function (best, seg) { return seg.lines > best.lines ? seg : best; }, segs[0]);
+                }
+                var partFacts = partRows.map(function (row) {
+                    var total = segTotal(row.segs);
+                    var best = biggest(row.segs);
+                    return { name: row.name, internal: row.internal, part: best.name, id: best.id, share: total ? best.lines / total * 100 : 0 };
+                });
+                var ownPart = partFacts.filter(function (row) { return row.internal; })[0];
+                var restiest = partFacts.filter(function (row) { return row.id === "rest"; }).sort(function (a, b) { return b.share - a.share; })[0];
+                var machineCaption = ownPart ? ownPart.name + " puts " + shareText(ownPart.share) + " of its program in the " + ownPart.part.toLowerCase() + " part." : "";
+                if (restiest && (!ownPart || restiest.name !== ownPart.name)) machineCaption += " " + restiest.name + " keeps " + shareText(restiest.share) + " in the rest part.";
+                document.getElementById("eco-machine-caption").textContent = machineCaption;
+                var hits = [];
+                machineRows.forEach(function (row) {
+                    machine.parts.forEach(function (part) {
+                        var lines = row.parts[part.id] || 0;
+                        var file = row.largest[part.id];
+                        if (!lines || !file) return;
+                        hits.push({ name: row.name, part: part.name, file: file.file, lines: file.lines, partLines: lines, share: file.lines / lines * 100 });
+                    });
+                });
+                var heatMax = hits.reduce(function (max, hit) { return hit.share > max ? hit.share : max; }, 0);
+                var heatHead = "<div></div>" + machine.parts.map(function (part) {
+                    return "<div class=\"heat-head\">" + esc(part.name) + "</div>";
+                }).join("");
+                var heatBody = machineRows.map(function (row) {
+                    var nameClass = "heat-name" + (row.internal ? " internal" : "");
+                    var cells = machine.parts.map(function (part) {
+                        var lines = row.parts[part.id] || 0;
+                        var file = row.largest[part.id];
+                        if (!lines || !file) return "<div class=\"heat-cell empty\" title=\"Not split out\">—</div>";
+                        var share = file.lines / lines * 100;
+                        var strong = heatMax && share / heatMax >= 0.62 ? " strong" : "";
+                        var alpha = heatMax ? (share / heatMax).toFixed(3) : "0";
+                        var title = file.file + " · " + file.lines.toLocaleString("en-US") + " of " + lines.toLocaleString("en-US");
+                        return "<div class=\"heat-cell" + strong + "\" style=\"--a:" + alpha + "\" title=\"" + esc(title) + "\">" + shareText(share) + "</div>";
+                    }).join("");
+                    return "<div class=\"" + nameClass + "\">" + esc(row.name) + "</div>" + cells;
+                }).join("");
+                document.getElementById("chart-heat").innerHTML = "<div class=\"heat-scroll\" tabindex=\"0\"><div class=\"heat\">" + heatHead + heatBody + "</div></div>";
+                hits.sort(function (a, b) { return b.share - a.share; });
+                var heatCaption = "";
+                if (hits[0]) heatCaption = hits[0].name + " " + hits[0].file + " is " + shareText(hits[0].share) + " of the " + hits[0].part.toLowerCase() + " part.";
+                if (hits[1]) heatCaption += " " + hits[1].name + " " + hits[1].file + " is " + shareText(hits[1].share) + " of the " + hits[1].part.toLowerCase() + " part.";
+                document.getElementById("eco-heat-caption").textContent = heatCaption;
+                var checkoutKinds = [
+                    { id: "program", name: "Program", cls: "program" },
+                    { id: "tests", name: "Tests", cls: "tests" },
+                    { id: "tooling", name: "Tooling", cls: "tool" },
+                    { id: "vendored", name: "Vendored", cls: "vend" },
+                    { id: "locale", name: "Locale", cls: "loc" }
+                ];
+                var comp = machineRows.map(function (row) {
+                    var segs = checkoutKinds.map(function (kind) {
+                        return { name: kind.name, cls: kind.cls, lines: row.checkout[kind.id] || 0 };
+                    });
+                    return { name: row.name, internal: row.internal, segs: segs, checkout: row.checkout, total: segTotal(segs), text: segTotal(segs).toLocaleString("en-US") };
+                }).sort(function (a, b) { return b.total - a.total; });
+                document.getElementById("chart-comp").innerHTML = comp.length ? stack(comp, comp[0].total) : "";
+                var commonsComp = comp.filter(function (row) { return row.internal; })[0];
+                var compCaption = comp.length ? comp[0].name + " is the largest checkout, at " + comp[0].total.toLocaleString("en-US") + " lines." : "";
+                if (commonsComp && !commonsComp.checkout.vendored && !commonsComp.checkout.locale) {
+                    compCaption += " commons has " + (commonsComp.checkout.tests || 0).toLocaleString("en-US") + " test lines and " + (commonsComp.checkout.tooling || 0).toLocaleString("en-US") + " tooling lines, and neither vendored lines nor locale lines.";
+                }
+                document.getElementById("eco-comp-caption").textContent = compCaption;
+                var restRows = machineRows.map(function (row) {
+                    var segs = row.rest.map(function (seg, i) {
+                        return { name: seg.name, cls: "r" + (i + 1), lines: seg.lines };
+                    });
+                    var note = segs.filter(function (seg) { return seg.lines > 0; }).map(function (seg) {
+                        return seg.name + " " + seg.lines.toLocaleString("en-US");
+                    }).join(" · ");
+                    return { name: row.name, internal: row.internal, segs: segs, note: note, text: segTotal(segs).toLocaleString("en-US") };
+                });
+                document.getElementById("chart-rest").innerHTML = stack(restRows, "row");
+                var restFacts = restRows.map(function (row) {
+                    var total = segTotal(row.segs);
+                    var best = biggest(row.segs);
+                    return { name: row.name, internal: row.internal, seg: best.name, share: total ? best.lines / total * 100 : 0 };
+                }).sort(function (a, b) { return b.share - a.share; });
+                function named(name) { return name + (name.slice(-1).toLowerCase() === "s" ? "'" : "'s"); }
+                var restCaption = restFacts.length ? named(restFacts[0].name) + " largest rest piece is " + restFacts[0].seg + ", " + shareText(restFacts[0].share) + " of that segment." : "";
+                var ownRest = restFacts.filter(function (row) { return row.internal; })[0];
+                if (ownRest && restFacts[0] && ownRest.name !== restFacts[0].name) restCaption += " " + named(ownRest.name) + " largest rest piece is " + ownRest.seg + ", " + shareText(ownRest.share) + " of that segment.";
+                document.getElementById("eco-rest-caption").textContent = restCaption;
+                function badgeTitle(job, item) {
+                    if (item.state === "separate") return job.name + " is a separate module. It is not in the program line count.";
+                    var lines = (item.lines || 0).toLocaleString("en-US") + " lines";
+                    return item.place && item.place !== job.name ? lines + ", inside " + item.place + "." : lines + " in this cut.";
+                }
+                function badges(support) {
+                    return (machine.jobs || []).map(function (job) {
+                        var item = support[job.id];
+                        if (!item) return "";
+                        var cls = "eco-badge" + (item.state === "separate" ? " separate" : " program");
+                        var label = job.name + (item.state === "separate" ? " · separate" : "");
+                        return "<span class=\"" + cls + "\" title=\"" + esc(badgeTitle(job, item)) + "\">" + esc(label) + "</span>";
+                    }).join("");
+                }
+                document.getElementById("chart-support").innerHTML = machineRows.map(function (row) {
+                    var nameClass = "bar-name" + (row.internal ? " internal" : "");
+                    return "<div class=\"support-row\"><span class=\"" + nameClass + "\">" + esc(row.name) + "</span><span class=\"eco-badges\">" + badges(row.support) + "</span></div>";
+                }).join("");
+                if (document.querySelectorAll) {
+                    document.querySelectorAll("[data-slug]").forEach(function (item) {
+                        var row = machineRows.filter(function (candidate) { return candidate.slug === item.getAttribute("data-slug"); })[0];
+                        var slot = item.querySelector(".eco-badges");
+                        if (row && slot) slot.innerHTML = badges(row.support);
+                    });
+                }
                 document.getElementById("eco-size-caption").textContent = sizeRows[0].name + " is the largest program, at " + sizeRows[0].text + " lines. Implementation minus tooling. " + sizeRows[sizeRows.length - 1].name + " is the smallest, at " + sizeRows[sizeRows.length - 1].text + ".";
                 document.getElementById("eco-test-caption").textContent = testRows[0].name + " has " + testRows[0].text + " test lines for each implementation line. " + testRows[testRows.length - 1].name + " has " + testRows[testRows.length - 1].text + ".";
                 document.getElementById("eco-test-note").textContent = "A Rust file named *_test.rs or *_tests.rs counts as tests. Lines inside a #[cfg(test)] item count as tests.";
@@ -887,7 +1097,7 @@
                 document.getElementById("eco-history").innerHTML = (gov.history || []).map(function (item) {
                     return "<article class=\"eco-finding\"><h4>" + esc(item.name) + "</h4><p>" + esc(item.text) + "</p><p class=\"eco-meta\">" + esc(item.basis) + "</p></article>";
                 }).join("");
-                document.getElementById("eco-lead").textContent = sizeRows[0].name + " has the largest program, at " + sizeRows[0].text + " lines. Implementation minus tooling.";
+                document.getElementById("eco-lead").textContent = machineCaption || (sizeRows[0].name + " has the largest program, at " + sizeRows[0].text + " lines.");
                 document.getElementById("eco-omitted").textContent = data.omitted || "";
             })
             .catch(function () {
