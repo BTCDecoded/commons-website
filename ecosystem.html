@@ -926,16 +926,27 @@
         .eco-dock-assure { margin: 0; }
         .eco-dock-assure > figcaption { color: var(--white); font-weight: 600; margin: 0 0 0.35rem; }
         .eco-dock-assure .ch-svg { width: 100%; height: auto; }
-        .eco-dock-charts { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 1rem; }
+        .eco-dock-charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.65rem; margin: 0; }
         .eco-dock-charts[hidden],
         .eco-dock-chart[hidden],
         .eco-dock-graphs[hidden],
-        .eco-dock-matrix[hidden] { display: none !important; }
-        .eco-dock-charts button { padding: 0.3rem 0.7rem; cursor: pointer; }
-        .eco-dock-charts button[aria-pressed="true"] { border-color: var(--orange); color: var(--orange); }
+        .eco-dock-matrix[hidden],
+        .eco-dock.is-compare .eco-dock-charts,
+        .eco-dock.is-compare .eco-dock-chart { display: none !important; }
+        .eco-dock-charts button { padding: 0.55rem 0.7rem; border: 1px solid #2e2e34; border-radius: 10px; background: #161618; }
+        .eco-dock-charts button[aria-pressed="true"] { border-color: var(--orange); color: var(--orange); background: #1d1d21; }
         .eco-dock-k { margin: 1.15rem 0 0.4rem; color: #c4c4cc; font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; }
-        .eco-dock-chart { margin-top: 0.75rem; }
-        .eco-dock-chart > * { max-width: 52rem; }
+        .eco-dock-chart { margin: 0; }
+        .eco-dock-chart > .ch { margin: 0; padding: 0.85rem 0.85rem 0.7rem; border: 1px solid #2e2e34; border-radius: 10px; background: #161618; max-width: none; }
+        .eco-dock-chart .ch-head { color: #c4c4cc; font-size: 0.95rem; font-weight: 400; line-height: 1.45; }
+        .eco-dock-chart .ch-svg { width: 100%; max-width: 100%; height: auto; }
+        .eco-dock-chart .eco-fv { grid-template-columns: repeat(auto-fit, minmax(min(100%, 7.2rem), 1fr)); gap: 0.5rem; }
+        .eco-dock-chart .eco-fv li { display: flex; flex-direction: column; padding: 0.55rem 0.7rem; border: 1px solid #3a3a42; border-radius: 8px; background: #1d1d21; }
+        .eco-dock-chart .eco-fv .lbl { order: -1; margin: 0; color: #c4c4cc; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; }
+        .eco-dock-chart .eco-fv b { order: 0; margin-top: 0.12rem; font-size: 1rem; font-weight: 400; color: var(--white); }
+        .eco-dock-chart .eco-fv .proof b { color: var(--orange); }
+        .eco-dock-chart .ch-more > summary,
+        .eco-dock-chart .eco-notes > summary { display: flex; align-items: center; min-height: 44px; color: #c4c4cc; font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; }
         .eco-dock-graphs { margin-bottom: 1.25rem; }
         .eco-dock-chartone { max-width: 720px; margin: 0 auto 1.25rem; }
         .eco-dock-chartone .ch-svg { width: 100%; height: auto; max-width: none; }
@@ -1029,10 +1040,7 @@
         }
         @media (min-width: 1100px) {
             .eco-dock-panes,
-            .eco-dock-graphs,
-            .eco-dock-charts,
-            .eco-dock-chart { width: min(100%, 96rem); margin-left: auto; margin-right: auto; }
-            .eco-dock-chart > * { max-width: none; }
+            .eco-dock-graphs { width: min(100%, 96rem); margin-left: auto; margin-right: auto; }
             .eco-dock:not(.is-compare) .eco-counts { grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr); column-gap: 1.25rem; }
         }
         .eco-sheet-main { min-width: 0; }
@@ -1636,7 +1644,7 @@
             var dock = document.createElement("dialog");
             dock.className = "eco-dock";
             dock.setAttribute("aria-labelledby", "eco-dock-title");
-            dock.innerHTML = "<div class=\"eco-dock-bar\"><p class=\"eco-dock-title\" id=\"eco-dock-title\"></p><div class=\"eco-dock-tools\"><div class=\"eco-dock-compare\"><button type=\"button\" class=\"eco-dock-pick\" aria-haspopup=\"listbox\" aria-expanded=\"false\" aria-controls=\"eco-dock-picks\">Compare with…</button><ul id=\"eco-dock-picks\" class=\"eco-dock-picks\" role=\"listbox\" hidden></ul></div><button type=\"button\" class=\"eco-dock-clear\" hidden>Stop comparing</button><button type=\"button\" class=\"eco-dock-x\">Close</button></div></div><div class=\"eco-dock-graphs\" hidden></div><div class=\"eco-dock-panes\"><div class=\"eco-dock-card\"></div><div class=\"eco-dock-matrix\" hidden></div></div><div class=\"eco-dock-charts\" hidden><button type=\"button\" data-chart=\"fig-crates\">Layer diagram</button><button type=\"button\" data-chart=\"fig-spec-proof\">Proof counts</button></div><div class=\"eco-dock-chart\" hidden></div>";
+            dock.innerHTML = "<div class=\"eco-dock-bar\"><p class=\"eco-dock-title\" id=\"eco-dock-title\"></p><div class=\"eco-dock-tools\"><div class=\"eco-dock-compare\"><button type=\"button\" class=\"eco-dock-pick\" aria-haspopup=\"listbox\" aria-expanded=\"false\" aria-controls=\"eco-dock-picks\">Compare with…</button><ul id=\"eco-dock-picks\" class=\"eco-dock-picks\" role=\"listbox\" hidden></ul></div><button type=\"button\" class=\"eco-dock-clear\" hidden>Stop comparing</button><button type=\"button\" class=\"eco-dock-x\">Close</button></div></div><div class=\"eco-dock-graphs\" hidden></div><div class=\"eco-dock-panes\"><div class=\"eco-dock-card\"></div><div class=\"eco-dock-matrix\" hidden></div><div class=\"eco-dock-charts\" hidden><button type=\"button\" data-chart=\"fig-crates\">Layer diagram</button><button type=\"button\" data-chart=\"fig-spec-proof\">Proof counts</button></div><div class=\"eco-dock-chart\" hidden></div></div>";
             document.body.appendChild(dock);
             var title = dock.querySelector(".eco-dock-title");
             var pickBtn = dock.querySelector(".eco-dock-pick");
