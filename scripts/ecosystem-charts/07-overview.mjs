@@ -15,7 +15,7 @@ export default {
             wide: 760,
             narrow: 360,
             headline: line.headline,
-            lead: "Select an implementation to open its card.",
+            lead: "Select an implementation to open it at the bottom right. A second selection compares the two.",
             caption: line.caption,
             measures: line.measures,
             takeaway: line.takeaway,
