@@ -3,7 +3,7 @@
 // data/implementations.json (governance.history) that states it; the render
 // fails if the sentence is gone. Implementations with no derivation stated in
 // the data are grouped by primary language from data/stack.json.
-import { figure, lineage } from "../charts.mjs";
+import { lineage } from "../charts.mjs";
 
 const EDGES = [
     { from: "knots", to: "knots-legacy", slug: "knots-legacy", quote: "Knots Legacy continues Bitcoin Knots v29.3.knots20260507" },
@@ -14,9 +14,7 @@ const EDGES = [
 // Core's source layout is stated in data/implementations.json `class`.
 const LAYOUT_QUOTE = "Knots Legacy, Bit-Block, and Bitcoin Roots because those checkouts use Core's src layout";
 
-export default {
-    slot: "chart-lineage",
-    build: function (ctx) {
+export function lineageSpec(ctx) {
         const hist = {};
         ctx.data.governance.history.forEach(function (h) { hist[h.slug] = h.text; });
         EDGES.forEach(function (e) { if ((hist[e.slug] || "").indexOf(e.quote) < 0) throw new Error("lineage: data no longer states: " + e.quote); });
@@ -30,7 +28,7 @@ export default {
         const rows = ctx.stack.rows;
         const derived = { "bitcoin-core": 1, "knots-legacy": 1, "bit-block": 1, "bitcoin-roots": 1 };
         const nodes = { knots: { label: "Bitcoin Knots", cls: "muted" } };
-        rows.forEach(function (r) { nodes[r.slug] = { label: r.name, cls: r.slug === internal ? "hl" : "" }; });
+        rows.forEach(function (r) { nodes[r.slug] = { label: r.name, cls: r.slug === internal ? "hl" : "", href: "#card-" + r.slug }; });
         const separate = rows.filter(function (r) { return !derived[r.slug]; });
         const langs = [];
         const byLang = {};
@@ -49,7 +47,7 @@ export default {
             if (e.length) return [r.name, "Core family", e.map(function (x) { return x.quote + (x.dashed ? " (indirect)" : ""); }).join("; "), r.languages];
             return [r.name, "Separate codebase", "No derivation stated in the data", r.languages];
         });
-        return figure({
+        return {
             id: "fig-lineage",
             headline: separate.length + " of " + rows.length + " implementations are separate codebases. The other " + (rows.length - separate.length) + " are Bitcoin Core and clients built from it.",
             caption: "Arrows show derivation as each project's history on this page states it; the dashed arrow is Bitcoin Roots carrying Knots policy features onto Core. Bitcoin Knots itself is not a row on this page" + (knotsUp ? "; its arrow from Core cites the Knots README" : "") + ". Separate codebases are grouped by primary language.",
@@ -66,6 +64,10 @@ export default {
             notes: ["&ldquo;Separate&rdquo; means the data on this page states no derivation from Core or Knots. rbitcoin carries Bitcoin Core as a git submodule for tests (stack table); that is not a derivation."],
             sources: (knotsUp ? knotsUp.sources.slice(0, 1) : []).concat([{ label: "data/implementations.json (history, class, upstream)" }]).concat([ { label: "data/stack.json (languages)" }]),
             table: { caption: "Lineage of each implementation", columns: ["Implementation", "Group", "Stated relationship", "Languages"], rows: tableRows.concat(knotsUp ? [[knotsUp.name + " (not a row)", "Core family", knotsUp.quote + " (" + knotsUp.sources[0].label + ")", "not measured"]] : []) }
-        });
-    }
+        };
+}
+
+export default {
+    slot: "chart-lineage",
+    build: function () { return ""; }
 };

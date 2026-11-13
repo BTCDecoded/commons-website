@@ -1,11 +1,9 @@
 // Field map: independence (columns) by assurance (up). Each dot and label is
 // a link to that implementation's card. No script. BLVM's score is only on
 // its card, so it is omitted from this chart and from the hidden table.
-import { figure, fieldMap, median } from "../charts.mjs";
+import { fieldMap, median } from "../charts.mjs";
 
-export default {
-    slot: "chart-fieldmap",
-    build: function (ctx) {
+export function fieldmapSpec(ctx) {
         const rows = ctx.model.rows;
         const cols = [{ id: "lineage", label: "Core lineage" }, { id: "own", label: "Own codebase" }];
         const med = median(rows.map(function (r) { return r.assurance.pct; }));
@@ -19,7 +17,7 @@ export default {
         const ownRows = rows.filter(function (r) { return r.lineage.cls === "own"; });
         const below = ownRows.filter(function (r) { return r.assurance.pct < core.assurance.pct; }).length;
         const medText = Number.isInteger(med) ? String(med) : String(med);
-        return figure({
+        return {
             id: "fig-fieldmap",
             headline: (function () { const above = ownRows.filter(function (r) { return r.assurance.pct > med; }).length; return "The median assurance score is " + medText + "%. The Core lineage sits between " + lin[0] + "% and " + lin[1] + "%; " + above + " of " + ownRows.length + " own codebases score above the median."; })(),
             caption: "Left column: Bitcoin Core and its forks. Right column: separate codebases, not including BLVM. Height is the assurance score as a share of possible points. Select a name to open its card. BLVM's score is on its card.",
@@ -40,6 +38,10 @@ export default {
             chart: fieldMap(cols, pts, { yLabel: "Assurance, share of possible points", median: med }),
             sources: [{ label: "data/verification.json" }, { label: "data/implementations.json (history)" }],
             table: { caption: "Field map", columns: ["Implementation", "Independence", "Assurance"], rows: pts.map(function (p) { return [p.label, p.col === "own" ? "Own codebase" : "Core lineage", p.valueText]; }) }
-        });
-    }
+        };
+}
+
+export default {
+    slot: "chart-fieldmap",
+    build: function () { return ""; }
 };
