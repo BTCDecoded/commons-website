@@ -87,13 +87,13 @@
       "shallow": false,
       "values": {
         "implementation_code": {
-          "value": 308732,
-          "text": "308,732",
+          "value": 308758,
+          "text": "308,758",
           "status": "measured"
         },
         "program_code": {
-          "value": 230302,
-          "text": "230,302",
+          "value": 230328,
+          "text": "230,328",
           "status": "measured"
         },
         "tooling_code": {
@@ -105,7 +105,7 @@
           "value": 8.7,
           "text": "8.7%",
           "status": "measured",
-          "note": "Rules side is governance d647d3e099b1 (39 code lines) and blvm-commons 94ced503f451 (29,522 code lines). Same counter as the size row: tokei code lines in programming languages, tests out. The governance repository's written schedule is YAML and is outside that counter (3,188 YAML lines). The share is 29,561 / (308,732 + 29,561). The two repositories are not inside the 308,732 implementation cell. Left mixed is 0.0% because every counted line is on one side of the cut."
+          "note": "Rules side is governance d647d3e099b1 (39 code lines) and blvm-commons 94ced503f451 (29,522 code lines). Same counter as the size row: tokei code lines in programming languages, tests out. The governance repository's written schedule is YAML and is outside that counter (3,188 YAML lines). The share is 29,561 / (308,758 + 29,561). The two repositories are not inside the 308,758 implementation cell. Left mixed is 0.0% because every counted line is on one side of the cut."
         },
         "mixed_share": {
           "value": 0.0,

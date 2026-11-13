@@ -62,7 +62,7 @@
           "what": "Conformance against shared test vectors, such as Bitcoin Core's JSON vectors.",
           "why": "Shared vectors are a common check that two implementations accept and reject the same cases.",
           "how": "Public-repository reading, with a source link. This is a yes/partial/not-found status, not the file count in the metrics table.",
-          "caveats": "\"Yes\" does not mean every vector file is run, or run to completion. BLVM's cell notes that script_tests runs as a subset. libbitcoin and rbitcoin are partial. Hornet is not found.",
+          "caveats": "\"Yes\" does not mean every vector file is run, or run to completion. BLVM runs every committed script and transaction row, and skips a row only for a named reason. libbitcoin and rbitcoin are partial. Hornet is not found.",
           "link": "#eco-glance"
         },
         {
