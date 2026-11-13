@@ -36,7 +36,7 @@
   <!-- Column headers -->
   <text x="200" y="70" class="label" font-weight="bold">Core & Knots Risk</text>
   <text x="400" y="70" class="label" font-weight="bold">Commons Protection</text>
-  <text x="600" y="70" class="label" font-weight="bold">Risk Reduction</text>
+  <text x="600" y="70" class="label" font-weight="bold">Not measured</text>
   <text x="750" y="70" class="label" font-weight="bold">Not measured</text>
   
   <!-- Row labels -->
@@ -87,22 +87,22 @@
   
   <!-- Risk Reduction cells -->
   <rect x="550" y="100" width="100" height="30" class="heatmap-cell risk-medium"/>
-  <text x="600" y="118" class="value-text">80%</text>
+  <text x="600" y="118" class="value-text">n/a</text>
   
   <rect x="550" y="150" width="100" height="30" class="heatmap-cell risk-low"/>
-  <text x="600" y="168" class="value-text">90%</text>
+  <text x="600" y="168" class="value-text">n/a</text>
   
   <rect x="550" y="200" width="100" height="30" class="heatmap-cell risk-medium"/>
-  <text x="600" y="218" class="value-text">85%</text>
+  <text x="600" y="218" class="value-text">n/a</text>
   
   <rect x="550" y="250" width="100" height="30" class="heatmap-cell risk-low"/>
-  <text x="600" y="268" class="value-text">80%</text>
+  <text x="600" y="268" class="value-text">n/a</text>
   
   <rect x="550" y="300" width="100" height="30" class="heatmap-cell risk-medium"/>
-  <text x="600" y="318" class="value-text">75%</text>
+  <text x="600" y="318" class="value-text">n/a</text>
   
   <rect x="550" y="350" width="100" height="30" class="heatmap-cell risk-medium"/>
-  <text x="600" y="368" class="value-text">60%</text>
+  <text x="600" y="368" class="value-text">n/a</text>
   
   <!-- Improvement indicators -->
   <rect x="720" y="100" width="60" height="30" class="heatmap-cell risk-low"/>
