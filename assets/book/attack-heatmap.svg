@@ -37,7 +37,7 @@
   <text x="200" y="70" class="label" font-weight="bold">Core & Knots Risk</text>
   <text x="400" y="70" class="label" font-weight="bold">Commons Protection</text>
   <text x="600" y="70" class="label" font-weight="bold">Risk Reduction</text>
-  <text x="750" y="70" class="label" font-weight="bold">Improvement</text>
+  <text x="750" y="70" class="label" font-weight="bold">Not measured</text>
   
   <!-- Row labels -->
   <text x="50" y="110" class="label">Social Engineering</text>
@@ -106,22 +106,22 @@
   
   <!-- Improvement indicators -->
   <rect x="720" y="100" width="60" height="30" class="heatmap-cell risk-low"/>
-  <text x="750" y="118" class="value-text">6x</text>
+  <text x="750" y="118" class="value-text">n/a</text>
   
   <rect x="720" y="150" width="60" height="30" class="heatmap-cell risk-low"/>
-  <text x="750" y="168" class="value-text">10x</text>
+  <text x="750" y="168" class="value-text">n/a</text>
   
   <rect x="720" y="200" width="60" height="30" class="heatmap-cell risk-low"/>
-  <text x="750" y="218" class="value-text">7x</text>
+  <text x="750" y="218" class="value-text">n/a</text>
   
   <rect x="720" y="250" width="60" height="30" class="heatmap-cell risk-low"/>
-  <text x="750" y="268" class="value-text">5x</text>
+  <text x="750" y="268" class="value-text">n/a</text>
   
   <rect x="720" y="300" width="60" height="30" class="heatmap-cell risk-medium"/>
-  <text x="750" y="318" class="value-text">4x</text>
+  <text x="750" y="318" class="value-text">n/a</text>
   
   <rect x="720" y="350" width="60" height="30" class="heatmap-cell risk-medium"/>
-  <text x="750" y="368" class="value-text">3x</text>
+  <text x="750" y="368" class="value-text">n/a</text>
   
   <!-- Legend -->
   <rect x="100" y="400" width="700" height="80" fill="white" stroke="#ddd" stroke-width="1"/>
@@ -143,5 +143,5 @@
   <text x="560" y="448" class="legend-text">No Risk</text>
   
   <!-- Summary -->
-  <text x="450" y="470" class="legend-text" text-anchor="middle" font-weight="bold">Overall Security Improvement: 6x Harder to Capture</text>
+  <text x="450" y="470" class="legend-text" text-anchor="middle" font-weight="bold">No measured capture multiple is published</text>
 </svg>

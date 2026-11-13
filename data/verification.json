@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "as_of": "2026-11-12",
-  "note": "Statuses come from each project's public repository as of 2026-11-12. \u201cNot found\u201d means no public source turned up; it does not mean the project lacks it.",
+  "note": "Statuses come from each project's public repository as of 2026-11-12. “Not found” means no public source turned up; it does not mean the project lacks it.",
   "statuses": {
     "yes": "Found in the repository",
     "partial": "Found for part of the scope",
@@ -97,8 +97,51 @@
         },
         "formal_verification": {
           "status": "partial",
-          "text": "Z3 proves 13 functions from the body. Of 274 Orange Paper sentences, 1 is proved in Rust and Lean, 16 in Lean only, 257 not yet",
-          "source": "https://github.com/BTCDecoded/blvm-spec-lock/blob/bddfae4ac8063f78bf654d7a2245c810d89f98d1/README.md"
+          "text": "Body proofs: 13 functions. The check passes, and two edits of the body make it fail. Tool mutation list: 34 of 34, a different list. Older written mutation list: 93 of 224, not this pass. spec_locked attributes: 281. That is not a passing-check count and not a proof. Of 275 Orange Paper sentences, 1 is proved in Rust and Lean, 15 in Lean only, 259 not yet. 1 of the not-yet sentences is spec_disputed (theorem 6.2.3 real series) and is not a Lean proof. These lists overlap. They are not a sum",
+          "source": "https://github.com/BTCDecoded/blvm-spec-lock/blob/bddfae4ac8063f78bf654d7a2245c810d89f98d1/README.md",
+          "levels": [
+            {
+              "id": "body_proof",
+              "label": "Proved from the function body",
+              "count": 13,
+              "denominator": null,
+              "counts_as_proof": true,
+              "note": "The check passes on the code as written, and two edits of the body make it fail. Not added to the lists below."
+            },
+            {
+              "id": "tool_mutation_list",
+              "label": "Tool mutation list",
+              "count": 34,
+              "denominator": 34,
+              "counts_as_proof": true,
+              "note": "docs/MUTATION_COVERAGE.md. A different list from the body-proof pass. Every row on that list is locked."
+            },
+            {
+              "id": "written_mutation_list",
+              "label": "Older written mutation list",
+              "count": 93,
+              "denominator": 224,
+              "counts_as_proof": false,
+              "note": "blvm-consensus docs/VERIFICATION.md. That file says this is not the current body-proof pass."
+            },
+            {
+              "id": "spec_locked_attributes",
+              "label": "spec_locked attributes",
+              "count": 281,
+              "denominator": null,
+              "counts_as_proof": false,
+              "note": "Attribute count. Not a count of passing contract checks. A passing contract check is not a proof."
+            }
+          ],
+          "sentences": {
+            "total": 275,
+            "both": 1,
+            "lean": 15,
+            "disputed": 1,
+            "unsupported": 258,
+            "notYet": 259
+          },
+          "evidence": "data/verification-evidence.json"
         },
         "differential": {
           "status": "yes",
