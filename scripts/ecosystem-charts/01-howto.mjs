@@ -36,7 +36,7 @@ export default {
             gl += "</dl>";
         });
         const st = ctx.model.stability;
-        gl += "<h4 class=\"eco-gloss-g\">Release stability</h4><dl class=\"eco-gloss\"><dt>Release stability checklist</dt><dd><b>What:</b> a checklist of what a release line needs to count as stable, one segment per criterion: met, not met, or not measured. <b>Why:</b> a node that changes under you, or has no release to pin, can drift from the network. <b>How:</b> " + esc(st.rule) + " " + esc(st.note) + " <a href=\"#eco-glance\">Open the table<span class=\"visually-hidden\">: Stability column</span></a></dd></dl>";
+        gl += "<h4 class=\"eco-gloss-g\">Release stability</h4><dl class=\"eco-gloss\"><dt>Release stability checklist</dt><dd><b>What:</b> a checklist of what a release line needs to count as stable, one segment per criterion: met, not met, or not measured. <b>Why:</b> a node that changes under you, or has no release to pin, can drift from the network. <b>How:</b> " + esc(st.rule) + " " + esc(st.note) + " <a href=\"#stability\">Open the grid<span class=\"visually-hidden\">: release stability</span></a></dd></dl>";
         // Research's how-to-read lines, verbatim except where a line states a
         // count the data gives (tree coverage), which is computed here.
         const noTree = ctx.model.rows.filter(function (r) { return r.size.value === null; }).map(function (r) { return r.name; });
