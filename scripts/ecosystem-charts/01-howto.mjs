@@ -45,7 +45,8 @@ export default {
         const lines = G.how_to_read.map(function (l) {
             if (/^Size and composition tables cover/.test(l)) return "Size and composition tables cover " + nTrees + " trees. " + list(noTree) + " appear in the other tables but have no size row.";
             // Partial scores 1 on the radials; only not-measured and n/a are gaps.
-            if (/^Assurance radials score/.test(l)) return l.replace("A not-measured, partial, or n/a cell", "A not-measured or n/a cell");
+            if (/^The page is organized on three axes/.test(l)) return "Code-health figures are sizes and counts, not grades.";
+            if (/^Assurance radials score/.test(l)) return l.replace(" That rule is printed on the page.", "").replace("A not-measured, partial, or n/a cell", "A not-measured or n/a cell");
             return l;
         });
         function keyItem(glyph, text, cls) {
@@ -62,7 +63,6 @@ export default {
             keyItem("\u25CF", "orange: BLVM", "eco-key-hl") +
             keyItem("\u25A0", "blue square: Bitcoin Core", "eco-key-core") +
             keyItem("\u25B2", "yellow dashed: median of all " + ctx.model.rows.length, "eco-key-med") +
-            keyItem("\u25C6 \u25C7", "own codebase, Core lineage") +
             "</ul>" +
             "<details class=\"eco-howto ch-more\" id=\"howto\"><summary>How to read this page</summary>" +
             "<ul class=\"eco-howto-lines\">" + lines.map(function (l) { return "<li>" + md(l) + "</li>"; }).join("") + "</ul>" +
