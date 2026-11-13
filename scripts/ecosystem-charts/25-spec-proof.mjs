@@ -40,7 +40,7 @@ export default {
         const tool = level(levels, "tool_mutation_list");
         const written = level(levels, "written_mutation_list");
         const tiles = [
-            { n: String(attrs.count), label: "spec-locked", cls: "", tip: "Functions marked spec_locked. The spec-lock prover and Z3 check this surface. An annotation count, not a proof count." },
+            { n: String(attrs.count), label: "spec-locked", cls: "", tip: "Functions marked spec_locked. The spec-lock prover and Z3 check this surface." },
             { n: String(body.count), label: "proved from the body", cls: "proof", tip: "This pass. The check passes on the written body, and two edits of that body make it fail." }
         ];
         const face = "<ul class=\"eco-fv\">" + tiles.map(function (t) {
@@ -51,9 +51,9 @@ export default {
             body.count + " proved from the body. " + body.note.replace(" Not added to the lists below.", "")
         ];
         if (reasons) {
-            lines.push(leanProved + " Lean sentence proofs (" + sentences.both + " also in Rust, " + sentences.lean + " Lean only). " + reasons.parse_failed + " of " + sentences.total + " inventory rows are prose that cannot be turned into a check, and " + reasons.model_unwritten + " have no Lean model yet. Lean does not check the Rust.");
+            lines.push(leanProved + " Lean sentence proofs (" + sentences.both + " also in Rust, " + sentences.lean + " Lean only). Lean checks those Orange Paper sentences. " + reasons.parse_failed + " of " + sentences.total + " inventory rows are prose, and " + reasons.model_unwritten + " have no Lean model yet.");
         } else {
-            lines.push(leanProved + " Lean sentence proofs in an inventory of " + sentences.total + ". Lean does not check the Rust.");
+            lines.push(leanProved + " Lean sentence proofs in an inventory of " + sentences.total + ". Lean checks those Orange Paper sentences.");
         }
         [tool, written].forEach(function (item) {
             if (item) lines.push(ratio(item) + ". " + item.label + ". " + item.note);

@@ -97,8 +97,8 @@
         },
         "formal_verification": {
           "status": "partial",
-          "text": "spec_locked attributes: 281. That is the spec-lock surface. It is not a passing-check count and not a proof. Body proofs: 13 functions. The spec-lock prover and Z3 pass on the written body, and two edits of the body make the check fail. Tool mutation list: 34 of 34, a different list. Older written mutation list: 93 of 224, not this pass. Of 275 Orange Paper sentences, 1 is proved in Rust and Lean, 15 in Lean only, 259 not yet. 211 of those rows are prose the inventory cannot turn into a check, and 45 have no Lean model yet. 1 row is spec_disputed (theorem 6.2.3 real series) and is not a Lean proof. The Lean count is not a coverage score for the spec-locked functions. These lists overlap. They are not a sum",
-          "source": "https://github.com/BTCDecoded/blvm-spec-lock/blob/a8793259d7240236ca040c504f66962a9193685d/README.md",
+          "text": "spec_locked attributes: 281. The spec-lock prover and Z3 check that surface. Body proofs: 13 functions. The spec-lock prover and Z3 pass on the written body, and two edits of the body make the check fail. Tool mutation list: 34 of 34, a different list. Older written mutation list: 93 of 224, not this pass. Of 275 Orange Paper sentences, 1 is proved in Rust and Lean, 15 in Lean only, 259 not yet. 119 of those rows are prose the inventory cannot turn into a check, and 137 have no Lean model yet. 1 row is spec_disputed (theorem 6.2.3 real series) and is not a Lean proof. The Lean inventory is a separate list. These lists stay separate",
+          "source": "https://github.com/BTCDecoded/blvm-spec-lock/blob/244470ccee9f864164cd8d63cd3a3113b1171413/README.md",
           "levels": [
             {
               "id": "body_proof",
@@ -130,7 +130,7 @@
               "count": 281,
               "denominator": null,
               "counts_as_proof": false,
-              "note": "Attribute count. Not a count of passing contract checks. A passing contract check is not a proof."
+              "note": "The spec-lock prover and Z3 check each annotated function's contract."
             }
           ],
           "sentences": {
@@ -141,8 +141,8 @@
             "unsupported": 258,
             "notYet": 259,
             "reasons": {
-              "parse_failed": 211,
-              "model_unwritten": 45,
+              "parse_failed": 119,
+              "model_unwritten": 137,
               "emitter_shape_missing": 1,
               "out_of_scope": 1,
               "spec_disputed": 1
