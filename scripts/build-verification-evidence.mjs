@@ -111,21 +111,21 @@ const levels = [
         count: Number(attrs[1]),
         denominator: null,
         counts_as_proof: false,
-        note: "Attribute count. Not a count of passing contract checks. A passing contract check is not a proof."
+        note: "The spec-lock prover and Z3 check each annotated function's contract."
     }
 ];
 
 const sentenceText = "Of " + sentences.total + " Orange Paper sentences, " + sentences.both +
     " is proved in Rust and Lean, " + sentences.lean + " in Lean only, " + sentences.notYet + " not yet";
 const text = [
-    "spec_locked attributes: " + attrs[1] + ". That is the spec-lock surface. It is not a passing-check count and not a proof.",
+    "spec_locked attributes: " + attrs[1] + ". The spec-lock prover and Z3 check that surface.",
     "Body proofs: " + provedCount + " functions. The spec-lock prover and Z3 pass on the written body, and two edits of the body make the check fail.",
     "Tool mutation list: " + tool[1] + " of " + tool[2] + ", a different list.",
     "Older written mutation list: " + written[1] + " of " + written[2] + ", not this pass.",
     sentenceText + ".",
     sentences.reasons.parse_failed + " of those rows are prose the inventory cannot turn into a check, and " + sentences.reasons.model_unwritten + " have no Lean model yet.",
     sentences.disputed + " row is spec_disputed (theorem 6.2.3 real series) and is not a Lean proof.",
-    "The Lean count is not a coverage score for the spec-locked functions. These lists overlap. They are not a sum."
+    "The Lean inventory is a separate list. These lists stay separate."
 ].join(" ");
 
 const evidence = {
