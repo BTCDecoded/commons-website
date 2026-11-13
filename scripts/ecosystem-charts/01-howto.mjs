@@ -48,18 +48,21 @@ export default {
             if (/^Assurance radials score/.test(l)) return l.replace("A not-measured, partial, or n/a cell", "A not-measured or n/a cell");
             return l;
         });
+        function keyItem(glyph, text, cls) {
+            return "<li><span class=\"eco-key-g" + (cls ? " " + cls : "") + "\" aria-hidden=\"true\">" + glyph + "</span><span class=\"eco-key-l\">" + text + "</span></li>";
+        }
         return "<ul class=\"eco-keys\" id=\"eco-key\" aria-label=\"Key\">" +
-            "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u25CF</span> yes, 2 points</li>" +
-            "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u25D0</span> partial, 1 point</li>" +
-            "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u25CB</span> not found, 0 points</li>" +
-            "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u2013</span> n/a, left out of the score</li>" +
-            "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u2571</span> grey hatching: not measured</li>" +
-            (Object.keys(pend).length ? "<li><span class=\"eco-key-g eco-key-med\" aria-hidden=\"true\">\u2571</span> yellow hatching: pending fix, not final</li>" : "") +
-            "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u2713 \u2715 ?</span> stability checklist: met, not met, not measured</li>" +
-            "<li><span class=\"eco-key-g eco-key-hl\" aria-hidden=\"true\">\u25CF</span> orange: BLVM</li>" +
-            "<li><span class=\"eco-key-g eco-key-core\" aria-hidden=\"true\">\u25A0</span> blue square: Bitcoin Core</li>" +
-            "<li><span class=\"eco-key-g eco-key-med\" aria-hidden=\"true\">\u25B2</span> yellow dashed: median of all " + ctx.model.rows.length + "</li>" +
-            "<li><span class=\"eco-key-g\" aria-hidden=\"true\">\u25C6 \u25C7</span> own codebase, Core lineage</li>" +
+            keyItem("\u25CF", "yes, 2 points") +
+            keyItem("\u25D0", "partial, 1 point") +
+            keyItem("\u25CB", "not found, 0 points") +
+            keyItem("\u2013", "n/a, left out of the score") +
+            keyItem("\u2571", "grey hatching: not measured") +
+            (Object.keys(pend).length ? keyItem("\u2571", "yellow hatching: pending fix, not final", "eco-key-med") : "") +
+            keyItem("\u2713 \u2715 ?", "stability checklist: met, not met, not measured") +
+            keyItem("\u25CF", "orange: BLVM", "eco-key-hl") +
+            keyItem("\u25A0", "blue square: Bitcoin Core", "eco-key-core") +
+            keyItem("\u25B2", "yellow dashed: median of all " + ctx.model.rows.length, "eco-key-med") +
+            keyItem("\u25C6 \u25C7", "own codebase, Core lineage") +
             "</ul>" +
             "<details class=\"eco-howto ch-more\" id=\"howto\"><summary>How to read this page</summary>" +
             "<ul class=\"eco-howto-lines\">" + lines.map(function (l) { return "<li>" + md(l) + "</li>"; }).join("") + "</ul>" +
