@@ -1,5 +1,5 @@
 // One card per implementation. The face is the charts: assurance radial,
-// code-health star, checkout bar, and the comparison bars. The same counts
+// code-health star, and the five-spoke comparison star. The same counts
 // as the tables open under Counts, in the same order on every card. A missing
 // count says "not measured" and is not drawn as zero. n/a stays out of the
 // assurance score. Fuzz targets listed in ctx.model.pending say "pending fix".
@@ -64,7 +64,7 @@ const HINT = {
     "Locale": "Translation files.",
     "Large files": "Share of program lines in files of 1,000 or more.",
     "Rules share": "Share on the rules side of that tree's own cut.",
-    "Own-team": "Optional modules named by that project.",
+    "Modules": "Optional modules named by that project.",
     "Independent": "Modules maintained outside the project.",
     "License": "The repository license file.",
     "Languages": "Languages with 5% or more of the code.",
@@ -129,14 +129,6 @@ function barRow(label, text, value, scale, cls, title) {
     var bar = value === null ? "" : "<span class=\"mini\" aria-hidden=\"true\"><span class=\"mini-fill" + (cls ? " " + cls : "") + "\" style=\"width:" + pct(value, scale) + "%\"></span></span>";
     return "<li title=\"" + esc(title || "") + "\"><span class=\"lbl\">" + esc(label) + "</span><span class=\"num\">" + esc(text) + "</span>" + bar + "</li>";
 }
-function checkoutBar(c, scale) {
-    if (!c) return "<p class=\"eco-card-miss\">Checkout not measured</p>";
-    var parts = [["program", "program", c.program, c.text.program], ["tests", "tests", c.tests, c.text.tests], ["tooling", "tool", c.tooling, c.text.tooling], ["vendored", "vend", c.vend, c.text.vend], ["locale", "loc", c.loc, c.text.loc]];
-    var title = parts.map(function (p) { return p[0] + " " + p[3]; }).join(", ");
-    var segs = parts.map(function (p) { return "<span class=\"mini-fill " + p[1] + "\" style=\"width:" + pct(p[2], scale) + "%\"></span>"; }).join("");
-    return "<p class=\"eco-card-chart\"><span class=\"lbl\">Checkout</span><span class=\"num\">" + c.total.toLocaleString("en-US") + "</span><span class=\"mini\" title=\"" + esc(title) + "\" aria-hidden=\"true\">" + segs + "</span></p>";
-}
-
 export default {
     slot: "chart-cards",
     build: function (ctx) {
@@ -145,13 +137,20 @@ export default {
         const pendFuzz = "fuzz_targets" in ctx.model.pending;
         const health = codeHealth(rows, ctx.model.pending);
         const checkouts = rows.map(function (r) { return checkoutOf(r, treeOf(ctx, r.slug)); });
-        const compMax = Math.max.apply(null, checkouts.map(function (c) { return c ? c.total : 0; })) || 1;
-        const programMax = Math.max.apply(null, rows.map(function (r) { var c = numCell(treeOf(ctx, r.slug), "program_code"); return c ? c.value : 0; })) || 1;
-        const testMax = Math.max.apply(null, rows.map(function (r) { var c = numCell(treeOf(ctx, r.slug), "test_per_implementation"); return c ? c.value : 0; })) || 1;
-        const ruleVals = rows.map(function (r) { return rulesReading(treeOf(ctx, r.slug)).value; }).filter(function (v) { return v !== null; });
-        const ruleMax = ruleVals.length ? Math.max.apply(null, ruleVals) : 1;
         const moduleMax = Math.max.apply(null, rows.map(function (r) { var c = metricNum(r.metrics, "plugin_own"); return c ? c.value : 0; })) || 1;
-        const legend = "<p class=\"chart-legend\"><span><i class=\"swatch program\"></i>program</span><span><i class=\"swatch tests\"></i>tests</span><span><i class=\"swatch tool\"></i>tooling</span><span><i class=\"swatch vend\"></i>vendored</span><span><i class=\"swatch loc\"></i>locale</span></p>";
+        function cellText(tree, id) { var n = numCell(tree, id); return n ? n.text : "not measured"; }
+        const cmpAxes = [
+            { short: "Checkout", get: function (c) { return c ? c.total : null; }, text: function (c) { return c ? c.total.toLocaleString("en-US") : "not measured"; } },
+            { short: "Program", get: function (c, tree) { var n = numCell(tree, "program_code"); return n ? n.value : null; }, text: function (c, tree) { return cellText(tree, "program_code"); } },
+            { short: "Large files", get: function (c, tree) { var n = numCell(tree, "share_lines_ge_1000"); return n ? n.value : null; }, text: function (c, tree) { return cellText(tree, "share_lines_ge_1000"); } },
+            { short: "Tests / line", get: function (c, tree) { var n = numCell(tree, "test_per_implementation"); return n ? n.value : null; }, text: function (c, tree) { return cellText(tree, "test_per_implementation"); } },
+            { short: "Rules share", get: function (c, tree) { return rulesReading(tree).value; }, text: function (c, tree) { return rulesReading(tree).text; } }
+        ].map(function (a) {
+            var vals = rows.map(function (r, i) { return a.get(checkouts[i], treeOf(ctx, r.slug)); }).filter(function (v) { return typeof v === "number"; });
+            var max = Math.max.apply(null, vals);
+            if (!(max > 0)) throw new Error("card star: " + a.short + " has no measured maximum");
+            return { short: a.short, label: a.short, max: max, get: a.get, text: a.text };
+        });
         const cards = rows.map(function (r, idx) {
             const id = "card-" + r.slug;
             const a = r.assurance;
@@ -167,19 +166,17 @@ export default {
             const fuzzText = pendFuzz ? "pending fix" : metricText(r.metrics, "fuzz_targets");
             const vendored = tree ? counted(tree, "vendored_code") : (r.stack && r.stack.vendored ? r.stack.vendored : "not measured");
             const ink = r.internal ? "internal" : "";
-            const program = numCell(tree, "program_code");
-            const tests = numCell(tree, "test_per_implementation");
-            const large = numCell(tree, "share_lines_ge_1000");
-            const rules = rulesReading(tree);
             const starSeries = health.series(r, r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "");
             const starDesc = r.name + " code health. " + health.axes.map(function (axis, i) { return axis.short + " " + starSeries.values[i].text; }).join(", ") + ". Median of " + rows.length + ": " + health.axes.map(function (axis, i) { return axis.short + " " + health.median.values[i].text; }).join(", ") + ".";
             const star = svgOnce(id + "-s", 340, radar(health.axes, [starSeries, health.median], { labels: "short", values: true, pad: 64, size: 340 }), r.name + " code-health star", starDesc, "eco-star");
-            const bars = "<ul class=\"eco-card-bars\">" +
-                barRow("Program", program ? program.text : "not measured", program ? program.value : null, programMax, ink, HINT["Program"]) +
-                barRow("Large files", large ? large.text : "not measured", large ? large.value : null, 100, ink, half === "not measured" ? HINT["Large files"] : half + " files hold half. " + HINT["Large files"]) +
-                barRow("Tests / line", tests ? tests.text : "not measured", tests ? tests.value : null, testMax, ink, HINT["Tests / line"]) +
-                barRow("Rules share", rules.text, rules.value, ruleMax, ink, (tree && tree.instrument ? tree.instrument + ". " : "") + HINT["Rules share"]) +
-                barRow("Own-team", own, ownNum ? ownNum.value : null, moduleMax, ink, (names.length ? names.join(", ") + ". " : "") + HINT["Own-team"]) +
+            const cmpValues = cmpAxes.map(function (a) {
+                var v = a.get(checkouts[idx], tree);
+                return { v: v, text: a.text(checkouts[idx], tree) };
+            });
+            const cmpDesc = r.name + " comparisons. " + cmpAxes.map(function (a, i) { return a.short + " " + cmpValues[i].text; }).join(", ") + ".";
+            const cmpStar = svgOnce(id + "-cmp", 340, radar(cmpAxes, [{ name: r.name, cls: r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "", values: cmpValues }], { labels: "short", values: true, pad: 78, size: 340 }), r.name + " comparison star", cmpDesc, "eco-star");
+            const modules = "<ul class=\"eco-card-bars\">" +
+                barRow("Modules", own, ownNum ? ownNum.value : null, moduleMax, ink, (names.length ? names.join(", ") + ". " : "") + HINT["Modules"]) +
                 "</ul>";
             return "<article class=\"eco-card" + (r.internal ? " internal" : "") + "\" id=\"" + id + "\" aria-labelledby=\"" + id + "-h\">" +
                 "<h3 id=\"" + id + "-h\">" + esc(r.name) + "</h3>" +
@@ -187,7 +184,7 @@ export default {
                 "<li class=\"eco-badge eco-badge-" + r.lineage.cls + "\"><span aria-hidden=\"true\">" + LIN_GLYPH[r.lineage.cls] + " </span>" + esc(r.lineage.label) + "</li>" +
                 "<li class=\"eco-badge\">" + esc(r.accountability.full) + "</li>" +
                 "<li class=\"eco-badge\">Modules: " + esc(metricText(r.metrics, "plugin_system")) + "</li></ul>" +
-                radial + star + checkoutBar(checkouts[idx], compMax) + bars +
+                radial + star + cmpStar + modules +
                 stabMeter(r.stability) +
                 "<details class=\"ch-more\"><summary>Counts</summary><dl>" +
                 group("Code") +
@@ -200,7 +197,7 @@ export default {
                 fact("Large files", counted(tree, "share_lines_ge_1000"), half === "not measured" ? "" : half + " files hold half") +
                 fact("Rules share", counted(tree, "rules_share"), tree && tree.instrument ? tree.instrument : "") +
                 group("Modules") +
-                fact("Own-team", own, names.length ? names.join(", ") : "") +
+                fact("Modules", own, names.length ? names.join(", ") : "") +
                 fact("Independent", metricText(r.metrics, "plugin_independent")) +
                 group("Stack") +
                 fact("License", r.stack && r.stack.license ? r.stack.license : "not measured") +
@@ -218,15 +215,15 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-            caption: "Each card leads with the charts. The radial is the six assurance checks: a full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a. The star is the code-health chart, on the same scales as the star section; dashed triangles are the median. The checkout bar is program, tests, tooling, vendored, and locale, scaled to the largest checkout. The bars under it are program lines, large files, tests per line, rules share, and own-team modules, each scaled as in the comparison table. The counts open under Counts.",
-            html: legend + "<div class=\"eco-cards\">" + cards + "</div>",
+            caption: "Each card leads with the charts. The radial is the six assurance checks: a full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a. The first star is the code-health chart, on the same scales as the star section; dashed triangles are the median. The second star is checkout, program lines, large files, tests per line, and rules share, each spoke scaled to the largest measured value. A hatched spoke is not measured, and it is not drawn as zero. Modules is the project's own optional modules. The counts open under Counts.",
+            html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),
-            notes: ["A line says not measured when that tree is not in the file that holds the count. Vendored lines come from the code table when the tree is measured there, and from the stack note otherwise. Own-team names, when the card has them, are on the row. Release stability asks whether a project has a release line an operator can run and expect to stay fixed. " + esc(ctx.model.stability.rule) + " " + esc(ctx.model.stability.note) + ctx.model.stability.extra.map(function (x) { return " " + esc(x.name) + ": " + esc(x.note); }).join(""), (pendFuzz ? "Fuzz target counts are being corrected in a separate change and are shown as &ldquo;pending fix&rdquo;." : "Fuzz targets are declared harnesses at the pinned commit.")],
+            notes: ["A line says not measured when that tree is not in the file that holds the count. Vendored lines come from the code table when the tree is measured there, and from the stack note otherwise. Module names, when the card has them, are on the Modules row. Release stability asks whether a project has a release line an operator can run and expect to stay fixed. " + esc(ctx.model.stability.rule) + " " + esc(ctx.model.stability.note) + ctx.model.stability.extra.map(function (x) { return " " + esc(x.name) + ": " + esc(x.note); }).join(""), (pendFuzz ? "Fuzz target counts are being corrected in a separate change and are shown as &ldquo;pending fix&rdquo;." : "Fuzz targets are declared harnesses at the pinned commit.")],
             sources: [{ label: "data/verification.json" }, { label: "data/implementations.json" }, { label: "data/stack.json" }, { label: "data/metrics.json" }, { label: "data/stability.json" }],
             table: {
                 caption: "Implementation cards",
-                columns: ["Implementation", "Lineage", "Accountability", "Module system", "Assurance", "Program", "Tests / line", "Own-team modules", "License", "Authors, 12 months", "Release stability"],
+                columns: ["Implementation", "Lineage", "Accountability", "Module system", "Assurance", "Program", "Tests / line", "Modules", "License", "Authors, 12 months", "Release stability"],
                 rows: rows.map(function (r) {
                     var tree = treeOf(ctx, r.slug);
                     return [r.name, r.lineage.label, r.accountability.full, metricText(r.metrics, "plugin_system"), r.assurance.score + " of " + r.assurance.max, counted(tree, "program_code"), counted(tree, "test_per_implementation"), metricText(r.metrics, "plugin_own"), r.stack && r.stack.license ? r.stack.license : "not measured", metricText(r.metrics, "authors_12m"), r.stability.text];
