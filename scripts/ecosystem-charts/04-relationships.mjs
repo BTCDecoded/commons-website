@@ -12,6 +12,8 @@ const STEPS = [
 export default {
     slot: "chart-relationships",
     build: function () {
+        // Not drawn. The implementation graph is the navigation. Remove this return to draw the card again.
+        return "";
         return figure({
             id: "fig-relationships",
             headline: "Read the measures in order: lineage, then governance, then verification, then code health.",
