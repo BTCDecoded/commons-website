@@ -4,7 +4,7 @@
 // Research's How carries figures, the data files' own method text is shown,
 // so no number on this page comes from copy. Entries for series a separate
 // change is correcting are tagged "pending fix".
-import { esc, govMark, releaseMark } from "../charts.mjs";
+import { esc, govMark, releaseMark, assuranceRank, assuranceEmblem } from "../charts.mjs";
 
 const PEND_FIELD = { fuzz_targets: "fuzz_targets", authors_12m: "authors_12m", ci_workflows: "ci_workflows", ci_jobs: "ci_jobs", rules_share: "rules_share" };
 const STAR = { test_split_total: 1, vector_files: 1, spec_files: 1, releases_12m: 1, fuzz_targets: 1, authors_12m: 1, plugin_system: 1, direct_deps: 1, program_code: 1, checkout: 1, share_lines_ge_1000: 1, test_per_implementation: 1, rules_share: 1 };
@@ -58,6 +58,13 @@ export default {
             "<li><span class=\"eco-key-foot\">1</span><span class=\"eco-key-l\">stated maintainer count</span></li>" +
             "<li><span class=\"eco-key-bar\" aria-hidden=\"true\"><i></i></span><span class=\"eco-key-l\">share of reachable nodes, on a box that has a count</span></li>" +
             "<li><span class=\"eco-key-node\">BLVM</span><span class=\"eco-key-l\">this project</span></li>" +
+            (function () {
+                var seen = {};
+                ctx.model.rows.forEach(function (r) { var rank = assuranceRank(r.assurance); seen[rank.id] = rank; });
+                return ["spec", "proof", "property", "diff", "fuzz", "vectors", "none"].filter(function (id) { return seen[id]; }).map(function (id) {
+                    return "<li><span class=\"eco-key-g\">" + assuranceEmblem(id, 16) + "</span><span class=\"eco-key-l\">" + esc(seen[id].label) + "</span></li>";
+                }).join("");
+            })() +
             "<li><span class=\"eco-key-g eco-rel eco-rel-none\">" + releaseMark("none") + "</span><span class=\"eco-key-l\">no release</span></li>" +
             "<li><span class=\"eco-key-g eco-rel eco-rel-tag\">" + releaseMark("tag") + "</span><span class=\"eco-key-l\">tagged, not a stable line</span></li>" +
             "<li><span class=\"eco-key-g eco-rel eco-rel-out\">" + releaseMark("out") + "</span><span class=\"eco-key-l\">released</span></li>" +

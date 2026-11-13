@@ -5,7 +5,7 @@
 // language from data/stack.json as a badge, and the age as a second badge
 // when a start is stated. Own codebases use the same boxes and have
 // no derivation arrow.
-import { lineage, median, releaseStage } from "../charts.mjs";
+import { lineage, median, releaseStage, assuranceRank } from "../charts.mjs";
 
 const EDGES = [
     { from: "knots", to: "knots-legacy", slug: "knots-legacy", quote: "Knots Legacy continues Bitcoin Knots v29.3.knots20260507" },
@@ -44,7 +44,7 @@ export function lineageSpec(ctx) {
         rows.forEach(function (r) {
             if (!modelBy[r.slug]) throw new Error("lineage: stack row has no implementation: " + r.slug);
             if (!ctx.selectionMinis || !ctx.selectionMinis[r.slug]) throw new Error("lineage: no selection charts for " + r.slug);
-            nodes[r.slug] = { label: r.name, cls: r.slug === internal ? "hl" : "", href: "#card-" + r.slug, tag: primaryLang(r), facts: modelBy[r.slug].picker, release: releaseStage(modelBy[r.slug].stability), minis: ctx.selectionMinis[r.slug] };
+            nodes[r.slug] = { label: r.name, cls: r.slug === internal ? "hl" : "", href: "#card-" + r.slug, tag: primaryLang(r), facts: modelBy[r.slug].picker, release: releaseStage(modelBy[r.slug].stability), rank: assuranceRank(modelBy[r.slug].assurance), minis: ctx.selectionMinis[r.slug] };
         });
         nodes["bitcoin-core"].share = reachBy.core.share;
         nodes["bitcoin-core"].shareText = reachBy.core.text;
@@ -88,7 +88,7 @@ export function lineageSpec(ctx) {
                 const above = own.filter(function (r) { return r.assurance.pct > med; }).length;
                 return separate.length + " of " + rows.length + " implementations are separate codebases. The median assurance score is " + medText + "%. " + above + " of " + own.length + " own codebases score above the median.";
             })(),
-            caption: "Each implementation box carries small charts for assurance, health, and comparisons. Primary language, and the age when a start is stated, are badges under the name. The corner mark is how far the release checklist has gone: no release, tagged, released, or released fully. Released fully means all seven checks. Tagged means a non-pre tag exists and the docs still say pre-release, or the version is not 1.0 or an LTS. Bitcoin Knots is not a row and has no release mark. The number beside a governance mark is a maintainer count this page already states. Knots Legacy, Bit-Block, and Bitcoin Roots have no stated start of their own. The remainder, " + reachBy.other.text + ", is not a named implementation. The dashed arrow is Bitcoin Roots carrying Knots features onto Core. Bitcoin Knots is not a row on this page" + (knotsUp ? "; its arrow from Core cites the Knots README." : "."),
+            caption: "The top-left icon is the assurance rank, smaller than on the card. Each implementation box carries small charts for assurance, health, and comparisons. Primary language, and the age when a start is stated, are badges under the name. The corner mark is how far the release checklist has gone: no release, tagged, released, or released fully. Released fully means all seven checks. Tagged means a non-pre tag exists and the docs still say pre-release, or the version is not 1.0 or an LTS. Bitcoin Knots is not a row and has no release mark. The number beside a governance mark is a maintainer count this page already states. Knots Legacy, Bit-Block, and Bitcoin Roots have no stated start of their own. The remainder, " + reachBy.other.text + ", is not a named implementation. The dashed arrow is Bitcoin Roots carrying Knots features onto Core. Bitcoin Knots is not a row on this page" + (knotsUp ? "; its arrow from Core cites the Knots README." : "."),
             measures: "Where each implementation's code comes from; it matters because clients that share code share its bugs.",
             takeaway: "",
             title: "Lineage of the " + rows.length + " implementations",

@@ -109,10 +109,11 @@ var RANK_ICON = {
     proof: "<circle cx=\"12\" cy=\"12\" r=\"8\" class=\"eco-rank\"/><circle cx=\"12\" cy=\"12\" r=\"5.4\" class=\"eco-rank\"/><path d=\"M9 12.3 L11.1 14.5 L15.3 9.4\" class=\"eco-rank\"/>",
     spec: "<polygon points=\"" + starPoints(12, 12, 8.4) + "\" class=\"eco-starfill\"/>"
 };
-export function assuranceEmblem(id) {
+export function assuranceEmblem(id, size) {
     var body = RANK_ICON[id];
     if (!body) throw new Error("assurance emblem: " + id);
-    return "<svg class=\"eco-emblem-svg\" viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" aria-hidden=\"true\">" + body + "</svg>";
+    var px = size || 28;
+    return "<svg class=\"eco-emblem-svg\" viewBox=\"0 0 24 24\" width=\"" + px + "\" height=\"" + px + "\" aria-hidden=\"true\">" + body + "</svg>";
 }
 export function esc(s) {
     return String(s).replace(/[&<>"]/g, function (c) {
@@ -494,10 +495,13 @@ export function lineage(groups, nodes, edges) {
             var tip = n.label + (n.tag ? ", " + n.tag : "");
             if (n.facts) tip += ". " + n.facts.label + (n.facts.keepers ? ", " + n.facts.keepers : "") + (n.facts.age ? ", " + n.facts.age : "") + (n.facts.from ? ". " + n.facts.from : "");
             if (n.shareText && n.shareTip) tip += ". " + n.shareTip;
-            if (n.release) tip += ". " + n.release.label + ". " + n.release.why;
+            if (n.rank) tip += ". " + n.rank.label + ". " + n.rank.why;
+            if (n.release) tip += (tip.charAt(tip.length - 1) === "." ? " " : ". ") + n.release.label + ". " + n.release.why;
             var rel = "";
             if (n.release) rel = "<svg x=\"" + fmt(p.x + p.w - 18) + "\" y=\"" + fmt(p.y + 4) + "\" width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" class=\"ch-rel ch-rel-" + n.release.id + "\" aria-hidden=\"true\">" + releaseBody(n.release.id) + "</svg>";
-            out += n.href ? "<a href=\"" + esc(n.href) + "\" class=\"ch-link\"><title>" + esc(tip) + "</title>" + node + rel + "</a>" : node + rel;
+            var rankMark = "";
+            if (n.rank) rankMark = "<svg x=\"" + fmt(p.x + 4) + "\" y=\"" + fmt(p.y + 3) + "\" class=\"eco-emblem-svg\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" aria-hidden=\"true\">" + RANK_ICON[n.rank.id] + "</svg>";
+            out += n.href ? "<a href=\"" + esc(n.href) + "\" class=\"ch-link\"><title>" + esc(tip) + "</title>" + node + rankMark + rel + "</a>" : node + rankMark + rel;
         });
         var defs = "<defs><marker id=\"" + arrow + "\" viewBox=\"0 0 8 8\" refX=\"7\" refY=\"4\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L8 4 L0 8 z\" class=\"ch-arrowhead\"/></marker></defs>";
         return { body: defs + "<g font-size=\"" + fs + "\">" + out + "</g>", height: height + 2 };
