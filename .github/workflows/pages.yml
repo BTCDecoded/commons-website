@@ -20,7 +20,8 @@ concurrency:
 
 jobs:
   build:
-    runs-on: [self-hosted, Linux, X64, builds]
+    # Static build only needs node and rsync; the self-hosted rust runners stay busy and leave it queued.
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v6
