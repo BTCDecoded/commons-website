@@ -70,7 +70,8 @@ export function figure(spec) {
     var measures = spec.measures ? " <span class=\"ch-why\"><b>What this measures:</b> " + esc(spec.measures) + "</span>" : "";
     var take = spec.takeaway ? "<p class=\"ch-take\"><b>Takeaway:</b> " + esc(spec.takeaway) + "</p>" : "";
     var body = spec.html ? spec.html : variant(WIDE, "wide") + variant(NARROW, "narrow");
-    return "<figure class=\"ch" + (spec.cls ? " " + spec.cls : "") + "\" id=\"" + esc(spec.id) + "\"><figcaption><strong class=\"ch-head\">" + esc(spec.headline) + "</strong> <span class=\"ch-cap\">" + esc(spec.caption) + "</span>" + measures + "</figcaption>" +
+    var cap = spec.caption ? " <span class=\"ch-cap\">" + esc(spec.caption) + "</span>" : "";
+    return "<figure class=\"ch" + (spec.cls ? " " + spec.cls : "") + "\" id=\"" + esc(spec.id) + "\"><figcaption><strong class=\"ch-head\">" + esc(spec.headline) + "</strong>" + cap + measures + "</figcaption>" +
         body + take + notes + sources + table + "</figure>";
 }
 
