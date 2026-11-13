@@ -17,7 +17,10 @@ export default {
         });
         return figure({
             id: "fig-overview",
-            cls: "ch-wide-fig",
+            cls: "ch-wide-fig eco-ov-fig",
+            split: true,
+            wide: 700,
+            narrow: 360,
             headline: field.headline + " " + line.headline,
             lead: "Select an implementation to open its card.",
             caption: field.caption + " " + line.caption,
