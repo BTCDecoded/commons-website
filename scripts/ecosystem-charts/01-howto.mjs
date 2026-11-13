@@ -53,25 +53,15 @@ export default {
             return "<li><span class=\"eco-key-g" + (cls ? " " + cls : "") + "\" aria-hidden=\"true\">" + glyph + "</span><span class=\"eco-key-l\">" + text + "</span></li>";
         }
         return "<ul class=\"eco-keys\" id=\"eco-key\" aria-label=\"Key\">" +
-            keyItem("\u25CF", "yes, 2 points") +
-            keyItem("\u25D0", "partial, 1 point") +
-            keyItem("\u25CB", "not found, 0 points") +
-            keyItem("\u2013", "n/a, left out of the score") +
-            keyItem("\u2571", "grey hatching: not measured") +
-            (Object.keys(pend).length ? keyItem("\u2571", "yellow hatching: pending fix, not final", "eco-key-med") : "") +
-            "<li class=\"eco-key-span\">stability checklist</li>" +
-            keyItem("\u2713", "met") +
-            keyItem("\u2715", "not met") +
-            keyItem("?", "not measured") +
-            "<li class=\"eco-key-span\">governance, and the age of the stated start</li>" +
+            "<li class=\"eco-key-span\">on each box</li>" +
             "<li><span class=\"eco-key-g eco-gov eco-gov-single\">" + govMark("single") + "</span><span class=\"eco-key-l\">single maintainer</span></li>" +
             "<li><span class=\"eco-key-g eco-gov eco-gov-group\">" + govMark("group") + "</span><span class=\"eco-key-l\">maintainer group</span></li>" +
             "<li><span class=\"eco-key-g eco-gov eco-gov-foundation\">" + govMark("foundation") + "</span><span class=\"eco-key-l\">foundation, one signing key</span></li>" +
             "<li><span class=\"eco-key-g eco-gov eco-gov-commons\">" + govMark("commons") + "</span><span class=\"eco-key-l\">commons governance</span></li>" +
             "<li><span class=\"eco-key-g eco-gov eco-gov-unknown\">" + govMark("unknown") + "</span><span class=\"eco-key-l\">not classified</span></li>" +
-            keyItem("\u25CF", "orange: BLVM", "eco-key-hl") +
-            keyItem("\u25A0", "blue square: Bitcoin Core", "eco-key-core") +
-            keyItem("\u25B2", "yellow dashed: median of all " + ctx.model.rows.length, "eco-key-med") +
+            "<li class=\"eco-key-span\">a number is the stated maintainer count. The words after it are the age of the stated start.</li>" +
+            "<li class=\"eco-key-span\">a bar is the share of reachable nodes. Not split and not measured have no bar.</li>" +
+            keyItem("\u25CF", "orange name: BLVM", "eco-key-hl") +
             "</ul>" +
             "<details class=\"eco-howto ch-more\" id=\"howto\"><summary>How to read this page</summary>" +
             "<ul class=\"eco-howto-lines\">" + lines.map(function (l) { return "<li>" + md(l) + "</li>"; }).join("") + "</ul>" +

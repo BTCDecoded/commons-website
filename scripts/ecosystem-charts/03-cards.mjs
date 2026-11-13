@@ -179,11 +179,27 @@ export default {
                 axes: cmpAxes.map(function (a) { return { short: a.short, max: a.max, invert: false, pending: false }; }),
                 series: [{ name: r.name, cls: cmpCls, values: cmpValues.map(function (v) { return { v: v.v, text: v.text, pending: false }; }) }]
             }) : "";
-            function zoomChart(caption, thumb, full, data) {
-                return "<details class=\"eco-zoom\"><summary><span class=\"eco-zoom-shut\">" + thumb + "<span class=\"eco-thumb-cap\">" + caption + "</span></span><span class=\"eco-zoom-open\">Close chart</span></summary><div class=\"eco-zoom-body\"><button type=\"button\" class=\"eco-zoom-x\">Close chart</button>" + full + (data ? "<script type=\"application/json\" class=\"eco-radar\">" + data + "</script>" : "") + "</div></details>";
+            function zoomChart(caption, thumb, full, data, extra) {
+                return "<details class=\"eco-zoom\"><summary><span class=\"eco-zoom-shut\">" + thumb + "<span class=\"eco-thumb-cap\">" + caption + "</span></span><span class=\"eco-zoom-open\">Close chart</span></summary><div class=\"eco-zoom-body\"><button type=\"button\" class=\"eco-zoom-x\">Close chart</button>" + full + (extra || "") + (data ? "<script type=\"application/json\" class=\"eco-radar\">" + data + "</script>" : "") + "</div></details>";
             }
-            const charts = "<div class=\"eco-card-charts\">" +
-                zoomChart("Assurance", radialThumb, radial) +
+            const layers = "<p class=\"eco-layers\">" + cells.map(function (c) { return "<span><b>" + esc(c.label) + "</b> " + esc(c.status) + "</span>"; }).join("") + "</p>";
+            const charts = "<ul class=\"eco-read\" aria-label=\"How to read the charts\">" +
+                "<li class=\"eco-read-span\">Assurance</li>" +
+                "<li><span aria-hidden=\"true\">\u25CF</span> yes, 2 points</li>" +
+                "<li><span aria-hidden=\"true\">\u25D0</span> partial, 1 point</li>" +
+                "<li><span aria-hidden=\"true\">\u25CB</span> not found, 0 points</li>" +
+                "<li><span aria-hidden=\"true\">\u2013</span> n/a, left out of the score</li>" +
+                "<li><span aria-hidden=\"true\">\u2571</span> grey hatching: not measured</li>" +
+                "<li class=\"eco-read-span\">Release</li>" +
+                "<li><span aria-hidden=\"true\">\u2713</span> met</li>" +
+                "<li><span aria-hidden=\"true\">\u2715</span> not met</li>" +
+                "<li><span aria-hidden=\"true\">?</span> not measured</li>" +
+                "<li class=\"eco-read-span\">Stars</li>" +
+                "<li class=\"eco-read-hl\"><span aria-hidden=\"true\">\u25CF</span> BLVM</li>" +
+                "<li class=\"eco-read-core\"><span aria-hidden=\"true\">\u25A0</span> Bitcoin Core</li>" +
+                "<li class=\"eco-read-med\"><span aria-hidden=\"true\">\u25B2</span> median of all " + rows.length + "</li>" +
+                "</ul><div class=\"eco-card-charts\">" +
+                zoomChart("Assurance", radialThumb, radial, "", layers) +
                 zoomChart("Health", starThumb, star, healthData) +
                 (cmpMeasured ? zoomChart("Compare", cmpThumb, cmpStar, cmpData) : "") +
                 "</div>";
