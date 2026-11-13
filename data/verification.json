@@ -51,7 +51,7 @@
       "slug": "blvm",
       "name": "BLVM",
       "repo": "BTCDecoded repositories",
-      "commit": "blvm-spec afc5b49, blvm-spec-lock bddfae4, blvm-consensus f63c328, blvm-bench 3d5cd92",
+      "commit": "blvm-spec afc5b49, blvm-spec-lock bddfae4, blvm-consensus db81faa, blvm-bench 3d5cd92",
       "cells": {
         "formal_spec": {
           "status": "yes",
@@ -60,22 +60,22 @@
         },
         "test_vectors": {
           "status": "yes",
-          "text": "Core tx_valid, tx_invalid, sighash and script_tests JSON; script_tests runs as a subset",
-          "source": "https://github.com/BTCDecoded/blvm-consensus/tree/f63c32856a2da874296524f40b8cbd35518d8096/tests/core_test_vectors"
+          "text": "Every committed row of script_tests, tx_valid, and tx_invalid is executed or skipped for a named reason: 1,263 script rows, 122 valid transaction rows, and 84 invalid transaction rows run",
+          "source": "https://github.com/BTCDecoded/blvm-consensus/tree/db81faac6d6550057840ac38de0855ede78259f7/tests/core_test_vectors"
         },
         "property_tests": {
           "status": "yes",
           "text": "proptest suites, including Orange Paper properties",
-          "source": "https://github.com/BTCDecoded/blvm-consensus/blob/f63c32856a2da874296524f40b8cbd35518d8096/tests/orange_paper_property_tests.rs"
+          "source": "https://github.com/BTCDecoded/blvm-consensus/blob/db81faac6d6550057840ac38de0855ede78259f7/tests/orange_paper_property_tests.rs"
         },
         "fuzzing": {
           "status": "yes",
           "text": "156 declared cargo-fuzz targets (fuzz_target! / [[bin]]) across blvm-consensus, blvm-protocol, blvm-node, blvm-muhash, and blvm-sdk",
-          "source": "https://github.com/BTCDecoded/blvm-consensus/tree/f63c32856a2da874296524f40b8cbd35518d8096/fuzz/fuzz_targets",
+          "source": "https://github.com/BTCDecoded/blvm-consensus/tree/db81faac6d6550057840ac38de0855ede78259f7/fuzz/fuzz_targets",
           "sources": [
             {
               "label": "blvm-consensus",
-              "url": "https://github.com/BTCDecoded/blvm-consensus/tree/f63c32856a2da874296524f40b8cbd35518d8096/fuzz/fuzz_targets"
+              "url": "https://github.com/BTCDecoded/blvm-consensus/tree/db81faac6d6550057840ac38de0855ede78259f7/fuzz/fuzz_targets"
             },
             {
               "label": "blvm-protocol",

@@ -626,20 +626,24 @@ export function assuranceRadial(cells, opts) {
     opts = opts || {};
     return function (width, uid) {
         var n = cells.length, step = 360 / n, size = Math.min(width, opts.size || 220);
-        var R = size / 2 - (opts.labelSize ? opts.labelSize * 2.6 : 34), cx = width / 2, cy = size / 2, r0 = R * 0.3;
+        var labelRoom = opts.labels === "none" ? 8 : (opts.labelSize ? opts.labelSize * 2.6 : 34);
+        var R = size / 2 - labelRoom, cx = width / 2, cy = size / 2, r0 = R * 0.3;
         var hid = (uid || "ch") + "-hatch", out = "<defs>" + hatchDef(hid, "") + "</defs>";
         var glyph = { "yes": "\u25CF", "partial": "\u25D0", "not found": "\u25CB", "n/a": "\u2013" };
         cells.forEach(function (c, i) {
             var a0 = -90 + i * step - step / 2 + 2, a1 = a0 + step - 4, mid = -90 + i * step;
             out += "<path d=\"" + sector(cx, cy, r0, R, a0, a1) + "\" class=\"ch-wtrack" + (c.points === null ? " ch-wtrack-na\" style=\"fill:url(#" + hid + ")\"" : "\"") + "/>";
             if (c.points) out += "<path d=\"" + sector(cx, cy, r0, r0 + (R - r0) * c.points / 2, a0, a1) + "\" class=\"ch-wfill" + (c.points === 1 ? " ch-wfill-p" : "") + (opts.cls ? " ch-w-" + opts.cls : "") + "\"/>";
-            var g = polar(cx, cy, R + 14, mid), cc = Math.cos(mid * Math.PI / 180);
-            var anchor = Math.abs(cc) < 0.3 ? "middle" : cc > 0 ? "start" : "end";
-            var gy = g[1] + (Math.sin(mid * Math.PI / 180) > 0.5 ? 12 : Math.sin(mid * Math.PI / 180) < -0.5 ? -2 : 5);
-            out += "<text x=\"" + fmt(g[0]) + "\" y=\"" + fmt(gy) + "\" text-anchor=\"" + anchor + "\" class=\"ch-t\" font-size=\"" + (opts.labelSize || 13) + "\"><tspan class=\"ch-wglyph\">" + esc(glyph[c.status] || "?") + "</tspan> <tspan class=\"ch-label\">" + esc(c.label || c.short) + "</tspan></text>";
+            if (opts.labels !== "none") {
+                var g = polar(cx, cy, R + 14, mid), cc = Math.cos(mid * Math.PI / 180);
+                var anchor = Math.abs(cc) < 0.3 ? "middle" : cc > 0 ? "start" : "end";
+                var gy = g[1] + (Math.sin(mid * Math.PI / 180) > 0.5 ? 12 : Math.sin(mid * Math.PI / 180) < -0.5 ? -2 : 5);
+                out += "<text x=\"" + fmt(g[0]) + "\" y=\"" + fmt(gy) + "\" text-anchor=\"" + anchor + "\" class=\"ch-t\" font-size=\"" + (opts.labelSize || 13) + "\"><tspan class=\"ch-wglyph\">" + esc(glyph[c.status] || "?") + "</tspan> <tspan class=\"ch-label\">" + esc(c.label || c.short) + "</tspan></text>";
+            }
         });
-        out += t(cx, cy + 2, opts.center || "", "ch-t ch-wscore", " text-anchor=\"middle\" font-size=\"18\"");
-        out += t(cx, cy + 17, opts.centerSub || "", "ch-t ch-muted", " text-anchor=\"middle\" font-size=\"10.5\"");
+        var scoreSize = size < 200 ? 13 : 18, subSize = size < 200 ? 9 : 10.5;
+        out += t(cx, cy + (size < 200 ? 1 : 2), opts.center || "", "ch-t ch-wscore", " text-anchor=\"middle\" font-size=\"" + scoreSize + "\"");
+        out += t(cx, cy + (size < 200 ? 13 : 17), opts.centerSub || "", "ch-t ch-muted", " text-anchor=\"middle\" font-size=\"" + subSize + "\"");
         return { body: out, height: size };
     };
 }

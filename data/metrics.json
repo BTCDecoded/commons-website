@@ -37,7 +37,7 @@
         {
           "name": "blvm-consensus",
           "version": "0.1.82",
-          "commit": "f63c32856a2da874296524f40b8cbd35518d8096",
+          "commit": "db81faac6d6550057840ac38de0855ede78259f7",
           "role": "program"
         },
         {
@@ -85,8 +85,8 @@
         "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)]); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_folder": {
-        "value": 95394,
-        "text": "95,394",
+        "value": 95993,
+        "text": "95,993",
         "status": "measured",
         "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)]); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
@@ -97,8 +97,8 @@
         "note": "Deprecated alias of test_insource. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)]); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_integration": {
-        "value": 95394,
-        "text": "95,394",
+        "value": 95993,
+        "text": "95,993",
         "status": "measured",
         "note": "Deprecated alias of test_folder. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)]); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
@@ -113,8 +113,8 @@
         "status": "measured"
       },
       "test_split_total": {
-        "value": 194788,
-        "text": "194,788",
+        "value": 195387,
+        "text": "195,387",
         "status": "measured"
       },
       "vector_files": {
