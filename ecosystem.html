@@ -662,6 +662,16 @@
         .eco-glance details ul { margin: 0.25rem 0 0; padding-left: 1.1rem; }
         .eco-glance details li, .eco-glance details p { max-width: 60rem; font-size: 0.85rem; margin: 0.2rem 0 0; }
         .eco-glance .eco-open-row td.eco-open { position: static; box-shadow: none; max-width: none; }
+        @media (min-width: 769px) {
+            #eco-plugins { table-layout: fixed; width: 100%; }
+            #eco-plugins th, #eco-plugins td { text-align: left; white-space: normal; vertical-align: top; }
+            #eco-plugins .eco-sort { text-align: left; }
+            #eco-plugins thead th:nth-child(1) { width: 22%; }
+            #eco-plugins thead th:nth-child(2),
+            #eco-plugins thead th:nth-child(3),
+            #eco-plugins thead th:nth-child(4) { width: 26%; }
+            #eco-plugins th[scope="row"] { position: static; box-shadow: none; max-width: none; }
+        }
         .eco-deps td { text-align: left; white-space: normal; font-family: var(--font-sans); font-size: 0.9rem; }
         .eco-deps td[data-label="Vendored"] { min-width: 14rem; }
         @media (max-width: 768px) {
