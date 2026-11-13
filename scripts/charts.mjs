@@ -252,13 +252,16 @@ export function scatter(points, axes) {
 // groups: [{ id, label, cols, grid: [[nodeId|null, ...], ...] }]
 //   grid rows are laid out as given on wide screens; on narrow screens a group
 //   whose `flow` is true reflows its nodes into two columns.
-// nodes: { id: { label, cls } }  cls: hl | muted
+// nodes: { id: { label, cls, tag } }  cls: hl | muted. tag is a short
+// language mark drawn under the name.
 // edges: [{ from, to, dashed }]
 export function lineage(groups, nodes, edges) {
     return function (width, uid) {
         var arrow = (uid || "ch") + "-arrow";
         var narrow = width < 500, fs = narrow ? 13 : 13;
-        var nodeH = 30, gapX = narrow ? 26 : 34, gapY = 12, pad = 10, headH = 24, groupGap = narrow ? 14 : 16;
+        var tagged = false;
+        Object.keys(nodes).forEach(function (id) { if (nodes[id].tag) tagged = true; });
+        var nodeH = tagged ? 46 : 30, gapX = narrow ? 26 : 34, gapY = 12, pad = 10, headH = 24, groupGap = narrow ? 14 : 16;
         var pos = {}, out = "", gx = 0, gy = 0, rowH = 0;
         groups.forEach(function (g) {
             var grid = g.grid;
@@ -320,9 +323,12 @@ export function lineage(groups, nodes, edges) {
         });
         Object.keys(pos).forEach(function (id) {
             var p = pos[id], n = nodes[id];
+            var nameY = n.tag ? p.y + 18 : p.y + p.h / 2 + fs * 0.35;
             var node = "<rect x=\"" + fmt(p.x) + "\" y=\"" + fmt(p.y) + "\" width=\"" + fmt(p.w) + "\" height=\"" + p.h + "\" rx=\"6\" class=\"ch-node" + (n.cls ? " ch-node-" + n.cls : "") + "\"/>" +
-                t(p.x + p.w / 2, p.y + p.h / 2 + fs * 0.35, n.label, "ch-t ch-nodet" + (n.cls === "hl" ? " ch-hl" : n.cls === "muted" ? " ch-muted" : ""), " text-anchor=\"middle\"");
-            out += n.href ? "<a href=\"" + esc(n.href) + "\" class=\"ch-link\"><title>" + esc(n.label) + "</title>" + node + "</a>" : node;
+                t(p.x + p.w / 2, nameY, n.label, "ch-t ch-nodet" + (n.cls === "hl" ? " ch-hl" : n.cls === "muted" ? " ch-muted" : ""), " text-anchor=\"middle\"") +
+                (n.tag ? t(p.x + p.w / 2, p.y + 34, n.tag, "ch-t ch-muted", " text-anchor=\"middle\" font-size=\"11\"") : "");
+            var tip = n.tag ? n.label + ", " + n.tag : n.label;
+            out += n.href ? "<a href=\"" + esc(n.href) + "\" class=\"ch-link\"><title>" + esc(tip) + "</title>" + node + "</a>" : node;
         });
         var defs = "<defs><marker id=\"" + arrow + "\" viewBox=\"0 0 8 8\" refX=\"7\" refY=\"4\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L8 4 L0 8 z\" class=\"ch-arrowhead\"/></marker></defs>";
         return { body: defs + "<g font-size=\"" + fs + "\">" + out + "</g>", height: height + 2 };
