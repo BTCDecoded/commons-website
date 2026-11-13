@@ -14,6 +14,22 @@
 export const WIDE = 760;
 export const NARROW = 336;
 
+// Governance kind, drawn the same in the key, the lineage boxes, and the
+// compare menu. The shapes are the kind. A count beside one is separate.
+export function govBody(kind) {
+    var body = {
+        single: "<circle cx=\"7\" cy=\"7\" r=\"3.2\"/>",
+        group: "<circle cx=\"2.6\" cy=\"8.2\" r=\"2\"/><circle cx=\"7\" cy=\"4.6\" r=\"2\"/><circle cx=\"11.4\" cy=\"8.2\" r=\"2\"/>",
+        foundation: "<circle cx=\"4.2\" cy=\"7\" r=\"2.1\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\"/><path d=\"M6.2 7 H12.2 M9.4 7 V5.2 M11.4 7 V5.6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\"/>",
+        commons: "<path d=\"M1.5 3.2 H12.5 M1.5 7 H12.5 M1.5 10.8 H8\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/>",
+        unknown: "<circle cx=\"7\" cy=\"7\" r=\"5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.2\"/><text x=\"7\" y=\"10.2\" text-anchor=\"middle\" font-size=\"9\" fill=\"currentColor\">?</text>"
+    }[kind];
+    if (!body) throw new Error("gov mark: " + kind);
+    return body;
+}
+export function govMark(kind) {
+    return "<svg class=\"eco-govmark\" width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" aria-hidden=\"true\">" + govBody(kind) + "</svg>";
+}
 export function esc(s) {
     return String(s).replace(/[&<>"]/g, function (c) {
         return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
@@ -259,9 +275,12 @@ export function lineage(groups, nodes, edges) {
     return function (width, uid) {
         var arrow = (uid || "ch") + "-arrow";
         var narrow = width < 500, fs = narrow ? 13 : 13;
-        var tagged = false;
-        Object.keys(nodes).forEach(function (id) { if (nodes[id].tag) tagged = true; });
-        var nodeH = tagged ? 46 : 30, gapX = narrow ? 26 : 34, gapY = 12, pad = 10, headH = 24, groupGap = narrow ? 14 : 16;
+        var tagged = false, withFacts = false;
+        Object.keys(nodes).forEach(function (id) {
+            if (nodes[id].tag) tagged = true;
+            if (nodes[id].facts) withFacts = true;
+        });
+        var nodeH = withFacts ? 62 : (tagged ? 46 : 30), gapX = narrow ? 26 : 34, gapY = 12, pad = 10, headH = 24, groupGap = narrow ? 14 : 16;
         var pos = {}, out = "", gx = 0, gy = 0, rowH = 0;
         groups.forEach(function (g) {
             var grid = g.grid;
@@ -323,11 +342,25 @@ export function lineage(groups, nodes, edges) {
         });
         Object.keys(pos).forEach(function (id) {
             var p = pos[id], n = nodes[id];
-            var nameY = n.tag ? p.y + 18 : p.y + p.h / 2 + fs * 0.35;
+            var nameY = n.facts ? p.y + 16 : (n.tag ? p.y + 18 : p.y + p.h / 2 + fs * 0.35);
+            var fact = "";
+            if (n.facts) {
+                var bits = [];
+                if (n.facts.keepers) bits.push(String(n.facts.keepers));
+                if (n.facts.age) bits.push(n.facts.age);
+                var line = bits.join(" \u00b7 ");
+                var cluster = 14 + (line ? 4 + textWidth(line, 11) : 0);
+                var ix = p.x + Math.max(4, (p.w - cluster) / 2);
+                var iy = p.y + 40;
+                fact = "<svg x=\"" + fmt(ix) + "\" y=\"" + fmt(iy) + "\" width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" class=\"ch-gov ch-gov-" + n.facts.kind + "\" aria-hidden=\"true\">" + govBody(n.facts.kind) + "</svg>" +
+                    (line ? t(ix + 18, iy + 11, line, "ch-t ch-muted", " font-size=\"11\"") : "");
+            }
             var node = "<rect x=\"" + fmt(p.x) + "\" y=\"" + fmt(p.y) + "\" width=\"" + fmt(p.w) + "\" height=\"" + p.h + "\" rx=\"6\" class=\"ch-node" + (n.cls ? " ch-node-" + n.cls : "") + "\"/>" +
                 t(p.x + p.w / 2, nameY, n.label, "ch-t ch-nodet" + (n.cls === "hl" ? " ch-hl" : n.cls === "muted" ? " ch-muted" : ""), " text-anchor=\"middle\"") +
-                (n.tag ? t(p.x + p.w / 2, p.y + 34, n.tag, "ch-t ch-muted", " text-anchor=\"middle\" font-size=\"11\"") : "");
+                (n.tag ? t(p.x + p.w / 2, n.facts ? p.y + 32 : p.y + 34, n.tag, "ch-t ch-muted", " text-anchor=\"middle\" font-size=\"11\"") : "") +
+                fact;
             var tip = n.tag ? n.label + ", " + n.tag : n.label;
+            if (n.facts) tip += ". " + n.facts.label + (n.facts.keepers ? ", " + n.facts.keepers : "") + (n.facts.age ? ", " + n.facts.age : "") + (n.facts.from ? ". " + n.facts.from : "");
             out += n.href ? "<a href=\"" + esc(n.href) + "\" class=\"ch-link\"><title>" + esc(tip) + "</title>" + node + "</a>" : node;
         });
         var defs = "<defs><marker id=\"" + arrow + "\" viewBox=\"0 0 8 8\" refX=\"7\" refY=\"4\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L8 4 L0 8 z\" class=\"ch-arrowhead\"/></marker></defs>";

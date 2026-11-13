@@ -37,7 +37,7 @@ export function lineageSpec(ctx) {
         }
         rows.forEach(function (r) {
             if (!modelBy[r.slug]) throw new Error("lineage: stack row has no implementation: " + r.slug);
-            nodes[r.slug] = { label: r.name, cls: r.slug === internal ? "hl" : "", href: "#card-" + r.slug, tag: primaryLang(r) };
+            nodes[r.slug] = { label: r.name, cls: r.slug === internal ? "hl" : "", href: "#card-" + r.slug, tag: primaryLang(r), facts: modelBy[r.slug].picker };
         });
         const separate = rows.filter(function (r) { return !derived[r.slug]; });
         const ownSlugs = separate.map(function (r) { return r.slug; }).sort(function (a, b) {
@@ -53,10 +53,13 @@ export function lineageSpec(ctx) {
         ];
         const derivedNames = rows.filter(function (r) { return derived[r.slug] && r.slug !== "bitcoin-core"; }).map(function (r) { return r.name; });
         const tableRows = rows.map(function (r) {
-            if (r.slug === "bitcoin-core") return [r.name, "Core family", "Reference implementation", r.languages];
+            const p = modelBy[r.slug].picker;
+            const who = p.keepers ? String(p.keepers) : "not stated";
+            const age = p.age || "not stated";
+            if (r.slug === "bitcoin-core") return [r.name, "Core family", "Reference implementation", r.languages, p.label, who, age];
             const e = EDGES.filter(function (x) { return x.to === r.slug; });
-            if (e.length) return [r.name, "Core family", e.map(function (x) { return x.quote + (x.dashed ? " (indirect)" : ""); }).join("; "), r.languages];
-            return [r.name, "Separate codebase", "No derivation stated in the data", r.languages];
+            if (e.length) return [r.name, "Core family", e.map(function (x) { return x.quote + (x.dashed ? " (indirect)" : ""); }).join("; "), r.languages, p.label, who, age];
+            return [r.name, "Separate codebase", "No derivation stated in the data", r.languages, p.label, who, age];
         });
         return {
             id: "fig-lineage",
@@ -67,7 +70,7 @@ export function lineageSpec(ctx) {
                 const above = own.filter(function (r) { return r.assurance.pct > med; }).length;
                 return separate.length + " of " + rows.length + " implementations are separate codebases. The other " + (rows.length - separate.length) + " are Bitcoin Core and clients built from it. The median assurance score is " + medText + "%. " + above + " of " + own.length + " own codebases score above the median.";
             })(),
-            caption: "One graph. Each box names the implementation and tags its primary language. Arrows in Core lineage are the derivation stated on this page; the dashed arrow is Bitcoin Roots carrying Knots policy features onto Core. Bitcoin Knots itself is not a row on this page" + (knotsUp ? "; its arrow from Core cites the Knots README" : "") + ". Own codebases use the same boxes and have no derivation arrow. Select a name to open its card.",
+            caption: "One graph. Each box names the implementation, tags its primary language, and shows the governance mark. A number beside the mark is a maintainer count this page already states. The age is that project's stated start, counted to " + ctx.data.measured_at + ". Knots Legacy, Bit-Block, and Bitcoin Roots have no stated start of their own, so those boxes have no age. Arrows in Core lineage are the derivation stated on this page; the dashed arrow is Bitcoin Roots carrying Knots policy features onto Core. Bitcoin Knots itself is not a row on this page" + (knotsUp ? "; its arrow from Core cites the Knots README" : "") + ". Own codebases use the same boxes and have no derivation arrow. Select a name to open its card.",
             measures: "Where each implementation's code comes from; it matters because clients that share code share its bugs.",
             takeaway: (function () {
                 const fam = rows.filter(function (r) { return derived[r.slug]; }).map(function (r) { return r.name; });
@@ -80,7 +83,7 @@ export function lineageSpec(ctx) {
             chart: lineage(groups, nodes, edges),
             notes: ["&ldquo;Separate&rdquo; means the data on this page states no derivation from Core or Knots. rbitcoin carries Bitcoin Core as a git submodule for tests (stack table); that is not a derivation."],
             sources: (knotsUp ? knotsUp.sources.slice(0, 1) : []).concat([{ label: "data/implementations.json (history, class, upstream)" }]).concat([ { label: "data/stack.json (languages)" }]),
-            table: { caption: "Lineage of each implementation", columns: ["Implementation", "Group", "Stated relationship", "Languages"], rows: tableRows.concat(knotsUp ? [[knotsUp.name + " (not a row)", "Core family", knotsUp.quote + " (" + knotsUp.sources[0].label + ")", "not measured"]] : []) }
+            table: { caption: "Lineage of each implementation", columns: ["Implementation", "Group", "Stated relationship", "Languages", "Governance", "Maintainers", "Age"], rows: tableRows.concat(knotsUp ? [[knotsUp.name + " (not a row)", "Core family", knotsUp.quote + " (" + knotsUp.sources[0].label + ")", "not measured", "not stated", "not stated", "not stated"]] : []) }
         };
 }
 

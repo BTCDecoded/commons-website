@@ -4,7 +4,7 @@
 // Research's How carries figures, the data files' own method text is shown,
 // so no number on this page comes from copy. Entries for series a separate
 // change is correcting are tagged "pending fix".
-import { esc } from "../charts.mjs";
+import { esc, govMark } from "../charts.mjs";
 
 const PEND_FIELD = { fuzz_targets: "fuzz_targets", authors_12m: "authors_12m", ci_workflows: "ci_workflows", ci_jobs: "ci_jobs", rules_share: "rules_share" };
 const STAR = { test_split_total: 1, vector_files: 1, spec_files: 1, releases_12m: 1, fuzz_targets: 1, authors_12m: 1, plugin_system: 1, direct_deps: 1, program_code: 1, checkout: 1, share_lines_ge_1000: 1, test_per_implementation: 1, rules_share: 1 };
@@ -58,7 +58,16 @@ export default {
             keyItem("\u2013", "n/a, left out of the score") +
             keyItem("\u2571", "grey hatching: not measured") +
             (Object.keys(pend).length ? keyItem("\u2571", "yellow hatching: pending fix, not final", "eco-key-med") : "") +
-            keyItem("\u2713 \u2715 ?", "stability checklist: met, not met, not measured") +
+            "<li class=\"eco-key-span\">stability checklist</li>" +
+            keyItem("\u2713", "met") +
+            keyItem("\u2715", "not met") +
+            keyItem("?", "not measured") +
+            "<li class=\"eco-key-span\">governance, and the age of the stated start</li>" +
+            "<li><span class=\"eco-key-g eco-gov eco-gov-single\">" + govMark("single") + "</span><span class=\"eco-key-l\">single maintainer</span></li>" +
+            "<li><span class=\"eco-key-g eco-gov eco-gov-group\">" + govMark("group") + "</span><span class=\"eco-key-l\">maintainer group</span></li>" +
+            "<li><span class=\"eco-key-g eco-gov eco-gov-foundation\">" + govMark("foundation") + "</span><span class=\"eco-key-l\">foundation, one signing key</span></li>" +
+            "<li><span class=\"eco-key-g eco-gov eco-gov-commons\">" + govMark("commons") + "</span><span class=\"eco-key-l\">commons governance</span></li>" +
+            "<li><span class=\"eco-key-g eco-gov eco-gov-unknown\">" + govMark("unknown") + "</span><span class=\"eco-key-l\">not classified</span></li>" +
             keyItem("\u25CF", "orange: BLVM", "eco-key-hl") +
             keyItem("\u25A0", "blue square: Bitcoin Core", "eco-key-core") +
             keyItem("\u25B2", "yellow dashed: median of all " + ctx.model.rows.length, "eco-key-med") +
