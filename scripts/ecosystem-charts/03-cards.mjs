@@ -1,8 +1,8 @@
 // One card per implementation. The face is three thumbnail charts. Selecting
 // a thumbnail opens that chart with its labels and values. The same
 // counts as the tables open under Counts, in the
-// same order on every card. A missing count says "not measured" and is not
-// drawn as zero. A comparison chart with no measured spoke is left off the
+// same order on every card. A count that is not measured is left off the
+// card, and it is not drawn as zero. A comparison chart with no measured spoke is left off the
 // card. n/a stays out of the assurance score. Fuzz targets listed in
 // ctx.model.pending say "pending fix".
 import { figure, assuranceRadial, radar, svgOnce, esc, median, govMark, releaseStage, releaseMark, assuranceRank, assuranceEmblem } from "../charts.mjs";
@@ -89,8 +89,17 @@ function fact(label, text, extra) {
     var title = [HINT[label] || "", extra || ""].filter(Boolean).join(" ");
     return "<dt>" + esc(label) + "</dt><dd" + (title ? " title=\"" + esc(title) + "\"" : "") + ">" + esc(text) + "</dd>";
 }
-function group(name) {
-    return "<div class=\"eco-card-group\">" + esc(name) + "</div>";
+function liveFact(label, text, extra) {
+    if (text === "not measured" || text === "no cut") return "";
+    return fact(label, text, extra);
+}
+function liveGroup(name, parts) {
+    var body = parts.filter(Boolean).join("");
+    return body ? "<div class=\"eco-card-group\">" + esc(name) + "</div>" + body : "";
+}
+function fold(cls, summary, body) {
+    if (!body) return "";
+    return "<details class=\"ch-more " + cls + "\"><summary>" + summary + "</summary><dl class=\"eco-counts\">" + body + "</dl></details>";
 }
 function numCell(tree, id) {
     var cell = tree && tree.values && tree.values[id];
@@ -240,34 +249,35 @@ export default {
                 "<li class=\"eco-badge\">" + esc(r.accountability.full) + "</li>" +
                 "<li class=\"eco-badge\">Modules: " + esc(metricText(r.metrics, "plugin_system")) + "</li></ul>" +
                 stabMeter(r.stability) +
-                "<details class=\"ch-more eco-onchart-fold\"><summary>On the charts</summary><dl class=\"eco-counts\">" +
-                group("Code") +
-                fact("Program", counted(tree, "program_code")) +
-                fact("Tests / line", counted(tree, "test_per_implementation")) +
-                fact("Large files", counted(tree, "share_lines_ge_1000"), half === "not measured" ? "" : half + " files hold half") +
-                fact("Rules share", counted(tree, "rules_share"), tree && tree.instrument ? tree.instrument : "") +
-                group("Stack") +
-                fact("Direct deps", r.deps.text) +
-                group("Last 12 months") +
-                fact("Authors", metricText(r.metrics, "authors_12m")) +
-                fact("Releases", metricText(r.metrics, "releases_12m")) +
-                fact("Fuzz targets", fuzzText) +
-                "</dl></details>" +
-                "<details class=\"ch-more eco-rest\"><summary>Not on the charts</summary><dl class=\"eco-counts\">" +
-                group("Code") +
-                fact("Implementation", counted(tree, "implementation_code")) +
-                fact("Tooling", counted(tree, "tooling_code")) +
-                fact("Vendored", vendored) +
-                fact("Locale", counted(tree, "locale_code")) +
-                group("Modules") +
-                fact("Modules", own, names.length ? names.join(", ") : "") +
-                fact("Independent", metricText(r.metrics, "plugin_independent")) +
-                group("Stack") +
-                fact("License", r.stack && r.stack.license ? r.stack.license : "not measured") +
-                fact("Languages", r.stack && r.stack.languages ? r.stack.languages : "not measured") +
-                group("Last 12 months") +
-                fact("CI jobs", metricText(r.metrics, "ci_jobs")) +
-                "</dl></details>" +
+                fold("eco-onchart-fold", "On the charts",
+                    liveGroup("Code", [
+                        liveFact("Program", counted(tree, "program_code")),
+                        liveFact("Tests / line", counted(tree, "test_per_implementation")),
+                        liveFact("Large files", counted(tree, "share_lines_ge_1000"), half === "not measured" ? "" : half + " files hold half"),
+                        liveFact("Rules share", counted(tree, "rules_share"), tree && tree.instrument ? tree.instrument : "")
+                    ]) +
+                    liveGroup("Stack", [liveFact("Direct deps", r.deps.text)]) +
+                    liveGroup("Last 12 months", [
+                        liveFact("Authors", metricText(r.metrics, "authors_12m")),
+                        liveFact("Releases", metricText(r.metrics, "releases_12m")),
+                        liveFact("Fuzz targets", fuzzText)
+                    ])) +
+                fold("eco-rest", "Not on the charts",
+                    liveGroup("Code", [
+                        liveFact("Implementation", counted(tree, "implementation_code")),
+                        liveFact("Tooling", counted(tree, "tooling_code")),
+                        liveFact("Vendored", vendored),
+                        liveFact("Locale", counted(tree, "locale_code"))
+                    ]) +
+                    liveGroup("Modules", [
+                        liveFact("Modules", own, names.length ? names.join(", ") : ""),
+                        liveFact("Independent", metricText(r.metrics, "plugin_independent"))
+                    ]) +
+                    liveGroup("Stack", [
+                        liveFact("License", r.stack && r.stack.license ? r.stack.license : "not measured"),
+                        liveFact("Languages", r.stack && r.stack.languages ? r.stack.languages : "not measured")
+                    ]) +
+                    liveGroup("Last 12 months", [liveFact("CI jobs", metricText(r.metrics, "ci_jobs"))])) +
                 "</div></div>" +
                 "</article>";
         }).join("");
@@ -275,7 +285,7 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-            caption: "A hatched spoke is not measured, and it is not drawn as zero. When none of the five comparisons is measured, that chart is left off the card.",
+            caption: "A hatched spoke is not measured, and it is not drawn as zero. A count that is not measured is left off the card. When none of the five comparisons is measured, that chart is left off the card.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),

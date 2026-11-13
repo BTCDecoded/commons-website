@@ -52,13 +52,7 @@ export function lineageSpec(ctx) {
         nodes.knots.shareTip = reachBy.knots.text + " of reachable nodes advertise the Knots family. The count is not split across Knots Legacy, Bit-Block, or Bitcoin Roots";
         Object.keys(nodes).forEach(function (id) {
             if (nodes[id].shareText) return;
-            if (notSplit[id]) {
-                nodes[id].shareText = "not split";
-                nodes[id].shareTip = "not reported separately from the Knots family";
-            } else {
-                nodes[id].shareText = "not measured";
-                nodes[id].shareTip = "reachable nodes not measured";
-            }
+            nodes[id].shareTip = notSplit[id] ? "not reported separately from the Knots family" : "reachable nodes not measured";
         });
         const separate = rows.filter(function (r) { return !derived[r.slug]; });
         const ownSlugs = separate.map(function (r) { return r.slug; }).sort(function (a, b) {
@@ -95,7 +89,7 @@ export function lineageSpec(ctx) {
             measures: "Where each implementation's code comes from; it matters because clients that share code share its bugs.",
             takeaway: "",
             title: "Lineage of the " + rows.length + " implementations",
-            desc: "Satoshi lineage: Bitcoin Core (" + nodes["bitcoin-core"].tag + ", " + nodes["bitcoin-core"].release.label + ", " + nodes["bitcoin-core"].shareTip + "); " + (knotsUp ? "Bitcoin Knots, a fork of Core, not a row, " + nodes.knots.shareTip + "; " : "") + "Bitcoin Roots (" + nodes["bitcoin-roots"].tag + ", " + nodes["bitcoin-roots"].release.label + ", " + nodes["bitcoin-roots"].shareTip + "), a patch series on Core that also carries Knots features; Knots Legacy (" + nodes["knots-legacy"].tag + ", " + nodes["knots-legacy"].release.label + ", " + nodes["knots-legacy"].shareTip + ") and Bit-Block (" + nodes["bit-block"].tag + ", " + nodes["bit-block"].release.label + ", " + nodes["bit-block"].shareTip + "), both from Bitcoin Knots. Own codebase: " + ownSlugs.map(function (s) { return nodes[s].label + " (" + nodes[s].tag + ", " + nodes[s].release.label + ", " + nodes[s].shareTip + ")"; }).join(", ") + ".",
+            desc: "Satoshi lineage: Bitcoin Core (" + nodes["bitcoin-core"].tag + ", " + nodes["bitcoin-core"].release.label + ", " + nodes["bitcoin-core"].shareTip + "); " + (knotsUp ? "Bitcoin Knots, a fork of Core, not a row, " + nodes.knots.shareTip + "; " : "") + "Bitcoin Roots (" + nodes["bitcoin-roots"].tag + ", " + nodes["bitcoin-roots"].release.label + "), a patch series on Core that also carries Knots features; Knots Legacy (" + nodes["knots-legacy"].tag + ", " + nodes["knots-legacy"].release.label + ") and Bit-Block (" + nodes["bit-block"].tag + ", " + nodes["bit-block"].release.label + "), both from Bitcoin Knots. Own codebase: " + ownSlugs.map(function (s) { return nodes[s].label + " (" + nodes[s].tag + ", " + nodes[s].release.label + ")"; }).join(", ") + ". A box with no reachable-node count has no share footer.",
             chart: lineage(groups, nodes, edges),
             notes: ["&ldquo;Separate&rdquo; means the data on this page states no derivation from Core or Knots. rbitcoin carries Bitcoin Core as a git submodule for tests (stack table); that is not a derivation."],
             sources: (knotsUp ? knotsUp.sources.slice(0, 1) : []).concat([{ label: "data/implementations.json (history, class, upstream)" }]).concat([ { label: "data/stack.json (languages)" }, { label: "data/node-share.json" }]).concat(reach.sources),

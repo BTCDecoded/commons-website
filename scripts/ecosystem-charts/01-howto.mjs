@@ -56,9 +56,7 @@ export default {
             "<li><span class=\"eco-key-g eco-gov eco-gov-commons\">" + govMark("commons") + "</span><span class=\"eco-key-l\">commons governance</span></li>" +
             "<li><span class=\"eco-key-g eco-gov eco-gov-unknown\">" + govMark("unknown") + "</span><span class=\"eco-key-l\">not classified</span></li>" +
             "<li><span class=\"eco-key-foot\">1 · 12 months</span><span class=\"eco-key-l\">stated maintainers, and the age of the stated start</span></li>" +
-            "<li><span class=\"eco-key-bar\" aria-hidden=\"true\"><i></i></span><span class=\"eco-key-l\">share of reachable nodes</span></li>" +
-            "<li><span class=\"eco-key-foot\">not split</span><span class=\"eco-key-l\">Knots family, not divided across those boxes</span></li>" +
-            "<li><span class=\"eco-key-foot\">not measured</span><span class=\"eco-key-l\">no share for that box</span></li>" +
+            "<li><span class=\"eco-key-bar\" aria-hidden=\"true\"><i></i></span><span class=\"eco-key-l\">share of reachable nodes, on a box that has a count</span></li>" +
             "<li><span class=\"eco-key-node\">BLVM</span><span class=\"eco-key-l\">this project</span></li>" +
             "<li><span class=\"eco-key-g eco-rel eco-rel-none\">" + releaseMark("none") + "</span><span class=\"eco-key-l\">no release</span></li>" +
             "<li><span class=\"eco-key-g eco-rel eco-rel-tag\">" + releaseMark("tag") + "</span><span class=\"eco-key-l\">tagged, not a stable line</span></li>" +

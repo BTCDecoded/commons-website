@@ -325,21 +325,22 @@ export function scatter(points, axes) {
 //   whose `flow` is true reflows its nodes into two columns.
 // nodes: { id: { label, cls, tag, facts, share, shareText } }  cls: hl | muted.
 // tag is a short language mark under the name. facts is the governance mark,
-// a stated maintainer count, and the age of the stated start. shareText is the footer.
-// share is a percent of reachable nodes when the count names that box;
-// a footer with no share is words only, not a zero-length bar.
+// a stated maintainer count, and the age of the stated start. shareText is the
+// footer, and only when this box has a share count. A box with no count has
+// no footer. share is a percent of reachable nodes when the count names that box.
 // edges: [{ from, to, dashed }]
 export function lineage(groups, nodes, edges) {
+    function boxH(n) {
+        if (!n) return 0;
+        if (n.facts && n.shareText) return 84;
+        if (n.shareText) return 64;
+        if (n.facts) return 62;
+        return n.tag ? 46 : 30;
+    }
     return function (width, uid) {
         var arrow = (uid || "ch") + "-arrow";
         var narrow = width < 500, fs = narrow ? 13 : 13;
-        var tagged = false, withFacts = false, foot = false;
-        Object.keys(nodes).forEach(function (id) {
-            if (nodes[id].tag) tagged = true;
-            if (nodes[id].facts) withFacts = true;
-            if (nodes[id].shareText) foot = true;
-        });
-        var nodeH = (withFacts && foot) ? 84 : foot ? 64 : withFacts ? 62 : (tagged ? 46 : 30), gapX = narrow ? 26 : 34, gapY = 12, pad = 10, headH = 24, groupGap = narrow ? 14 : 16;
+        var gapX = narrow ? 26 : 34, gapY = 12, pad = 10, headH = 24, groupGap = narrow ? 14 : 16;
         var pos = {}, out = "", gx = 0, gy = 0, rowH = 0;
         groups.forEach(function (g) {
             var grid = g.grid;
@@ -352,16 +353,24 @@ export function lineage(groups, nodes, edges) {
             var nodeW;
             if (narrow) nodeW = (width - 2 * pad - (cols - 1) * gapX) / cols;
             else nodeW = g.nodeW || 140;
+            var rowHs = grid.map(function (row) {
+                var h = 0;
+                row.forEach(function (id) { if (id) h = Math.max(h, boxH(nodes[id])); });
+                return h;
+            });
+            var bodyH = rowHs.reduce(function (a, h) { return a + h; }, 0) + Math.max(0, grid.length - 1) * gapY;
             var gw = 2 * pad + cols * nodeW + (cols - 1) * gapX;
-            var gh = headH + pad + grid.length * nodeH + (grid.length - 1) * gapY + pad;
+            var gh = headH + pad + bodyH + pad;
             if (narrow) { gx = 0; } else if (gx > 0 && gx + gw > width) { gx = 0; gy += rowH + groupGap; rowH = 0; }
             out += "<rect x=\"" + fmt(gx + 0.5) + "\" y=\"" + fmt(gy + 0.5) + "\" width=\"" + fmt(gw - 1) + "\" height=\"" + fmt(gh - 1) + "\" rx=\"8\" class=\"ch-group" + (g.cls ? " ch-group-" + g.cls : "") + "\"/>";
             out += t(gx + pad, gy + 17, g.label, "ch-t ch-ghead");
+            var yRow = gy + headH + pad;
             grid.forEach(function (row, ri) {
                 row.forEach(function (id, ci) {
                     if (!id) return;
-                    pos[id] = { x: gx + pad + ci * (nodeW + gapX), y: gy + headH + pad + ri * (nodeH + gapY), w: nodeW, h: nodeH };
+                    pos[id] = { x: gx + pad + ci * (nodeW + gapX), y: yRow, w: nodeW, h: boxH(nodes[id]) };
                 });
+                yRow += rowHs[ri] + gapY;
             });
             if (narrow) { gy += gh + groupGap; } else { gx += gw + groupGap; rowH = Math.max(rowH, gh); }
         });
