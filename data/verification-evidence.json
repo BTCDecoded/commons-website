@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-13",
+  "sources": {
+    "spec_lock": {
+      "commit": "bddfae4ac8063f78bf654d7a2245c810d89f98d1",
+      "readme": "README.md",
+      "mutation": "docs/MUTATION_COVERAGE.md",
+      "sentences": "docs/sentence-inventory.tsv",
+      "attributes": "SPEC_LOCK_COVERAGE.md"
+    },
+    "consensus": {
+      "commit": "f63c32856a2da874296524f40b8cbd35518d8096",
+      "verification": "docs/VERIFICATION.md"
+    }
+  },
+  "levels": [
+    {
+      "id": "body_proof",
+      "label": "Proved from the function body",
+      "count": 13,
+      "denominator": null,
+      "counts_as_proof": true,
+      "note": "The check passes on the code as written, and two edits of the body make it fail. Not added to the lists below."
+    },
+    {
+      "id": "tool_mutation_list",
+      "label": "Tool mutation list",
+      "count": 34,
+      "denominator": 34,
+      "counts_as_proof": true,
+      "note": "docs/MUTATION_COVERAGE.md. A different list from the body-proof pass. Every row on that list is locked."
+    },
+    {
+      "id": "written_mutation_list",
+      "label": "Older written mutation list",
+      "count": 93,
+      "denominator": 224,
+      "counts_as_proof": false,
+      "note": "blvm-consensus docs/VERIFICATION.md. That file says this is not the current body-proof pass."
+    },
+    {
+      "id": "spec_locked_attributes",
+      "label": "spec_locked attributes",
+      "count": 281,
+      "denominator": null,
+      "counts_as_proof": false,
+      "note": "Attribute count. Not a count of passing contract checks. A passing contract check is not a proof."
+    }
+  ],
+  "sentences": {
+    "total": 275,
+    "both": 1,
+    "lean": 15,
+    "disputed": 1,
+    "unsupported": 258,
+    "notYet": 259
+  },
+  "body_proof_functions": [
+    "sigop_count_push_opcode",
+    "is_pay_to_script_hash",
+    "validate_supply_limit",
+    "is_witness_empty",
+    "is_witness_version_opcode",
+    "validate_taproot_script",
+    "validate_segwit_witness_structure",
+    "tx_has_nonempty_input_witness",
+    "script_bool_bytes",
+    "is_version_zero_witness_program",
+    "validate_taproot_script_path_with_leaf_version",
+    "locktime_types_match",
+    "and tx_requires_witness_script_flags"
+  ],
+  "text": "Body proofs: 13 functions. The check passes, and two edits of the body make it fail. Tool mutation list: 34 of 34, a different list. Older written mutation list: 93 of 224, not this pass. spec_locked attributes: 281. That is not a passing-check count and not a proof. Of 275 Orange Paper sentences, 1 is proved in Rust and Lean, 15 in Lean only, 259 not yet. 1 of the not-yet sentences is spec_disputed (theorem 6.2.3 real series) and is not a Lean proof. These lists overlap. They are not a sum.",
+  "passing_contract_check": {
+    "counts_as_proof": false,
+    "measured": false,
+    "note": "No verify JSON (report_format 2) was supplied. The attribute count is not that measurement."
+  }
+}

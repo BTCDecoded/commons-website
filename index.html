@@ -165,7 +165,7 @@
           <div class="implementation-meta">
             <div class="implementation-name">
               BLVM
-              <span id="release-banner-badge" class="implementation-version">v0.1.35</span>
+              <span id="release-banner-badge" class="implementation-version">v0.1.80</span>
             </div>
             <div class="implementation-note">by BTCDecoded</div>
           </div>
@@ -522,8 +522,12 @@
                     Bitcoin Core remains the dominant full-node implementation,
                     with no authoritative formal specification tied
                     line-for-line to that code and concentrated merge authority.
-                    Redundancy matters: CVE-2018-17144 remained in Bitcoin Core
-                    production releases for nearly two years before the fix. An
+                    Redundancy matters: CVE-2018-17144 shipped in Bitcoin Core
+                    0.14.0 (March 2017) and was fixed in 0.16.3 (September 2018).
+                    That is 18 months for the crash. The inflation case arrived
+                    in 0.15.0 (September 2017), about 12 months before the same
+                    fix. Sources: the Bitcoin Core 0.16.3 release notes and the
+                    20 September 2018 disclosure. An
                     independent client that tests the same chain against the
                     reference node — property tests, fuzzing, golden vectors,
                     and a Core differential — is the kind of parallel
