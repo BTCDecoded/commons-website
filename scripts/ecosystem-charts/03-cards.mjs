@@ -1,8 +1,9 @@
 // One card per implementation. The face is a short count row and three
 // small charts. The same counts as the tables open under Counts, in the
-// same order on every card. A missing
-// count says "not measured" and is not drawn as zero. n/a stays out of the
-// assurance score. Fuzz targets listed in ctx.model.pending say "pending fix".
+// same order on every card. A missing count says "not measured" and is not
+// drawn as zero. A comparison chart with no measured spoke is left off the
+// card. n/a stays out of the assurance score. Fuzz targets listed in
+// ctx.model.pending say "pending fix".
 import { figure, assuranceRadial, radar, svgOnce, esc, median } from "../charts.mjs";
 import { codeHealth } from "./06-stars.mjs";
 
@@ -159,7 +160,7 @@ export default {
                 return { v: v, text: a.text(checkouts[idx], tree) };
             });
             const cmpDesc = r.name + " comparisons. " + cmpAxes.map(function (a, i) { return a.short + " " + cmpValues[i].text; }).join(", ") + ".";
-            const cmpMeasured = cmpValues.some(function (v) { return typeof v.v === "number"; });
+const cmpMeasured = cmpValues.some(function (v) { return typeof v.v === "number"; });
             const cmpStar = cmpMeasured ? svgOnce(id + "-cmp", 168, radar(cmpAxes, [{ name: r.name, cls: r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "", values: cmpValues }], { labels: "none", size: 168 }), r.name + " comparison star", cmpDesc, "eco-star") : "";
             function chip(label, text, title) {
                 return "<li" + (title ? " title=\"" + esc(title) + "\"" : "") + "><span class=\"k\">" + esc(label) + "</span><span class=\"v\">" + esc(text) + "</span></li>";
@@ -211,7 +212,7 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-            caption: "Selecting an implementation in the charts above opens this card over the page. The face is a short row of counts and three small charts: assurance, code health, and the five comparisons. A full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a or not measured. Dashed triangles on the health chart are the median. A hatched spoke is not measured, and it is not drawn as zero. When none of the five comparisons is measured, that chart is left off the card. The full list opens under Counts.",
+caption: "Selecting an implementation in the charts above opens this card over the page. The face is a short row of counts and three small charts: assurance, code health, and the five comparisons. A full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a or not measured. Dashed triangles on the health chart are the median. A hatched spoke is not measured, and it is not drawn as zero. When none of the five comparisons is measured, that chart is left off the card. The full list opens under Counts.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),
