@@ -60,7 +60,7 @@
         },
         "test_vectors": {
           "status": "yes",
-          "text": "Every committed row of script_tests, tx_valid, and tx_invalid is executed or skipped for a named reason: 1,263 script rows, 122 valid transaction rows, and 84 invalid transaction rows run",
+          "text": "Every committed row of script_tests, tx_valid, and tx_invalid is executed or skipped for a named reason: 1,263 script rows, 122 valid transaction rows, and 84 invalid transaction rows run. BIP340 runs 19 rows, SipHash-2-4 runs 146 rows, and 10 basic block filters run. SipHash-1-3 is skipped.",
           "source": "https://github.com/BTCDecoded/blvm-consensus/tree/db81faac6d6550057840ac38de0855ede78259f7/tests/core_test_vectors"
         },
         "property_tests": {
