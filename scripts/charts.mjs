@@ -640,6 +640,7 @@ export function fieldMap(cols, points, opts) {
     opts = opts || {};
     return function (width) {
         var narrow = width < 500, axisW = narrow ? 34 : 44, pillH = narrow ? 56 : 54, gap = 4;
+        var hasMedian = opts.median != null && isFinite(opts.median);
         var colW = (width - axisW) / cols.length;
         var counts = cols.map(function (c) { return points.filter(function (p) { return p.col === c.id; }).length; });
         var plotH = Math.max(narrow ? 360 : 320, Math.max.apply(null, counts) * (pillH + gap) + 8);
@@ -650,6 +651,12 @@ export function fieldMap(cols, points, opts) {
             out += t(axisW - 6, y + 4, v + "%", "ch-t ch-muted", " text-anchor=\"end\" font-size=\"11\"");
         });
         out += t(0, 12, opts.yLabel || "", "ch-t ch-muted", " font-size=\"11\"");
+        if (hasMedian) {
+            var my = top + plotH * (1 - opts.median / 100);
+            var medLabel = Number.isInteger(opts.median) ? String(opts.median) : String(opts.median);
+            out += "<line x1=\"" + axisW + "\" x2=\"" + width + "\" y1=\"" + fmt(my) + "\" y2=\"" + fmt(my) + "\" class=\"ch-median-line\"/>";
+            out += t(width, top + plotH + 16, "median " + medLabel + "%", "ch-t ch-med-label", " text-anchor=\"end\" font-size=\"11\"");
+        }
         cols.forEach(function (c, ci) {
             var x0 = axisW + ci * colW, dotX = x0 + 14;
             out += t(x0 + 6, top - 10, c.label, "ch-t ch-ghead");
@@ -675,7 +682,7 @@ export function fieldMap(cols, points, opts) {
                 out += "</a>";
             });
         });
-        return { body: out, height: top + plotH + 8 };
+        return { body: out, height: top + plotH + (hasMedian ? 24 : 8) };
     };
 }
 

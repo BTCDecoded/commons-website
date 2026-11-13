@@ -15,6 +15,7 @@ const verification = JSON.parse(fs.readFileSync(path.join(root, "data/verificati
 const stack = JSON.parse(fs.readFileSync(path.join(root, "data/stack.json"), "utf8"));
 const stability = JSON.parse(fs.readFileSync(path.join(root, "data/stability.json"), "utf8"));
 const metrics = JSON.parse(fs.readFileSync(path.join(root, "data/metrics.json"), "utf8"));
+const forms = JSON.parse(fs.readFileSync(path.join(root, "data/forms.json"), "utf8"));
 
 function esc(s) {
     return String(s).replace(/[&<>"]/g, function (c) {
@@ -482,6 +483,22 @@ function buildModel() {
     });
     return { rows: rows, pending: PENDING, points: POINTS, accountRanks: ACCOUNT, stability: { note: stability.note, rule: stability.score_rule, definition: stability.definition, status: stability.status, extra: extra } };
 }
+function formsTotal(row) {
+    if (row.total == null) return "n/a";
+    return row.total + " of " + forms.total_points;
+}
+slots["forms"] = forms.rows.map(function (row) {
+    const na = row.total == null;
+    const reason = row.na_reason || "";
+    const title = na ? " title=\"" + esc(reason) + "\"" : "";
+    const dash = na ? " class=\"eco-dash\"" : "";
+    const conf = row.confidence == null ? "n/a" : row.confidence;
+    return "<tr><th scope=\"row\">" + esc(row.name) + "</th>" +
+        "<td data-label=\"Total\"" + dash + title + ">" + esc(formsTotal(row)) + "</td>" +
+        "<td data-label=\"Confidence\"" + dash + title + ">" + esc(conf) + "</td>" +
+        "<td class=\"m-full\" data-label=\"Reading\">" + esc(row.reading) + "</td></tr>";
+}).join("");
+
 const chartCtx = { root: root, data: data, verification: verification, stack: stack, metrics: metrics, stability: stability, model: buildModel(), readJson: function (rel) { return JSON.parse(fs.readFileSync(path.join(root, rel), "utf8")); } };
 for (const file of fs.existsSync(chartDir) ? fs.readdirSync(chartDir).filter(function (f) { return f.endsWith(".mjs"); }).sort() : []) {
     const def = (await import(pathToFileURL(path.join(chartDir, file)).href)).default;
