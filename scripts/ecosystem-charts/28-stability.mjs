@@ -55,7 +55,7 @@ export default {
             id: "fig-stability",
             headline: headline,
             caption: "Filled means the check holds. Empty means it was checked and does not hold. Rows are sorted by how many checks hold. Columns: " + cols.map(function (c) { return c.label + " is " + c.full; }).join("; ") + ". A version of 1.0 or an LTS line holds for " + lineMet + " of " + line.length + " Core-line trees and " + ownMet + " of " + own.length + " own-code trees. That column follows the version number. The Sign column is a signature or a reproducible build. Tracks-an-upstream-line is not in this grid.",
-            measures: "Which of the seven release checks each tree meets. The count on a card is the number of filled cells in that row.",
+            measures: "Which of the seven release checks each tree meets. The count on a card is the number of filled cells in that row; it matters because a node whose releases follow a predictable, reviewed process is safer to run and upgrade.",
             takeaway: "A row that misses one check is not almost the full row. The missing check is the thing to read.",
             title: "Release stability by implementation",
             desc: rows.map(function (r) { return r.label + ": " + r.met + " of " + checks.length + " met"; }).join("; ") + ".",
