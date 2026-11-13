@@ -1,6 +1,6 @@
-// One card per implementation. The face is the charts: assurance radial,
-// code-health star, and the five-spoke comparison star. The same counts
-// as the tables open under Counts, in the same order on every card. A missing
+// One card per implementation. The face is a short count row and three
+// small charts. The same counts as the tables open under Counts, in the
+// same order on every card. A missing
 // count says "not measured" and is not drawn as zero. n/a stays out of the
 // assurance score. Fuzz targets listed in ctx.model.pending say "pending fix".
 import { figure, assuranceRadial, radar, svgOnce, esc, median } from "../charts.mjs";
@@ -86,11 +86,6 @@ function numCell(tree, id) {
     if (!cell || cell.status !== "measured" || typeof cell.value !== "number") return null;
     return cell;
 }
-function metricNum(metrics, id) {
-    var cell = metrics && metrics[id];
-    if (!cell || cell.status !== "measured" || typeof cell.value !== "number") return null;
-    return cell;
-}
 function testLines(metrics) {
     if (!metrics) return null;
     var keys = ["test_insource", "test_folder", "test_fuzz", "test_property"], sum = 0, i, cell;
@@ -102,9 +97,6 @@ function testLines(metrics) {
     cell = metrics.test_split_total;
     if (cell && cell.status === "measured" && cell.value !== sum) throw new Error("card checkout tests do not match test_split_total");
     return sum;
-}
-function pct(v, scale) {
-    return Math.max(0, Math.min(100, scale ? (v / scale) * 100 : 0)).toFixed(1);
 }
 function checkoutOf(r, tree) {
     if (!tree) return null;
@@ -125,10 +117,6 @@ function rulesReading(tree) {
     if (cell.status !== "measured" || typeof cell.value !== "number") return { text: cell.text || "not measured", value: null };
     return { text: cell.text, value: cell.value };
 }
-function barRow(label, text, value, scale, cls, title) {
-    var bar = value === null ? "" : "<span class=\"mini\" aria-hidden=\"true\"><span class=\"mini-fill" + (cls ? " " + cls : "") + "\" style=\"width:" + pct(value, scale) + "%\"></span></span>";
-    return "<li title=\"" + esc(title || "") + "\"><span class=\"lbl\">" + esc(label) + "</span><span class=\"num\">" + esc(text) + "</span>" + bar + "</li>";
-}
 export default {
     slot: "chart-cards",
     build: function (ctx) {
@@ -137,7 +125,6 @@ export default {
         const pendFuzz = "fuzz_targets" in ctx.model.pending;
         const health = codeHealth(rows, ctx.model.pending);
         const checkouts = rows.map(function (r) { return checkoutOf(r, treeOf(ctx, r.slug)); });
-        const moduleMax = Math.max.apply(null, rows.map(function (r) { var c = metricNum(r.metrics, "plugin_own"); return c ? c.value : 0; })) || 1;
         function cellText(tree, id) { var n = numCell(tree, id); return n ? n.text : "not measured"; }
         const cmpAxes = [
             { short: "Checkout", get: function (c) { return c ? c.total : null; }, text: function (c) { return c ? c.total.toLocaleString("en-US") : "not measured"; } },
@@ -157,34 +144,43 @@ export default {
             const desc = r.name + ". Assurance " + a.score + " of " + a.max + ": " + a.cells.map(function (c) { return c.name + " " + c.status; }).join(", ") + ".";
             const NARROW_LABEL = { formal_spec: "Spec", test_vectors: "Vectors", property_tests: "Property", fuzzing: "Fuzz", formal_verification: "Proofs", differential: "Diff" };
             const cells = a.cells.map(function (c) { return Object.assign({}, c, { label: NARROW_LABEL[c.id] || c.short }); });
-            const radial = svgOnce(id + "-r", 350, assuranceRadial(cells, { size: 300, labelSize: 17, center: a.score + "/" + a.max, centerSub: "assurance", cls: r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "" }), r.name + " assurance radial", desc);
+            const radial = svgOnce(id + "-r", 168, assuranceRadial(cells, { size: 160, labels: "none", center: a.score + "/" + a.max, centerSub: "assurance", cls: r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "" }), r.name + " assurance radial", desc);
             const tree = treeOf(ctx, r.slug);
             const half = counted(tree, "files_holding_half");
             const names = r.metrics && Array.isArray(r.metrics.plugin_names) ? r.metrics.plugin_names : [];
             const own = metricText(r.metrics, "plugin_own");
-            const ownNum = metricNum(r.metrics, "plugin_own");
             const fuzzText = pendFuzz ? "pending fix" : metricText(r.metrics, "fuzz_targets");
             const vendored = tree ? counted(tree, "vendored_code") : (r.stack && r.stack.vendored ? r.stack.vendored : "not measured");
-            const ink = r.internal ? "internal" : "";
             const starSeries = health.series(r, r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "");
             const starDesc = r.name + " code health. " + health.axes.map(function (axis, i) { return axis.short + " " + starSeries.values[i].text; }).join(", ") + ". Median of " + rows.length + ": " + health.axes.map(function (axis, i) { return axis.short + " " + health.median.values[i].text; }).join(", ") + ".";
-            const star = svgOnce(id + "-s", 340, radar(health.axes, [starSeries, health.median], { labels: "short", values: true, pad: 64, size: 340 }), r.name + " code-health star", starDesc, "eco-star");
+            const star = svgOnce(id + "-s", 168, radar(health.axes, [starSeries, health.median], { labels: "none", size: 168 }), r.name + " code-health star", starDesc, "eco-star");
             const cmpValues = cmpAxes.map(function (a) {
                 var v = a.get(checkouts[idx], tree);
                 return { v: v, text: a.text(checkouts[idx], tree) };
             });
             const cmpDesc = r.name + " comparisons. " + cmpAxes.map(function (a, i) { return a.short + " " + cmpValues[i].text; }).join(", ") + ".";
-            const cmpStar = svgOnce(id + "-cmp", 340, radar(cmpAxes, [{ name: r.name, cls: r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "", values: cmpValues }], { labels: "short", values: true, pad: 78, size: 340 }), r.name + " comparison star", cmpDesc, "eco-star");
-            const modules = "<ul class=\"eco-card-bars\">" +
-                barRow("Modules", own, ownNum ? ownNum.value : null, moduleMax, ink, (names.length ? names.join(", ") + ". " : "") + HINT["Modules"]) +
+            const cmpMeasured = cmpValues.some(function (v) { return typeof v.v === "number"; });
+            const cmpStar = cmpMeasured ? svgOnce(id + "-cmp", 168, radar(cmpAxes, [{ name: r.name, cls: r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "", values: cmpValues }], { labels: "none", size: 168 }), r.name + " comparison star", cmpDesc, "eco-star") : "";
+            function chip(label, text, title) {
+                return "<li" + (title ? " title=\"" + esc(title) + "\"" : "") + "><span class=\"k\">" + esc(label) + "</span><span class=\"v\">" + esc(text) + "</span></li>";
+            }
+            const nums = "<ul class=\"eco-card-nums\">" +
+                chip("Assurance", a.score + "/" + a.max) +
+                cmpAxes.map(function (axis, i) { return chip(axis.short, cmpValues[i].text); }).join("") +
+                chip("Modules", own, (names.length ? names.join(", ") + ". " : "") + HINT["Modules"]) +
                 "</ul>";
+            const charts = "<div class=\"eco-card-charts\">" +
+                "<figure>" + radial + "<figcaption>Assurance</figcaption></figure>" +
+                "<figure>" + star + "<figcaption>Health</figcaption></figure>" +
+                (cmpMeasured ? "<figure>" + cmpStar + "<figcaption>Compare</figcaption></figure>" : "") +
+                "</div>";
             return "<article class=\"eco-card" + (r.internal ? " internal" : "") + "\" id=\"" + id + "\" aria-labelledby=\"" + id + "-h\">" +
                 "<h3 id=\"" + id + "-h\">" + esc(r.name) + "</h3>" +
                 "<ul class=\"eco-badges\" aria-label=\"Badges\">" +
                 "<li class=\"eco-badge eco-badge-" + r.lineage.cls + "\"><span aria-hidden=\"true\">" + LIN_GLYPH[r.lineage.cls] + " </span>" + esc(r.lineage.label) + "</li>" +
                 "<li class=\"eco-badge\">" + esc(r.accountability.full) + "</li>" +
                 "<li class=\"eco-badge\">Modules: " + esc(metricText(r.metrics, "plugin_system")) + "</li></ul>" +
-                radial + star + cmpStar + modules +
+                nums + charts +
                 stabMeter(r.stability) +
                 "<details class=\"ch-more\"><summary>Counts</summary><dl>" +
                 group("Code") +
@@ -215,7 +211,7 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-            caption: "Selecting an implementation in the charts above opens this card over the page. Each card leads with the charts. The radial is the six assurance checks: a full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a. The first star is the code-health chart, on the same scales as the star section; dashed triangles are the median. The second star is checkout, program lines, large files, tests per line, and rules share, each spoke scaled to the largest measured value. A hatched spoke is not measured, and it is not drawn as zero. Modules is the project's own optional modules. The counts open under Counts.",
+            caption: "Selecting an implementation in the charts above opens this card over the page. The face is a short row of counts and three small charts: assurance, code health, and the five comparisons. A full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a or not measured. Dashed triangles on the health chart are the median. A hatched spoke is not measured, and it is not drawn as zero. When none of the five comparisons is measured, that chart is left off the card. The full list opens under Counts.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),
