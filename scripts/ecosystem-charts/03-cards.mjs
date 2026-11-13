@@ -23,11 +23,17 @@ function stabMeter(st) {
     const segs = st.total ? st.cells.map(function (c) {
         return "<span class=\"eco-stab-seg s-" + c.status + "\" title=\"" + esc(c.label + ": " + c.status.replace("_", " ")) + "\">" + STAB_GLYPH[c.status] + "</span>";
     }).join("") : "<span class=\"eco-stab-seg s-not_measured s-all\">not measured</span>";
+    const names = { met: "met", not_met: "not met", not_measured: "not measured" };
+    const used = st.total ? ["met", "not_met", "not_measured"].filter(function (k) { return st.cells.some(function (c) { return c.status === k; }); }) : ["not_measured"];
+    const relKey = "<ul class=\"eco-markkey\">" + used.map(function (k) {
+        return "<li><span class=\"eco-stab-seg s-" + k + " eco-keyseg\">" + STAB_GLYPH[k] + "</span> " + names[k] + "</li>";
+    }).join("") + "</ul>";
     const lists = (st.total ? ["met", "not_met", "not_measured"].map(function (k) {
         const xs = st.cells.filter(function (c) { return c.status === k; });
         return xs.length ? "<p class=\"eco-stab-list s-" + k + "\"><b>" + STAB_GLYPH[k] + " " + ({ met: "Met", not_met: "Not met", not_measured: "Not measured" })[k] + ":</b> " + esc(xs.map(function (c) { return c.label; }).join(", ")) + "</p>" : "";
     }).join("") : "") + st.tags.filter(function (t) { return t.status !== "n/a"; }).map(function (t) { return "<p class=\"eco-stab-tag\"><b>" + esc(t.label) + ":</b> " + (t.tag ? esc(t.tag) + "" : "not measured") + "</p>"; }).join("");
     return "<div class=\"eco-stab\"><p class=\"eco-stab-h\"><b>Release</b> <span" + (st.measured ? "" : " class=\"nm\"") + ">" + esc(st.text) + "</span></p>" +
+        relKey +
         "<div class=\"eco-stab-meter\">" + segs + "</div>" +
         (lists ? "<details class=\"ch-more\"><summary>Checks</summary>" + lists + "</details>" : "") + "</div>";
 }
@@ -182,25 +188,27 @@ export default {
             function zoomChart(caption, thumb, full, data, extra) {
                 return "<details class=\"eco-zoom\"><summary><span class=\"eco-zoom-shut\">" + thumb + "<span class=\"eco-thumb-cap\">" + caption + "</span></span><span class=\"eco-zoom-open\">Close chart</span></summary><div class=\"eco-zoom-body\"><button type=\"button\" class=\"eco-zoom-x\">Close chart</button>" + full + (extra || "") + (data ? "<script type=\"application/json\" class=\"eco-radar\">" + data + "</script>" : "") + "</div></details>";
             }
+            function wedge(status) {
+                var uid = id + "-leg-" + status.replace(/[^a-z]/g, "");
+                var hatch = status === "n/a" ? "<defs><pattern id=\"" + uid + "\" width=\"4\" height=\"4\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><rect width=\"4\" height=\"4\" class=\"ch-hatch-bg\"/><line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"4\" class=\"ch-hatch\"/></pattern></defs>" : "";
+                var track = "<path d=\"M9 10 L9 3 A7 7 0 0 1 15.1 13.5 Z\" class=\"ch-wtrack\"" + (status === "n/a" ? " style=\"fill:url(#" + uid + ")\"" : "") + "/>";
+                var fill = status === "yes" ? "<path d=\"M9 10 L9 3 A7 7 0 0 1 15.1 13.5 Z\" class=\"ch-wfill" + (radialCls ? " ch-w-" + radialCls : "") + "\"/>"
+                    : status === "partial" ? "<path d=\"M9 10 L9 6 A4 4 0 0 1 12.5 12 Z\" class=\"ch-wfill ch-wfill-p" + (radialCls ? " ch-w-" + radialCls : "") + "\"/>" : "";
+                return "<svg class=\"eco-wswatch\" viewBox=\"0 0 18 18\" width=\"18\" height=\"18\" aria-hidden=\"true\">" + hatch + track + fill + "</svg>";
+            }
+            const seen = {};
+            cells.forEach(function (c) { seen[c.status] = 1; });
+            const wedgeLabel = { "yes": "yes, 2 points", "partial": "partial, 1 point", "not found": "not found, 0 points", "n/a": "n/a, left out" };
+            const markkey = "<ul class=\"eco-markkey\">" + ["yes", "partial", "not found", "n/a"].filter(function (s) { return seen[s]; }).map(function (s) {
+                return "<li>" + wedge(s) + " " + wedgeLabel[s] + "</li>";
+            }).join("") + "</ul>";
             const layers = "<p class=\"eco-layers\">" + cells.map(function (c) { return "<span><b>" + esc(c.label) + "</b> " + esc(c.status) + "</span>"; }).join("") + "</p>";
-            const charts = "<ul class=\"eco-read\" aria-label=\"How to read the charts\">" +
-                "<li class=\"eco-read-span\">Assurance</li>" +
-                "<li><span aria-hidden=\"true\">\u25CF</span> yes, 2 points</li>" +
-                "<li><span aria-hidden=\"true\">\u25D0</span> partial, 1 point</li>" +
-                "<li><span aria-hidden=\"true\">\u25CB</span> not found, 0 points</li>" +
-                "<li><span aria-hidden=\"true\">\u2013</span> n/a, left out of the score</li>" +
-                "<li><span aria-hidden=\"true\">\u2571</span> grey hatching: not measured</li>" +
-                "<li class=\"eco-read-span\">Release</li>" +
-                "<li><span aria-hidden=\"true\">\u2713</span> met</li>" +
-                "<li><span aria-hidden=\"true\">\u2715</span> not met</li>" +
-                "<li><span aria-hidden=\"true\">?</span> not measured</li>" +
-                "<li class=\"eco-read-span\">Stars</li>" +
-                "<li class=\"eco-read-hl\"><span aria-hidden=\"true\">\u25CF</span> BLVM</li>" +
-                "<li class=\"eco-read-core\"><span aria-hidden=\"true\">\u25A0</span> Bitcoin Core</li>" +
-                "<li class=\"eco-read-med\"><span aria-hidden=\"true\">\u25B2</span> median of all " + rows.length + "</li>" +
-                "</ul><div class=\"eco-card-charts\">" +
-                zoomChart("Assurance", radialThumb, radial, "", layers) +
-                zoomChart("Health", starThumb, star, healthData) +
+            const implShape = r.internal || r.lineage.cls !== "core" ? "circle" : "square";
+            const implTone = r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "all";
+            const healthKey = "<p class=\"eco-series\"><span><i class=\"eco-swatch " + implShape + " " + implTone + "\" aria-hidden=\"true\"></i>" + esc(r.name) + "</span><span><i class=\"eco-swatch tri\" aria-hidden=\"true\"></i>Median</span></p>";
+            const charts = "<div class=\"eco-card-charts\">" +
+                zoomChart("Assurance", radialThumb, radial, "", markkey + layers) +
+                zoomChart("Health", starThumb, star, healthData, healthKey) +
                 (cmpMeasured ? zoomChart("Compare", cmpThumb, cmpStar, cmpData) : "") +
                 "</div>";
             const pk = r.picker;

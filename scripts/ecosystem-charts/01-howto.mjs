@@ -49,19 +49,17 @@ export default {
             if (/^Assurance radials score/.test(l)) return l.replace(" That rule is printed on the page.", "").replace("A not-measured, partial, or n/a cell", "A not-measured or n/a cell");
             return l;
         });
-        function keyItem(glyph, text, cls) {
-            return "<li><span class=\"eco-key-g" + (cls ? " " + cls : "") + "\" aria-hidden=\"true\">" + glyph + "</span><span class=\"eco-key-l\">" + text + "</span></li>";
-        }
         return "<ul class=\"eco-keys\" id=\"eco-key\" aria-label=\"Key\">" +
-            "<li class=\"eco-key-span\">on each box</li>" +
             "<li><span class=\"eco-key-g eco-gov eco-gov-single\">" + govMark("single") + "</span><span class=\"eco-key-l\">single maintainer</span></li>" +
             "<li><span class=\"eco-key-g eco-gov eco-gov-group\">" + govMark("group") + "</span><span class=\"eco-key-l\">maintainer group</span></li>" +
             "<li><span class=\"eco-key-g eco-gov eco-gov-foundation\">" + govMark("foundation") + "</span><span class=\"eco-key-l\">foundation, one signing key</span></li>" +
             "<li><span class=\"eco-key-g eco-gov eco-gov-commons\">" + govMark("commons") + "</span><span class=\"eco-key-l\">commons governance</span></li>" +
             "<li><span class=\"eco-key-g eco-gov eco-gov-unknown\">" + govMark("unknown") + "</span><span class=\"eco-key-l\">not classified</span></li>" +
-            "<li class=\"eco-key-span\">a number is the stated maintainer count. The words after it are the age of the stated start.</li>" +
-            "<li class=\"eco-key-span\">a bar is the share of reachable nodes. Not split and not measured have no bar.</li>" +
-            keyItem("\u25CF", "orange name: BLVM", "eco-key-hl") +
+            "<li><span class=\"eco-key-foot\">1 · 12 months</span><span class=\"eco-key-l\">stated maintainers, and the age of the stated start</span></li>" +
+            "<li><span class=\"eco-key-bar\" aria-hidden=\"true\"><i></i></span><span class=\"eco-key-l\">share of reachable nodes</span></li>" +
+            "<li><span class=\"eco-key-foot\">not split</span><span class=\"eco-key-l\">Knots family, not divided across those boxes</span></li>" +
+            "<li><span class=\"eco-key-foot\">not measured</span><span class=\"eco-key-l\">no share for that box</span></li>" +
+            "<li><span class=\"eco-key-node\">BLVM</span><span class=\"eco-key-l\">this project</span></li>" +
             "</ul>" +
             "<details class=\"eco-howto ch-more\" id=\"howto\"><summary>How to read this page</summary>" +
             "<ul class=\"eco-howto-lines\">" + lines.map(function (l) { return "<li>" + md(l) + "</li>"; }).join("") + "</ul>" +
