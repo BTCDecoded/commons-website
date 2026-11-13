@@ -82,7 +82,7 @@
       "name": "BLVM",
       "side": "internal",
       "profile": "rust-workspace",
-      "instrument": "Crate-role cut (not measured)",
+      "instrument": "Repository cut: governance and blvm-commons",
       "commit": "c789e8c66e050ad2f855a9abbb40af82a99dc1f0",
       "shallow": false,
       "values": {
@@ -102,16 +102,16 @@
           "status": "measured"
         },
         "rules_share": {
-          "value": null,
-          "text": "not measured",
-          "status": "not-measured",
-          "note": "The crate-role map used for the earlier 10.7% / 0.0% figures was not found, so these cells were not recomputed for the composite crate set and are not measured. The previous numbers are not kept, because they described a different crate set."
+          "value": 8.7,
+          "text": "8.7%",
+          "status": "measured",
+          "note": "Rules side is governance d647d3e099b1 (39 code lines) and blvm-commons 94ced503f451 (29,522 code lines). Same counter as the size row: tokei code lines in programming languages, tests out. The governance repository's written schedule is YAML and is outside that counter (3,188 YAML lines). The share is 29,561 / (308,732 + 29,561). The two repositories are not inside the 308,732 implementation cell. Left mixed is 0.0% because every counted line is on one side of the cut."
         },
         "mixed_share": {
-          "value": null,
-          "text": "not measured",
-          "status": "not-measured",
-          "note": "The crate-role map used for the earlier 10.7% / 0.0% figures was not found, so these cells were not recomputed for the composite crate set and are not measured. The previous numbers are not kept, because they described a different crate set."
+          "value": 0.0,
+          "text": "0.0%",
+          "status": "measured",
+          "note": "The counted crates are the other side of the cut. governance and blvm-commons are the rules side. Nothing was left unsplit."
         },
         "test_per_implementation": {
           "value": 0.63,
@@ -189,7 +189,7 @@
           "role": "tooling"
         }
       ],
-      "size_method": "tokei 14 code lines in programming languages. Default node first-party crates plus blvm-sdk (blvm-storage-fence is in the node tree; blvm-sdk-macros is in the sdk tree). blvm-spec-lock non-test lines are tooling; its tests count as tests. A Rust file named *_test.rs or *_tests.rs, a file under tests/, test/, fuzz/, bench(es)/, or e2e/, and lines inside a #[cfg(test)] or #[cfg(all(..., test))] item count as tests. Vendored and locale: none. Script: scripts/measure-ecosystem-metrics.py. Protocol, consensus, secp256k1, muhash, and sdk remeasured 2026-11-13. Node and primitives stay at the 2026-11-13 pins. Spec-lock stays at the 2026-11-12 pin. The crate-role cut (rules share, left mixed) was not remade: the role map was not found, so those two cells are not measured rather than kept from the previous crate set."
+      "size_method": "tokei 14 code lines in programming languages. Default node first-party crates plus blvm-sdk (blvm-storage-fence is in the node tree; blvm-sdk-macros is in the sdk tree). blvm-spec-lock non-test lines are tooling; its tests count as tests. A Rust file named *_test.rs or *_tests.rs, a file under tests/, test/, fuzz/, bench(es)/, or e2e/, and lines inside a #[cfg(test)] or #[cfg(all(..., test))] item count as tests. Vendored and locale: none. Script: scripts/measure-ecosystem-metrics.py. Protocol, consensus, secp256k1, muhash, and sdk remeasured 2026-11-13. Node and primitives stay at the 2026-11-13 pins. Spec-lock stays at the 2026-11-12 pin. Rules share measured 2026-11-13 from governance d647d3e099b1 and blvm-commons 94ced503f451. The rules side is those two repositories. The share is their code lines divided by the counted implementation plus those lines. YAML in the governance repository is outside the code counter."
     },
     {
       "slug": "bitcoin-core",

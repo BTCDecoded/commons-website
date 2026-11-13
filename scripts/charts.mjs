@@ -51,16 +51,19 @@ function svgOpen(id, w, h, title, desc) {
 //         table: { caption, columns: [label], rows: [[cell, ...]] } }
 export function figure(spec) {
     if (spec.html === undefined) spec.html = null;
-    function variant(width, cls) {
-        var r = spec.chart(width, spec.id + "-" + cls);
-        var id = spec.id + "-" + cls;
-        return "<div class=\"ch-v ch-" + cls + "\">" + linkRole(svgOpen(id, width, r.height, spec.title, spec.desc), r.body) + r.body + "</svg></div>";
+    function draw(chart, width, cls, id, title, desc) {
+        var r = chart(width, id + "-" + cls);
+        var sid = id + "-" + cls;
+        return "<div class=\"ch-v ch-" + cls + "\">" + linkRole(svgOpen(sid, width, r.height, title, desc), r.body) + r.body + "</svg></div>";
     }
-    var table = "<div class=\"visually-hidden\"><table><caption>" + esc(spec.table.caption) + "</caption><thead><tr>" +
-        spec.table.columns.map(function (c) { return "<th scope=\"col\">" + esc(c) + "</th>"; }).join("") + "</tr></thead><tbody>" +
-        spec.table.rows.map(function (r) {
-            return "<tr>" + r.map(function (c, i) { return i === 0 ? "<th scope=\"row\">" + esc(c) + "</th>" : "<td>" + esc(c) + "</td>"; }).join("") + "</tr>";
-        }).join("") + "</tbody></table></div>";
+    var tables = spec.tables || [spec.table];
+    var table = tables.map(function (tb) {
+        return "<div class=\"visually-hidden\"><table><caption>" + esc(tb.caption) + "</caption><thead><tr>" +
+            tb.columns.map(function (c) { return "<th scope=\"col\">" + esc(c) + "</th>"; }).join("") + "</tr></thead><tbody>" +
+            tb.rows.map(function (r) {
+                return "<tr>" + r.map(function (c, i) { return i === 0 ? "<th scope=\"row\">" + esc(c) + "</th>" : "<td>" + esc(c) + "</td>"; }).join("") + "</tr>";
+            }).join("") + "</tbody></table></div>";
+    }).join("");
     var sources = (spec.sources || []).length ? "<p class=\"ch-src\">Data: " + spec.sources.map(function (s) {
         return s.href ? "<a href=\"" + esc(s.href) + "\">" + esc(s.label) + "</a>" : esc(s.label);
     }).join(", ") + ".</p>" : "";
@@ -70,9 +73,14 @@ export function figure(spec) {
         (spec.takeaway ? "<p>" + esc(spec.takeaway) + "</p>" : "") +
         notes + sources;
     var more = reading ? "<details class=\"ch-more\"><summary>How to read this</summary>" + reading + "</details>" : "";
-    var body = spec.html ? spec.html : variant(WIDE, "wide") + variant(NARROW, "narrow");
+    var body = spec.html ? spec.html : spec.parts ? spec.parts.map(function (p) {
+        return (p.kicker ? "<h3 class=\"ch-sub\" id=\"" + esc(p.id) + "\">" + esc(p.kicker) + "</h3>" : "") +
+            draw(p.chart, WIDE, "wide", p.id, p.title, p.desc) +
+            draw(p.chart, NARROW, "narrow", p.id, p.title, p.desc);
+    }).join("") : draw(spec.chart, WIDE, "wide", spec.id, spec.title, spec.desc) + draw(spec.chart, NARROW, "narrow", spec.id, spec.title, spec.desc);
+    var lead = spec.lead ? "<p class=\"ch-lead\">" + esc(spec.lead) + "</p>" : "";
     return "<figure class=\"ch" + (spec.cls ? " " + spec.cls : "") + "\" id=\"" + esc(spec.id) + "\"><figcaption><strong class=\"ch-head\">" + esc(spec.headline) + "</strong></figcaption>" +
-        body + more + table + "</figure>";
+        lead + body + more + table + "</figure>";
 }
 
 // ---------- horizontal bars ----------
@@ -309,8 +317,9 @@ export function lineage(groups, nodes, edges) {
         });
         Object.keys(pos).forEach(function (id) {
             var p = pos[id], n = nodes[id];
-            out += "<rect x=\"" + fmt(p.x) + "\" y=\"" + fmt(p.y) + "\" width=\"" + fmt(p.w) + "\" height=\"" + p.h + "\" rx=\"6\" class=\"ch-node" + (n.cls ? " ch-node-" + n.cls : "") + "\"/>";
-            out += t(p.x + p.w / 2, p.y + p.h / 2 + fs * 0.35, n.label, "ch-t ch-nodet" + (n.cls === "hl" ? " ch-hl" : n.cls === "muted" ? " ch-muted" : ""), " text-anchor=\"middle\"");
+            var node = "<rect x=\"" + fmt(p.x) + "\" y=\"" + fmt(p.y) + "\" width=\"" + fmt(p.w) + "\" height=\"" + p.h + "\" rx=\"6\" class=\"ch-node" + (n.cls ? " ch-node-" + n.cls : "") + "\"/>" +
+                t(p.x + p.w / 2, p.y + p.h / 2 + fs * 0.35, n.label, "ch-t ch-nodet" + (n.cls === "hl" ? " ch-hl" : n.cls === "muted" ? " ch-muted" : ""), " text-anchor=\"middle\"");
+            out += n.href ? "<a href=\"" + esc(n.href) + "\" class=\"ch-link\"><title>" + esc(n.label) + "</title>" + node + "</a>" : node;
         });
         var defs = "<defs><marker id=\"" + arrow + "\" viewBox=\"0 0 8 8\" refX=\"7\" refY=\"4\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L8 4 L0 8 z\" class=\"ch-arrowhead\"/></marker></defs>";
         return { body: defs + "<g font-size=\"" + fs + "\">" + out + "</g>", height: height + 2 };
