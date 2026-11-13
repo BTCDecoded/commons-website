@@ -447,9 +447,61 @@ function stabilityFor(slug) {
     return { cells: cells, tags: tags, met: met, measured: measured, notMeasured: nm, total: cells.length, text: text };
 }
 
+// Age is the start this page already states, counted to measured_at.
+// A fork whose oldest commit is Core's root has no project age here.
+// A maintainer count is shown only where a label or a sentence states one.
+const PROJECT_START = {
+    "blvm": { field: "span", quote: "blvm-node from 2025-10-19", date: "2025-10-19" },
+    "bitcoin-core": { field: "note", quote: "oldest visible 2009-08-30", date: "2009-08-30" },
+    "bitcoin-rs": { field: "note", quote: "repository begins 2026-05-19", date: "2026-05-19" },
+    "satd": { field: "history", quote: "repository from 2026-03-17", date: "2026-03-17" },
+    "libbitcoin": { field: "history", quote: "The repository dates from 2013.", date: "2013" },
+    "hornet": { field: "history", quote: "from 2025-05-03 to 2026-04-15", date: "2025-05-03" },
+    "floresta": { field: "history", quote: "The repository dates from 2022-11-22.", date: "2022-11-22" },
+    "rbitcoin": { field: "history", quote: "The repository dates from 2026-08-07.", date: "2026-08-07" },
+    "btcd": { field: "history", quote: "The repository dates from 2013-08-06.", date: "2013-08-06" }
+};
+function agePhrase(date, asOf) {
+    if (/^\d{4}$/.test(date)) return "since " + date;
+    var a = date.split("-").map(Number), b = asOf.split("-").map(Number);
+    var years = b[0] - a[0], months = b[1] - a[1], days = b[2] - a[2];
+    if (days < 0) months -= 1;
+    if (months < 0) { years -= 1; months += 12; }
+    var total = years * 12 + months;
+    if (total < 1) return "under a month";
+    if (total < 24) return total + (total === 1 ? " month" : " months");
+    return years + (years === 1 ? " year" : " years");
+}
+function pickerFor(slug, g, historyText, span, note) {
+    var label = g ? g.label : "Not classified";
+    var kind = label.indexOf("Single maintainer") === 0 ? "single"
+        : label.indexOf("Maintainer group") === 0 ? "group"
+        : label.indexOf("Foundation") === 0 ? "foundation"
+        : label.indexOf("Commons governance") === 0 ? "commons"
+        : label.indexOf("Not classified") === 0 ? "unknown"
+        : "";
+    if (!kind) throw new Error("picker: unlabeled governance for " + slug + ": " + label);
+    var keepers = null;
+    if (kind === "single") keepers = 1;
+    if (kind === "foundation") {
+        if ((historyText || "").indexOf("under three named people") < 0) throw new Error("picker: " + slug + " no longer states three named people");
+        keepers = 3;
+    }
+    var start = PROJECT_START[slug];
+    var age = "", from = "";
+    if (start) {
+        var hay = start.field === "span" ? (span || "") : start.field === "history" ? (historyText || "") : (note || "");
+        if (hay.indexOf(start.quote) < 0) throw new Error("picker: " + slug + " no longer states " + start.quote);
+        age = agePhrase(start.date, data.measured_at);
+        from = start.quote;
+    }
+    return { kind: kind, label: label, keepers: keepers, age: age, from: from };
+}
 function buildModel() {
     const hist = {}, gov = {}, ver = {}, trees = {}, met = {};
+    const spanOf = {};
     data.governance.history.forEach(function (h) { hist[h.slug] = h.text; });
+    (data.governance.landing || []).forEach(function (h) { spanOf[h.slug] = h.span || ""; });
     data.governance_model.labels.forEach(function (l) { gov[l.slug] = l; });
     verification.rows.forEach(function (r) { ver[r.slug] = r; });
     data.trees.forEach(function (t) { trees[t.slug] = t; });
@@ -483,7 +535,8 @@ function buildModel() {
             shallow: t ? !!t.shallow : null,
             deps: { value: r.direct_deps, text: String(r.direct_deps) },
             stack: r, metrics: met[r.slug] || null,
-            stability: stabilityFor(r.slug)
+            stability: stabilityFor(r.slug),
+            picker: pickerFor(r.slug, g, hist[r.slug], spanOf[r.slug], met[r.slug] && met[r.slug].authors_12m && met[r.slug].authors_12m.note)
         };
     });
     const extra = Object.keys(stability.rows).filter(function (k) { return !rows.some(function (r) { return r.slug === k; }); }).map(function (k) {

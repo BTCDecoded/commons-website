@@ -42,7 +42,7 @@ export function lineageSpec(ctx) {
         const notSplit = { "knots-legacy": 1, "bit-block": 1, "bitcoin-roots": 1 };
         rows.forEach(function (r) {
             if (!modelBy[r.slug]) throw new Error("lineage: stack row has no implementation: " + r.slug);
-            nodes[r.slug] = { label: r.name, cls: r.slug === internal ? "hl" : "", href: "#card-" + r.slug, tag: primaryLang(r) };
+            nodes[r.slug] = { label: r.name, cls: r.slug === internal ? "hl" : "", href: "#card-" + r.slug, tag: primaryLang(r), facts: modelBy[r.slug].picker };
         });
         nodes["bitcoin-core"].share = reachBy.core.share;
         nodes["bitcoin-core"].shareText = reachBy.core.text;
@@ -74,10 +74,13 @@ export function lineageSpec(ctx) {
         ];
         const derivedNames = rows.filter(function (r) { return derived[r.slug] && r.slug !== "bitcoin-core"; }).map(function (r) { return r.name; });
         const tableRows = rows.map(function (r) {
-            if (r.slug === "bitcoin-core") return [r.name, "Core family", "Reference implementation", r.languages];
+            const p = modelBy[r.slug].picker;
+            const who = p.keepers ? String(p.keepers) : "not stated";
+            const age = p.age || "not stated";
+            if (r.slug === "bitcoin-core") return [r.name, "Core family", "Reference implementation", r.languages, p.label, who, age];
             const e = EDGES.filter(function (x) { return x.to === r.slug; });
-            if (e.length) return [r.name, "Core family", e.map(function (x) { return x.quote + (x.dashed ? " (indirect)" : ""); }).join("; "), r.languages];
-            return [r.name, "Separate codebase", "No derivation stated in the data", r.languages];
+            if (e.length) return [r.name, "Core family", e.map(function (x) { return x.quote + (x.dashed ? " (indirect)" : ""); }).join("; "), r.languages, p.label, who, age];
+            return [r.name, "Separate codebase", "No derivation stated in the data", r.languages, p.label, who, age];
         });
         return {
             id: "fig-lineage",
@@ -88,7 +91,7 @@ export function lineageSpec(ctx) {
                 const above = own.filter(function (r) { return r.assurance.pct > med; }).length;
                 return separate.length + " of " + rows.length + " implementations are separate codebases. The median assurance score is " + medText + "%. " + above + " of " + own.length + " own codebases score above the median.";
             })(),
-            caption: "The Knots footer, " + reachBy.knots.text + ", is the whole family, and it is not split across Knots Legacy, Bit-Block, or Bitcoin Roots. The remainder, " + reachBy.other.text + ", is not a named implementation. The dashed arrow is Bitcoin Roots carrying Knots features onto Core. Bitcoin Knots is not a row on this page" + (knotsUp ? "; its arrow from Core cites the Knots README." : "."),
+            caption: "The number beside a governance mark is a maintainer count this page already states. Knots Legacy, Bit-Block, and Bitcoin Roots have no stated start of their own. The Knots footer, " + reachBy.knots.text + ", is the whole family, and it is not split across Knots Legacy, Bit-Block, or Bitcoin Roots. The remainder, " + reachBy.other.text + ", is not a named implementation. The dashed arrow is Bitcoin Roots carrying Knots features onto Core. Bitcoin Knots is not a row on this page" + (knotsUp ? "; its arrow from Core cites the Knots README." : "."),
             measures: "Where each implementation's code comes from; it matters because clients that share code share its bugs.",
             takeaway: "",
             title: "Lineage of the " + rows.length + " implementations",
@@ -96,10 +99,9 @@ export function lineageSpec(ctx) {
             chart: lineage(groups, nodes, edges),
             notes: ["&ldquo;Separate&rdquo; means the data on this page states no derivation from Core or Knots. rbitcoin carries Bitcoin Core as a git submodule for tests (stack table); that is not a derivation."],
             sources: (knotsUp ? knotsUp.sources.slice(0, 1) : []).concat([{ label: "data/implementations.json (history, class, upstream)" }]).concat([ { label: "data/stack.json (languages)" }, { label: "data/node-share.json" }]).concat(reach.sources),
-            table: { caption: "Lineage of each implementation", columns: ["Implementation", "Group", "Stated relationship", "Languages", "Reachable nodes"], rows: tableRows.map(function (row, i) {
-                var slug = rows[i].slug;
-                return row.concat([nodes[slug].shareTip]);
-            }).concat(knotsUp ? [[knotsUp.name + " (not a row)", "Core family", knotsUp.quote + " (" + knotsUp.sources[0].label + ")", "not measured", nodes.knots.shareTip]] : []) }
+            table: { caption: "Lineage of each implementation", columns: ["Implementation", "Group", "Stated relationship", "Languages", "Governance", "Maintainers", "Age", "Reachable nodes"], rows: tableRows.map(function (row, i) {
+                return row.concat([nodes[rows[i].slug].shareTip]);
+            }).concat(knotsUp ? [[knotsUp.name + " (not a row)", "Core family", knotsUp.quote + " (" + knotsUp.sources[0].label + ")", "not measured", "not stated", "not stated", "not stated", nodes.knots.shareTip]] : []) }
         };
 }
 

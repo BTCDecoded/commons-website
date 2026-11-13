@@ -5,7 +5,7 @@
 // drawn as zero. A comparison chart with no measured spoke is left off the
 // card. n/a stays out of the assurance score. Fuzz targets listed in
 // ctx.model.pending say "pending fix".
-import { figure, assuranceRadial, radar, svgOnce, esc, median } from "../charts.mjs";
+import { figure, assuranceRadial, radar, svgOnce, esc, median, govMark } from "../charts.mjs";
 import { codeHealth } from "./06-stars.mjs";
 
 function radarJson(obj) {
@@ -187,7 +187,10 @@ export default {
                 zoomChart("Health", starThumb, star, healthData) +
                 (cmpMeasured ? zoomChart("Compare", cmpThumb, cmpStar, cmpData) : "") +
                 "</div>";
+            const pk = r.picker;
+            const pickBits = "<span class=\"eco-pick-bits\" hidden><span class=\"eco-gov eco-gov-" + pk.kind + "\" title=\"" + esc(pk.label) + "\"><span class=\"visually-hidden\">" + esc(pk.label) + ". </span>" + govMark(pk.kind) + (pk.keepers ? "<span class=\"eco-keepers\">" + pk.keepers + "</span>" : "") + "</span>" + (pk.age ? "<span class=\"eco-pick-age\" title=\"" + esc(pk.from) + "\">" + esc(pk.age) + "</span>" : "") + "</span>";
             return "<article class=\"eco-card" + (r.internal ? " internal" : "") + "\" id=\"" + id + "\" aria-labelledby=\"" + id + "-h\">" +
+                pickBits +
                 "<h3 id=\"" + id + "-h\">" + esc(r.name) + "</h3>" +
                 "<ul class=\"eco-badges\" aria-label=\"Badges\">" +
                 "<li class=\"eco-badge eco-badge-" + r.lineage.cls + "\"><span aria-hidden=\"true\">" + LIN_GLYPH[r.lineage.cls] + " </span>" + esc(r.lineage.label) + "</li>" +
