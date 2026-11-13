@@ -452,7 +452,7 @@ export function lineage(groups, nodes, edges) {
                 fact + footer;
             var tip = n.label + (n.tag ? ", " + n.tag : "");
             if (n.facts) tip += ". " + n.facts.label + (n.facts.keepers ? ", " + n.facts.keepers : "") + (n.facts.age ? ", " + n.facts.age : "") + (n.facts.from ? ". " + n.facts.from : "");
-            if (n.shareTip) tip += ". " + n.shareTip;
+            if (n.shareText && n.shareTip) tip += ". " + n.shareTip;
             if (n.release) tip += ". " + n.release.label + ". " + n.release.why;
             var rel = "";
             if (n.release) rel = "<svg x=\"" + fmt(p.x + p.w - 18) + "\" y=\"" + fmt(p.y + 4) + "\" width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" class=\"ch-rel ch-rel-" + n.release.id + "\" aria-hidden=\"true\">" + releaseBody(n.release.id) + "</svg>";

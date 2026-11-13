@@ -50,7 +50,8 @@ export function lineageSpec(ctx) {
         nodes["bitcoin-core"].shareTip = reachBy.core.text + " of reachable nodes";
         nodes.knots.share = reachBy.knots.share;
         nodes.knots.shareText = reachBy.knots.text;
-        nodes.knots.shareTip = reachBy.knots.text + " of reachable nodes advertise the Knots family. The count is not split across Knots Legacy, Bit-Block, or Bitcoin Roots";
+        nodes.knots.shareTip = reachBy.knots.text + " of reachable nodes advertise the Knots family";
+        nodes.knots.shareNote = nodes.knots.shareTip + ". The count is not split across Knots Legacy, Bit-Block, or Bitcoin Roots";
         Object.keys(nodes).forEach(function (id) {
             if (nodes[id].shareText) return;
             nodes[id].shareTip = notSplit[id] ? "not reported separately from the Knots family" : "reachable nodes not measured";
@@ -86,7 +87,7 @@ export function lineageSpec(ctx) {
                 const above = own.filter(function (r) { return r.assurance.pct > med; }).length;
                 return separate.length + " of " + rows.length + " implementations are separate codebases. The median assurance score is " + medText + "%. " + above + " of " + own.length + " own codebases score above the median.";
             })(),
-            caption: "Primary language, and the age when a start is stated, are badges under the name. The corner mark is how far the release checklist has gone: no release, tagged, released, or released fully. Released fully means all seven checks. Tagged means a non-pre tag exists and the docs still say pre-release, or the version is not 1.0 or an LTS. Bitcoin Knots is not a row and has no release mark. The number beside a governance mark is a maintainer count this page already states. Knots Legacy, Bit-Block, and Bitcoin Roots have no stated start of their own. The Knots footer, " + reachBy.knots.text + ", is the whole family, and it is not split across Knots Legacy, Bit-Block, or Bitcoin Roots. The remainder, " + reachBy.other.text + ", is not a named implementation. The dashed arrow is Bitcoin Roots carrying Knots features onto Core. Bitcoin Knots is not a row on this page" + (knotsUp ? "; its arrow from Core cites the Knots README." : "."),
+            caption: "Primary language, and the age when a start is stated, are badges under the name. The corner mark is how far the release checklist has gone: no release, tagged, released, or released fully. Released fully means all seven checks. Tagged means a non-pre tag exists and the docs still say pre-release, or the version is not 1.0 or an LTS. Bitcoin Knots is not a row and has no release mark. The number beside a governance mark is a maintainer count this page already states. Knots Legacy, Bit-Block, and Bitcoin Roots have no stated start of their own. The remainder, " + reachBy.other.text + ", is not a named implementation. The dashed arrow is Bitcoin Roots carrying Knots features onto Core. Bitcoin Knots is not a row on this page" + (knotsUp ? "; its arrow from Core cites the Knots README." : "."),
             measures: "Where each implementation's code comes from; it matters because clients that share code share its bugs.",
             takeaway: "",
             title: "Lineage of the " + rows.length + " implementations",
@@ -96,7 +97,7 @@ export function lineageSpec(ctx) {
             sources: (knotsUp ? knotsUp.sources.slice(0, 1) : []).concat([{ label: "data/implementations.json (history, class, upstream)" }]).concat([ { label: "data/stack.json (languages)" }, { label: "data/node-share.json" }]).concat(reach.sources),
             table: { caption: "Lineage of each implementation", columns: ["Implementation", "Group", "Stated relationship", "Languages", "Governance", "Maintainers", "Age", "Release", "Reachable nodes"], rows: tableRows.map(function (row, i) {
                 return row.concat([nodes[rows[i].slug].release.label, nodes[rows[i].slug].shareTip]);
-            }).concat(knotsUp ? [[knotsUp.name + " (not a row)", "Satoshi lineage", knotsUp.quote + " (" + knotsUp.sources[0].label + ")", "not measured", "not stated", "not stated", "not stated", "not a row", nodes.knots.shareTip]] : []) }
+            }).concat(knotsUp ? [[knotsUp.name + " (not a row)", "Satoshi lineage", knotsUp.quote + " (" + knotsUp.sources[0].label + ")", "not measured", "not stated", "not stated", "not stated", "not a row", nodes.knots.shareNote]] : []) }
         };
 }
 
