@@ -175,6 +175,14 @@
           "link": "#eco-size"
         },
         {
+          "name": "Checkout",
+          "field": "trees[].checkout",
+          "what": "Program, test lines, tooling, vendored code, and locale files, in code lines.",
+          "why": "It is the size of the tree a checkout actually holds, including code that is not the program.",
+          "how": "Sum of `program_code`, the test-line split, `tooling_code`, `vendored_code`, and `locale_code` on the same counter.",
+          "link": "#checkout"
+        },
+        {
           "name": "Tooling",
           "field": "trees[].values.tooling_code",
           "what": "Files the role map marks as tooling.",

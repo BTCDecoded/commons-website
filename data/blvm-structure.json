@@ -2,7 +2,7 @@
   "schema_version": 1,
   "as_of": "2026-11-12",
   "crates": {
-    "note": "BLVM crates the default blvm binary links, read from each Cargo.toml. blvm is the binary; its default features turn on blvm-node's production feature, which enables blvm-consensus. Optional crates that no default feature turns on are marked default: false.",
+    "note": "BLVM crates the default blvm binary links, read from each Cargo.toml. blvm is the binary; its default features turn on blvm-node's production feature, which enables blvm-consensus. Optional crates that no default feature turns on are marked default: false. Registry modules are the list in blvm/registry/modules.json. Each depends on blvm-sdk and is not in the default binary.",
     "binary_commit": "d7741e325bd8e82a389da5249e5f05da52b363f8",
     "node_pin": "36bb40c7e9a3f805274fa7e1bda30d0a6c082560",
     "rows": [
@@ -72,9 +72,65 @@
       {
         "id": "blvm-spec-lock",
         "repo": "blvm-spec-lock",
-        "role": "Proof tooling (cargo spec-lock); off by default",
+        "role": "Proof tooling, off by default",
         "in_default_binary": false,
         "cargo": "https://github.com/BTCDecoded/blvm-spec-lock/blob/dbff220efd14daf5d409ebf74e6f467799cd7c8d/Cargo.toml"
+      },
+      {
+        "id": "blvm-miniscript",
+        "repo": "blvm-miniscript",
+        "role": "Miniscript and PSBT",
+        "in_default_binary": false,
+        "cargo": "https://github.com/BTCDecoded/blvm-miniscript/blob/f1d8a34a2194f37efee5a9ea9ad2c46b557f699e/Cargo.toml"
+      },
+      {
+        "id": "blvm-marketplace",
+        "repo": "blvm-marketplace",
+        "role": "Module marketplace",
+        "in_default_binary": false,
+        "cargo": "https://github.com/BTCDecoded/blvm-marketplace/blob/93a9fd07071f61c2f41ad97879f399d092afeaa0/Cargo.toml"
+      },
+      {
+        "id": "blvm-governance",
+        "repo": "blvm-governance",
+        "role": "Proposal voting",
+        "in_default_binary": false,
+        "cargo": "https://github.com/BTCDecoded/blvm-governance/blob/cce7093cddfcc50cc7bc6effa5adb6e3921bfa4e/Cargo.toml"
+      },
+      {
+        "id": "blvm-zmq",
+        "repo": "blvm-zmq",
+        "role": "ZeroMQ notifications",
+        "in_default_binary": false,
+        "cargo": "https://github.com/BTCDecoded/blvm-zmq/blob/e9ceb150da4c62803f6bef1910be88090c54e389/Cargo.toml"
+      },
+      {
+        "id": "blvm-index",
+        "repo": "blvm-index",
+        "role": "Script history index",
+        "in_default_binary": false,
+        "cargo": "https://github.com/BTCDecoded/blvm-index/blob/3f4f30c43ff9687bfe540aba95ddd4f7bf9c59f7/Cargo.toml"
+      },
+      {
+        "id": "blvm-wallet-index",
+        "repo": "blvm-wallet-index",
+        "role": "Address index",
+        "in_default_binary": false,
+        "cargo": "https://github.com/BTCDecoded/blvm-wallet-index/blob/1c888fb0dfd882766ed6b6333a3af8cca984785f/Cargo.toml"
+      },
+      {
+        "id": "blvm-payment",
+        "repo": "blvm-payment",
+        "role": "Payment requests",
+        "in_default_binary": false,
+        "cargo": "https://github.com/BTCDecoded/blvm-payment/blob/2136c5c79aa645d11d73f0aa3dcfb473c6ff7a00/Cargo.toml"
+      },
+      {
+        "id": "blvm-selective-sync",
+        "repo": "blvm-selective-sync",
+        "role": "Selective sync",
+        "in_default_binary": false,
+        "cargo": "https://github.com/BTCDecoded/blvm-selective-sync/blob/c259d4f0a60d48d85d2dede601fbed610a27a597/Cargo.toml"
       }
     ],
     "edges": [
@@ -91,6 +147,62 @@
         "default": true,
         "evidence": "blvm-node = { version = \">=0.1, <1\", optional = true, default-features = false } with default = [\"node\"]",
         "source": "https://github.com/BTCDecoded/blvm-sdk/blob/fcb1afdc5e28a2893717dd4b2c9548d83b35ec62/Cargo.toml"
+      },
+      {
+        "from": "blvm-miniscript",
+        "to": "blvm-sdk",
+        "default": true,
+        "evidence": "blvm-sdk = { version = \">=0.1, <1\", default-features = false, features = [\"node\"] }",
+        "source": "https://github.com/BTCDecoded/blvm-miniscript/blob/f1d8a34a2194f37efee5a9ea9ad2c46b557f699e/Cargo.toml#L55"
+      },
+      {
+        "from": "blvm-marketplace",
+        "to": "blvm-sdk",
+        "default": true,
+        "evidence": "blvm-sdk = { version = \">=0.1, <1\", default-features = false, features = [\"node\"] }",
+        "source": "https://github.com/BTCDecoded/blvm-marketplace/blob/93a9fd07071f61c2f41ad97879f399d092afeaa0/Cargo.toml#L25"
+      },
+      {
+        "from": "blvm-governance",
+        "to": "blvm-sdk",
+        "default": true,
+        "evidence": "blvm-sdk = { version = \">=0.1, <1\", default-features = false, features = [\"node\"] }",
+        "source": "https://github.com/BTCDecoded/blvm-governance/blob/cce7093cddfcc50cc7bc6effa5adb6e3921bfa4e/Cargo.toml#L58"
+      },
+      {
+        "from": "blvm-zmq",
+        "to": "blvm-sdk",
+        "default": true,
+        "evidence": "blvm-sdk = { version = \">=0.1, <1\", default-features = false, features = [\"node\"] }",
+        "source": "https://github.com/BTCDecoded/blvm-zmq/blob/e9ceb150da4c62803f6bef1910be88090c54e389/Cargo.toml#L27"
+      },
+      {
+        "from": "blvm-index",
+        "to": "blvm-sdk",
+        "default": true,
+        "evidence": "blvm-sdk = { version = \">=0.1, <1\", default-features = false, features = [\"node\"] }",
+        "source": "https://github.com/BTCDecoded/blvm-index/blob/3f4f30c43ff9687bfe540aba95ddd4f7bf9c59f7/Cargo.toml#L29"
+      },
+      {
+        "from": "blvm-wallet-index",
+        "to": "blvm-sdk",
+        "default": true,
+        "evidence": "blvm-sdk = { version = \">=0.1, <1\", default-features = false, features = [\"node\"] }",
+        "source": "https://github.com/BTCDecoded/blvm-wallet-index/blob/1c888fb0dfd882766ed6b6333a3af8cca984785f/Cargo.toml#L24"
+      },
+      {
+        "from": "blvm-payment",
+        "to": "blvm-sdk",
+        "default": true,
+        "evidence": "blvm-sdk = { version = \">=0.1, <1\", default-features = false, features = [\"node\"] }",
+        "source": "https://github.com/BTCDecoded/blvm-payment/blob/2136c5c79aa645d11d73f0aa3dcfb473c6ff7a00/Cargo.toml#L26"
+      },
+      {
+        "from": "blvm-selective-sync",
+        "to": "blvm-sdk",
+        "default": true,
+        "evidence": "blvm-sdk = { version = \">=0.1, <1\", default-features = false, features = [\"node\"] }",
+        "source": "https://github.com/BTCDecoded/blvm-selective-sync/blob/c259d4f0a60d48d85d2dede601fbed610a27a597/Cargo.toml#L39"
       },
       {
         "from": "blvm-node",
@@ -172,7 +284,7 @@
     ]
   },
   "layers_source": {
-    "label": "governance/config/repository-layers.yml at d235edb",
-    "href": "https://github.com/BTCDecoded/governance/blob/d235edb93e57737fdb13a13647dc09362f681b2f/config/repository-layers.yml"
+    "label": "governance/config/repository-layers.yml at 77c4f36",
+    "href": "https://github.com/BTCDecoded/governance/blob/77c4f36d5ad7c823fc6304b30b167086f77a7012/config/repository-layers.yml"
   }
 }

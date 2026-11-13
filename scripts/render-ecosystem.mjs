@@ -33,7 +33,6 @@ function shareText(n) {
     var text = rounded.toFixed(1);
     return (text.slice(-2) === ".0" ? String(Math.round(rounded)) : text) + "%";
 }
-function pct(v, scale) { return Math.max(0, Math.min(100, scale ? (v / scale) * 100 : 0)).toFixed(1); }
 
 // Weekly-count tables: unchanged from the previous page.
 function head(trees) {
@@ -88,8 +87,6 @@ function ranked(id) {
     }).filter(Boolean).sort(function (a, b) { return b.value - a.value; });
 }
 const sizeRows = ranked("program_code");
-const testRows = ranked("test_per_implementation");
-const fileRows = ranked("share_lines_ge_1000");
 
 slots.status = "Measured " + esc(data.measured_at) + ".";
 slots.lead = "Bitcoin node implementations: who governs each one, how far each has got in showing it follows Bitcoin's rules, and what its code looks like. Bitcoin Core is the reference.";
@@ -113,7 +110,6 @@ const comp = trees.map(function (tree) {
     return { slug: tree.slug, name: tree.name, program: program, tests: tests, tooling: tooling, vend: vend, loc: loc, total: program + tests + tooling + vend + loc, internal: tree.slug === internal };
 }).sort(function (a, b) { return b.total - a.total; });
 const compBySlug = {}; comp.forEach(function (c) { compBySlug[c.slug] = c; });
-const compMax = comp[0].total;
 const blvmComp = comp.filter(function (r) { return r.internal; })[0];
 // Column captions state facts only. Rankings are left to the sortable table.
 slots["size-caption"] = esc("BLVM program, implementation, and test counts cover blvm-node, blvm-protocol, blvm-consensus, blvm-primitives, blvm-secp256k1, blvm-muhash, blvm-storage-fence (in the node tree), and blvm-sdk including blvm-sdk-macros. blvm-spec-lock is counted as tooling. BLVM rules share and left-mixed are not measured: the crate-role map used for the earlier 10.7% and 0.0% figures was not found, and those cells were not kept from the previous crate set. libbitcoin is one repo: libbitcoin-system.");
@@ -130,17 +126,12 @@ const ruleRows = trees.map(function (tree) {
     if (!cell || cell.status !== "measured") return null;
     return { slug: tree.slug, value: cell.value, instrument: tree.instrument };
 }).filter(Boolean);
-const ruleScale = Math.max.apply(null, ruleRows.map(function (r) { return r.value; }));
 const cutOrder = [];
 ruleRows.forEach(function (r) { if (cutOrder.indexOf(r.instrument) < 0) cutOrder.push(r.instrument); });
 
 // One comparison table: one row per measured tree, every chart as a column.
-const sizeScale = sizeRows[0].value, testScale = testRows[0].value;
 const defaultOrder = sizeRows.map(function (r) { return r.slug; });
 const treeBySlug = {}; trees.forEach(function (t) { treeBySlug[t.slug] = t; });
-function bar(v, scale, cls) {
-    return "<span class=\"mini\" aria-hidden=\"true\"><span class=\"mini-fill" + (cls ? " " + cls : "") + "\" style=\"width:" + pct(v, scale) + "%\"></span></span>";
-}
 slots.compare = defaultOrder.map(function (slug, i) {
     var t = treeBySlug[slug];
     var isInt = slug === internal ? " internal" : "";
@@ -149,15 +140,18 @@ slots.compare = defaultOrder.map(function (slug, i) {
     var hasCut = rules && rules.status === "measured";
     var rulesText = hasCut ? rules.text : (rules && rules.status === "not-measured" ? "not measured" : "no cut");
     var cutIdx = hasCut ? cutOrder.indexOf(t.instrument) : cutOrder.length;
-    function seg(cls, lines) { return "<span class=\"mini-fill " + cls + "\" style=\"width:" + pct(lines, compMax) + "%\"></span>"; }
-    var stack = "<span class=\"mini\" aria-hidden=\"true\">" + seg("program", c.program) + seg("tests", c.tests) + seg("tool", c.tooling) + seg("vend", c.vend) + seg("loc", c.loc) + "</span>";
+    var parts = [];
+    if (c.tests) parts.push(c.tests.toLocaleString("en-US") + " tests");
+    if (c.tooling) parts.push(c.tooling.toLocaleString("en-US") + " tooling");
+    if (c.vend) parts.push(c.vend.toLocaleString("en-US") + " vendored");
+    if (c.loc) parts.push(c.loc.toLocaleString("en-US") + " locale");
     return "<tr data-slug=\"" + esc(slug) + "\" data-order=\"" + i + "\" data-size=\"" + prog.value + "\" data-checkout=\"" + c.total + "\" data-files=\"" + big.value + "\" data-tests=\"" + test.value + "\" data-rules=\"" + (hasCut ? (cutIdx * 1000 - rules.value) : 99999) + "\">" +
         "<th scope=\"row\" class=\"cmp-name" + isInt + "\">" + esc(t.name) + "</th>" +
-        "<td data-label=\"Program lines\"><span class=\"num\">" + esc(prog.text) + "</span>" + bar(prog.value, sizeScale, isInt.trim()) + "</td>" +
-        "<td data-label=\"Checkout\"><span class=\"num\">" + c.total.toLocaleString("en-US") + "</span>" + stack + "</td>" +
-        "<td data-label=\"Large files\"><span class=\"num\">" + esc(big.text) + "</span>" + bar(big.value, 100, isInt.trim()) + "<small>" + esc(halfOf[slug] + " files hold half") + "</small></td>" +
-        "<td data-label=\"Tests\"><span class=\"num\">" + esc(test.text) + "</span>" + bar(test.value, testScale, isInt.trim()) + "</td>" +
-        "<td data-label=\"Rules share\"><span class=\"num\">" + esc(rulesText) + "</span>" + (hasCut ? bar(rules.value, ruleScale, isInt.trim()) : "") + "<small>" + esc(t.instrument) + "</small></td>" +
+        "<td data-label=\"Program lines\"><span class=\"num\">" + esc(prog.text) + "</span></td>" +
+        "<td data-label=\"Checkout\"><span class=\"num\">" + c.total.toLocaleString("en-US") + "</span>" + (parts.length ? "<small>" + parts.join(", ") + "</small>" : "") + "</td>" +
+        "<td data-label=\"Large files\"><span class=\"num\">" + esc(big.text) + "</span><small>" + esc(halfOf[slug] + " files hold half") + "</small></td>" +
+        "<td data-label=\"Tests\"><span class=\"num\">" + esc(test.text) + "</span></td>" +
+        "<td data-label=\"Rules share\"><span class=\"num\">" + esc(rulesText) + "</span><small>" + esc(t.instrument) + "</small></td>" +
         "</tr>";
 }).join("");
 

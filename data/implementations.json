@@ -1434,7 +1434,9 @@
         "name": "Application Layer",
         "repositories": [
           "blvm-node",
-          "blvm"
+          "blvm",
+          "blvm-muhash",
+          "blvm-spec-lock"
         ],
         "signatures_required": 3,
         "signatures_total": 5,
@@ -1445,7 +1447,15 @@
         "purpose": "Developer tools and extensions",
         "name": "Extension Layer",
         "repositories": [
-          "blvm-sdk"
+          "blvm-sdk",
+          "blvm-miniscript",
+          "blvm-marketplace",
+          "blvm-governance",
+          "blvm-zmq",
+          "blvm-index",
+          "blvm-wallet-index",
+          "blvm-payment",
+          "blvm-selective-sync"
         ],
         "signatures_required": 2,
         "signatures_total": 3,
@@ -1625,7 +1635,7 @@
         "basis": "GitHub contributors for btcsuite/btcd, read 2026-11-12."
       }
     ],
-    "layer_note": "These bars are repository layers. Layers 1 and 2 share the constitutional name. Layer 1 is the specification and layer 2 is the proof crates, and both use 6 of 7 with a 180 day review and a 365 day consensus review. The 2 of 3 bar is the layer 5 maintainer signature on blvm-sdk. It is not the governance-node quorum. Action tiers are a second written table and are not drawn here. Tier 5 has two written pairs. Meta-governance is 5 of 7 plus 2 of 3 over 90 days, with a 30 day public comment. The tier 5 row is 5 of 5 over 180 days. Neither pair is chosen."
+    "layer_note": "These bars are repository layers. Layers 1 and 2 share the constitutional name. Layer 1 is the specification and layer 2 is the proof crates, and both use 6 of 7 with a 180 day review and a 365 day consensus review. The 2 of 3 bar is the layer 5 maintainer signature. It covers blvm-sdk and the registry modules. It is not the governance-node quorum. Action tiers are a second written table and are not drawn here. Tier 5 has two written pairs. Meta-governance is 5 of 7 plus 2 of 3 over 90 days, with a 30 day public comment. The tier 5 row is 5 of 5 over 180 days. Neither pair is chosen."
   },
   "omitted": "Left off this page: attention effects E2, E3, E5, E7, and E12, and the size-adjusted residual. Comparison dumps do not host those effects the same way, and the residual intervals cover zero. They are not a weekly score.",
   "scan": {
@@ -1762,7 +1772,7 @@
         "items": [
           {
             "name": "BLVM",
-            "text": "Adding a maintainer is 5 of 7 where the roster lists 7 names. Removing one is 6 of 7 excluding the subject, on that same roster. Layers 3 and 4 list 5 names, and layer 5 lists 3. The names in the roster file are placeholders. Keyholder activation is 5 of 7 and is a different pool from maintainer signatures. The governance-node quorum is 2 of 3 in a written set. That quorum is not the layer 5 maintainer signature, which is also 2 of 3 and applies to blvm-sdk."
+            "text": "Adding a maintainer is 5 of 7 where the roster lists 7 names. Removing one is 6 of 7 excluding the subject, on that same roster. Layers 3 and 4 list 5 names, and layer 5 lists 3. The names in the roster file are placeholders. Keyholder activation is 5 of 7 and is a different pool from maintainer signatures. The governance-node quorum is 2 of 3 in a written set. That quorum is not the layer 5 maintainer signature, which is also 2 of 3 and applies to blvm-sdk and the registry modules in that layer."
           },
           {
             "name": "Bitcoin Core",
