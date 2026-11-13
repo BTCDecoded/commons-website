@@ -1,4 +1,4 @@
-// One graph of every implementation, above the cards. Core lineage shows
+// One graph of every implementation, above the cards. Satoshi lineage shows
 // the stated derivation. Own codebases use the same boxes, tagged with
 // primary language, and have no derivation arrow. Selecting a name opens
 // that card.

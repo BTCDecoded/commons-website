@@ -511,7 +511,7 @@ function buildModel() {
         if (r.slug === "bitcoin-core") lineage = { cls: "core", label: "Bitcoin Core", text: "The reference implementation." };
         else if (FORKS[r.slug]) {
             if ((hist[r.slug] || "").indexOf(FORKS[r.slug]) < 0) throw new Error("model: history no longer states " + FORKS[r.slug]);
-            lineage = { cls: "fork", label: "Core lineage", text: FORKS[r.slug] + "." };
+            lineage = { cls: "fork", label: "Satoshi lineage", text: FORKS[r.slug] + "." };
         } else lineage = { cls: "own", label: "Own codebase", text: "No derivation from Core or Knots is stated in the data." };
         const g = gov[r.slug];
         const acc = ACCOUNT.filter(function (a) { return g && g.label.indexOf(a.match) === 0; })[0];

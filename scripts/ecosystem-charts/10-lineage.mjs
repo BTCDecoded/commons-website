@@ -69,7 +69,7 @@ export function lineageSpec(ctx) {
         const ownGrid = [];
         for (var i = 0; i < ownSlugs.length; i += 2) ownGrid.push(ownSlugs.slice(i, i + 2));
         const groups = [
-            { id: "core", cls: "core", label: "Core lineage", nodeW: 148, grid: [["bitcoin-core", "bitcoin-roots"], ["knots", "knots-legacy"], [null, "bit-block"]] },
+            { id: "core", cls: "core", label: "Satoshi lineage", nodeW: 148, grid: [["bitcoin-core", "bitcoin-roots"], ["knots", "knots-legacy"], [null, "bit-block"]] },
             { id: "own", label: "Own codebase", nodeW: 148, grid: ownGrid }
         ];
         const derivedNames = rows.filter(function (r) { return derived[r.slug] && r.slug !== "bitcoin-core"; }).map(function (r) { return r.name; });
@@ -77,9 +77,9 @@ export function lineageSpec(ctx) {
             const p = modelBy[r.slug].picker;
             const who = p.keepers ? String(p.keepers) : "not stated";
             const age = p.age || "not stated";
-            if (r.slug === "bitcoin-core") return [r.name, "Core family", "Reference implementation", r.languages, p.label, who, age];
+            if (r.slug === "bitcoin-core") return [r.name, "Satoshi lineage", "Reference implementation", r.languages, p.label, who, age];
             const e = EDGES.filter(function (x) { return x.to === r.slug; });
-            if (e.length) return [r.name, "Core family", e.map(function (x) { return x.quote + (x.dashed ? " (indirect)" : ""); }).join("; "), r.languages, p.label, who, age];
+            if (e.length) return [r.name, "Satoshi lineage", e.map(function (x) { return x.quote + (x.dashed ? " (indirect)" : ""); }).join("; "), r.languages, p.label, who, age];
             return [r.name, "Separate codebase", "No derivation stated in the data", r.languages, p.label, who, age];
         });
         return {
@@ -95,13 +95,13 @@ export function lineageSpec(ctx) {
             measures: "Where each implementation's code comes from; it matters because clients that share code share its bugs.",
             takeaway: "",
             title: "Lineage of the " + rows.length + " implementations",
-            desc: "Core lineage: Bitcoin Core (" + nodes["bitcoin-core"].tag + ", " + nodes["bitcoin-core"].shareTip + "); " + (knotsUp ? "Bitcoin Knots, a fork of Core, not a row, " + nodes.knots.shareTip + "; " : "") + "Bitcoin Roots (" + nodes["bitcoin-roots"].tag + ", " + nodes["bitcoin-roots"].shareTip + "), a patch series on Core that also carries Knots features; Knots Legacy (" + nodes["knots-legacy"].tag + ", " + nodes["knots-legacy"].shareTip + ") and Bit-Block (" + nodes["bit-block"].tag + ", " + nodes["bit-block"].shareTip + "), both from Bitcoin Knots. Own codebase: " + ownSlugs.map(function (s) { return nodes[s].label + " (" + nodes[s].tag + ", " + nodes[s].shareTip + ")"; }).join(", ") + ".",
+            desc: "Satoshi lineage: Bitcoin Core (" + nodes["bitcoin-core"].tag + ", " + nodes["bitcoin-core"].shareTip + "); " + (knotsUp ? "Bitcoin Knots, a fork of Core, not a row, " + nodes.knots.shareTip + "; " : "") + "Bitcoin Roots (" + nodes["bitcoin-roots"].tag + ", " + nodes["bitcoin-roots"].shareTip + "), a patch series on Core that also carries Knots features; Knots Legacy (" + nodes["knots-legacy"].tag + ", " + nodes["knots-legacy"].shareTip + ") and Bit-Block (" + nodes["bit-block"].tag + ", " + nodes["bit-block"].shareTip + "), both from Bitcoin Knots. Own codebase: " + ownSlugs.map(function (s) { return nodes[s].label + " (" + nodes[s].tag + ", " + nodes[s].shareTip + ")"; }).join(", ") + ".",
             chart: lineage(groups, nodes, edges),
             notes: ["&ldquo;Separate&rdquo; means the data on this page states no derivation from Core or Knots. rbitcoin carries Bitcoin Core as a git submodule for tests (stack table); that is not a derivation."],
             sources: (knotsUp ? knotsUp.sources.slice(0, 1) : []).concat([{ label: "data/implementations.json (history, class, upstream)" }]).concat([ { label: "data/stack.json (languages)" }, { label: "data/node-share.json" }]).concat(reach.sources),
             table: { caption: "Lineage of each implementation", columns: ["Implementation", "Group", "Stated relationship", "Languages", "Governance", "Maintainers", "Age", "Reachable nodes"], rows: tableRows.map(function (row, i) {
                 return row.concat([nodes[rows[i].slug].shareTip]);
-            }).concat(knotsUp ? [[knotsUp.name + " (not a row)", "Core family", knotsUp.quote + " (" + knotsUp.sources[0].label + ")", "not measured", "not stated", "not stated", "not stated", nodes.knots.shareTip]] : []) }
+            }).concat(knotsUp ? [[knotsUp.name + " (not a row)", "Satoshi lineage", knotsUp.quote + " (" + knotsUp.sources[0].label + ")", "not measured", "not stated", "not stated", "not stated", nodes.knots.shareTip]] : []) }
         };
 }
 
