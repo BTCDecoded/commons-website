@@ -8,6 +8,9 @@
 import { figure, assuranceRadial, radar, svgOnce, esc, median } from "../charts.mjs";
 import { codeHealth } from "./06-stars.mjs";
 
+function radarJson(obj) {
+    return JSON.stringify(obj).replace(/</g, "\\u003c");
+}
 const GLYPH = { "yes": "\u25CF", "partial": "\u25D0", "not found": "\u25CB", "n/a": "\u2013" };
 const LIN_GLYPH = { own: "\u25C6", fork: "\u25C7", core: "\u25A0" };
 
@@ -159,6 +162,10 @@ export default {
             const starDesc = r.name + " code health. " + health.axes.map(function (axis, i) { return axis.short + " " + starSeries.values[i].text; }).join(", ") + ". Median of " + rows.length + ": " + health.axes.map(function (axis, i) { return axis.short + " " + health.median.values[i].text; }).join(", ") + ".";
             const starThumb = svgOnce(id + "-s-sm", 168, radar(health.axes, [starSeries, health.median], { labels: "none", size: 168 }), r.name + " code-health thumbnail", starDesc, "eco-star");
             const star = svgOnce(id + "-s", 360, radar(health.axes, [starSeries, health.median], { labels: "short", values: true, pad: 64, size: 360 }), r.name + " code-health star", starDesc, "eco-star");
+            const healthData = radarJson({
+                axes: health.axes.map(function (a) { return { short: a.short, max: a.max, invert: !!a.invert, pending: !!a.pending }; }),
+                series: [starSeries, health.median].map(function (s) { return { name: s.name, cls: s.cls || "", values: s.values.map(function (v) { return { v: v.v, text: v.text, pending: !!v.pending }; }) }; })
+            });
             const cmpValues = cmpAxes.map(function (a) {
                 var v = a.get(checkouts[idx], tree);
                 return { v: v, text: a.text(checkouts[idx], tree) };
@@ -168,13 +175,17 @@ export default {
             const cmpCls = r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "";
             const cmpThumb = cmpMeasured ? svgOnce(id + "-cmp-sm", 168, radar(cmpAxes, [{ name: r.name, cls: cmpCls, values: cmpValues }], { labels: "none", size: 168 }), r.name + " comparison thumbnail", cmpDesc, "eco-star") : "";
             const cmpStar = cmpMeasured ? svgOnce(id + "-cmp", 380, radar(cmpAxes, [{ name: r.name, cls: cmpCls, values: cmpValues }], { labels: "short", values: true, pad: 78, size: 380 }), r.name + " comparison star", cmpDesc, "eco-star") : "";
-            function zoomChart(caption, thumb, full) {
-                return "<details class=\"eco-zoom\"><summary><span class=\"eco-zoom-shut\">" + thumb + "<span class=\"eco-thumb-cap\">" + caption + "</span></span><span class=\"eco-zoom-open\">Close chart</span></summary><div class=\"eco-zoom-body\"><button type=\"button\" class=\"eco-zoom-x\">Close chart</button>" + full + "</div></details>";
+            const cmpData = cmpMeasured ? radarJson({
+                axes: cmpAxes.map(function (a) { return { short: a.short, max: a.max, invert: false, pending: false }; }),
+                series: [{ name: r.name, cls: cmpCls, values: cmpValues.map(function (v) { return { v: v.v, text: v.text, pending: false }; }) }]
+            }) : "";
+            function zoomChart(caption, thumb, full, data) {
+                return "<details class=\"eco-zoom\"><summary><span class=\"eco-zoom-shut\">" + thumb + "<span class=\"eco-thumb-cap\">" + caption + "</span></span><span class=\"eco-zoom-open\">Close chart</span></summary><div class=\"eco-zoom-body\"><button type=\"button\" class=\"eco-zoom-x\">Close chart</button>" + full + (data ? "<script type=\"application/json\" class=\"eco-radar\">" + data + "</script>" : "") + "</div></details>";
             }
             const charts = "<div class=\"eco-card-charts\">" +
                 zoomChart("Assurance", radialThumb, radial) +
-                zoomChart("Health", starThumb, star) +
-                (cmpMeasured ? zoomChart("Compare", cmpThumb, cmpStar) : "") +
+                zoomChart("Health", starThumb, star, healthData) +
+                (cmpMeasured ? zoomChart("Compare", cmpThumb, cmpStar, cmpData) : "") +
                 "</div>";
             return "<article class=\"eco-card" + (r.internal ? " internal" : "") + "\" id=\"" + id + "\" aria-labelledby=\"" + id + "-h\">" +
                 "<h3 id=\"" + id + "-h\">" + esc(r.name) + "</h3>" +
@@ -213,7 +224,7 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-caption: "Selecting an implementation opens it full screen. One opens at a time. A Compare menu in the top right adds another implementation beside it. On a wide screen the three charts are shown large, side by side when the card is wide enough, and Counts is open. On a narrow screen the cards also stay on the page as thumbnails, and selecting a thumbnail opens that chart. Choosing a second implementation draws its comparison star and its code-health star beside the open one. Layers and proofs open only on BLVM. Close chart returns to the thumbnails. Close and Escape dismiss the card and leave the page where it was. A full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a or not measured. Dashed triangles on the health chart are the median. A hatched spoke is not measured, and it is not drawn as zero. When none of the five comparisons is measured, that chart is left off the card. The full list opens under Counts.",
+caption: "Selecting an implementation opens it full screen. One opens at a time. A Compare menu in the top right adds another implementation beside it. On a wide screen the three charts are shown large, side by side when the card is wide enough, and Counts is open. On a narrow screen the open card stacks those charts. Choosing a second implementation draws one comparison star and one code-health star for the two of them. A measure that is the same is labeled once. On a narrow screen the numbers sit under the star. The layer diagram and the proof counts open only on BLVM. Close chart returns to the thumbnails. Close and Escape dismiss the card and leave the page where it was. A full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a or not measured. Dashed triangles on the health chart are the median. A hatched spoke is not measured, and it is not drawn as zero. When none of the five comparisons is measured, that chart is left off the card. The full list opens under Counts.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),
