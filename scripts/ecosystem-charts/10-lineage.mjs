@@ -35,9 +35,30 @@ export function lineageSpec(ctx) {
             if (!r.languages) throw new Error("lineage: no language for " + r.slug);
             return r.languages.split(",")[0].trim();
         }
+        const reach = ctx.readJson("data/node-share.json");
+        const reachBy = {};
+        reach.rows.forEach(function (r) { reachBy[r.id] = r; });
+        if (typeof reachBy.core.share !== "number" || typeof reachBy.knots.share !== "number" || !reachBy.other) throw new Error("lineage: node-share is missing Core, the Knots family, or the remainder");
+        const notSplit = { "knots-legacy": 1, "bit-block": 1, "bitcoin-roots": 1 };
         rows.forEach(function (r) {
             if (!modelBy[r.slug]) throw new Error("lineage: stack row has no implementation: " + r.slug);
             nodes[r.slug] = { label: r.name, cls: r.slug === internal ? "hl" : "", href: "#card-" + r.slug, tag: primaryLang(r), facts: modelBy[r.slug].picker };
+        });
+        nodes["bitcoin-core"].share = reachBy.core.share;
+        nodes["bitcoin-core"].shareText = reachBy.core.text;
+        nodes["bitcoin-core"].shareTip = reachBy.core.text + " of reachable nodes";
+        nodes.knots.share = reachBy.knots.share;
+        nodes.knots.shareText = reachBy.knots.text;
+        nodes.knots.shareTip = reachBy.knots.text + " of reachable nodes advertise the Knots family. The count is not split across Knots Legacy, Bit-Block, or Bitcoin Roots";
+        Object.keys(nodes).forEach(function (id) {
+            if (nodes[id].shareText) return;
+            if (notSplit[id]) {
+                nodes[id].shareText = "not split";
+                nodes[id].shareTip = "not reported separately from the Knots family";
+            } else {
+                nodes[id].shareText = "not measured";
+                nodes[id].shareTip = "reachable nodes not measured";
+            }
         });
         const separate = rows.filter(function (r) { return !derived[r.slug]; });
         const ownSlugs = separate.map(function (r) { return r.slug; }).sort(function (a, b) {
@@ -70,7 +91,7 @@ export function lineageSpec(ctx) {
                 const above = own.filter(function (r) { return r.assurance.pct > med; }).length;
                 return separate.length + " of " + rows.length + " implementations are separate codebases. The other " + (rows.length - separate.length) + " are Bitcoin Core and clients built from it. The median assurance score is " + medText + "%. " + above + " of " + own.length + " own codebases score above the median.";
             })(),
-            caption: "One graph. Each box names the implementation, tags its primary language, and shows the governance mark. A number beside the mark is a maintainer count this page already states. The age is that project's stated start, counted to " + ctx.data.measured_at + ". Knots Legacy, Bit-Block, and Bitcoin Roots have no stated start of their own, so those boxes have no age. Arrows in Core lineage are the derivation stated on this page; the dashed arrow is Bitcoin Roots carrying Knots policy features onto Core. Bitcoin Knots itself is not a row on this page" + (knotsUp ? "; its arrow from Core cites the Knots README" : "") + ". Own codebases use the same boxes and have no derivation arrow. Select a name to open its card.",
+            caption: "One graph. Each box names the implementation and tags its primary language. The mark is the governance kind. A number beside the mark is a maintainer count this page already states. The age is the stated start, counted to " + ctx.data.measured_at + ". Knots Legacy, Bit-Block, and Bitcoin Roots have no stated start of their own. The footer is the share of reachable nodes. Bitcoin Core is " + reachBy.core.text + ". The Knots box is the Knots family, " + reachBy.knots.text + ", and that count is not split across Knots Legacy, Bit-Block, or Bitcoin Roots. Those three say not split. Every other box says not measured. The remainder, " + reachBy.other.text + ", is not given to a named implementation. Arrows in Core lineage are the derivation stated on this page; the dashed arrow is Bitcoin Roots carrying Knots policy features onto Core. Bitcoin Knots itself is not a row on this page" + (knotsUp ? "; its arrow from Core cites the Knots README" : "") + ". Own codebases use the same boxes and have no derivation arrow. Select a name to open its card.",
             measures: "Where each implementation's code comes from; it matters because clients that share code share its bugs.",
             takeaway: (function () {
                 const fam = rows.filter(function (r) { return derived[r.slug]; }).map(function (r) { return r.name; });
@@ -79,11 +100,13 @@ export function lineageSpec(ctx) {
                 return "The graph is a Core lineage of " + fam.length + " implementations \u2014 " + lst(fam) + " \u2014 and " + (rows.length - fam.length) + " own codebases in the same boxes. The tag on each box is the primary language. Own codebases do not show which Core line they come from, because the page states no derivation. Bitcoin Knots itself is not a row" + (sub.length ? ", and " + lst(sub) + "\u2019s Core git submodule is not a derivation." : ".");
             })(),
             title: "Lineage of the " + rows.length + " implementations",
-            desc: "Core lineage: Bitcoin Core (" + nodes["bitcoin-core"].tag + "); " + (knotsUp ? "Bitcoin Knots, a fork of Core, not a row; " : "") + "Bitcoin Roots (" + nodes["bitcoin-roots"].tag + "), a patch series on Core that also carries Knots features; Knots Legacy (" + nodes["knots-legacy"].tag + ") and Bit-Block (" + nodes["bit-block"].tag + "), both from Bitcoin Knots. Own codebase: " + ownSlugs.map(function (s) { return nodes[s].label + " (" + nodes[s].tag + ")"; }).join(", ") + ".",
+            desc: "Core lineage: Bitcoin Core (" + nodes["bitcoin-core"].tag + ", " + nodes["bitcoin-core"].shareTip + "); " + (knotsUp ? "Bitcoin Knots, a fork of Core, not a row, " + nodes.knots.shareTip + "; " : "") + "Bitcoin Roots (" + nodes["bitcoin-roots"].tag + ", " + nodes["bitcoin-roots"].shareTip + "), a patch series on Core that also carries Knots features; Knots Legacy (" + nodes["knots-legacy"].tag + ", " + nodes["knots-legacy"].shareTip + ") and Bit-Block (" + nodes["bit-block"].tag + ", " + nodes["bit-block"].shareTip + "), both from Bitcoin Knots. Own codebase: " + ownSlugs.map(function (s) { return nodes[s].label + " (" + nodes[s].tag + ", " + nodes[s].shareTip + ")"; }).join(", ") + ".",
             chart: lineage(groups, nodes, edges),
             notes: ["&ldquo;Separate&rdquo; means the data on this page states no derivation from Core or Knots. rbitcoin carries Bitcoin Core as a git submodule for tests (stack table); that is not a derivation."],
-            sources: (knotsUp ? knotsUp.sources.slice(0, 1) : []).concat([{ label: "data/implementations.json (history, class, upstream)" }]).concat([ { label: "data/stack.json (languages)" }]),
-            table: { caption: "Lineage of each implementation", columns: ["Implementation", "Group", "Stated relationship", "Languages", "Governance", "Maintainers", "Age"], rows: tableRows.concat(knotsUp ? [[knotsUp.name + " (not a row)", "Core family", knotsUp.quote + " (" + knotsUp.sources[0].label + ")", "not measured", "not stated", "not stated", "not stated"]] : []) }
+            sources: (knotsUp ? knotsUp.sources.slice(0, 1) : []).concat([{ label: "data/implementations.json (history, class, upstream)" }]).concat([ { label: "data/stack.json (languages)" }, { label: "data/node-share.json" }]).concat(reach.sources),
+            table: { caption: "Lineage of each implementation", columns: ["Implementation", "Group", "Stated relationship", "Languages", "Governance", "Maintainers", "Age", "Reachable nodes"], rows: tableRows.map(function (row, i) {
+                return row.concat([nodes[rows[i].slug].shareTip]);
+            }).concat(knotsUp ? [[knotsUp.name + " (not a row)", "Core family", knotsUp.quote + " (" + knotsUp.sources[0].label + ")", "not measured", "not stated", "not stated", "not stated", nodes.knots.shareTip]] : []) }
         };
 }
 
