@@ -31,7 +31,7 @@
         {
           "name": "blvm-protocol",
           "version": "0.1.48",
-          "commit": "d3146f8bce4010ddae33747c5f02c50f423f1bc5",
+          "commit": "17f9af3a217f14674c1e59fbc7ebd7856a9e8f6b",
           "role": "program"
         },
         {
@@ -49,7 +49,7 @@
         {
           "name": "blvm-secp256k1",
           "version": "0.1.17",
-          "commit": "441173f0fb1690f457f2c0292b77e3d4e34316dc",
+          "commit": "56c9288a85e83eef654b5da2c68ce3dd3a6be2c4",
           "role": "program"
         },
         {
@@ -85,8 +85,8 @@
         "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)]); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_folder": {
-        "value": 95993,
-        "text": "95,993",
+        "value": 96135,
+        "text": "96,135",
         "status": "measured",
         "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)]); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
@@ -97,8 +97,8 @@
         "note": "Deprecated alias of test_insource. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)]); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_integration": {
-        "value": 95993,
-        "text": "95,993",
+        "value": 96135,
+        "text": "96,135",
         "status": "measured",
         "note": "Deprecated alias of test_folder. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)]); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
@@ -113,13 +113,13 @@
         "status": "measured"
       },
       "test_split_total": {
-        "value": 195387,
-        "text": "195,387",
+        "value": 195529,
+        "text": "195,529",
         "status": "measured"
       },
       "vector_files": {
-        "value": 9,
-        "text": "9",
+        "value": 12,
+        "text": "12",
         "status": "measured"
       },
       "spec_files": {
