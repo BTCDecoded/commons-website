@@ -189,9 +189,20 @@ export default {
                 "</div>";
             const pk = r.picker;
             const pickBits = "<span class=\"eco-pick-bits\" hidden><span class=\"eco-gov eco-gov-" + pk.kind + "\" title=\"" + esc(pk.label) + "\"><span class=\"visually-hidden\">" + esc(pk.label) + ". </span>" + govMark(pk.kind) + (pk.keepers ? "<span class=\"eco-keepers\">" + pk.keepers + "</span>" : "") + "</span>" + (pk.age ? "<span class=\"eco-pick-age\" title=\"" + esc(pk.from) + "\">" + esc(pk.age) + "</span>" : "") + "</span>";
+            const axesData = radarJson({
+                independence: r.lineage.label,
+                assurance: { text: a.score + " of " + a.max, v: a.pct },
+                accountability: { text: r.accountability.label, v: r.accountability.rank }
+            });
+            const profile = "<dl class=\"eco-profile\">" +
+                "<div><dt>Independence</dt><dd>" + esc(r.lineage.label) + "</dd></div>" +
+                "<div><dt>Assurance</dt><dd>" + esc(a.score + " of " + a.max) + "</dd></div>" +
+                "<div><dt>Accountability</dt><dd>" + esc(r.accountability.label) + "</dd></div>" +
+                "</dl><script type=\"application/json\" class=\"eco-axes\">" + axesData + "</script>";
             return "<article class=\"eco-card" + (r.internal ? " internal" : "") + "\" id=\"" + id + "\" aria-labelledby=\"" + id + "-h\">" +
                 pickBits +
                 "<h3 id=\"" + id + "-h\">" + esc(r.name) + "</h3>" +
+                profile +
                 "<ul class=\"eco-badges\" aria-label=\"Badges\">" +
                 "<li class=\"eco-badge eco-badge-" + r.lineage.cls + "\"><span aria-hidden=\"true\">" + LIN_GLYPH[r.lineage.cls] + " </span>" + esc(r.lineage.label) + "</li>" +
                 "<li class=\"eco-badge\">" + esc(r.accountability.full) + "</li>" +
@@ -227,7 +238,7 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-caption: "Selecting an implementation opens it full screen. One opens at a time. A Compare menu in the top right adds another implementation beside it. On a wide screen the three charts are shown large, side by side when the card is wide enough, and Counts is open. On a narrow screen the open card stacks those charts. Choosing a second implementation draws one comparison star and one code-health star for the two of them. A measure that is the same is labeled once. On a narrow screen the numbers sit under the star. The layer diagram and the proof counts open only on BLVM. Close chart returns to the thumbnails. Close and Escape dismiss the card and leave the page where it was. A full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a or not measured. Dashed triangles on the health chart are the median. A hatched spoke is not measured, and it is not drawn as zero. When none of the five comparisons is measured, that chart is left off the card. The full list opens under Counts.",
+caption: "Selecting an implementation opens it full screen. The card states independence, assurance, and accountability. One opens at a time. A Compare menu in the top right adds another implementation, and the three scores are charted under that menu. On a wide screen the three charts are shown large, side by side when the card is wide enough, and Counts is open. On a narrow screen the open card stacks those charts. Choosing a second implementation draws one comparison star and one code-health star for the two of them. A measure that is the same is labeled once. On a narrow screen the numbers sit under the star. The layer diagram and the proof counts open only on BLVM. Close chart returns to the thumbnails. Close and Escape dismiss the card and leave the page where it was. A full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a or not measured. Dashed triangles on the health chart are the median. A hatched spoke is not measured, and it is not drawn as zero. When none of the five comparisons is measured, that chart is left off the card. The full list opens under Counts.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),
