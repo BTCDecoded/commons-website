@@ -4,7 +4,7 @@
 // Research's How carries figures, the data files' own method text is shown,
 // so no number on this page comes from copy. Entries for series a separate
 // change is correcting are tagged "pending fix".
-import { esc, govMark } from "../charts.mjs";
+import { esc, govMark, releaseMark } from "../charts.mjs";
 
 const PEND_FIELD = { fuzz_targets: "fuzz_targets", authors_12m: "authors_12m", ci_workflows: "ci_workflows", ci_jobs: "ci_jobs", rules_share: "rules_share" };
 const STAR = { test_split_total: 1, vector_files: 1, spec_files: 1, releases_12m: 1, fuzz_targets: 1, authors_12m: 1, plugin_system: 1, direct_deps: 1, program_code: 1, checkout: 1, share_lines_ge_1000: 1, test_per_implementation: 1, rules_share: 1 };
@@ -60,6 +60,10 @@ export default {
             "<li><span class=\"eco-key-foot\">not split</span><span class=\"eco-key-l\">Knots family, not divided across those boxes</span></li>" +
             "<li><span class=\"eco-key-foot\">not measured</span><span class=\"eco-key-l\">no share for that box</span></li>" +
             "<li><span class=\"eco-key-node\">BLVM</span><span class=\"eco-key-l\">this project</span></li>" +
+            "<li><span class=\"eco-key-g eco-rel eco-rel-none\">" + releaseMark("none") + "</span><span class=\"eco-key-l\">no release</span></li>" +
+            "<li><span class=\"eco-key-g eco-rel eco-rel-tag\">" + releaseMark("tag") + "</span><span class=\"eco-key-l\">tagged, not a stable line</span></li>" +
+            "<li><span class=\"eco-key-g eco-rel eco-rel-out\">" + releaseMark("out") + "</span><span class=\"eco-key-l\">released</span></li>" +
+            "<li><span class=\"eco-key-g eco-rel eco-rel-full\">" + releaseMark("full") + "</span><span class=\"eco-key-l\">released fully</span></li>" +
             "</ul>" +
             "<details class=\"eco-howto ch-more\" id=\"howto\"><summary>How to read this page</summary>" +
             "<ul class=\"eco-howto-lines\">" + lines.map(function (l) { return "<li>" + md(l) + "</li>"; }).join("") + "</ul>" +

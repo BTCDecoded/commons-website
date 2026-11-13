@@ -30,6 +30,37 @@ export function govBody(kind) {
 export function govMark(kind) {
     return "<svg class=\"eco-govmark\" width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" aria-hidden=\"true\">" + govBody(kind) + "</svg>";
 }
+// Release line, from the seven scored checks. The gates are in checklist
+// order: a non-pre tag, docs that do not say pre-release, and a version that
+// is 1.0 or an LTS. All seven met is the full seal. A not-measured gate is
+// not a stage.
+export function releaseStage(st) {
+    function status(id) {
+        var c = (st.cells || []).filter(function (x) { return x.id === id; })[0];
+        if (!c) throw new Error("release stage: missing " + id);
+        return c.status;
+    }
+    var tag = status("has_stable_release"), docs = status("docs_not_pre_release"), ver = status("version_or_lts_policy");
+    if (tag === "not_measured" || docs === "not_measured" || ver === "not_measured") return { id: "unknown", label: "Not measured", why: "A release check is not measured." };
+    if (st.met === st.total && st.notMeasured === 0) return { id: "full", label: "Released fully", why: "All seven release checks are met." };
+    if (tag !== "met") return { id: "none", label: "No release", why: "No tagged non-pre release." };
+    if (docs !== "met" || ver !== "met") return { id: "tag", label: "Tagged", why: "A non-pre tag exists. The docs still say pre-release, or the version is not 1.0 or an LTS." };
+    return { id: "out", label: "Released", why: "The tag, the docs, and the version are a stable line. A later release check is not met." };
+}
+export function releaseBody(id) {
+    var body = {
+        none: "<circle cx=\"7\" cy=\"7\" r=\"5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-dasharray=\"2.2 1.7\"/>",
+        tag: "<path d=\"M2.8 6.6 L6.6 2.8 H11.4 V7.6 L6.6 12.2 Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\"/><circle cx=\"9.1\" cy=\"5.2\" r=\"0.9\" fill=\"currentColor\"/>",
+        out: "<path d=\"M2.4 5.1 L7 2.6 L11.6 5.1 L7 7.6 Z M2.4 5.1 V9.7 L7 12.2 V7.6 M11.6 5.1 V9.7 L7 12.2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.2\" stroke-linejoin=\"round\"/>",
+        full: "<circle cx=\"7\" cy=\"7\" r=\"5.2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\"/><path d=\"M4.3 7.2 L6.2 9.2 L9.9 5.1\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>",
+        unknown: "<circle cx=\"7\" cy=\"7\" r=\"5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.2\"/><text x=\"7\" y=\"10.2\" text-anchor=\"middle\" font-size=\"9\" fill=\"currentColor\">?</text>"
+    }[id];
+    if (!body) throw new Error("release mark: " + id);
+    return body;
+}
+export function releaseMark(id) {
+    return "<svg class=\"eco-relmark\" width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" aria-hidden=\"true\">" + releaseBody(id) + "</svg>";
+}
 export function esc(s) {
     return String(s).replace(/[&<>"]/g, function (c) {
         return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
@@ -376,7 +407,10 @@ export function lineage(groups, nodes, edges) {
             var tip = n.label + (n.tag ? ", " + n.tag : "");
             if (n.facts) tip += ". " + n.facts.label + (n.facts.keepers ? ", " + n.facts.keepers : "") + (n.facts.age ? ", " + n.facts.age : "") + (n.facts.from ? ". " + n.facts.from : "");
             if (n.shareTip) tip += ". " + n.shareTip;
-            out += n.href ? "<a href=\"" + esc(n.href) + "\" class=\"ch-link\"><title>" + esc(tip) + "</title>" + node + "</a>" : node;
+            if (n.release) tip += ". " + n.release.label + ". " + n.release.why;
+            var rel = "";
+            if (n.release) rel = "<svg x=\"" + fmt(p.x + p.w - 18) + "\" y=\"" + fmt(p.y + 4) + "\" width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" class=\"ch-rel ch-rel-" + n.release.id + "\" aria-hidden=\"true\">" + releaseBody(n.release.id) + "</svg>";
+            out += n.href ? "<a href=\"" + esc(n.href) + "\" class=\"ch-link\"><title>" + esc(tip) + "</title>" + node + rel + "</a>" : node + rel;
         });
         var defs = "<defs><marker id=\"" + arrow + "\" viewBox=\"0 0 8 8\" refX=\"7\" refY=\"4\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L8 4 L0 8 z\" class=\"ch-arrowhead\"/></marker></defs>";
         return { body: defs + "<g font-size=\"" + fs + "\">" + out + "</g>", height: height + 2 };

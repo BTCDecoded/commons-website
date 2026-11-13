@@ -5,7 +5,7 @@
 // drawn as zero. A comparison chart with no measured spoke is left off the
 // card. n/a stays out of the assurance score. Fuzz targets listed in
 // ctx.model.pending say "pending fix".
-import { figure, assuranceRadial, radar, svgOnce, esc, median, govMark } from "../charts.mjs";
+import { figure, assuranceRadial, radar, svgOnce, esc, median, govMark, releaseStage, releaseMark } from "../charts.mjs";
 import { codeHealth } from "./06-stars.mjs";
 
 function radarJson(obj) {
@@ -211,7 +211,9 @@ export default {
                 (cmpMeasured ? zoomChart("Compare", cmpThumb, cmpStar, cmpData) : "") +
                 "</div>";
             const pk = r.picker;
-            const pickBits = "<span class=\"eco-pick-bits\" hidden><span class=\"eco-gov eco-gov-" + pk.kind + "\" title=\"" + esc(pk.label) + "\"><span class=\"visually-hidden\">" + esc(pk.label) + ". </span>" + govMark(pk.kind) + (pk.keepers ? "<span class=\"eco-keepers\">" + pk.keepers + "</span>" : "") + "</span>" + (pk.age ? "<span class=\"eco-pick-age\" title=\"" + esc(pk.from) + "\">" + esc(pk.age) + "</span>" : "") + "</span>";
+            const rel = releaseStage(r.stability);
+            const pickBits = "<span class=\"eco-pick-bits\" hidden><span class=\"eco-gov eco-gov-" + pk.kind + "\" title=\"" + esc(pk.label) + "\"><span class=\"visually-hidden\">" + esc(pk.label) + ". </span>" + govMark(pk.kind) + (pk.keepers ? "<span class=\"eco-keepers\">" + pk.keepers + "</span>" : "") + "</span><span class=\"eco-rel eco-rel-" + rel.id + "\" title=\"" + esc(rel.why) + "\"><span class=\"visually-hidden\">" + esc(rel.label) + ". </span>" + releaseMark(rel.id) + "</span>" + (pk.age ? "<span class=\"eco-pick-age\" title=\"" + esc(pk.from) + "\">" + esc(pk.age) + "</span>" : "") + "</span>";
+            const releaseBadge = "<p class=\"eco-release eco-rel-" + rel.id + "\" title=\"" + esc(rel.why) + "\">" + releaseMark(rel.id) + "<span>" + esc(rel.label) + "</span></p>";
             const axesData = radarJson({
                 independence: r.lineage.label,
                 assurance: { text: a.score + " of " + a.max, v: a.pct },
@@ -225,12 +227,15 @@ export default {
             return "<article class=\"eco-card" + (r.internal ? " internal" : "") + "\" id=\"" + id + "\" aria-labelledby=\"" + id + "-h\">" +
                 pickBits +
                 "<h3 id=\"" + id + "-h\">" + esc(r.name) + "</h3>" +
+                "<div class=\"eco-sheet\">" +
+                charts +
+                "<div class=\"eco-sheet-main\">" +
+                releaseBadge +
                 profile +
                 "<ul class=\"eco-badges\" aria-label=\"Badges\">" +
                 "<li class=\"eco-badge eco-badge-" + r.lineage.cls + "\"><span aria-hidden=\"true\">" + LIN_GLYPH[r.lineage.cls] + " </span>" + esc(r.lineage.label) + "</li>" +
                 "<li class=\"eco-badge\">" + esc(r.accountability.full) + "</li>" +
                 "<li class=\"eco-badge\">Modules: " + esc(metricText(r.metrics, "plugin_system")) + "</li></ul>" +
-                charts +
                 stabMeter(r.stability) +
                 "<details class=\"ch-more eco-onchart-fold\"><summary>On the charts</summary><dl class=\"eco-counts\">" +
                 group("Code") +
@@ -260,6 +265,7 @@ export default {
                 group("Last 12 months") +
                 fact("CI jobs", metricText(r.metrics, "ci_jobs")) +
                 "</dl></details>" +
+                "</div></div>" +
                 "</article>";
         }).join("");
         return figure({
