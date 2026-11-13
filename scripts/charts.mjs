@@ -592,7 +592,7 @@ export function radar(axes, series, opts) {
                 var lines = lab === "full" ? wrap(name, fsz, narrowLab ? 70 : 110) : [name];
                 var extra = [];
                 if (a.pending) extra.push("pending fix");
-                else if (opts.values && series.length === 1) extra.push(series[0].values[i].text);
+                else if (opts.values && series[0]) extra.push(series[0].values[i].text);
                 lines = lines.concat(extra);
                 var y0 = p[1] + dy - (Math.sin(ang * Math.PI / 180) < -0.5 ? (lines.length - 1) * (fsz + 2) : 0);
                 lines.forEach(function (l, j) {

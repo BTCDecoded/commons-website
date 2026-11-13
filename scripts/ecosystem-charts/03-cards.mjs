@@ -1,8 +1,10 @@
-// One card per implementation. Badges, the assurance radial, and the same
-// counts as the tables, in the same order on every card. A missing count says
-// "not measured". n/a stays out of the assurance score. Fuzz targets that are
-// listed in ctx.model.pending say "pending fix" and are not drawn as final.
-import { figure, assuranceRadial, svgOnce, esc, median } from "../charts.mjs";
+// One card per implementation. The face is the charts: assurance radial,
+// code-health star, checkout bar, and the comparison bars. The same counts
+// as the tables open under Counts, in the same order on every card. A missing
+// count says "not measured" and is not drawn as zero. n/a stays out of the
+// assurance score. Fuzz targets listed in ctx.model.pending say "pending fix".
+import { figure, assuranceRadial, radar, svgOnce, esc, median } from "../charts.mjs";
+import { codeHealth } from "./06-stars.mjs";
 
 const GLYPH = { "yes": "\u25CF", "partial": "\u25D0", "not found": "\u25CB", "n/a": "\u2013" };
 const LIN_GLYPH = { own: "\u25C6", fork: "\u25C7", core: "\u25A0" };
@@ -79,6 +81,61 @@ function fact(label, text, extra) {
 function group(name) {
     return "<div class=\"eco-card-group\">" + esc(name) + "</div>";
 }
+function numCell(tree, id) {
+    var cell = tree && tree.values && tree.values[id];
+    if (!cell || cell.status !== "measured" || typeof cell.value !== "number") return null;
+    return cell;
+}
+function metricNum(metrics, id) {
+    var cell = metrics && metrics[id];
+    if (!cell || cell.status !== "measured" || typeof cell.value !== "number") return null;
+    return cell;
+}
+function testLines(metrics) {
+    if (!metrics) return null;
+    var keys = ["test_insource", "test_folder", "test_fuzz", "test_property"], sum = 0, i, cell;
+    for (i = 0; i < keys.length; i++) {
+        cell = metrics[keys[i]];
+        if (!cell || cell.status !== "measured" || typeof cell.value !== "number") return null;
+        sum += cell.value;
+    }
+    cell = metrics.test_split_total;
+    if (cell && cell.status === "measured" && cell.value !== sum) throw new Error("card checkout tests do not match test_split_total");
+    return sum;
+}
+function pct(v, scale) {
+    return Math.max(0, Math.min(100, scale ? (v / scale) * 100 : 0)).toFixed(1);
+}
+function checkoutOf(r, tree) {
+    if (!tree) return null;
+    var program = numCell(tree, "program_code"), tooling = numCell(tree, "tooling_code");
+    var vend = numCell(tree, "vendored_code"), loc = numCell(tree, "locale_code");
+    var tests = testLines(r.metrics);
+    if (!program || !tooling || !vend || !loc || tests === null) throw new Error("card checkout missing a measured part for " + r.slug);
+    return {
+        program: program.value, tests: tests, tooling: tooling.value, vend: vend.value, loc: loc.value,
+        total: program.value + tests + tooling.value + vend.value + loc.value,
+        text: { program: program.text, tests: tests.toLocaleString("en-US"), tooling: tooling.text, vend: vend.text, loc: loc.text }
+    };
+}
+function rulesReading(tree) {
+    if (!tree) return { text: "not measured", value: null };
+    var cell = tree.values && tree.values.rules_share;
+    if (!cell) return { text: "no cut", value: null };
+    if (cell.status !== "measured" || typeof cell.value !== "number") return { text: cell.text || "not measured", value: null };
+    return { text: cell.text, value: cell.value };
+}
+function barRow(label, text, value, scale, cls, title) {
+    var bar = value === null ? "" : "<span class=\"mini\" aria-hidden=\"true\"><span class=\"mini-fill" + (cls ? " " + cls : "") + "\" style=\"width:" + pct(value, scale) + "%\"></span></span>";
+    return "<li title=\"" + esc(title || "") + "\"><span class=\"lbl\">" + esc(label) + "</span><span class=\"num\">" + esc(text) + "</span>" + bar + "</li>";
+}
+function checkoutBar(c, scale) {
+    if (!c) return "<p class=\"eco-card-miss\">Checkout not measured</p>";
+    var parts = [["program", "program", c.program, c.text.program], ["tests", "tests", c.tests, c.text.tests], ["tooling", "tool", c.tooling, c.text.tooling], ["vendored", "vend", c.vend, c.text.vend], ["locale", "loc", c.loc, c.text.loc]];
+    var title = parts.map(function (p) { return p[0] + " " + p[3]; }).join(", ");
+    var segs = parts.map(function (p) { return "<span class=\"mini-fill " + p[1] + "\" style=\"width:" + pct(p[2], scale) + "%\"></span>"; }).join("");
+    return "<p class=\"eco-card-chart\"><span class=\"lbl\">Checkout</span><span class=\"num\">" + c.total.toLocaleString("en-US") + "</span><span class=\"mini\" title=\"" + esc(title) + "\" aria-hidden=\"true\">" + segs + "</span></p>";
+}
 
 export default {
     slot: "chart-cards",
@@ -86,7 +143,16 @@ export default {
         const rows = ctx.model.rows;
         const med = median(rows.map(function (r) { return r.assurance.pct; }));
         const pendFuzz = "fuzz_targets" in ctx.model.pending;
-        const cards = rows.map(function (r) {
+        const health = codeHealth(rows, ctx.model.pending);
+        const checkouts = rows.map(function (r) { return checkoutOf(r, treeOf(ctx, r.slug)); });
+        const compMax = Math.max.apply(null, checkouts.map(function (c) { return c ? c.total : 0; })) || 1;
+        const programMax = Math.max.apply(null, rows.map(function (r) { var c = numCell(treeOf(ctx, r.slug), "program_code"); return c ? c.value : 0; })) || 1;
+        const testMax = Math.max.apply(null, rows.map(function (r) { var c = numCell(treeOf(ctx, r.slug), "test_per_implementation"); return c ? c.value : 0; })) || 1;
+        const ruleVals = rows.map(function (r) { return rulesReading(treeOf(ctx, r.slug)).value; }).filter(function (v) { return v !== null; });
+        const ruleMax = ruleVals.length ? Math.max.apply(null, ruleVals) : 1;
+        const moduleMax = Math.max.apply(null, rows.map(function (r) { var c = metricNum(r.metrics, "plugin_own"); return c ? c.value : 0; })) || 1;
+        const legend = "<p class=\"chart-legend\"><span><i class=\"swatch program\"></i>program</span><span><i class=\"swatch tests\"></i>tests</span><span><i class=\"swatch tool\"></i>tooling</span><span><i class=\"swatch vend\"></i>vendored</span><span><i class=\"swatch loc\"></i>locale</span></p>";
+        const cards = rows.map(function (r, idx) {
             const id = "card-" + r.slug;
             const a = r.assurance;
             const desc = r.name + ". Assurance " + a.score + " of " + a.max + ": " + a.cells.map(function (c) { return c.name + " " + c.status; }).join(", ") + ".";
@@ -97,16 +163,33 @@ export default {
             const half = counted(tree, "files_holding_half");
             const names = r.metrics && Array.isArray(r.metrics.plugin_names) ? r.metrics.plugin_names : [];
             const own = metricText(r.metrics, "plugin_own");
+            const ownNum = metricNum(r.metrics, "plugin_own");
             const fuzzText = pendFuzz ? "pending fix" : metricText(r.metrics, "fuzz_targets");
             const vendored = tree ? counted(tree, "vendored_code") : (r.stack && r.stack.vendored ? r.stack.vendored : "not measured");
+            const ink = r.internal ? "internal" : "";
+            const program = numCell(tree, "program_code");
+            const tests = numCell(tree, "test_per_implementation");
+            const large = numCell(tree, "share_lines_ge_1000");
+            const rules = rulesReading(tree);
+            const starSeries = health.series(r, r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "");
+            const starDesc = r.name + " code health. " + health.axes.map(function (axis, i) { return axis.short + " " + starSeries.values[i].text; }).join(", ") + ". Median of " + rows.length + ": " + health.axes.map(function (axis, i) { return axis.short + " " + health.median.values[i].text; }).join(", ") + ".";
+            const star = svgOnce(id + "-s", 340, radar(health.axes, [starSeries, health.median], { labels: "short", values: true, pad: 64, size: 340 }), r.name + " code-health star", starDesc, "eco-star");
+            const bars = "<ul class=\"eco-card-bars\">" +
+                barRow("Program", program ? program.text : "not measured", program ? program.value : null, programMax, ink, HINT["Program"]) +
+                barRow("Large files", large ? large.text : "not measured", large ? large.value : null, 100, ink, half === "not measured" ? HINT["Large files"] : half + " files hold half. " + HINT["Large files"]) +
+                barRow("Tests / line", tests ? tests.text : "not measured", tests ? tests.value : null, testMax, ink, HINT["Tests / line"]) +
+                barRow("Rules share", rules.text, rules.value, ruleMax, ink, (tree && tree.instrument ? tree.instrument + ". " : "") + HINT["Rules share"]) +
+                barRow("Own-team", own, ownNum ? ownNum.value : null, moduleMax, ink, (names.length ? names.join(", ") + ". " : "") + HINT["Own-team"]) +
+                "</ul>";
             return "<article class=\"eco-card" + (r.internal ? " internal" : "") + "\" id=\"" + id + "\" aria-labelledby=\"" + id + "-h\">" +
                 "<h3 id=\"" + id + "-h\">" + esc(r.name) + "</h3>" +
                 "<ul class=\"eco-badges\" aria-label=\"Badges\">" +
                 "<li class=\"eco-badge eco-badge-" + r.lineage.cls + "\"><span aria-hidden=\"true\">" + LIN_GLYPH[r.lineage.cls] + " </span>" + esc(r.lineage.label) + "</li>" +
                 "<li class=\"eco-badge\">" + esc(r.accountability.full) + "</li>" +
                 "<li class=\"eco-badge\">Modules: " + esc(metricText(r.metrics, "plugin_system")) + "</li></ul>" +
-                radial +
-                "<dl>" +
+                radial + star + checkoutBar(checkouts[idx], compMax) + bars +
+                stabMeter(r.stability) +
+                "<details class=\"ch-more\"><summary>Counts</summary><dl>" +
                 group("Code") +
                 fact("Program", counted(tree, "program_code")) +
                 fact("Implementation", counted(tree, "implementation_code")) +
@@ -128,18 +211,17 @@ export default {
                 fact("Releases", metricText(r.metrics, "releases_12m")) +
                 fact("CI jobs", metricText(r.metrics, "ci_jobs")) +
                 fact("Fuzz targets", fuzzText) +
-                "</dl>" +
-                stabMeter(r.stability) +
+                "</dl></details>" +
                 "</article>";
         }).join("");
         return figure({
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-            caption: "Each card uses the same rows. Badges are lineage, accountability, and the module-system reading. The radial is the six assurance checks: a full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a. The lines under it are the code, module, stack, and 12-month counts from the tables.",
+            caption: "Each card leads with the charts. The radial is the six assurance checks: a full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a. The star is the code-health chart, on the same scales as the star section; dashed triangles are the median. The checkout bar is program, tests, tooling, vendored, and locale, scaled to the largest checkout. The bars under it are program lines, large files, tests per line, rules share, and own-team modules, each scaled as in the comparison table. The counts open under Counts.",
+            html: legend + "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),
-            html: "<div class=\"eco-cards\">" + cards + "</div>",
             notes: ["A line says not measured when that tree is not in the file that holds the count. Vendored lines come from the code table when the tree is measured there, and from the stack note otherwise. Own-team names, when the card has them, are on the row. Release stability asks whether a project has a release line an operator can run and expect to stay fixed. " + esc(ctx.model.stability.rule) + " " + esc(ctx.model.stability.note) + ctx.model.stability.extra.map(function (x) { return " " + esc(x.name) + ": " + esc(x.note); }).join(""), (pendFuzz ? "Fuzz target counts are being corrected in a separate change and are shown as &ldquo;pending fix&rdquo;." : "Fuzz targets are declared harnesses at the pinned commit.")],
             sources: [{ label: "data/verification.json" }, { label: "data/implementations.json" }, { label: "data/stack.json" }, { label: "data/metrics.json" }, { label: "data/stability.json" }],
             table: {
