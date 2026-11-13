@@ -35,6 +35,7 @@ function walk(dir) {
         if (!exts.has(path.extname(name))) continue;
         if (st.size > 2_000_000) continue;
         const rel = path.relative(root, abs);
+        if (rel === "CLAIMS.md" || rel === "scripts/check-public-claims.mjs") continue;
         const lines = fs.readFileSync(abs, "utf8").split("\n");
         lines.forEach(function (line, i) {
             deny.forEach(function (phrase) {
