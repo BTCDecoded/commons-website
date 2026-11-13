@@ -15,7 +15,7 @@ export default {
             wide: 760,
             narrow: 360,
             headline: line.headline,
-            lead: "Select an implementation to open it at the bottom right. A second selection compares the two.",
+            lead: "Select an implementation to open it full screen. One opens at a time. Compare from the menu in the top right.",
             caption: line.caption,
             measures: line.measures,
             takeaway: line.takeaway,
