@@ -114,8 +114,8 @@
           "note": "The counted crates are the other side of the cut. governance and blvm-commons are the rules side. Nothing was left unsplit."
         },
         "test_per_implementation": {
-          "value": 0.74,
-          "text": "0.74",
+          "value": 0.95,
+          "text": "0.95",
           "status": "measured"
         },
         "vendored_code": {
