@@ -6,41 +6,51 @@
 // A value that is not measured is a grey-hatched gap, never zero.
 import { figure, radar, smallMultiples, compose, median } from "../charts.mjs";
 
+// One code-health star for the section and for each implementation card.
+// Axes, scales, and the median come from the same rows, so a card star
+// matches the grid.
+export function codeHealth(rows, pending) {
+    const pend = pending || {};
+    const PLUG = { yes: 2, partial: 1, no: 0 };
+    function mval(r, k) { const c = r.metrics && r.metrics[k]; return c && c.status === "measured" && typeof c.value === "number" ? c.value : null; }
+    const AX = [
+        { key: "test_split_total", label: "Test lines", short: "Tests", get: function (r) { return mval(r, "test_split_total"); } },
+        { key: "vector_files", label: "Vector files", short: "Vectors", get: function (r) { return mval(r, "vector_files"); } },
+        { key: "spec_files", label: "Spec files", short: "Specs", get: function (r) { return mval(r, "spec_files"); } },
+        { key: "releases_12m", label: "Releases, 12 months", short: "Releases", get: function (r) { return mval(r, "releases_12m"); } },
+        { key: "plugin", label: "Plug-in support", short: "Plug-ins", get: function (r) { const c = r.metrics && r.metrics.plugin_system; return c && c.value in PLUG ? PLUG[c.value] : null; }, max: 2, fmt: function (v) { return ["no", "partial", "yes"][v]; } },
+        { key: "direct_deps", label: "Dependency surface (fewer is outward)", short: "Few deps", get: function (r) { return typeof r.stack.direct_deps === "number" ? r.stack.direct_deps : null; }, invert: true },
+        { key: "fuzz_targets", label: "Fuzz targets", short: "Fuzz", get: function (r) { return mval(r, "fuzz_targets"); } },
+        { key: "authors_12m", label: "Authors, 12 months", short: "Authors", get: function (r) { return mval(r, "authors_12m"); } }
+    ];
+    const axes = AX.map(function (a) {
+        const vals = rows.map(a.get).filter(function (v) { return typeof v === "number"; });
+        const max = a.max || Math.max.apply(null, vals) || 1;
+        return { key: a.key, label: a.label + (a.key in pend ? "" : " (0 to " + max.toLocaleString("en-US") + ")"), short: a.short, max: max, invert: a.invert, pending: a.key in pend, get: a.get, fmt: a.fmt };
+    });
+    function series(r, cls) {
+        return { name: r.name, cls: cls, values: axes.map(function (a) {
+            if (a.pending) return { v: null, text: "pending fix", pending: true };
+            const v = a.get(r);
+            if (v && v.pending) return { v: null, text: "pending fix", pending: true };
+            return v === null ? { v: null, text: "not measured" } : { v: v, text: a.fmt ? a.fmt(v) : v.toLocaleString("en-US") };
+        }) };
+    }
+    const med = { name: "Median of " + rows.length, cls: "median", values: axes.map(function (a) {
+        if (a.pending) return { v: null, text: "pending fix", pending: true };
+        const vs = rows.map(a.get).filter(function (v) { return typeof v === "number"; });
+        const m = vs.length ? median(vs) : null;
+        return m === null ? { v: null, text: "not measured" } : { v: m, text: a.fmt ? String(m) : m.toLocaleString("en-US") };
+    }) };
+    return { axes: axes, series: series, median: med };
+}
+
 export default {
     slot: "chart-stars",
     build: function (ctx) {
         const rows = ctx.model.rows, pend = ctx.model.pending;
-        const PLUG = { yes: 2, partial: 1, no: 0 };
-        function mval(r, k) { const c = r.metrics && r.metrics[k]; return c && c.status === "measured" && typeof c.value === "number" ? c.value : null; }
-        const AX = [
-            { key: "test_split_total", label: "Test lines", short: "Tests", get: function (r) { return mval(r, "test_split_total"); } },
-            { key: "vector_files", label: "Vector files", short: "Vectors", get: function (r) { return mval(r, "vector_files"); } },
-            { key: "spec_files", label: "Spec files", short: "Specs", get: function (r) { return mval(r, "spec_files"); } },
-            { key: "releases_12m", label: "Releases, 12 months", short: "Releases", get: function (r) { return mval(r, "releases_12m"); } },
-            { key: "plugin", label: "Plug-in support", short: "Plug-ins", get: function (r) { const c = r.metrics && r.metrics.plugin_system; return c && c.value in PLUG ? PLUG[c.value] : null; }, max: 2, fmt: function (v) { return ["no", "partial", "yes"][v]; } },
-            { key: "direct_deps", label: "Dependency surface (fewer is outward)", short: "Few deps", get: function (r) { return typeof r.stack.direct_deps === "number" ? r.stack.direct_deps : null; }, invert: true },
-            { key: "fuzz_targets", label: "Fuzz targets", short: "Fuzz", get: function (r) { return mval(r, "fuzz_targets"); } },
-            { key: "authors_12m", label: "Authors, 12 months", short: "Authors", get: function (r) { return mval(r, "authors_12m"); } }
-        ];
-        const axes = AX.map(function (a) {
-            const vals = rows.map(a.get).filter(function (v) { return typeof v === "number"; });
-            const max = a.max || Math.max.apply(null, vals) || 1;
-            return { key: a.key, label: a.label + (a.key in pend ? "" : " (0 to " + max.toLocaleString("en-US") + ")"), short: a.short, max: max, invert: a.invert, pending: a.key in pend, get: a.get, fmt: a.fmt };
-        });
-        function series(r, cls) {
-            return { name: r.name, cls: cls, values: axes.map(function (a) {
-                if (a.pending) return { v: null, text: "pending fix", pending: true };
-                const v = a.get(r);
-                if (v && v.pending) return { v: null, text: "pending fix", pending: true };
-                return v === null ? { v: null, text: "not measured" } : { v: v, text: a.fmt ? a.fmt(v) : v.toLocaleString("en-US") };
-            }) };
-        }
-        const med = { name: "Median of " + rows.length, cls: "median", values: axes.map(function (a) {
-            if (a.pending) return { v: null, text: "pending fix", pending: true };
-            const vs = rows.map(a.get).filter(function (v) { return typeof v === "number"; });
-            const m = vs.length ? median(vs) : null;
-            return m === null ? { v: null, text: "not measured" } : { v: m, text: a.fmt ? String(m) : m.toLocaleString("en-US") };
-        }) };
+        const health = codeHealth(rows, pend);
+        const axes = health.axes, series = health.series, med = health.median;
         const blvm = rows.filter(function (r) { return r.internal; })[0], core = rows.filter(function (r) { return r.slug === "bitcoin-core"; })[0];
         const overlay = radar(axes, [med, series(core, "core"), series(blvm, "hl")], { labels: "full", size: 520 });
         const grid = smallMultiples(rows.map(function (r) {
