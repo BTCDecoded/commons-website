@@ -488,7 +488,10 @@ export function lineage(groups, nodes, edges) {
                 }
                 footer += t(p.x + p.w / 2, p.y + p.h - 7, n.shareText, "ch-t ch-muted", " text-anchor=\"middle\" font-size=\"10\"");
             }
-            var node = "<rect x=\"" + fmt(p.x) + "\" y=\"" + fmt(p.y) + "\" width=\"" + fmt(p.w) + "\" height=\"" + p.h + "\" rx=\"6\" class=\"ch-node" + (n.cls ? " ch-node-" + n.cls : "") + "\"/>" +
+            var commons = (n.facts && n.facts.kind === "commons")
+                ? "<rect x=\"" + fmt(p.x - 3) + "\" y=\"" + fmt(p.y - 3) + "\" width=\"" + fmt(p.w + 6) + "\" height=\"" + fmt(p.h + 6) + "\" rx=\"8\" class=\"ch-commons-ring\"/>"
+                : "";
+            var node = commons + "<rect x=\"" + fmt(p.x) + "\" y=\"" + fmt(p.y) + "\" width=\"" + fmt(p.w) + "\" height=\"" + p.h + "\" rx=\"6\" class=\"ch-node" + (n.cls ? " ch-node-" + n.cls : "") + "\"/>" +
                 t(p.x + p.w / 2, nameY, n.label, "ch-t ch-nodet" + (n.cls === "hl" ? " ch-hl" : n.cls === "muted" ? " ch-muted" : ""), " text-anchor=\"middle\"") +
                 badgeSvg +
                 fact + mini + footer;

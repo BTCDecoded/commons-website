@@ -58,6 +58,7 @@ export default {
             "<li><span class=\"eco-key-foot\">1</span><span class=\"eco-key-l\">stated maintainer count</span></li>" +
             "<li><span class=\"eco-key-bar\" aria-hidden=\"true\"><i></i></span><span class=\"eco-key-l\">share of reachable nodes, on a box that has a count</span></li>" +
             "<li><span class=\"eco-key-node\">BLVM</span><span class=\"eco-key-l\">this project</span></li>" +
+            "<li><span class=\"eco-key-node eco-key-commons\" aria-hidden=\"true\"></span><span class=\"eco-key-l\">using Commons</span></li>" +
             (function () {
                 var seen = {};
                 ctx.model.rows.forEach(function (r) { var rank = assuranceRank(r.assurance); seen[rank.id] = rank; });
