@@ -1,7 +1,8 @@
 // One card per implementation. The face is the charts: assurance radial,
 // code-health star, and the five-spoke comparison star. The same counts
 // as the tables open under Counts, in the same order on every card. A missing
-// count says "not measured" and is not drawn as zero. n/a stays out of the
+// count says "not measured" and is not drawn as zero. A comparison star with
+// no measured spoke is left off the card. n/a stays out of the
 // assurance score. Fuzz targets listed in ctx.model.pending say "pending fix".
 import { figure, assuranceRadial, radar, svgOnce, esc, median } from "../charts.mjs";
 import { codeHealth } from "./06-stars.mjs";
@@ -174,7 +175,8 @@ export default {
                 return { v: v, text: a.text(checkouts[idx], tree) };
             });
             const cmpDesc = r.name + " comparisons. " + cmpAxes.map(function (a, i) { return a.short + " " + cmpValues[i].text; }).join(", ") + ".";
-            const cmpStar = svgOnce(id + "-cmp", 340, radar(cmpAxes, [{ name: r.name, cls: r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "", values: cmpValues }], { labels: "short", values: true, pad: 78, size: 340 }), r.name + " comparison star", cmpDesc, "eco-star");
+            const cmpMeasured = cmpValues.some(function (v) { return typeof v.v === "number"; });
+            const cmpStar = cmpMeasured ? svgOnce(id + "-cmp", 340, radar(cmpAxes, [{ name: r.name, cls: r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "", values: cmpValues }], { labels: "short", values: true, pad: 78, size: 340 }), r.name + " comparison star", cmpDesc, "eco-star") : "";
             const modules = "<ul class=\"eco-card-bars\">" +
                 barRow("Modules", own, ownNum ? ownNum.value : null, moduleMax, ink, (names.length ? names.join(", ") + ". " : "") + HINT["Modules"]) +
                 "</ul>";
@@ -215,7 +217,7 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-            caption: "Each card leads with the charts. The radial is the six assurance checks: a full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a. The first star is the code-health chart, on the same scales as the star section; dashed triangles are the median. The second star is checkout, program lines, large files, tests per line, and rules share, each spoke scaled to the largest measured value. A hatched spoke is not measured, and it is not drawn as zero. Modules is the project's own optional modules. The counts open under Counts.",
+            caption: "Each card leads with the charts. The radial is the six assurance checks: a full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a. The first star is the code-health chart, on the same scales as the star section; dashed triangles are the median. The second star is checkout, program lines, large files, tests per line, and rules share, each spoke scaled to the largest measured value. A hatched spoke is not measured, and it is not drawn as zero. When none of those five is measured, that star is left off the card. Modules is the project's own optional modules. The counts open under Counts.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),
