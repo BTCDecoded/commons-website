@@ -73,11 +73,14 @@ export function figure(spec) {
         (spec.takeaway ? "<p>" + esc(spec.takeaway) + "</p>" : "") +
         notes + sources;
     var more = reading ? "<details class=\"ch-more\"><summary>How to read this</summary>" + reading + "</details>" : "";
+    var wide = spec.wide || WIDE, narrow = spec.narrow || NARROW;
     var body = spec.html ? spec.html : spec.parts ? spec.parts.map(function (p) {
-        return (p.kicker ? "<h3 class=\"ch-sub\" id=\"" + esc(p.id) + "\">" + esc(p.kicker) + "</h3>" : "") +
-            draw(p.chart, WIDE, "wide", p.id, p.title, p.desc) +
-            draw(p.chart, NARROW, "narrow", p.id, p.title, p.desc);
-    }).join("") : draw(spec.chart, WIDE, "wide", spec.id, spec.title, spec.desc) + draw(spec.chart, NARROW, "narrow", spec.id, spec.title, spec.desc);
+        var piece = (p.kicker ? "<h3 class=\"ch-sub\" id=\"" + esc(p.id) + "\">" + esc(p.kicker) + "</h3>" : "") +
+            draw(p.chart, wide, "wide", p.id, p.title, p.desc) +
+            draw(p.chart, narrow, "narrow", p.id, p.title, p.desc);
+        return spec.split ? "<div class=\"eco-ov-part\">" + piece + "</div>" : piece;
+    }).join("") : draw(spec.chart, wide, "wide", spec.id, spec.title, spec.desc) + draw(spec.chart, narrow, "narrow", spec.id, spec.title, spec.desc);
+    if (spec.split) body = "<div class=\"eco-ov\">" + body + "</div>";
     var lead = spec.lead ? "<p class=\"ch-lead\">" + esc(spec.lead) + "</p>" : "";
     return "<figure class=\"ch" + (spec.cls ? " " + spec.cls : "") + "\" id=\"" + esc(spec.id) + "\"><figcaption><strong class=\"ch-head\">" + esc(spec.headline) + "</strong></figcaption>" +
         lead + body + more + table + "</figure>";
@@ -249,13 +252,16 @@ export function scatter(points, axes) {
 // groups: [{ id, label, cols, grid: [[nodeId|null, ...], ...] }]
 //   grid rows are laid out as given on wide screens; on narrow screens a group
 //   whose `flow` is true reflows its nodes into two columns.
-// nodes: { id: { label, cls } }  cls: hl | muted
+// nodes: { id: { label, cls, tag } }  cls: hl | muted. tag is a short
+// language mark drawn under the name.
 // edges: [{ from, to, dashed }]
 export function lineage(groups, nodes, edges) {
     return function (width, uid) {
         var arrow = (uid || "ch") + "-arrow";
         var narrow = width < 500, fs = narrow ? 13 : 13;
-        var nodeH = 30, gapX = narrow ? 26 : 34, gapY = 12, pad = 10, headH = 24, groupGap = narrow ? 14 : 16;
+        var tagged = false;
+        Object.keys(nodes).forEach(function (id) { if (nodes[id].tag) tagged = true; });
+        var nodeH = tagged ? 46 : 30, gapX = narrow ? 26 : 34, gapY = 12, pad = 10, headH = 24, groupGap = narrow ? 14 : 16;
         var pos = {}, out = "", gx = 0, gy = 0, rowH = 0;
         groups.forEach(function (g) {
             var grid = g.grid;
@@ -317,9 +323,12 @@ export function lineage(groups, nodes, edges) {
         });
         Object.keys(pos).forEach(function (id) {
             var p = pos[id], n = nodes[id];
+            var nameY = n.tag ? p.y + 18 : p.y + p.h / 2 + fs * 0.35;
             var node = "<rect x=\"" + fmt(p.x) + "\" y=\"" + fmt(p.y) + "\" width=\"" + fmt(p.w) + "\" height=\"" + p.h + "\" rx=\"6\" class=\"ch-node" + (n.cls ? " ch-node-" + n.cls : "") + "\"/>" +
-                t(p.x + p.w / 2, p.y + p.h / 2 + fs * 0.35, n.label, "ch-t ch-nodet" + (n.cls === "hl" ? " ch-hl" : n.cls === "muted" ? " ch-muted" : ""), " text-anchor=\"middle\"");
-            out += n.href ? "<a href=\"" + esc(n.href) + "\" class=\"ch-link\"><title>" + esc(n.label) + "</title>" + node + "</a>" : node;
+                t(p.x + p.w / 2, nameY, n.label, "ch-t ch-nodet" + (n.cls === "hl" ? " ch-hl" : n.cls === "muted" ? " ch-muted" : ""), " text-anchor=\"middle\"") +
+                (n.tag ? t(p.x + p.w / 2, p.y + 34, n.tag, "ch-t ch-muted", " text-anchor=\"middle\" font-size=\"11\"") : "");
+            var tip = n.tag ? n.label + ", " + n.tag : n.label;
+            out += n.href ? "<a href=\"" + esc(n.href) + "\" class=\"ch-link\"><title>" + esc(tip) + "</title>" + node + "</a>" : node;
         });
         var defs = "<defs><marker id=\"" + arrow + "\" viewBox=\"0 0 8 8\" refX=\"7\" refY=\"4\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L8 4 L0 8 z\" class=\"ch-arrowhead\"/></marker></defs>";
         return { body: defs + "<g font-size=\"" + fs + "\">" + out + "</g>", height: height + 2 };
