@@ -73,11 +73,14 @@ export function figure(spec) {
         (spec.takeaway ? "<p>" + esc(spec.takeaway) + "</p>" : "") +
         notes + sources;
     var more = reading ? "<details class=\"ch-more\"><summary>How to read this</summary>" + reading + "</details>" : "";
+    var wide = spec.wide || WIDE, narrow = spec.narrow || NARROW;
     var body = spec.html ? spec.html : spec.parts ? spec.parts.map(function (p) {
-        return (p.kicker ? "<h3 class=\"ch-sub\" id=\"" + esc(p.id) + "\">" + esc(p.kicker) + "</h3>" : "") +
-            draw(p.chart, WIDE, "wide", p.id, p.title, p.desc) +
-            draw(p.chart, NARROW, "narrow", p.id, p.title, p.desc);
-    }).join("") : draw(spec.chart, WIDE, "wide", spec.id, spec.title, spec.desc) + draw(spec.chart, NARROW, "narrow", spec.id, spec.title, spec.desc);
+        var piece = (p.kicker ? "<h3 class=\"ch-sub\" id=\"" + esc(p.id) + "\">" + esc(p.kicker) + "</h3>" : "") +
+            draw(p.chart, wide, "wide", p.id, p.title, p.desc) +
+            draw(p.chart, narrow, "narrow", p.id, p.title, p.desc);
+        return spec.split ? "<div class=\"eco-ov-part\">" + piece + "</div>" : piece;
+    }).join("") : draw(spec.chart, wide, "wide", spec.id, spec.title, spec.desc) + draw(spec.chart, narrow, "narrow", spec.id, spec.title, spec.desc);
+    if (spec.split) body = "<div class=\"eco-ov\">" + body + "</div>";
     var lead = spec.lead ? "<p class=\"ch-lead\">" + esc(spec.lead) + "</p>" : "";
     return "<figure class=\"ch" + (spec.cls ? " " + spec.cls : "") + "\" id=\"" + esc(spec.id) + "\"><figcaption><strong class=\"ch-head\">" + esc(spec.headline) + "</strong></figcaption>" +
         lead + body + more + table + "</figure>";
