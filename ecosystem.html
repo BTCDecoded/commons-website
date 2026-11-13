@@ -918,13 +918,11 @@
         .eco-dock.is-compare .eco-dock-panes { display: block; }
         .eco-dock.is-compare .eco-dock-card { display: none; }
         .eco-dock-clear[hidden] { display: none !important; }
-        .eco-dock-stargrid, .eco-dock-assuregrid { display: grid; gap: 1.25rem 1.5rem; align-items: start; }
-        .eco-dock-graphs.is-split .eco-dock-stargrid,
-        .eco-dock-graphs.is-split .eco-dock-assuregrid { grid-template-columns: 1fr 1fr; }
+        .eco-dock-assuregrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.65rem; align-items: start; }
         .eco-dock-graphs:not(.is-split) .eco-dock-chartone,
-        .eco-dock-graphs:not(.is-split) .eco-dock-assure { max-width: 720px; margin-left: auto; margin-right: auto; }
-        .eco-dock-assure { margin: 0; }
-        .eco-dock-assure > figcaption { color: var(--white); font-weight: 600; margin: 0 0 0.35rem; }
+        .eco-dock-graphs:not(.is-split) .eco-dock-assure { max-width: none; margin-left: 0; margin-right: 0; }
+        .eco-dock-assure { margin: 0; min-width: 0; }
+        .eco-dock-assure > figcaption { color: #c4c4cc; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; margin: 0 0 0.35rem; }
         .eco-dock-assure .ch-svg { width: 100%; height: auto; }
         .eco-dock-charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.65rem; margin: 0; }
         .eco-dock-charts[hidden],
@@ -947,8 +945,25 @@
         .eco-dock-chart .eco-fv .proof b { color: var(--orange); }
         .eco-dock-chart .ch-more > summary,
         .eco-dock-chart .eco-notes > summary { display: flex; align-items: center; min-height: 44px; color: #c4c4cc; font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; }
-        .eco-dock-graphs { margin-bottom: 1.25rem; }
-        .eco-dock-chartone { max-width: 720px; margin: 0 auto 1.25rem; }
+        .eco-dock-graphs { display: flex; flex-direction: column; gap: 1.35rem; margin-bottom: 1.35rem; }
+        .eco-dock-chartone { max-width: none; margin: 0; }
+        .eco-compare-panel { padding: 0.85rem 0.85rem 0.7rem; border: 1px solid #2e2e34; border-radius: 10px; background: #161618; }
+        .eco-compare-panel > .eco-dock-k { margin: 0 0 0.55rem; }
+        .eco-emblem-side { min-width: 0; padding: 0.7rem 0.75rem 0.55rem; border: 1px solid #3a3a42; border-radius: 8px; background: #1d1d21; }
+        .eco-emblem-side .eco-axes-name { margin: 0 0 0.45rem; }
+        .eco-emblem-side .eco-emblem,
+        .eco-emblem-side .eco-meta { margin: 0; }
+        .eco-emblem-side .eco-emblem { margin-bottom: 0.45rem; }
+        .eco-compare-scores dt { margin: 0; color: #c4c4cc; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; }
+        .eco-compare-scores dd { margin: 0.12rem 0 0; font-size: 1rem; }
+        .eco-compare-scores dd.is-hl { color: var(--orange); }
+        .eco-compare-scores dd.is-core { color: #56B4E9; }
+        .eco-compare-scores dd.is-all { color: #b9b9c2; }
+        .eco-compare-scores dd.is-b { color: #CC79A7; }
+        .eco-compare-scores dd.is-same { color: #c4c4cc; }
+        .eco-compare-scores dd + dd { margin-top: 0.35rem; }
+        .eco-compare-scores dd span { font-weight: 600; margin-right: 0.35rem; }
+        .eco-compare-note { display: block; margin-top: 0.25rem; font-size: 0.85rem; letter-spacing: 0; text-transform: none; font-weight: 400; color: #8d8d96; }
         .eco-dock-chartone .ch-svg { width: 100%; height: auto; max-width: none; }
         .eco-dock-key { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin: 0.2rem 0 0; color: var(--white); font-size: 0.95rem; }
         .eco-swatch { display: inline-block; width: 0.7rem; height: 0.7rem; margin-right: 0.35rem; vertical-align: -0.05rem; }
@@ -989,13 +1004,15 @@
         .eco-matrix tr.is-same td { color: #c4c4cc; }
         .eco-matrix tbody tr:hover th, .eco-matrix tbody tr:hover td { background: #1a1a1e; }
         .eco-matrix .eco-matrix-g th { color: #c4c4cc; font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; padding-top: 0.85rem; font-weight: 600; background: transparent; position: static; }
-        .eco-matrix caption { caption-side: top; text-align: left; color: #c4c4cc; padding: 0.75rem 0 0.4rem; }
+        .eco-matrix caption { caption-side: top; text-align: left; color: #c4c4cc; padding: 0 0 0.55rem; font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; }
         .eco-dock .eco-card { border: 0; background: transparent; padding: 0; text-align: left; }
         .eco-dock .eco-card > h3 { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
         .eco-dock-card { container-type: inline-size; }
         .eco-dock-more { margin: 1.25rem 0 0.4rem; color: #c4c4cc; font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; }
         .eco-dock .eco-onchart-fold { display: block; }
-        .eco-dock:not(.is-compare) .eco-dock-panes { width: min(100%, 44rem); margin-left: auto; margin-right: auto; }
+        .eco-dock:not(.is-compare) .eco-dock-panes,
+        .eco-dock.is-compare .eco-dock-graphs,
+        .eco-dock.is-compare .eco-dock-panes { width: min(100%, 44rem); margin-left: auto; margin-right: auto; }
         .eco-dock .eco-sheet { display: flex; flex-direction: column; gap: 1.35rem; }
         .eco-dock .eco-sheet > .eco-card-charts,
         .eco-dock .eco-sheet > .eco-stab,
@@ -1016,7 +1033,7 @@
         }
         @media (max-width: 720px) {
             .eco-dock-bar { flex-wrap: wrap; }
-            .eco-dock.is-compare .eco-dock-panes, .eco-dock-pair { grid-template-columns: 1fr; }
+            .eco-dock.is-compare .eco-dock-panes, .eco-dock-pair, .eco-emblem-pair, .eco-dock-assuregrid { grid-template-columns: 1fr; }
             .eco-dock-title { font-size: 1.15rem; }
             .eco-dock-pick { max-width: 11rem; }
         }
@@ -1053,8 +1070,7 @@
         .eco-rank-fill { fill: currentColor; stroke: none; }
         .eco-emblem-l { display: flex; flex-direction: column; gap: 0.05rem; color: var(--white); font-size: 1rem; line-height: 1.2; }
         .eco-emblem-l small { color: #c4c4cc; font-size: 0.78rem; font-weight: 400; }
-        .eco-emblem-pair { display: grid; gap: 0.75rem; margin: 0 0 0.85rem; }
-        .eco-dock-graphs.is-split .eco-emblem-pair { grid-template-columns: 1fr 1fr; }
+        .eco-emblem-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.65rem; margin: 0; }
         .eco-release { display: flex; align-items: center; gap: 0.4rem; margin: 0 0 0.45rem; font-weight: 600; }
         .eco-relmark { display: block; flex: none; }
         .eco-rel { display: inline-flex; align-items: center; flex: none; }
@@ -1739,7 +1755,7 @@
                         return "<tr" + (same ? " class=\"is-same\"" : "") + "><th scope=\"row\">" + esc(label) + "</th>" + cell(va, toneA, same) + cell(vb, toneB, same) + "</tr>";
                     }).join("");
                 }).join("");
-                return "<table class=\"eco-matrix\"><caption>Not on the charts. A grey row is the same number for both.</caption><thead><tr><th scope=\"col\">Count</th><th scope=\"col\" class=\"is-" + toneA + "\">" + esc(nameA) + "</th><th scope=\"col\" class=\"is-" + toneB + "\">" + esc(nameB) + "</th></tr></thead><tbody>" + rows + "</tbody></table>";
+                return "<table class=\"eco-matrix\"><caption>Not on the charts<span class=\"eco-compare-note\">A grey row is the same number for both.</span></caption><thead><tr><th scope=\"col\">Count</th><th scope=\"col\" class=\"is-" + toneA + "\">" + esc(nameA) + "</th><th scope=\"col\" class=\"is-" + toneB + "\">" + esc(nameB) + "</th></tr></thead><tbody>" + rows + "</tbody></table>";
             }
             function restoreChart() {
                 var fig = chartBox.firstElementChild;
@@ -1899,44 +1915,23 @@
                 if (card.id === "card-bitcoin-core") return "core";
                 return slot === 0 ? "all" : "b";
             }
-            function axesChart(cardA, cardB, width) {
+            function scoreTiles(cardA, cardB) {
                 var a = axesOf(cardA), b = axesOf(cardB);
                 if (!a || !b) return "";
                 var toneA = toneOf(cardA, 0), toneB = toneOf(cardB, 1);
                 var nameA = cardA.querySelector("h3").textContent, nameB = cardB.querySelector("h3").textContent;
-                var labelW = width < 520 ? 96 : 128, textRoom = width < 520 ? 118 : 156;
-                var barMax = Math.max(48, width - labelW - textRoom - 12), textX = labelW + barMax + 8;
                 var rows = [
-                    { name: "Assurance", max: 100, left: a.assurance, right: b.assurance },
-                    { name: "Accountability", max: 4, left: a.accountability, right: b.accountability },
-                    { name: "Independence", kind: "class", left: { text: a.independence }, right: { text: b.independence } }
+                    ["Independence", a.independence, b.independence],
+                    ["Assurance", a.assurance.text, b.assurance.text],
+                    ["Accountability", a.accountability.text, b.accountability.text]
                 ];
-                var rowH = 58, top = 4, height = top + rows.length * rowH + 4, out = "";
-                rows.forEach(function (row, i) {
-                    var y = top + i * rowH;
-                    out += "<text x=\"0\" y=\"" + (y + 22) + "\" class=\"ch-t ch-label\" font-size=\"13\">" + esc(row.name) + "</text>";
-                    if (row.kind === "class") {
-                        var sameClass = row.left.text === row.right.text;
-                        out += "<text x=\"" + labelW + "\" y=\"" + (y + 16) + "\" class=\"ch-t ch-val" + (sameClass ? "" : " is-" + toneA) + "\" font-size=\"13\">" + esc(row.left.text) + "</text>";
-                        if (!sameClass) out += "<text x=\"" + labelW + "\" y=\"" + (y + 36) + "\" class=\"ch-t ch-val is-" + toneB + "\" font-size=\"13\">" + esc(row.right.text) + "</text>";
-                        return;
-                    }
-                    function bar(val, tone, yb) {
-                        var has = val && typeof val.v === "number";
-                        var w = has ? barMax * Math.max(0, Math.min(1, val.v / row.max)) : 0;
-                        return "<rect x=\"" + labelW + "\" y=\"" + yb + "\" width=\"" + fmt(barMax) + "\" height=\"10\" rx=\"2\" class=\"eco-bar-track\"/>" + (w > 0 ? "<rect x=\"" + labelW + "\" y=\"" + yb + "\" width=\"" + fmt(w) + "\" height=\"10\" rx=\"2\" class=\"eco-bar " + tone + "\"/>" : "");
-                    }
-                    out += bar(row.left, toneA, y + 8);
-                    out += bar(row.right, toneB, y + 26);
-                    var same = row.left.text === row.right.text;
-                    if (same) out += "<text x=\"" + textX + "\" y=\"" + (y + 24) + "\" class=\"ch-t ch-val\" font-size=\"13\">" + esc(row.left.text) + "</text>";
-                    else {
-                        out += "<text x=\"" + textX + "\" y=\"" + (y + 16) + "\" class=\"ch-t ch-val is-" + toneA + "\" font-size=\"13\">" + esc(row.left.text) + "</text>";
-                        out += "<text x=\"" + textX + "\" y=\"" + (y + 36) + "\" class=\"ch-t ch-val is-" + toneB + "\" font-size=\"13\">" + esc(row.right.text) + "</text>";
-                    }
-                });
-                var title = nameA + " and " + nameB + ". Independence " + a.independence + " and " + b.independence + ". Assurance " + a.assurance.text + " and " + b.assurance.text + ". Accountability " + a.accountability.text + " and " + b.accountability.text + ".";
-                return "<figure class=\"eco-axes-chart\"><svg class=\"ch-svg\" viewBox=\"0 0 " + fmt(width) + " " + height + "\" role=\"img\" aria-label=\"" + esc(title) + "\" preserveAspectRatio=\"xMinYMin meet\">" + out + "</svg><p class=\"eco-axes-note\">Assurance is the points on the checks that apply. Accountability follows this page's order: single maintainer, maintainer group, foundation key, written rules. Not classified is left blank. Independence is the class, not a length.</p></figure>";
+                return "<dl class=\"eco-profile eco-compare-scores\">" + rows.map(function (row) {
+                    var same = row[1] === row[2];
+                    var body = same
+                        ? "<dd class=\"is-same\">" + esc(row[1]) + "</dd>"
+                        : "<dd class=\"is-" + toneA + "\"><span>" + esc(nameA) + "</span>" + esc(row[1]) + "</dd><dd class=\"is-" + toneB + "\"><span>" + esc(nameB) + "</span>" + esc(row[2]) + "</dd>";
+                    return "<div><dt>" + esc(row[0]) + "</dt>" + body + "</div>";
+                }).join("") + "</dl>";
             }
             function cloneSvg(svg, suffix) {
                 return svg.outerHTML.replace(/\bid="([^"]+)"/g, function (_, id) { return "id=\"" + id + suffix + "\""; })
@@ -1976,16 +1971,18 @@
                 var card = cardOf(anchor), b = cardOf(other);
                 if (!card || !b) return;
                 graphs.hidden = false;
-                var full = graphs.clientWidth || dock.clientWidth || 360;
-                var split = full >= 960;
-                var width = split ? Math.max(280, Math.min(640, Math.floor((full - 24) / 2))) : Math.max(280, Math.min(720, full));
-                graphs.classList.toggle("is-split", split);
-                var chartW = Math.max(280, Math.min(860, full));
+                graphs.classList.remove("is-split");
+                var full = graphs.clientWidth || Math.min(dock.clientWidth || 360, 704);
+                var width = Math.max(280, Math.min(640, full));
                 function emblemSide(one, slot) {
                     var plate = one.querySelector(".eco-emblem");
-                    return "<div class=\"eco-emblem-side\"><h3 class=\"eco-axes-name is-" + toneOf(one, slot) + "\">" + esc(one.querySelector("h3").textContent) + "</h3>" + (plate ? plate.outerHTML : "") + "</div>";
+                    var meta = one.querySelector(".eco-meta");
+                    return "<div class=\"eco-emblem-side\"><h3 class=\"eco-axes-name is-" + toneOf(one, slot) + "\">" + esc(one.querySelector("h3").textContent) + "</h3>" + (plate ? plate.outerHTML : "") + (meta ? meta.outerHTML : "") + "</div>";
                 }
-                graphs.innerHTML = "<h3 class=\"eco-dock-k\">Scores</h3><div class=\"eco-emblem-pair\">" + emblemSide(card, 0) + emblemSide(b, 1) + "</div>" + axesChart(card, b, chartW) + "<div class=\"eco-dock-stargrid\"><section><h3 class=\"eco-dock-k\">Comparisons</h3>" + combined("Compare", card, b, width) + "</section><section><h3 class=\"eco-dock-k\">Code health</h3>" + combined("Health", card, b, width) + "</section></div><h3 class=\"eco-dock-k\">Assurance</h3><div class=\"eco-dock-assuregrid\">" + assuranceBlock(card, "-a") + assuranceBlock(b, "-b") + "</div><h3 class=\"eco-dock-k\">Release</h3><div class=\"eco-dock-assuregrid\">" + releaseBlock(card) + releaseBlock(b) + "</div>";
+                function panel(title, body) {
+                    return "<section class=\"eco-compare-panel\"><h3 class=\"eco-dock-k\">" + title + "</h3>" + body + "</section>";
+                }
+                graphs.innerHTML = "<div class=\"eco-emblem-pair\">" + emblemSide(card, 0) + emblemSide(b, 1) + "</div>" + scoreTiles(card, b) + panel("Assurance", "<div class=\"eco-dock-assuregrid\">" + assuranceBlock(card, "-a") + assuranceBlock(b, "-b") + "</div>") + panel("Code health", combined("Health", card, b, width)) + panel("Comparisons", combined("Compare", card, b, width)) + panel("Release", "<div class=\"eco-dock-assuregrid\">" + releaseBlock(card) + releaseBlock(b) + "</div>");
             }
             function showChart(id, btn) {
                 var fig = document.getElementById(id);
