@@ -766,10 +766,12 @@ export function radar(axes, series, opts) {
                 if (p && q) line += "M" + fmt(p[0]) + " " + fmt(p[1]) + " L" + fmt(q[0]) + " " + fmt(q[1]) + " ";
             });
             if (line) out += "<path d=\"" + line + "\" class=\"ch-rline ch-r-" + (sr.cls || "all") + "\"/>";
+            var half = Math.min(4.5, R * 0.12), up = half, down = half * 3.5 / 4.5;
+            var outline = half < 4.5 ? " style=\"stroke-width:" + fmt(half / 4.5) + "\"" : "";
             pts.forEach(function (p) {
                 if (!p) return;
                 if (sr.cls === "core") out += "<rect x=\"" + fmt(p[0] - 3.5) + "\" y=\"" + fmt(p[1] - 3.5) + "\" width=\"7\" height=\"7\" class=\"ch-rdot ch-r-core\"/>";
-                else if (sr.cls === "median") out += "<path d=\"M" + fmt(p[0]) + " " + fmt(p[1] - 4.5) + " L" + fmt(p[0] + 4.5) + " " + fmt(p[1] + 3.5) + " L" + fmt(p[0] - 4.5) + " " + fmt(p[1] + 3.5) + " Z\" class=\"ch-rdot ch-r-median\"/>";
+                else if (sr.cls === "median") out += "<path d=\"M" + fmt(p[0]) + " " + fmt(p[1] - up) + " L" + fmt(p[0] + half) + " " + fmt(p[1] + down) + " L" + fmt(p[0] - half) + " " + fmt(p[1] + down) + " Z\" class=\"ch-rdot ch-r-median\"" + outline + "/>";
                 else out += "<circle cx=\"" + fmt(p[0]) + "\" cy=\"" + fmt(p[1]) + "\" r=\"3.2\" class=\"ch-rdot ch-r-" + (sr.cls || "all") + "\"/>";
             });
         });
