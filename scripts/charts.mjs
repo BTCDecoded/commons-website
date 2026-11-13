@@ -333,10 +333,11 @@ export function scatter(points, axes) {
 export function lineage(groups, nodes, edges) {
     function boxH(n) {
         if (!n) return 0;
-        if (n.facts && n.shareText) return 90;
-        if (n.shareText) return 64;
-        if (n.facts) return 68;
-        return n.tag ? 52 : 30;
+        var charts = n.minis && n.minis.length ? 48 : 0;
+        if (!n.facts && !n.tag && n.shareText) return 64;
+        var head = n.facts ? 62 : (n.tag ? 40 : 24);
+        var foot = n.shareText ? 26 : 8;
+        return head + charts + foot;
     }
     return function (width, uid) {
         var arrow = (uid || "ch") + "-arrow";
@@ -436,6 +437,17 @@ export function lineage(groups, nodes, edges) {
                 fact = "<svg x=\"" + fmt(ix) + "\" y=\"" + fmt(iy) + "\" width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" class=\"ch-gov ch-gov-" + n.facts.kind + "\" aria-hidden=\"true\">" + govBody(n.facts.kind) + "</svg>" +
                     (line ? t(ix + 18, iy + 11, line, "ch-t ch-muted", " font-size=\"11\"") : "");
             }
+            var mini = "";
+            if (n.minis && n.minis.length) {
+                var size = 40, gap = 4, count = n.minis.length;
+                var total = count * size + (count - 1) * gap;
+                var x0 = p.x + (p.w - total) / 2;
+                var top = p.y + (n.facts ? 62 : 40);
+                n.minis.forEach(function (draw, i) {
+                    var built = draw(size, (uid || "ch") + "-" + id + "-m" + i);
+                    mini += "<svg x=\"" + fmt(x0 + i * (size + gap)) + "\" y=\"" + fmt(top) + "\" width=\"" + size + "\" height=\"" + size + "\" viewBox=\"0 0 " + size + " " + fmt(built.height) + "\" preserveAspectRatio=\"xMidYMid meet\" aria-hidden=\"true\">" + built.body + "</svg>";
+                });
+            }
             var footer = "";
             if (n.shareText) {
                 var inset = 8, barY = p.y + p.h - 22, barH = 5, trackW = p.w - inset * 2;
@@ -449,7 +461,7 @@ export function lineage(groups, nodes, edges) {
             var node = "<rect x=\"" + fmt(p.x) + "\" y=\"" + fmt(p.y) + "\" width=\"" + fmt(p.w) + "\" height=\"" + p.h + "\" rx=\"6\" class=\"ch-node" + (n.cls ? " ch-node-" + n.cls : "") + "\"/>" +
                 t(p.x + p.w / 2, nameY, n.label, "ch-t ch-nodet" + (n.cls === "hl" ? " ch-hl" : n.cls === "muted" ? " ch-muted" : ""), " text-anchor=\"middle\"") +
                 badgeSvg +
-                fact + footer;
+                fact + mini + footer;
             var tip = n.label + (n.tag ? ", " + n.tag : "");
             if (n.facts) tip += ". " + n.facts.label + (n.facts.keepers ? ", " + n.facts.keepers : "") + (n.facts.age ? ", " + n.facts.age : "") + (n.facts.from ? ". " + n.facts.from : "");
             if (n.shareText && n.shareTip) tip += ". " + n.shareTip;

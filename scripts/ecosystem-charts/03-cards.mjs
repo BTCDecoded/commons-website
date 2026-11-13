@@ -1,5 +1,6 @@
-// One card per implementation. The face is three thumbnail charts. Selecting
-// a thumbnail opens that chart with its labels and values. The same
+// One card per implementation. The three charts open with their labels and
+// values when selected. Small copies of those charts sit on the selection
+// boxes. The same
 // counts as the tables open under Counts, in the
 // same order on every card. A count that is not measured is left off the
 // card, and it is not drawn as zero. A comparison chart with no measured spoke is left off the
@@ -231,6 +232,11 @@ export default {
             var langPills = (r.stack && r.stack.languages ? r.stack.languages.split(",") : []).map(function (s) { return pill(s.trim()); });
             var badges = langPills.concat([pill(r.stack && r.stack.license), pill(pk.age)]).filter(Boolean).join("");
             const badgeRow = badges ? "<ul class=\"eco-badges\" aria-label=\"Badges\">" + badges + "</ul>" : "";
+            ctx.selectionMinis = ctx.selectionMinis || {};
+            ctx.selectionMinis[r.slug] = [
+                assuranceRadial(cells, { size: 64, labels: "none", cls: radialCls }),
+                radar(health.axes, [starSeries, health.median], { labels: "none", size: 64 })
+            ].concat(cmpMeasured ? [radar(cmpAxes, [{ name: r.name, cls: cmpCls, values: cmpValues }], { labels: "none", size: 64 })] : []);
             const axesData = radarJson({
                 independence: r.lineage.label,
                 assurance: { text: a.score + " of " + a.max, v: a.pct },
@@ -284,7 +290,7 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-            caption: "Language, license, and age, when this page states them, are badges on the card. A hatched spoke is not measured, and it is not drawn as zero. A count that is not measured is left off the card. When none of the five comparisons is measured, that chart is left off the card.",
+            caption: "Selecting a chart opens it with its labels and values. Language, license, and age, when this page states them, are badges on the card. A hatched spoke is not measured, and it is not drawn as zero. A count that is not measured is left off the card. When none of the five comparisons is measured, that chart is left off the card.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),
