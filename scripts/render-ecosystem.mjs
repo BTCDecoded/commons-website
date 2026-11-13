@@ -89,7 +89,7 @@ function ranked(id) {
 const sizeRows = ranked("program_code");
 
 slots.status = "Measured " + esc(data.measured_at) + ".";
-slots.lead = "Bitcoin node implementations: who governs each one, how far each has got in showing it follows Bitcoin's rules, and what its code looks like. Bitcoin Core is the reference.";
+slots.lead = "A dated record of Bitcoin node implementations: who can change each one, how far it has shown it follows Bitcoin's rules, and whether its code is its own. Bitcoin Core is the reference. A row is not a member of Bitcoin Commons.";
 
 // Captions (the text of the old chart sections, now the column key).
 function testLinesOf(slug) {

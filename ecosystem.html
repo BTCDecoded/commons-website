@@ -1275,7 +1275,7 @@
         <main class="eco" id="content">
         <header class="eco-head">
             <h1>Ecosystem</h1>
-            <p class="eco-lead" id="eco-lead"><!--slot:lead-->Bitcoin node implementations: who governs each one, how far each has got in showing it follows Bitcoin's rules, and what its code looks like. Bitcoin Core is the reference.<!--/slot:lead--></p>
+            <p class="eco-lead" id="eco-lead"><!--slot:lead-->A dated record of Bitcoin node implementations: who can change each one, how far it has shown it follows Bitcoin's rules, and whether its code is its own. Bitcoin Core is the reference. A row is not a member of Bitcoin Commons.<!--/slot:lead--></p>
             <p id="eco-status"><!--slot:status-->Measured 2026-11-12.<!--/slot:status--></p>
         </header>
         <nav class="eco-jump" aria-label="On this page">
@@ -1303,12 +1303,17 @@
             <h2 id="why-h">Why the ecosystem matters</h2>
             <!--slot:chart-lineage--><!--/slot:chart-lineage-->
             <!--slot:chart-lineage-radial--><!--/slot:chart-lineage-radial-->
-            <h3>Bitcoin is a commons</h3>
-            <p>Anyone can run a node, transact, or mine. The code most of the network runs is a commons too: many depend on it and no one owns it. Elinor Ostrom found that commons last when their rules are visible, the people bound by the rules take part in changing them, those who decide answer to the people affected, and exit is real rather than theoretical. A commons without those properties runs down.</p>
+            <h3>Why this page exists</h3>
+            <p>Anyone can run a node, transact, or mine. The code most of the network runs is a commons too: many depend on it and no one owns it. A client's name does not say whether it is its own codebase, how far it has shown it follows Bitcoin's rules, or who can change it. This page is that record. Each reading is dated and pinned to commits, and the reading is redone. The page is not a ranking.</p>
+            <h3>Why the record is kept</h3>
+            <p>Elinor Ostrom found that commons last when their rules are visible, the people bound by the rules take part in changing them, those who decide answer to the people affected, and exit is real rather than theoretical. A commons without those properties runs down. The record is how this reading checks that: which clients share a lineage, which checks each one has shown, and whether the written rule matches who lands the commits. A figure is kept with its date and its commit.</p>
             <h3>One lineage runs the network</h3>
             <p>On November 12, 2026, about 90% of reachable nodes advertised Bitcoin Core and about 9.5% advertised Bitcoin Knots (<a href="https://coin.dance/nodes">Coin Dance</a>, <a href="https://21btc.cc/nodes">Bitnodes via 21btc</a>). That Knots count is one user-agent family that mixes releases from before and after the split, and no crawler reports Knots Legacy, Bit-Block, or Bitcoin Roots on its own. Clients in the Knots line share about 95% of Core&rsquo;s code, so about 99% of reachable nodes ran one code lineage. A flaw travels with the lineage that carries it: the 2018 inflation bug hit Core and Knots alike. Moving to a Core-derived client changes policy, not the code underneath, so it shows demand for an alternative rather than diversity. The structural fix is several independent implementations, each proven to enforce the same rules, under different governance models.</p>
             <h3>What this page measures</h3>
             <p>An independent node only helps if it can show it enforces the same rules as everyone else. Without a written consensus spec, an alternative has to copy Core&rsquo;s behavior from Core, which keeps it tied to Core. The engineering answer is a stack: a spec to check against, then formal verification, fuzzing, differential testing against Core, and property tests. Every reading is dated and redone periodically. Governance labels and the rules share are qualitative readings.</p>
+            <h3>How far these projects sit with Commons</h3>
+            <p>Two different things share the word. A row is here because the project is a node implementation built for Bitcoin only and roughly compatible with the network. That is the commons this page tracks. Being listed is not adoption of Commons governance, and it is not membership in Bitcoin Commons.</p>
+            <p>Commons governance is the written rules for how node software changes: signatures by repository layer, review periods, and a governance-node quorum. The rules are built into BLVM and can be forked or adopted by other projects. On this reading only BLVM uses them. Enforcement is off and the keys are test keys, so a commit stands when one author lands it. The other implementations keep their own governance. Not classified means this reading did not assign a label. It does not mean they use these rules.</p>
             <dl class="eco-frame">
                 <div><dt>commons</dt><dd>Every node implementation built for Bitcoin only and roughly compatible with the Bitcoin network, whether written from scratch or forked from Core. No altcoins. Its health is what this page measures.</dd></div>
                 <div><dt>Commons governance</dt><dd>Written rules for how node software changes, published by Bitcoin Commons following Ostrom&rsquo;s principles: signatures by repository layer, review periods, and a governance-node quorum. The rules are built into BLVM and can be forked or adopted by other projects. BLVM is the only implementation here that uses them, and enforcement is not on yet.</dd></div>
