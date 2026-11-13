@@ -20,18 +20,18 @@
     {
       "slug": "blvm",
       "name": "BLVM",
-      "commit": "36bb40c7e9a3f805274fa7e1bda30d0a6c082560",
+      "commit": "c789e8c66e050ad2f855a9abbb40af82a99dc1f0",
       "crates": [
         {
           "name": "blvm-node",
           "version": "0.1.92",
-          "commit": "36bb40c7e9a3f805274fa7e1bda30d0a6c082560",
+          "commit": "c789e8c66e050ad2f855a9abbb40af82a99dc1f0",
           "role": "program"
         },
         {
           "name": "blvm-protocol",
           "version": "0.1.48",
-          "commit": "0bc9307a2235831fff52548621301b6084a9e809",
+          "commit": "d3146f8bce4010ddae33747c5f02c50f423f1bc5",
           "role": "program"
         },
         {
@@ -43,7 +43,7 @@
         {
           "name": "blvm-primitives",
           "version": "0.1.34",
-          "commit": "ede6efb409bdfc93cef9eb9a47a2be5e9094bc59",
+          "commit": "f512a93266ecb8132c0797e5d47097f331535219",
           "role": "program"
         },
         {
@@ -71,7 +71,7 @@
           "role": "tooling"
         }
       ],
-      "measured_at": "2026-11-12",
+      "measured_at": "2026-11-13",
       "fuzz_targets": {
         "value": 156,
         "text": "156",
@@ -79,26 +79,26 @@
         "note": "Declared fuzz targets at the pin. blvm-node: 9 cargo-fuzz [[bin]]; blvm-protocol: 80 cargo-fuzz [[bin]]; blvm-consensus: 63 cargo-fuzz [[bin]]; blvm-muhash: 2 cargo-fuzz [[bin]]; blvm-sdk: 2 cargo-fuzz [[bin]] (same crate set as the verification cell)"
       },
       "test_insource": {
-        "value": 86744,
-        "text": "86,744",
+        "value": 86825,
+        "text": "86,825",
         "status": "measured",
         "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)]); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_folder": {
-        "value": 94585,
-        "text": "94,585",
+        "value": 95277,
+        "text": "95,277",
         "status": "measured",
         "note": "Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)]); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_unit": {
-        "value": 86744,
-        "text": "86,744",
+        "value": 86825,
+        "text": "86,825",
         "status": "measured",
         "note": "Deprecated alias of test_insource. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)]); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
       "test_integration": {
-        "value": 94585,
-        "text": "94,585",
+        "value": 95277,
+        "text": "95,277",
         "status": "measured",
         "note": "Deprecated alias of test_folder. Folder split, not a unit-vs-integration classification: in-source tests are tests next to program sources (including in-file #[cfg(test)]); test-folder tests are files under tests/, test/, e2e/, qa/, or functional/."
       },
@@ -113,8 +113,8 @@
         "status": "measured"
       },
       "test_split_total": {
-        "value": 193898,
-        "text": "193,898",
+        "value": 194671,
+        "text": "194,671",
         "status": "measured"
       },
       "vector_files": {

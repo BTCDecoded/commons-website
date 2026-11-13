@@ -83,17 +83,17 @@
       "side": "internal",
       "profile": "rust-workspace",
       "instrument": "Crate-role cut (not measured)",
-      "commit": "36bb40c7e9a3f805274fa7e1bda30d0a6c082560",
+      "commit": "c789e8c66e050ad2f855a9abbb40af82a99dc1f0",
       "shallow": false,
       "values": {
         "implementation_code": {
-          "value": 308400,
-          "text": "308,400",
+          "value": 308693,
+          "text": "308,693",
           "status": "measured"
         },
         "program_code": {
-          "value": 229970,
-          "text": "229,970",
+          "value": 230263,
+          "text": "230,263",
           "status": "measured"
         },
         "tooling_code": {
@@ -129,8 +129,8 @@
           "status": "measured"
         },
         "share_lines_ge_1000": {
-          "value": 53.1,
-          "text": "53.1%",
+          "value": 53.0,
+          "text": "53.0%",
           "status": "measured"
         },
         "files_holding_half": {
@@ -143,13 +143,13 @@
         {
           "name": "blvm-node",
           "version": "0.1.92",
-          "commit": "36bb40c7e9a3f805274fa7e1bda30d0a6c082560",
+          "commit": "c789e8c66e050ad2f855a9abbb40af82a99dc1f0",
           "role": "program"
         },
         {
           "name": "blvm-protocol",
           "version": "0.1.48",
-          "commit": "0bc9307a2235831fff52548621301b6084a9e809",
+          "commit": "d3146f8bce4010ddae33747c5f02c50f423f1bc5",
           "role": "program"
         },
         {
@@ -161,7 +161,7 @@
         {
           "name": "blvm-primitives",
           "version": "0.1.34",
-          "commit": "ede6efb409bdfc93cef9eb9a47a2be5e9094bc59",
+          "commit": "f512a93266ecb8132c0797e5d47097f331535219",
           "role": "program"
         },
         {
@@ -189,7 +189,7 @@
           "role": "tooling"
         }
       ],
-      "size_method": "tokei 14 code lines in programming languages. Default node first-party crates plus blvm-sdk (blvm-storage-fence is in the node tree; blvm-sdk-macros is in the sdk tree). blvm-spec-lock non-test lines are tooling; its tests count as tests. A Rust file named *_test.rs or *_tests.rs, a file under tests/, test/, fuzz/, bench(es)/, or e2e/, and lines inside a #[cfg(test)] or #[cfg(all(..., test))] item count as tests. Vendored and locale: none. Script: scripts/measure-ecosystem-metrics.py. Measured 2026-11-12. The crate-role cut (rules share, left mixed) was not remade: the role map was not found, so those two cells are not measured rather than kept from the previous crate set."
+      "size_method": "tokei 14 code lines in programming languages. Default node first-party crates plus blvm-sdk (blvm-storage-fence is in the node tree; blvm-sdk-macros is in the sdk tree). blvm-spec-lock non-test lines are tooling; its tests count as tests. A Rust file named *_test.rs or *_tests.rs, a file under tests/, test/, fuzz/, bench(es)/, or e2e/, and lines inside a #[cfg(test)] or #[cfg(all(..., test))] item count as tests. Vendored and locale: none. Script: scripts/measure-ecosystem-metrics.py. Node, protocol, and primitives remeasured 2026-11-13. The other crates in this set stay at the 2026-11-12 pins. The crate-role cut (rules share, left mixed) was not remade: the role map was not found, so those two cells are not measured rather than kept from the previous crate set."
     },
     {
       "slug": "bitcoin-core",
