@@ -16,13 +16,13 @@ function stabMeter(st) {
     const segs = st.total ? st.cells.map(function (c) {
         return "<span class=\"eco-stab-seg s-" + c.status + "\" title=\"" + esc(c.label + ": " + c.status.replace("_", " ")) + "\">" + STAB_GLYPH[c.status] + "</span>";
     }).join("") : "<span class=\"eco-stab-seg s-not_measured s-all\">not measured</span>";
-    return "<div class=\"eco-stab\"><p class=\"eco-stab-h\"><b>Release stability</b> <span" + (st.measured ? "" : " class=\"nm\"") + ">" + esc(st.text) + "</span></p>" +
-        "<div class=\"eco-stab-meter\" aria-hidden=\"true\">" + segs + "</div>" +
-        (st.total ? ["met", "not_met", "not_measured"].map(function (k) {
-            const xs = st.cells.filter(function (c) { return c.status === k; });
-            return xs.length ? "<p class=\"eco-stab-list s-" + k + "\"><b>" + STAB_GLYPH[k] + " " + ({ met: "Met", not_met: "Not met", not_measured: "Not measured" })[k] + ":</b> " + esc(xs.map(function (c) { return c.label; }).join(", ")) + "</p>" : "";
-        }).join("") : "") +
-        st.tags.filter(function (t) { return t.status !== "n/a"; }).map(function (t) { return "<p class=\"eco-stab-tag\"><b>" + esc(t.label) + ":</b> " + (t.tag ? esc(t.tag) + "" : "not measured") + "</p>"; }).join("") + "</div>";
+    const lists = (st.total ? ["met", "not_met", "not_measured"].map(function (k) {
+        const xs = st.cells.filter(function (c) { return c.status === k; });
+        return xs.length ? "<p class=\"eco-stab-list s-" + k + "\"><b>" + STAB_GLYPH[k] + " " + ({ met: "Met", not_met: "Not met", not_measured: "Not measured" })[k] + ":</b> " + esc(xs.map(function (c) { return c.label; }).join(", ")) + "</p>" : "";
+    }).join("") : "") + st.tags.filter(function (t) { return t.status !== "n/a"; }).map(function (t) { return "<p class=\"eco-stab-tag\"><b>" + esc(t.label) + ":</b> " + (t.tag ? esc(t.tag) + "" : "not measured") + "</p>"; }).join("");
+    return "<div class=\"eco-stab\"><p class=\"eco-stab-h\"><b>Release</b> <span" + (st.measured ? "" : " class=\"nm\"") + ">" + esc(st.text) + "</span></p>" +
+        "<div class=\"eco-stab-meter\">" + segs + "</div>" +
+        (lists ? "<details class=\"ch-more\"><summary>Checks</summary>" + lists + "</details>" : "") + "</div>";
 }
 
 // Research's card takeaway, with every clause computed from the cells.
@@ -53,7 +53,27 @@ function metricText(metrics, id) {
     if (!cell || !cell.text) return "not measured";
     return cell.text;
 }
-function fact(label, text, title) {
+const HINT = {
+    "Program": "Implementation lines minus tooling.",
+    "Implementation": "tokei code lines, one bucket per file.",
+    "Tests / line": "Test lines for each implementation line.",
+    "Tooling": "Build and check code outside the program.",
+    "Vendored": "Bundled libraries. Line count when this tree is in the code table.",
+    "Locale": "Translation files.",
+    "Large files": "Share of program lines in files of 1,000 or more.",
+    "Rules share": "Share on the rules side of that tree's own cut.",
+    "Own-team": "Optional modules named by that project.",
+    "Independent": "Modules maintained outside the project.",
+    "License": "The repository license file.",
+    "Languages": "Languages with 5% or more of the code.",
+    "Direct deps": "Direct third-party libraries of a default node build.",
+    "Authors": "Human commit authors in the last 12 months.",
+    "Releases": "Tags in the last 12 months.",
+    "CI jobs": "GitHub Actions jobs at the pin.",
+    "Fuzz targets": "Declared fuzz harnesses at the pin."
+};
+function fact(label, text, extra) {
+    var title = [HINT[label] || "", extra || ""].filter(Boolean).join(" ");
     return "<dt>" + esc(label) + "</dt><dd" + (title ? " title=\"" + esc(title) + "\"" : "") + ">" + esc(text) + "</dd>";
 }
 function group(name) {
@@ -86,7 +106,6 @@ export default {
                 "<li class=\"eco-badge\">" + esc(r.accountability.full) + "</li>" +
                 "<li class=\"eco-badge\">Modules: " + esc(metricText(r.metrics, "plugin_system")) + "</li></ul>" +
                 radial +
-                "<p class=\"eco-card-rule\">Assurance " + a.score + " of " + a.max + " (" + a.pct + "%). Scored yes&nbsp;=&nbsp;2, partial&nbsp;=&nbsp;1, not&nbsp;found&nbsp;=&nbsp;0" + (a.max < 12 ? "; n/a is left out" : "") + ".</p>" +
                 "<dl>" +
                 group("Code") +
                 fact("Program", counted(tree, "program_code")) +
