@@ -3,7 +3,7 @@
 // data/implementations.json (governance.history) that states it; the render
 // fails if the sentence is gone. Implementations with no derivation stated in
 // the data are grouped by primary language from data/stack.json.
-import { figure, lineage } from "../charts.mjs";
+import { figure, fieldMap, median } from "../charts.mjs";
 
 const EDGES = [
     { from: "knots", to: "knots-legacy", slug: "knots-legacy", quote: "Knots Legacy continues Bitcoin Knots v29.3.knots20260507" },
@@ -29,8 +29,6 @@ export default {
         const internal = ctx.data.internal_slug;
         const rows = ctx.stack.rows;
         const derived = { "bitcoin-core": 1, "knots-legacy": 1, "bit-block": 1, "bitcoin-roots": 1 };
-        const nodes = { knots: { label: "Bitcoin Knots", cls: "muted" } };
-        rows.forEach(function (r) { nodes[r.slug] = { label: r.name, cls: r.slug === internal ? "hl" : "" }; });
         const separate = rows.filter(function (r) { return !derived[r.slug]; });
         const langs = [];
         const byLang = {};
@@ -40,9 +38,29 @@ export default {
             byLang[lang].push(r.slug);
         });
         langs.sort(function (a, b) { return byLang[b].length - byLang[a].length || (a < b ? -1 : 1); });
-        const groups = [{ id: "core", cls: "core", label: "Core family", nodeW: 132, grid: [["bitcoin-core", "bitcoin-roots"], ["knots", "knots-legacy"], [null, "bit-block"]] }]
-            .concat(langs.map(function (l) { return { id: l, label: l, flow: true, nodeW: 104, grid: byLang[l].map(function (s) { return [s]; }) }; }));
-        const derivedNames = rows.filter(function (r) { return derived[r.slug] && r.slug !== "bitcoin-core"; }).map(function (r) { return r.name; });
+        const model = {};
+        ctx.model.rows.forEach(function (r) { model[r.slug] = r; });
+        const med = median(ctx.model.rows.map(function (r) { return r.assurance.pct; }));
+        const medText = Number.isInteger(med) ? String(med) : String(med);
+        const cols = [{ id: "core", label: "Core family" }].concat(langs.map(function (l) { return { id: l, label: l }; }));
+        const pts = rows.filter(function (r) { return r.slug !== internal && model[r.slug]; }).map(function (r) {
+            const m = model[r.slug];
+            const lang = r.languages.split(",")[0].trim();
+            return {
+                id: r.slug,
+                card: "card-" + r.slug,
+                col: derived[r.slug] ? "core" : lang,
+                y: m.assurance.pct,
+                label: r.name,
+                valueText: m.assurance.score + " of " + m.assurance.max + " (" + m.assurance.pct + "%)",
+                href: "#card-" + r.slug,
+                cls: r.slug === "bitcoin-core" ? "core" : "",
+                mark: r.slug === "bitcoin-core" ? "square" : ""
+            };
+        });
+        const ownRows = ctx.model.rows.filter(function (r) { return r.lineage.cls === "own"; });
+        const above = ownRows.filter(function (r) { return r.assurance.pct > med; }).length;
+        const linYs = pts.filter(function (p) { return p.col === "core"; }).map(function (p) { return p.y; });
         const tableRows = rows.map(function (r) {
             if (r.slug === "bitcoin-core") return [r.name, "Core family", "Reference implementation", r.languages];
             const e = EDGES.filter(function (x) { return x.to === r.slug; });
@@ -51,18 +69,18 @@ export default {
         });
         return figure({
             id: "fig-lineage",
-            headline: separate.length + " of " + rows.length + " implementations are separate codebases. The other " + (rows.length - separate.length) + " are Bitcoin Core and clients built from it.",
-            caption: "Arrows show derivation as each project's history on this page states it; the dashed arrow is Bitcoin Roots carrying Knots policy features onto Core. Bitcoin Knots itself is not a row on this page" + (knotsUp ? "; its arrow from Core cites the Knots README" : "") + ". Separate codebases are grouped by primary language.",
-            measures: "Where each implementation's code comes from; it matters because clients that share code share its bugs.",
+            headline: separate.length + " of " + rows.length + " implementations are separate codebases. The median assurance score is " + medText + "%. The Core family sits between " + Math.min.apply(null, linYs) + "% and " + Math.max.apply(null, linYs) + "%; " + above + " of " + ownRows.length + " own codebases score above the median.",
+            caption: "Columns are the lineage: the Core family, then separate codebases by primary language. Height is assurance, as a share of possible points, and the yellow line is the median of all " + rows.length + ". Select a name to open its card. BLVM is not on this chart; its score is on its card. Bitcoin Knots itself is not a row" + (knotsUp ? "; the Core-family history cites the Knots README" : "") + ".",
+            measures: "Where the code comes from, against how much evidence it shows that it follows Bitcoin's rules. Clients that share code share its bugs, and a separate codebase only adds safety if it can show it follows the same rules.",
             takeaway: (function () {
                 const fam = rows.filter(function (r) { return derived[r.slug]; }).map(function (r) { return r.name; });
                 const sub = rows.filter(function (r) { return !derived[r.slug] && /Bitcoin Core is a git submodule/.test(r.vendored || ""); }).map(function (r) { return r.name; });
                 const lst = function (a) { return a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + ", and " + a[a.length - 1]; };
                 return "The lineage map is a Core family of " + fam.length + " implementations \u2014 " + lst(fam) + " \u2014 plus " + (rows.length - fam.length) + " separate codebases grouped by primary language; Bitcoin Knots itself is not a row" + (sub.length ? ", and " + lst(sub) + "\u2019s Core git submodule is not a derivation." : ".");
             })(),
-            title: "Lineage of the " + rows.length + " implementations",
-            desc: "Core family: Bitcoin Core; " + (knotsUp ? "Bitcoin Knots, a fork of Core; " : "") + "Bitcoin Roots, a patch series on Core that also carries Knots features; Knots Legacy and Bit-Block, both from Bitcoin Knots. Separate codebases: " + langs.map(function (l) { return l + ": " + byLang[l].map(function (s) { return nodes[s].label; }).join(", "); }).join("; ") + ".",
-            chart: lineage(groups, nodes, edges),
+            title: "Lineage and median assurance",
+            desc: pts.map(function (p) { return p.label + ", " + (p.col === "core" ? "Core family" : p.col) + ", assurance " + p.valueText; }).join("; ") + ". Median of all " + rows.length + ": " + medText + "%.",
+            chart: fieldMap(cols, pts, { yLabel: "Assurance", median: med, uid: "lineage", edges: edges.filter(function (e) { return e.from !== "knots" && e.to !== "knots"; }) }),
             notes: ["&ldquo;Separate&rdquo; means the data on this page states no derivation from Core or Knots. rbitcoin carries Bitcoin Core as a git submodule for tests (stack table); that is not a derivation."],
             sources: (knotsUp ? knotsUp.sources.slice(0, 1) : []).concat([{ label: "data/implementations.json (history, class, upstream)" }]).concat([ { label: "data/stack.json (languages)" }]),
             table: { caption: "Lineage of each implementation", columns: ["Implementation", "Group", "Stated relationship", "Languages"], rows: tableRows.concat(knotsUp ? [[knotsUp.name + " (not a row)", "Core family", knotsUp.quote + " (" + knotsUp.sources[0].label + ")", "not measured"]] : []) }

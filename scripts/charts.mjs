@@ -548,9 +548,10 @@ export function radar(axes, series, opts) {
             out += "<line x1=\"" + fmt(cx) + "\" y1=\"" + fmt(cy) + "\" x2=\"" + fmt(p[0]) + "\" y2=\"" + fmt(p[1]) + "\" class=\"ch-rgrid\"/>";
         });
         // Hatched wedges where an axis is pending for everyone, or missing for
-        // the (single) series drawn.
+        // the series being read. With more than one series, that is the first
+        // series only when the chart asks for it.
         axes.forEach(function (a, i) {
-            var one = series.length === 1 ? series[0].values[i] : null;
+            var one = (series.length === 1 || opts.hatchFirst) && series[0] ? series[0].values[i] : null;
             var missing = a.pending || (one && (one.v === null || one.v === undefined));
             if (!missing) return;
             var ang = -90 + i * step, pend = a.pending || (one && one.pending);
@@ -578,7 +579,7 @@ export function radar(axes, series, opts) {
             pts.forEach(function (p) {
                 if (!p) return;
                 if (sr.cls === "core") out += "<rect x=\"" + fmt(p[0] - 3.5) + "\" y=\"" + fmt(p[1] - 3.5) + "\" width=\"7\" height=\"7\" class=\"ch-rdot ch-r-core\"/>";
-                else if (sr.cls === "median") out += "<path d=\"M" + fmt(p[0]) + " " + fmt(p[1] - 4.5) + " L" + fmt(p[0] + 4.5) + " " + fmt(p[1] + 3.5) + " L" + fmt(p[0] - 4.5) + " " + fmt(p[1] + 3.5) + " Z\" class=\"ch-rdot ch-r-median\"/>";
+                else if (sr.cls === "median") out += "<path d=\"M" + fmt(p[0]) + " " + fmt(p[1] - 6) + " L" + fmt(p[0] + 6) + " " + fmt(p[1] + 4.5) + " L" + fmt(p[0] - 6) + " " + fmt(p[1] + 4.5) + " Z\" class=\"ch-rdot ch-r-median\"/>";
                 else out += "<circle cx=\"" + fmt(p[0]) + "\" cy=\"" + fmt(p[1]) + "\" r=\"3.2\" class=\"ch-rdot ch-r-" + (sr.cls || "all") + "\"/>";
             });
         });
@@ -590,15 +591,25 @@ export function radar(axes, series, opts) {
                 var dy = Math.sin(ang * Math.PI / 180) > 0.5 ? fsz : Math.sin(ang * Math.PI / 180) < -0.5 ? -4 : 4;
                 var name = lab === "full" ? a.label : a.short || a.label;
                 var lines = lab === "full" ? wrap(name, fsz, narrowLab ? 70 : 110) : [name];
-                var extra = [];
-                if (a.pending) extra.push("pending fix");
-                else if (opts.values && series[0]) extra.push(series[0].values[i].text);
-                lines = lines.concat(extra);
-                var y0 = p[1] + dy - (Math.sin(ang * Math.PI / 180) < -0.5 ? (lines.length - 1) * (fsz + 2) : 0);
+                var valueHtml = "";
+                if (opts.medianValues || opts.values) {
+                    var own = series[0] ? series[0].values[i] : null;
+                    var med = null;
+                    if (opts.medianValues) series.forEach(function (sr) { if (sr.cls === "median") med = sr.values[i]; });
+                    if (a.pending) valueHtml = "<tspan class=\"ch-pendt\">pending fix</tspan>";
+                    else {
+                        var parts = [];
+                        if (opts.values && own && own.v !== null && own.v !== undefined) parts.push("<tspan class=\"ch-val\">" + esc(own.text) + "</tspan>");
+                        if (med && med.v !== null && med.v !== undefined) parts.push("<tspan class=\"ch-med-label\">" + esc(med.text) + "</tspan>");
+                        valueHtml = parts.join(" ");
+                    }
+                }
+                var nLines = lines.length + (valueHtml ? 1 : 0);
+                var y0 = p[1] + dy - (Math.sin(ang * Math.PI / 180) < -0.5 ? (nLines - 1) * (fsz + 2) : 0);
                 lines.forEach(function (l, j) {
-                    var isVal = j >= lines.length - extra.length;
-                    out += t(p[0], y0 + j * (fsz + 2), l, "ch-t " + (isVal ? (a.pending ? "ch-pendt" : "ch-val") : "ch-label"), " text-anchor=\"" + anchor + "\" font-size=\"" + fsz + "\"");
+                    out += t(p[0], y0 + j * (fsz + 2), l, "ch-t ch-label", " text-anchor=\"" + anchor + "\" font-size=\"" + fsz + "\"");
                 });
+                if (valueHtml) out += "<text x=\"" + fmt(p[0]) + "\" y=\"" + fmt(y0 + lines.length * (fsz + 2)) + "\" class=\"ch-t\" text-anchor=\"" + anchor + "\" font-size=\"" + fsz + "\">" + valueHtml + "</text>";
             });
         }
         return { body: out, height: cy + R + (lab === "none" ? 6 : pad - 4) };
@@ -645,7 +656,8 @@ export function fieldMap(cols, points, opts) {
         var colW = (width - axisW) / cols.length;
         var counts = cols.map(function (c) { return points.filter(function (p) { return p.col === c.id; }).length; });
         var plotH = Math.max(narrow ? 360 : 320, Math.max.apply(null, counts) * (pillH + gap) + 8);
-        var top = 34, out = "";
+        var top = 34, out = "", pos = {}, arrow = (opts.uid || "fmap") + "-arrow";
+        if (opts.edges && opts.edges.length) out += "<defs><marker id=\"" + arrow + "\" viewBox=\"0 0 8 8\" refX=\"7\" refY=\"4\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L8 4 L0 8 z\" class=\"ch-arrowhead\"/></marker></defs>";
         [0, 25, 50, 75, 100].forEach(function (v) {
             var y = top + plotH * (1 - v / 100);
             out += "<line x1=\"" + axisW + "\" x2=\"" + width + "\" y1=\"" + fmt(y) + "\" y2=\"" + fmt(y) + "\" class=\"ch-grid\"/>";
@@ -658,6 +670,7 @@ export function fieldMap(cols, points, opts) {
             out += "<line x1=\"" + axisW + "\" x2=\"" + width + "\" y1=\"" + fmt(my) + "\" y2=\"" + fmt(my) + "\" class=\"ch-median-line\"/>";
             out += t(width, top + plotH + 16, "median " + medLabel + "%", "ch-t ch-med-label", " text-anchor=\"end\" font-size=\"11\"");
         }
+        var pills = "";
         cols.forEach(function (c, ci) {
             var x0 = axisW + ci * colW, dotX = x0 + 14;
             out += t(x0 + 6, top - 10, c.label, "ch-t ch-ghead");
@@ -672,18 +685,24 @@ export function fieldMap(cols, points, opts) {
             if (over > 0) for (var i = cy.length - 1; i >= 0; i--) { var lim = i === cy.length - 1 ? cy[i] - over : Math.min(cy[i], cy[i + 1] - pillH - gap); cy[i] = lim; }
             ps.forEach(function (p, i) {
                 var px = dotX + 18, pw = colW - 18 - 14 - 6;
-                out += "<a href=\"" + esc(p.href) + "\" class=\"ch-link\"><title>" + esc(p.label + ": " + p.valueText) + "</title>";
-                out += "<path d=\"M" + fmt(dotX) + " " + fmt(ys[i]) + " L" + fmt(px) + " " + fmt(cy[i]) + "\" class=\"ch-leader\"/>";
-                out += "<rect x=\"" + fmt(px) + "\" y=\"" + fmt(cy[i] - pillH / 2) + "\" width=\"" + fmt(pw) + "\" height=\"" + pillH + "\" rx=\"6\" class=\"ch-pill" + (p.cls ? " ch-pill-" + p.cls : "") + "\"/>";
-                out += t(px + 8, cy[i] - 3, p.label, "ch-t ch-pillt" + (p.cls === "hl" ? " ch-hl" : ""), " font-size=\"13\"");
-                out += t(px + 8, cy[i] + 13, p.valueText, "ch-t ch-val", " font-size=\"11.5\"");
-                if (p.cls === "hl") out += "<circle cx=\"" + fmt(dotX) + "\" cy=\"" + fmt(ys[i]) + "\" r=\"6\" class=\"ch-dot-hl\"/>";
-                else if (p.mark === "square") out += "<rect x=\"" + fmt(dotX - 5) + "\" y=\"" + fmt(ys[i] - 5) + "\" width=\"10\" height=\"10\" class=\"ch-dot-core\"/>";
-                else out += "<circle cx=\"" + fmt(dotX) + "\" cy=\"" + fmt(ys[i]) + "\" r=\"5\" class=\"ch-dot\"/>";
-                out += "</a>";
+                if (p.id) pos[p.id] = { x: dotX, y: ys[i] };
+                pills += "<a href=\"" + esc(p.href) + "\" class=\"ch-link eco-card-open\"" + (p.card ? " data-card=\"" + esc(p.card) + "\"" : "") + "><title>" + esc(p.label + ": " + p.valueText) + "</title>";
+                pills += "<path d=\"M" + fmt(dotX) + " " + fmt(ys[i]) + " L" + fmt(px) + " " + fmt(cy[i]) + "\" class=\"ch-leader\"/>";
+                pills += "<rect x=\"" + fmt(px) + "\" y=\"" + fmt(cy[i] - pillH / 2) + "\" width=\"" + fmt(pw) + "\" height=\"" + pillH + "\" rx=\"6\" class=\"ch-pill" + (p.cls ? " ch-pill-" + p.cls : "") + "\"/>";
+                pills += t(px + 8, cy[i] - 3, p.label, "ch-t ch-pillt" + (p.cls === "hl" ? " ch-hl" : ""), " font-size=\"13\"");
+                pills += t(px + 8, cy[i] + 13, p.valueText, "ch-t ch-val", " font-size=\"11.5\"");
+                if (p.cls === "hl") pills += "<circle cx=\"" + fmt(dotX) + "\" cy=\"" + fmt(ys[i]) + "\" r=\"6\" class=\"ch-dot-hl\"/>";
+                else if (p.mark === "square") pills += "<rect x=\"" + fmt(dotX - 5) + "\" y=\"" + fmt(ys[i] - 5) + "\" width=\"10\" height=\"10\" class=\"ch-dot-core\"/>";
+                else pills += "<circle cx=\"" + fmt(dotX) + "\" cy=\"" + fmt(ys[i]) + "\" r=\"5\" class=\"ch-dot\"/>";
+                pills += "</a>";
             });
         });
-        return { body: out, height: top + plotH + (hasMedian ? 24 : 8) };
+        (opts.edges || []).forEach(function (e) {
+            var a = pos[e.from], b = pos[e.to];
+            if (!a || !b) return;
+            out += "<path d=\"M" + fmt(a.x) + " " + fmt(a.y) + " L" + fmt(b.x) + " " + fmt(b.y) + "\" class=\"ch-edge" + (e.dashed ? " ch-edge-dash" : "") + "\" marker-end=\"url(#" + arrow + ")\"/>";
+        });
+        return { body: out + pills, height: top + plotH + (hasMedian ? 24 : 8) };
     };
 }
 

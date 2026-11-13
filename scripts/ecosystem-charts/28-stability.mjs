@@ -10,7 +10,7 @@ const STATUS = {
     "not_measured": { cls: "st-na", mark: "?", text: "not measured" }
 };
 
-const SHORT = {
+export const STAB_SHORT = {
     has_stable_release: "Tag",
     docs_not_pre_release: "Docs",
     stable_release_in_12m: "Year",
@@ -30,7 +30,7 @@ export default {
     slot: "chart-stability",
     build: function (ctx) {
         const checks = ctx.model.stability.definition.filter(function (c) { return c.type === "check"; });
-        const cols = checks.map(function (c) { return { id: c.id, label: SHORT[c.id] || c.label, full: c.label }; });
+        const cols = checks.map(function (c) { return { id: c.id, label: STAB_SHORT[c.id] || c.label, full: c.label }; });
         const rows = ctx.model.rows.map(function (r) {
             const cells = {};
             r.stability.cells.forEach(function (c) {

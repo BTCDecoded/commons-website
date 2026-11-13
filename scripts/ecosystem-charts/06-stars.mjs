@@ -40,7 +40,7 @@ export function codeHealth(rows, pending) {
         if (a.pending) return { v: null, text: "pending fix", pending: true };
         const vs = rows.map(a.get).filter(function (v) { return typeof v === "number"; });
         const m = vs.length ? median(vs) : null;
-        return m === null ? { v: null, text: "not measured" } : { v: m, text: a.fmt ? String(m) : m.toLocaleString("en-US") };
+            return m === null ? { v: null, text: "not measured" } : { v: m, text: a.fmt && a.fmt(m) ? a.fmt(m) : m.toLocaleString("en-US") };
     }) };
     return { axes: axes, series: series, median: med };
 }

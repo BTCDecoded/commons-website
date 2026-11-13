@@ -1,30 +1,60 @@
 // One card per implementation. The face is the charts: assurance radial,
-// code-health star, checkout bar, and the comparison bars. The same counts
+// code-health star, release-stability star, checkout bar, and the comparison
+// bars. The same counts
 // as the tables open under Counts, in the same order on every card. A missing
-// count says "not measured" and is not drawn as zero. n/a stays out of the
+// count says "not measured" and is not drawn as zero. A chart with nothing
+// measured is left off the card. n/a stays out of the
 // assurance score. Fuzz targets listed in ctx.model.pending say "pending fix".
 import { figure, assuranceRadial, radar, svgOnce, esc, median } from "../charts.mjs";
 import { codeHealth } from "./06-stars.mjs";
+import { STAB_SHORT } from "./28-stability.mjs";
 
 const GLYPH = { "yes": "\u25CF", "partial": "\u25D0", "not found": "\u25CB", "n/a": "\u2013" };
 const LIN_GLYPH = { own: "\u25C6", fork: "\u25C7", core: "\u25A0" };
 
-// Stability checklist meter: one segment per criterion in data/stability.json
-// (met solid with a tick, not met empty with a cross, not measured hatched
-// with a question mark). With no criteria written yet, one hatched bar says
-// so in words. Never drawn as zero.
-const STAB_GLYPH = { met: "\u2713", not_met: "\u2715", not_measured: "?" };
-function stabMeter(st) {
-    const segs = st.total ? st.cells.map(function (c) {
-        return "<span class=\"eco-stab-seg s-" + c.status + "\" title=\"" + esc(c.label + ": " + c.status.replace("_", " ")) + "\">" + STAB_GLYPH[c.status] + "</span>";
-    }).join("") : "<span class=\"eco-stab-seg s-not_measured s-all\">not measured</span>";
-    const lists = (st.total ? ["met", "not_met", "not_measured"].map(function (k) {
-        const xs = st.cells.filter(function (c) { return c.status === k; });
-        return xs.length ? "<p class=\"eco-stab-list s-" + k + "\"><b>" + STAB_GLYPH[k] + " " + ({ met: "Met", not_met: "Not met", not_measured: "Not measured" })[k] + ":</b> " + esc(xs.map(function (c) { return c.label; }).join(", ")) + "</p>" : "";
-    }).join("") : "") + st.tags.filter(function (t) { return t.status !== "n/a"; }).map(function (t) { return "<p class=\"eco-stab-tag\"><b>" + esc(t.label) + ":</b> " + (t.tag ? esc(t.tag) + "" : "not measured") + "</p>"; }).join("");
-    return "<div class=\"eco-stab\"><p class=\"eco-stab-h\"><b>Release</b> <span" + (st.measured ? "" : " class=\"nm\"") + ">" + esc(st.text) + "</span></p>" +
-        "<div class=\"eco-stab-meter\">" + segs + "</div>" +
-        (lists ? "<details class=\"ch-more\"><summary>Checks</summary>" + lists + "</details>" : "") + "</div>";
+// Release stability as a star. A spoke at the rim is met, a spoke at the
+// centre was checked and is not met, and a missing spoke was not measured.
+// The upstream-tracking tag is not a spoke: it is not part of the score.
+function stabPoint(cell) {
+    if (!cell || cell.status === "not_measured") return { v: null, text: "not measured" };
+    if (cell.status === "met") return { v: 1, text: "met" };
+    if (cell.status === "not_met") return { v: 0, text: "not met" };
+    throw new Error("stability star: unknown status " + cell.status);
+}
+function stabAxesOf(definition) {
+    return (definition || []).filter(function (c) { return c.type === "check"; }).map(function (c) {
+        return { key: c.id, label: c.label, short: STAB_SHORT[c.id] || c.label, max: 1 };
+    });
+}
+function stabSeries(axes, row, cls) {
+    return {
+        name: row.name, cls: cls, values: axes.map(function (a) {
+            var cell = row.stability.cells.filter(function (c) { return c.id === a.key; })[0];
+            return stabPoint(cell);
+        })
+    };
+}
+function stabMedian(axes, rows) {
+    return {
+        name: "Median of " + rows.length, cls: "median", values: axes.map(function (a) {
+            var vs = rows.map(function (row) {
+                var cell = row.stability.cells.filter(function (c) { return c.id === a.key; })[0];
+                return stabPoint(cell).v;
+            }).filter(function (v) { return typeof v === "number"; });
+            if (!vs.length) return { v: null, text: "not measured" };
+            var m = median(vs);
+            return { v: m, text: m === 1 ? "met" : m === 0 ? "not met" : String(m) };
+        })
+    };
+}
+function stabTag(st) {
+    var tag = st.tags.filter(function (t) { return t.status === "tag" && t.tag; })[0];
+    return tag ? "<p class=\"eco-card-key\">" + esc(tag.label) + ": " + esc(tag.tag) + "</p>" : "";
+}
+function zoomChart(label, inner) {
+    return "<div class=\"eco-zoom\" tabindex=\"0\" aria-label=\"" + esc(label) + "\">" +
+        "<div class=\"eco-zoom-frame\"><button type=\"button\" class=\"eco-zoom-cancel\">Cancel</button>" +
+        inner + "<p class=\"eco-zoom-hint\">Full chart</p></div></div>";
 }
 
 // Research's card takeaway, with every clause computed from the cells.
@@ -126,11 +156,12 @@ function rulesReading(tree) {
     return { text: cell.text, value: cell.value };
 }
 function barRow(label, text, value, scale, cls, title) {
+    if (value === null && text === "not measured") return "";
     var bar = value === null ? "" : "<span class=\"mini\" aria-hidden=\"true\"><span class=\"mini-fill" + (cls ? " " + cls : "") + "\" style=\"width:" + pct(value, scale) + "%\"></span></span>";
     return "<li title=\"" + esc(title || "") + "\"><span class=\"lbl\">" + esc(label) + "</span><span class=\"num\">" + esc(text) + "</span>" + bar + "</li>";
 }
 function checkoutBar(c, scale) {
-    if (!c) return "<p class=\"eco-card-miss\">Checkout not measured</p>";
+    if (!c) return "";
     var parts = [["program", "program", c.program, c.text.program], ["tests", "tests", c.tests, c.text.tests], ["tooling", "tool", c.tooling, c.text.tooling], ["vendored", "vend", c.vend, c.text.vend], ["locale", "loc", c.loc, c.text.loc]];
     var title = parts.map(function (p) { return p[0] + " " + p[3]; }).join(", ");
     var segs = parts.map(function (p) { return "<span class=\"mini-fill " + p[1] + "\" style=\"width:" + pct(p[2], scale) + "%\"></span>"; }).join("");
@@ -144,6 +175,9 @@ export default {
         const med = median(rows.map(function (r) { return r.assurance.pct; }));
         const pendFuzz = "fuzz_targets" in ctx.model.pending;
         const health = codeHealth(rows, ctx.model.pending);
+        const stabAxes = stabAxesOf(ctx.model.stability.definition);
+        if (!stabAxes.length) throw new Error("stability star: no scored checks");
+        const stabMed = stabMedian(stabAxes, rows);
         const checkouts = rows.map(function (r) { return checkoutOf(r, treeOf(ctx, r.slug)); });
         const compMax = Math.max.apply(null, checkouts.map(function (c) { return c ? c.total : 0; })) || 1;
         const programMax = Math.max.apply(null, rows.map(function (r) { var c = numCell(treeOf(ctx, r.slug), "program_code"); return c ? c.value : 0; })) || 1;
@@ -173,22 +207,25 @@ export default {
             const rules = rulesReading(tree);
             const starSeries = health.series(r, r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "");
             const starDesc = r.name + " code health. " + health.axes.map(function (axis, i) { return axis.short + " " + starSeries.values[i].text; }).join(", ") + ". Median of " + rows.length + ": " + health.axes.map(function (axis, i) { return axis.short + " " + health.median.values[i].text; }).join(", ") + ".";
-            const star = svgOnce(id + "-s", 340, radar(health.axes, [starSeries, health.median], { labels: "short", values: true, pad: 64, size: 340 }), r.name + " code-health star", starDesc, "eco-star");
-            const bars = "<ul class=\"eco-card-bars\">" +
-                barRow("Program", program ? program.text : "not measured", program ? program.value : null, programMax, ink, HINT["Program"]) +
+            const star = zoomChart("Code health", "<p class=\"eco-star-name\">Code health</p>" + svgOnce(id + "-s", 340, radar(health.axes, [starSeries, health.median], { labels: "short", values: true, medianValues: true, hatchFirst: true, pad: 72, size: 340 }), r.name + " code-health star", starDesc, "eco-star") +
+                "<p class=\"eco-card-key\"><span class=\"eco-med-key\">▲</span> median of " + rows.length + "</p>");
+            const releaseSeries = stabSeries(stabAxes, r, r.internal ? "hl" : r.lineage.cls === "core" ? "core" : "");
+            const releaseMeasured = releaseSeries.values.some(function (v) { return typeof v.v === "number"; });
+            const releaseDesc = r.name + " release stability. " + stabAxes.map(function (axis, i) { return axis.label + " " + releaseSeries.values[i].text; }).join(", ") + ". Median of " + rows.length + ": " + stabAxes.map(function (axis, i) { return axis.label + " " + stabMed.values[i].text; }).join(", ") + ".";
+            const release = releaseMeasured ? zoomChart("Release", "<p class=\"eco-star-name\">Release</p>" + svgOnce(id + "-stab", 340, radar(stabAxes, [releaseSeries, stabMed], { labels: "short", values: true, medianValues: true, hatchFirst: true, pad: 72, size: 340 }), r.name + " release stability", releaseDesc, "eco-star") + "<p class=\"eco-card-key\"><span class=\"eco-med-key\">▲</span> median of " + rows.length + "</p>" + stabTag(r.stability)) : "";
+            const barItems = barRow("Program", program ? program.text : "not measured", program ? program.value : null, programMax, ink, HINT["Program"]) +
                 barRow("Large files", large ? large.text : "not measured", large ? large.value : null, 100, ink, half === "not measured" ? HINT["Large files"] : half + " files hold half. " + HINT["Large files"]) +
                 barRow("Tests / line", tests ? tests.text : "not measured", tests ? tests.value : null, testMax, ink, HINT["Tests / line"]) +
                 barRow("Rules share", rules.text, rules.value, ruleMax, ink, (tree && tree.instrument ? tree.instrument + ". " : "") + HINT["Rules share"]) +
-                barRow("Own-team", own, ownNum ? ownNum.value : null, moduleMax, ink, (names.length ? names.join(", ") + ". " : "") + HINT["Own-team"]) +
-                "</ul>";
+                barRow("Own-team", own, ownNum ? ownNum.value : null, moduleMax, ink, (names.length ? names.join(", ") + ". " : "") + HINT["Own-team"]);
+            const bars = barItems ? "<ul class=\"eco-card-bars\">" + barItems + "</ul>" : "";
             return "<article class=\"eco-card" + (r.internal ? " internal" : "") + "\" id=\"" + id + "\" aria-labelledby=\"" + id + "-h\">" +
                 "<h3 id=\"" + id + "-h\">" + esc(r.name) + "</h3>" +
                 "<ul class=\"eco-badges\" aria-label=\"Badges\">" +
                 "<li class=\"eco-badge eco-badge-" + r.lineage.cls + "\"><span aria-hidden=\"true\">" + LIN_GLYPH[r.lineage.cls] + " </span>" + esc(r.lineage.label) + "</li>" +
                 "<li class=\"eco-badge\">" + esc(r.accountability.full) + "</li>" +
                 "<li class=\"eco-badge\">Modules: " + esc(metricText(r.metrics, "plugin_system")) + "</li></ul>" +
-                radial + star + checkoutBar(checkouts[idx], compMax) + bars +
-                stabMeter(r.stability) +
+                zoomChart("Assurance", radial) + star + release + checkoutBar(checkouts[idx], compMax) + bars +
                 "<details class=\"ch-more\"><summary>Counts</summary><dl>" +
                 group("Code") +
                 fact("Program", counted(tree, "program_code")) +
@@ -218,7 +255,7 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-            caption: "Each card leads with the charts. The radial is the six assurance checks: a full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a. The star is the code-health chart, on the same scales as the star section; dashed triangles are the median. The checkout bar is program, tests, tooling, vendored, and locale, scaled to the largest checkout. The bars under it are program lines, large files, tests per line, rules share, and own-team modules, each scaled as in the comparison table. The counts open under Counts.",
+            caption: "Each card leads with the charts. The radial and the two stars are small until hover, focus, or click, which opens the full chart in the card. Cancel closes it. The radial is the six assurance checks: a full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a. The code-health star uses the same scales as the star section. The release star is the seven stability checks: a spoke at the rim is met, a spoke at the centre is not met, and a missing spoke was not measured. White numbers are this implementation. Yellow numbers and dashed triangles are the median of all 12. The checkout bar is program, tests, tooling, vendored, and locale, scaled to the largest checkout. The bars under it are program lines, large files, tests per line, rules share, and own-team modules, each scaled as in the comparison table. A chart with nothing measured is left off the card. The counts open under Counts.",
             html: legend + "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),
