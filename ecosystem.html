@@ -896,10 +896,10 @@
         .eco-dock-title.is-internal { color: var(--orange); }
         .eco-dock-tools { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; flex: none; }
         .eco-dock-compare { position: relative; display: flex; align-items: center; }
-        .eco-dock-pick, .eco-dock-x, .eco-dock-charts button { font: inherit; min-height: 44px; border: 1px solid #5a5a64; border-radius: 8px; background: #1d1d21; color: var(--white); }
+        .eco-dock-pick, .eco-dock-clear, .eco-dock-x, .eco-dock-charts button { font: inherit; min-height: 44px; border: 1px solid #5a5a64; border-radius: 8px; background: #1d1d21; color: var(--white); cursor: pointer; }
         .eco-dock-pick { max-width: 16rem; padding: 0.35rem 0.6rem; cursor: pointer; text-align: left; }
-        .eco-dock-x { padding: 0.35rem 0.8rem; cursor: pointer; }
-        .eco-dock-pick:focus-visible, .eco-dock-x:focus-visible, .eco-dock-charts button:focus-visible, .eco-pick:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+        .eco-dock-clear, .eco-dock-x { padding: 0.35rem 0.8rem; }
+        .eco-dock-pick:focus-visible, .eco-dock-clear:focus-visible, .eco-dock-x:focus-visible, .eco-dock-charts button:focus-visible, .eco-pick:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
         .eco-dock-picks { position: absolute; top: calc(100% + 0.35rem); right: 0; z-index: 6; width: min(22rem, calc(100vw - 2rem)); margin: 0; padding: 0.35rem; list-style: none; background: #1d1d21; border: 1px solid #5a5a64; border-radius: 8px; max-height: min(24rem, 60vh); overflow: auto; }
         .eco-pick { display: flex; align-items: center; gap: 0.55rem; width: 100%; min-height: 44px; padding: 0.3rem 0.45rem; border: 0; border-radius: 6px; background: transparent; color: var(--white); font: inherit; text-align: left; cursor: pointer; }
         .eco-pick:hover { background: #2a2a30; }
@@ -914,7 +914,17 @@
         .eco-pick-name { order: 1; flex: 1; min-width: 0; }
         .eco-pick-age { order: 2; flex: none; color: #c4c4cc; font-size: 0.85rem; white-space: nowrap; }
         .eco-dock-panes { display: grid; gap: 1.25rem; align-items: start; }
-        .eco-dock.is-compare .eco-dock-panes { grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr); }
+        .eco-dock.is-compare .eco-dock-panes { display: block; }
+        .eco-dock.is-compare .eco-dock-card { display: none; }
+        .eco-dock-clear[hidden] { display: none !important; }
+        .eco-dock-stargrid, .eco-dock-assuregrid { display: grid; gap: 1.25rem 1.5rem; align-items: start; }
+        .eco-dock-graphs.is-split .eco-dock-stargrid,
+        .eco-dock-graphs.is-split .eco-dock-assuregrid { grid-template-columns: 1fr 1fr; }
+        .eco-dock-graphs:not(.is-split) .eco-dock-chartone,
+        .eco-dock-graphs:not(.is-split) .eco-dock-assure { max-width: 720px; margin-left: auto; margin-right: auto; }
+        .eco-dock-assure { margin: 0; }
+        .eco-dock-assure > figcaption { color: var(--white); font-weight: 600; margin: 0 0 0.35rem; }
+        .eco-dock-assure .ch-svg { width: 100%; height: auto; }
         .eco-dock-charts { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 1rem; }
         .eco-dock-charts[hidden],
         .eco-dock-chart[hidden],
@@ -954,12 +964,20 @@
         .eco-dock-pair figcaption { color: var(--white); margin: 0 0 0.2rem; }
         .eco-dock-pair .ch-svg { width: 100%; max-width: none; height: auto; }
         .eco-dock-miss { margin: 0; color: #8d8d96; }
-        .eco-matrix { width: 100%; font-size: 0.85rem; }
-        .eco-matrix th, .eco-matrix td { text-align: left; white-space: normal; vertical-align: top; }
-        .eco-matrix td:not(.nm) { font-family: var(--font-mono); }
+        .eco-dock-matrix { overflow-x: auto; }
+        .eco-matrix { width: 100%; font-size: 0.95rem; border-collapse: collapse; }
+        .eco-matrix th, .eco-matrix td { text-align: left; white-space: normal; vertical-align: top; padding: 0.35rem 0.75rem 0.35rem 0; }
+        .eco-matrix thead th { position: sticky; top: 4.4rem; background: #111113; z-index: 1; }
+        .eco-matrix td:not(.nm) { font-family: var(--font-mono); white-space: nowrap; }
         .eco-matrix td.nm { color: #8d8d96; }
-        .eco-matrix .eco-matrix-g th { color: #c4c4cc; font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; padding-top: 0.85rem; font-weight: 600; }
-        .eco-matrix caption { caption-side: top; text-align: left; color: var(--white); padding: 0 0 0.4rem; }
+        .eco-matrix td.is-hl, .eco-matrix th.is-hl { color: var(--orange); }
+        .eco-matrix td.is-core, .eco-matrix th.is-core { color: #56B4E9; }
+        .eco-matrix td.is-all, .eco-matrix th.is-all { color: #b9b9c2; }
+        .eco-matrix td.is-b, .eco-matrix th.is-b { color: #CC79A7; }
+        .eco-matrix tr.is-same td { color: #c4c4cc; }
+        .eco-matrix tbody tr:hover th, .eco-matrix tbody tr:hover td { background: #1a1a1e; }
+        .eco-matrix .eco-matrix-g th { color: #c4c4cc; font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; padding-top: 0.85rem; font-weight: 600; background: transparent; position: static; }
+        .eco-matrix caption { caption-side: top; text-align: left; color: #c4c4cc; padding: 0.75rem 0 0.4rem; }
         .eco-dock .eco-card { border: 0; background: transparent; padding: 0; text-align: left; }
         .eco-dock .eco-card > h3 { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
         .eco-dock-card { container-type: inline-size; }
@@ -1563,10 +1581,11 @@
             var dock = document.createElement("dialog");
             dock.className = "eco-dock";
             dock.setAttribute("aria-labelledby", "eco-dock-title");
-            dock.innerHTML = "<div class=\"eco-dock-bar\"><p class=\"eco-dock-title\" id=\"eco-dock-title\"></p><div class=\"eco-dock-tools\"><div class=\"eco-dock-compare\"><button type=\"button\" class=\"eco-dock-pick\" aria-haspopup=\"listbox\" aria-expanded=\"false\" aria-controls=\"eco-dock-picks\">Compare with…</button><ul id=\"eco-dock-picks\" class=\"eco-dock-picks\" role=\"listbox\" hidden></ul></div><button type=\"button\" class=\"eco-dock-x\">Close</button></div></div><div class=\"eco-dock-graphs\" hidden></div><div class=\"eco-dock-panes\"><div class=\"eco-dock-card\"></div><div class=\"eco-dock-matrix\" hidden></div></div><div class=\"eco-dock-charts\" hidden><button type=\"button\" data-chart=\"fig-crates\">Layer diagram</button><button type=\"button\" data-chart=\"fig-spec-proof\">Proof counts</button></div><div class=\"eco-dock-chart\" hidden></div>";
+            dock.innerHTML = "<div class=\"eco-dock-bar\"><p class=\"eco-dock-title\" id=\"eco-dock-title\"></p><div class=\"eco-dock-tools\"><div class=\"eco-dock-compare\"><button type=\"button\" class=\"eco-dock-pick\" aria-haspopup=\"listbox\" aria-expanded=\"false\" aria-controls=\"eco-dock-picks\">Compare with…</button><ul id=\"eco-dock-picks\" class=\"eco-dock-picks\" role=\"listbox\" hidden></ul></div><button type=\"button\" class=\"eco-dock-clear\" hidden>Stop comparing</button><button type=\"button\" class=\"eco-dock-x\">Close</button></div></div><div class=\"eco-dock-graphs\" hidden></div><div class=\"eco-dock-panes\"><div class=\"eco-dock-card\"></div><div class=\"eco-dock-matrix\" hidden></div></div><div class=\"eco-dock-charts\" hidden><button type=\"button\" data-chart=\"fig-crates\">Layer diagram</button><button type=\"button\" data-chart=\"fig-spec-proof\">Proof counts</button></div><div class=\"eco-dock-chart\" hidden></div>";
             document.body.appendChild(dock);
             var title = dock.querySelector(".eco-dock-title");
             var pickBtn = dock.querySelector(".eco-dock-pick");
+            var clearBtn = dock.querySelector(".eco-dock-clear");
             var picks = dock.querySelector(".eco-dock-picks");
             var matrixBox = dock.querySelector(".eco-dock-matrix");
             var graphs = dock.querySelector(".eco-dock-graphs");
@@ -1624,22 +1643,30 @@
                     return "not measured";
                 }
                 var nameA = a.querySelector("h3").textContent, nameB = b.querySelector("h3").textContent;
+                function tone(card, slot) {
+                    if (card.classList.contains("internal")) return "hl";
+                    if (card.id === "card-bitcoin-core") return "core";
+                    return slot === 0 ? "all" : "b";
+                }
+                var toneA = tone(a, 0), toneB = tone(b, 1);
                 var order = [], buckets = {};
                 labels.forEach(function (label) {
                     var g = seen[label] || "";
                     if (!buckets[g]) { buckets[g] = []; order.push(g); }
                     buckets[g].push(label);
                 });
-                function cell(v) {
-                    return "<td" + (v === "not measured" ? " class=\"nm\"" : "") + ">" + esc(v) + "</td>";
+                function cell(v, toneName, same) {
+                    var cls = v === "not measured" ? "nm" : (same ? "" : "is-" + toneName);
+                    return "<td" + (cls ? " class=\"" + cls + "\"" : "") + ">" + esc(v) + "</td>";
                 }
                 var rows = order.map(function (g) {
                     var head = g ? "<tr class=\"eco-matrix-g\"><th colspan=\"3\" scope=\"colgroup\">" + esc(g) + "</th></tr>" : "";
                     return head + buckets[g].map(function (label) {
-                        return "<tr><th scope=\"row\">" + esc(label) + "</th>" + cell(val(fa, label)) + cell(val(fb, label)) + "</tr>";
+                        var va = val(fa, label), vb = val(fb, label), same = va === vb;
+                        return "<tr" + (same ? " class=\"is-same\"" : "") + "><th scope=\"row\">" + esc(label) + "</th>" + cell(va, toneA, same) + cell(vb, toneB, same) + "</tr>";
                     }).join("");
                 }).join("");
-                return "<table class=\"eco-matrix\"><caption>" + esc(nameA) + " and " + esc(nameB) + "</caption><thead><tr><th scope=\"col\">Count</th><th scope=\"col\">" + esc(nameA) + "</th><th scope=\"col\">" + esc(nameB) + "</th></tr></thead><tbody>" + rows + "</tbody></table>";
+                return "<table class=\"eco-matrix\"><caption>Counts. A grey row is the same number for both.</caption><thead><tr><th scope=\"col\">Count</th><th scope=\"col\" class=\"is-" + toneA + "\">" + esc(nameA) + "</th><th scope=\"col\" class=\"is-" + toneB + "\">" + esc(nameB) + "</th></tr></thead><tbody>" + rows + "</tbody></table>";
             }
             function restoreChart() {
                 var fig = chartBox.firstElementChild;
@@ -1789,13 +1816,27 @@
                 }).join("");
                 return "<table class=\"eco-dock-legend\"><thead><tr><th scope=\"col\">Measure</th><th scope=\"col\">" + esc(a.name) + "</th><th scope=\"col\">" + esc(b.name) + "</th></tr></thead><tbody>" + rows + "</tbody></table>";
             }
-            function combined(caption, a, b) {
+            function cloneSvg(svg, suffix) {
+                return svg.outerHTML.replace(/\bid="([^"]+)"/g, function (_, id) { return "id=\"" + id + suffix + "\""; })
+                    .replace(/\bhref="#([^"]+)"/g, function (_, id) { return "href=\"#" + id + suffix + "\""; })
+                    .replace(/\burl\(#([^)]+)\)/g, function (_, id) { return "url(#" + id + suffix + ")"; })
+                    .replace(/\baria-labelledby="([^"]+)"/g, function (_, ids) {
+                        return "aria-labelledby=\"" + ids.split(/\s+/).map(function (id) { return id + suffix; }).join(" ") + "\"";
+                    });
+            }
+            function assuranceBlock(card, suffix) {
+                var name = card.querySelector("h3").textContent;
+                var zoom = cardZoom(card, "Assurance");
+                var svg = zoom && zoom.querySelector(".eco-zoom-body .ch-svg");
+                var stab = card.querySelector(".eco-stab");
+                return "<figure class=\"eco-dock-assure\"><figcaption>" + esc(name) + "</figcaption>" + (svg ? cloneSvg(svg, suffix) : "") + (stab ? stab.outerHTML : "") + "</figure>";
+            }
+            function combined(caption, a, b, width) {
                 var pa = payload(a, caption), pb = payload(b, caption);
                 var nameA = a.querySelector("h3").textContent, nameB = b.querySelector("h3").textContent;
                 if (!pa || !pb || !sameAxes(pa, pb)) {
                     return "<p class=\"eco-dock-miss\">" + esc(nameA) + " and " + esc(nameB) + " are not measured on the same spokes.</p>";
                 }
-                var width = Math.max(280, Math.min(720, graphs.clientWidth || 360));
                 var implA = markSeries(pa.series[0], 0), implB = markSeries(pb.series[0], 1);
                 if (implA.shape === implB.shape) implB.shape = implA.shape === "circle" ? "square" : "circle";
                 var med = null;
@@ -1808,7 +1849,11 @@
                 var card = cardOf(anchor), b = cardOf(other);
                 if (!card || !b) return;
                 graphs.hidden = false;
-                graphs.innerHTML = "<h3 class=\"eco-dock-k\">Comparisons</h3>" + combined("Compare", card, b) + "<h3 class=\"eco-dock-k\">Code health</h3>" + combined("Health", card, b);
+                var full = graphs.clientWidth || dock.clientWidth || 360;
+                var split = full >= 960;
+                var width = split ? Math.max(280, Math.min(640, Math.floor((full - 24) / 2))) : Math.max(280, Math.min(720, full));
+                graphs.classList.toggle("is-split", split);
+                graphs.innerHTML = "<div class=\"eco-dock-stargrid\"><section><h3 class=\"eco-dock-k\">Comparisons</h3>" + combined("Compare", card, b, width) + "</section><section><h3 class=\"eco-dock-k\">Code health</h3>" + combined("Health", card, b, width) + "</section></div><h3 class=\"eco-dock-k\">Assurance</h3><div class=\"eco-dock-assuregrid\">" + assuranceBlock(card, "-a") + assuranceBlock(b, "-b") + "</div>";
             }
             function showChart(id, btn) {
                 var fig = document.getElementById(id);
@@ -1834,10 +1879,12 @@
             function clearOther() {
                 other = null;
                 pickBtn.textContent = "Compare with…";
+                clearBtn.hidden = true;
                 shutPicks();
                 matrixBox.hidden = true;
                 matrixBox.innerHTML = "";
                 graphs.hidden = true;
+                graphs.classList.remove("is-split");
                 graphs.innerHTML = "";
                 dock.classList.remove("is-compare");
             }
@@ -1855,7 +1902,9 @@
                 var card = cardOf(anchor), b = cardOf(id);
                 if (!card || !b) { clearOther(); return; }
                 other = id;
-                pickBtn.textContent = b.querySelector("h3").textContent;
+                title.textContent = card.querySelector("h3").textContent + " and " + b.querySelector("h3").textContent;
+                pickBtn.textContent = "Change";
+                clearBtn.hidden = false;
                 shutPicks();
                 matrixBox.innerHTML = matrix(card, b);
                 matrixBox.hidden = false;
@@ -1942,6 +1991,11 @@
                 return true;
             }
             dock.querySelector(".eco-dock-x").addEventListener("click", closeDock);
+            clearBtn.addEventListener("click", function () {
+                clearOther();
+                var card = cardOf(anchor);
+                if (card) title.textContent = card.querySelector("h3").textContent;
+            });
             pickBtn.addEventListener("click", function () {
                 var open = picks.hidden;
                 picks.hidden = !open;
