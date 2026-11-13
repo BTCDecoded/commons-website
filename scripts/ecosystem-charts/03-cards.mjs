@@ -12,7 +12,6 @@ function radarJson(obj) {
     return JSON.stringify(obj).replace(/</g, "\\u003c");
 }
 const GLYPH = { "yes": "\u25CF", "partial": "\u25D0", "not found": "\u25CB", "n/a": "\u2013" };
-const LIN_GLYPH = { own: "\u25C6", fork: "\u25C7", core: "\u25A0" };
 
 // Stability checklist meter: one segment per criterion in data/stability.json
 // (met solid with a tick, not met empty with a cross, not measured hatched
@@ -225,6 +224,13 @@ export default {
             const emblem = "<p class=\"eco-emblem\" title=\"" + esc(rank.why) + "\">" + assuranceEmblem(rank.n) + "<span class=\"eco-emblem-l\"><b>" + esc(rank.label) + "</b><small>" + esc(rank.why) + "</small></span></p>";
             const pickBits = "<span class=\"eco-pick-bits\" hidden><span class=\"eco-gov eco-gov-" + pk.kind + "\" title=\"" + esc(pk.label) + "\"><span class=\"visually-hidden\">" + esc(pk.label) + ". </span>" + govMark(pk.kind) + (pk.keepers ? "<span class=\"eco-keepers\">" + pk.keepers + "</span>" : "") + "</span><span class=\"eco-rel eco-rel-" + rel.id + "\" title=\"" + esc(rel.why) + "\"><span class=\"visually-hidden\">" + esc(rel.label) + ". </span>" + releaseMark(rel.id) + "</span>" + (pk.age ? "<span class=\"eco-pick-age\" title=\"" + esc(pk.from) + "\">" + esc(pk.age) + "</span>" : "") + "</span>";
             const releaseBadge = "<p class=\"eco-release eco-rel-" + rel.id + "\" title=\"" + esc(rel.why) + "\">" + releaseMark(rel.id) + "<span>" + esc(rel.label) + "</span></p>";
+            function pill(text) {
+                if (!text || text === "not measured" || text === "no cut") return "";
+                return "<li class=\"eco-badge\">" + esc(text) + "</li>";
+            }
+            var langPills = (r.stack && r.stack.languages ? r.stack.languages.split(",") : []).map(function (s) { return pill(s.trim()); });
+            var badges = langPills.concat([pill(r.stack && r.stack.license), pill(pk.age)]).filter(Boolean).join("");
+            const badgeRow = badges ? "<ul class=\"eco-badges\" aria-label=\"Badges\">" + badges + "</ul>" : "";
             const axesData = radarJson({
                 independence: r.lineage.label,
                 assurance: { text: a.score + " of " + a.max, v: a.pct },
@@ -243,11 +249,8 @@ export default {
                 "<div class=\"eco-sheet-main\">" +
                 emblem +
                 releaseBadge +
+                badgeRow +
                 profile +
-                "<ul class=\"eco-badges\" aria-label=\"Badges\">" +
-                "<li class=\"eco-badge eco-badge-" + r.lineage.cls + "\"><span aria-hidden=\"true\">" + LIN_GLYPH[r.lineage.cls] + " </span>" + esc(r.lineage.label) + "</li>" +
-                "<li class=\"eco-badge\">" + esc(r.accountability.full) + "</li>" +
-                "<li class=\"eco-badge\">Modules: " + esc(metricText(r.metrics, "plugin_system")) + "</li></ul>" +
                 stabMeter(r.stability) +
                 fold("eco-onchart-fold", "On the charts",
                     liveGroup("Code", [
@@ -273,10 +276,6 @@ export default {
                         liveFact("Modules", own, names.length ? names.join(", ") : ""),
                         liveFact("Independent", metricText(r.metrics, "plugin_independent"))
                     ]) +
-                    liveGroup("Stack", [
-                        liveFact("License", r.stack && r.stack.license ? r.stack.license : "not measured"),
-                        liveFact("Languages", r.stack && r.stack.languages ? r.stack.languages : "not measured")
-                    ]) +
                     liveGroup("Last 12 months", [liveFact("CI jobs", metricText(r.metrics, "ci_jobs"))])) +
                 "</div></div>" +
                 "</article>";
@@ -285,7 +284,7 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-            caption: "A hatched spoke is not measured, and it is not drawn as zero. A count that is not measured is left off the card. When none of the five comparisons is measured, that chart is left off the card.",
+            caption: "Language, license, and age, when this page states them, are badges on the card. A hatched spoke is not measured, and it is not drawn as zero. A count that is not measured is left off the card. When none of the five comparisons is measured, that chart is left off the card.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),

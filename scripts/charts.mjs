@@ -324,18 +324,19 @@ export function scatter(points, axes) {
 //   grid rows are laid out as given on wide screens; on narrow screens a group
 //   whose `flow` is true reflows its nodes into two columns.
 // nodes: { id: { label, cls, tag, facts, share, shareText } }  cls: hl | muted.
-// tag is a short language mark under the name. facts is the governance mark,
-// a stated maintainer count, and the age of the stated start. shareText is the
-// footer, and only when this box has a share count. A box with no count has
-// no footer. share is a percent of reachable nodes when the count names that box.
+// tag is the primary language, drawn as a badge under the name. facts.age is
+// a second badge beside it when a start is stated. facts is the governance
+// mark and a stated maintainer count. shareText is the footer, and only when
+// this box has a share count. A box with no count has no footer. share is a
+// percent of reachable nodes when the count names that box.
 // edges: [{ from, to, dashed }]
 export function lineage(groups, nodes, edges) {
     function boxH(n) {
         if (!n) return 0;
-        if (n.facts && n.shareText) return 84;
+        if (n.facts && n.shareText) return 90;
         if (n.shareText) return 64;
-        if (n.facts) return 62;
-        return n.tag ? 46 : 30;
+        if (n.facts) return 68;
+        return n.tag ? 52 : 30;
     }
     return function (width, uid) {
         var arrow = (uid || "ch") + "-arrow";
@@ -411,15 +412,27 @@ export function lineage(groups, nodes, edges) {
         Object.keys(pos).forEach(function (id) {
             var p = pos[id], n = nodes[id];
             var nameY = (n.facts || n.tag) ? p.y + 15 : (n.shareText ? p.y + 18 : p.y + p.h / 2 + fs * 0.35);
+            var badges = [];
+            if (n.tag) badges.push(n.tag);
+            if (n.facts && n.facts.age) badges.push(n.facts.age);
+            var badgeSvg = "";
+            if (badges.length) {
+                var bSize = 10, bH = 16, bGap = 4, bPad = 12;
+                var bW = badges.map(function (s) { return textWidth(s, bSize) + bPad; });
+                var bTotal = bW.reduce(function (a, w) { return a + w; }, 0) + bGap * (badges.length - 1);
+                var bx = p.x + Math.max(4, (p.w - bTotal) / 2), by = p.y + 22;
+                badges.forEach(function (s, i) {
+                    badgeSvg += "<rect x=\"" + fmt(bx) + "\" y=\"" + fmt(by) + "\" width=\"" + fmt(bW[i]) + "\" height=\"" + bH + "\" rx=\"8\" class=\"ch-pill\"/>" +
+                        t(bx + 6, by + 11.5, s, "ch-t ch-pillt", " font-size=\"" + bSize + "\"");
+                    bx += bW[i] + bGap;
+                });
+            }
             var fact = "";
             if (n.facts) {
-                var bits = [];
-                if (n.facts.keepers) bits.push(String(n.facts.keepers));
-                if (n.facts.age) bits.push(n.facts.age);
-                var line = bits.join(" \u00b7 ");
+                var line = n.facts.keepers ? String(n.facts.keepers) : "";
                 var cluster = 14 + (line ? 4 + textWidth(line, 11) : 0);
                 var ix = p.x + Math.max(4, (p.w - cluster) / 2);
-                var iy = p.y + 36;
+                var iy = badges.length ? p.y + 42 : p.y + 36;
                 fact = "<svg x=\"" + fmt(ix) + "\" y=\"" + fmt(iy) + "\" width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" class=\"ch-gov ch-gov-" + n.facts.kind + "\" aria-hidden=\"true\">" + govBody(n.facts.kind) + "</svg>" +
                     (line ? t(ix + 18, iy + 11, line, "ch-t ch-muted", " font-size=\"11\"") : "");
             }
@@ -435,7 +448,7 @@ export function lineage(groups, nodes, edges) {
             }
             var node = "<rect x=\"" + fmt(p.x) + "\" y=\"" + fmt(p.y) + "\" width=\"" + fmt(p.w) + "\" height=\"" + p.h + "\" rx=\"6\" class=\"ch-node" + (n.cls ? " ch-node-" + n.cls : "") + "\"/>" +
                 t(p.x + p.w / 2, nameY, n.label, "ch-t ch-nodet" + (n.cls === "hl" ? " ch-hl" : n.cls === "muted" ? " ch-muted" : ""), " text-anchor=\"middle\"") +
-                (n.tag ? t(p.x + p.w / 2, p.y + 28, n.tag, "ch-t ch-muted", " text-anchor=\"middle\" font-size=\"11\"") : "") +
+                badgeSvg +
                 fact + footer;
             var tip = n.label + (n.tag ? ", " + n.tag : "");
             if (n.facts) tip += ". " + n.facts.label + (n.facts.keepers ? ", " + n.facts.keepers : "") + (n.facts.age ? ", " + n.facts.age : "") + (n.facts.from ? ". " + n.facts.from : "");
