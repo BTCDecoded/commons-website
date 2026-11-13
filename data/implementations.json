@@ -87,13 +87,13 @@
       "shallow": false,
       "values": {
         "implementation_code": {
-          "value": 303561,
-          "text": "303,561",
+          "value": 303587,
+          "text": "303,587",
           "status": "measured"
         },
         "program_code": {
-          "value": 195990,
-          "text": "195,990",
+          "value": 196016,
+          "text": "196,016",
           "status": "measured"
         },
         "tooling_code": {
@@ -1489,16 +1489,16 @@
     "trees": [
       {
         "slug": "blvm",
-        "parts": { "rules": 32598, "chain": 26615, "mempool": 7660, "network": 63436, "rpc": 15626, "rest": 50055 },
+        "parts": { "rules": 32624, "chain": 26615, "mempool": 7660, "network": 63436, "rpc": 15626, "rest": 50055 },
         "largest": {
-          "rules": { "file": "src/script/mod.rs", "lines": 6690 },
+          "rules": { "file": "src/script/mod.rs", "lines": 6716 },
           "chain": { "file": "src/storage/ibd_utxo_store.rs", "lines": 2382 },
           "mempool": { "file": "src/node/mempool.rs", "lines": 4137 },
           "network": { "file": "src/node/parallel_ibd/mod.rs", "lines": 8855 },
           "rpc": { "file": "src/rpc/rest/server.rs", "lines": 2251 },
           "rest": { "file": "src/module/timers/service.rs", "lines": 3175 }
         },
-        "checkout": { "program": 195990, "tests": 202814, "tooling": 107571, "vendored": 0, "locale": 0 },
+        "checkout": { "program": 196016, "tests": 203413, "tooling": 107571, "vendored": 0, "locale": 0 },
         "rest": [
           { "name": "Module host", "lines": 22531 },
           { "name": "Protocol", "lines": 10589 },
