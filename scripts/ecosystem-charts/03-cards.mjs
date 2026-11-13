@@ -169,7 +169,7 @@ export default {
             const cmpThumb = cmpMeasured ? svgOnce(id + "-cmp-sm", 168, radar(cmpAxes, [{ name: r.name, cls: cmpCls, values: cmpValues }], { labels: "none", size: 168 }), r.name + " comparison thumbnail", cmpDesc, "eco-star") : "";
             const cmpStar = cmpMeasured ? svgOnce(id + "-cmp", 380, radar(cmpAxes, [{ name: r.name, cls: cmpCls, values: cmpValues }], { labels: "short", values: true, pad: 78, size: 380 }), r.name + " comparison star", cmpDesc, "eco-star") : "";
             function zoomChart(caption, thumb, full) {
-                return "<details class=\"eco-zoom\"><summary><span class=\"eco-zoom-shut\">" + thumb + "<span class=\"eco-thumb-cap\">" + caption + "</span></span><span class=\"eco-zoom-open\">Close chart</span></summary><div class=\"eco-zoom-body\">" + full + "</div></details>";
+                return "<details class=\"eco-zoom\"><summary><span class=\"eco-zoom-shut\">" + thumb + "<span class=\"eco-thumb-cap\">" + caption + "</span></span><span class=\"eco-zoom-open\">Close chart</span></summary><div class=\"eco-zoom-body\"><button type=\"button\" class=\"eco-zoom-x\">Close chart</button>" + full + "</div></details>";
             }
             const charts = "<div class=\"eco-card-charts\">" +
                 zoomChart("Assurance", radialThumb, radial) +
@@ -213,7 +213,7 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-caption: "Selecting an implementation in the charts above opens this card over the page. On a wide screen the card uses that width, and the face is three thumbnail charts in a row. Selecting a thumbnail opens that chart with its labels and values. A full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a or not measured. Dashed triangles on the health chart are the median. A hatched spoke is not measured, and it is not drawn as zero. When none of the five comparisons is measured, that chart is left off the card. The full list opens under Counts.",
+caption: "Selecting an implementation in the charts above opens this card over the page. On a wide screen the card uses that width, and the face is three thumbnail charts in a row. Selecting a thumbnail opens that chart with its labels and values. Close chart returns to the thumbnails. Close, or Escape once the thumbnails are showing, dismisses the card. A full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a or not measured. Dashed triangles on the health chart are the median. A hatched spoke is not measured, and it is not drawn as zero. When none of the five comparisons is measured, that chart is left off the card. The full list opens under Counts.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),
