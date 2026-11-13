@@ -227,7 +227,7 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-caption: "Selecting an implementation opens it full screen. One opens at a time. A Compare menu in the top right adds another implementation beside it. On a wide screen the three charts are shown large, side by side when the card is wide enough, and Counts is open. On a narrow screen the open card stacks those charts. Choosing a second implementation draws one comparison star and one code-health star for the two of them. A measure that is the same is labeled once. On a narrow screen the numbers sit under the star. The layer diagram and the proof counts open only on BLVM. Close chart returns to the thumbnails. Close and Escape dismiss the card and leave the page where it was. A full wedge is yes, a half wedge partial, an empty wedge not found, a hatched wedge n/a or not measured. Dashed triangles on the health chart are the median. A hatched spoke is not measured, and it is not drawn as zero. When none of the five comparisons is measured, that chart is left off the card. The full list opens under Counts.",
+            caption: "A hatched spoke is not measured, and it is not drawn as zero. When none of the five comparisons is measured, that chart is left off the card.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),
