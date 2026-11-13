@@ -251,13 +251,12 @@ export default {
                 pickBits +
                 "<h3 id=\"" + id + "-h\">" + esc(r.name) + "</h3>" +
                 "<div class=\"eco-sheet\">" +
-                charts +
                 "<div class=\"eco-sheet-main\">" +
                 emblem +
-                releaseBadge +
-                badgeRow +
+                "<div class=\"eco-meta\">" + releaseBadge + badgeRow + "</div>" +
                 profile +
-                stabMeter(r.stability) +
+                "</div>" +
+                charts +
                 fold("eco-onchart-fold", "On the charts",
                     liveGroup("Code", [
                         liveFact("Program", counted(tree, "program_code")),
@@ -271,6 +270,7 @@ export default {
                         liveFact("Releases", metricText(r.metrics, "releases_12m")),
                         liveFact("Fuzz targets", fuzzText)
                     ])) +
+                stabMeter(r.stability) +
                 fold("eco-rest", "Not on the charts",
                     liveGroup("Code", [
                         liveFact("Implementation", counted(tree, "implementation_code")),
@@ -283,14 +283,14 @@ export default {
                         liveFact("Independent", metricText(r.metrics, "plugin_independent"))
                     ]) +
                     liveGroup("Last 12 months", [liveFact("CI jobs", metricText(r.metrics, "ci_jobs"))])) +
-                "</div></div>" +
+                "</div>" +
                 "</article>";
         }).join("");
         return figure({
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-            caption: "Selecting a chart opens it with its labels and values. Language, license, and age, when this page states them, are badges on the card. A hatched spoke is not measured, and it is not drawn as zero. A count that is not measured is left off the card. When none of the five comparisons is measured, that chart is left off the card.",
+            caption: "The card leads with the rank, the release, and the three scores, then the charts. Selecting a chart opens it with its labels and values. Language, license, and age, when this page states them, are badges on the card. A hatched spoke is not measured, and it is not drawn as zero. A count that is not measured is left off the card. When none of the five comparisons is measured, that chart is left off the card.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),

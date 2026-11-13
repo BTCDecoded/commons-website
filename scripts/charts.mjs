@@ -728,15 +728,17 @@ export function radar(axes, series, opts) {
         var narrowLab = width < 500 && lab === "full";
         if (narrowLab) pad = Math.max(pad, 58);
         var R = (size - 2 * pad) / 2, cx = width / 2, cy = pad + R + (lab === "none" ? 0 : 8);
+        var half = Math.min(4.5, R * 0.12), scale = half / 4.5, dotR = 3.2 * scale, box = 3.5 * scale;
+        var gridAttr = scale < 1 ? " style=\"stroke-width:" + fmt(scale) + "\"" : "";
         var hid = (uid || "ch") + "-hatch", pid = (uid || "ch") + "-pend";
         var out = "<defs>" + hatchDef(hid, "") + hatchDef(pid, "ch-pend") + "</defs>";
         [0.25, 0.5, 0.75, 1].forEach(function (f) {
             var pts = axes.map(function (a, i) { var p = polar(cx, cy, R * f, -90 + i * step); return fmt(p[0]) + "," + fmt(p[1]); }).join(" ");
-            out += "<polygon points=\"" + pts + "\" class=\"ch-rgrid" + (f === 1 ? " ch-rgrid-o" : "") + "\"/>";
+            out += "<polygon points=\"" + pts + "\" class=\"ch-rgrid" + (f === 1 ? " ch-rgrid-o" : "") + "\"" + gridAttr + "/>";
         });
         axes.forEach(function (a, i) {
             var p = polar(cx, cy, R, -90 + i * step);
-            out += "<line x1=\"" + fmt(cx) + "\" y1=\"" + fmt(cy) + "\" x2=\"" + fmt(p[0]) + "\" y2=\"" + fmt(p[1]) + "\" class=\"ch-rgrid\"/>";
+            out += "<line x1=\"" + fmt(cx) + "\" y1=\"" + fmt(cy) + "\" x2=\"" + fmt(p[0]) + "\" y2=\"" + fmt(p[1]) + "\" class=\"ch-rgrid\"" + gridAttr + "/>";
         });
         // Hatched wedges where an axis is pending for everyone, or missing for
         // the (single) series drawn.
@@ -765,14 +767,18 @@ export function radar(axes, series, opts) {
                 var q = pts[(i + 1) % n];
                 if (p && q) line += "M" + fmt(p[0]) + " " + fmt(p[1]) + " L" + fmt(q[0]) + " " + fmt(q[1]) + " ";
             });
-            if (line) out += "<path d=\"" + line + "\" class=\"ch-rline ch-r-" + (sr.cls || "all") + "\"/>";
-            var half = Math.min(4.5, R * 0.12), up = half, down = half * 3.5 / 4.5;
-            var outline = half < 4.5 ? " style=\"stroke-width:" + fmt(half / 4.5) + "\"" : "";
+            var lineAttr = "";
+            if (scale < 1) {
+                lineAttr = " style=\"stroke-width:" + fmt(2 * scale) + (sr.cls === "median" ? ";stroke-dasharray:" + fmt(5 * scale) + " " + fmt(4 * scale) : "") + "\"";
+            }
+            if (line) out += "<path d=\"" + line + "\" class=\"ch-rline ch-r-" + (sr.cls || "all") + "\"" + lineAttr + "/>";
+            var up = half, down = half * 3.5 / 4.5;
+            var outline = scale < 1 ? " style=\"stroke-width:" + fmt(scale) + "\"" : "";
             pts.forEach(function (p) {
                 if (!p) return;
-                if (sr.cls === "core") out += "<rect x=\"" + fmt(p[0] - 3.5) + "\" y=\"" + fmt(p[1] - 3.5) + "\" width=\"7\" height=\"7\" class=\"ch-rdot ch-r-core\"/>";
+                if (sr.cls === "core") out += "<rect x=\"" + fmt(p[0] - box) + "\" y=\"" + fmt(p[1] - box) + "\" width=\"" + fmt(box * 2) + "\" height=\"" + fmt(box * 2) + "\" class=\"ch-rdot ch-r-core\"" + outline + "/>";
                 else if (sr.cls === "median") out += "<path d=\"M" + fmt(p[0]) + " " + fmt(p[1] - up) + " L" + fmt(p[0] + half) + " " + fmt(p[1] + down) + " L" + fmt(p[0] - half) + " " + fmt(p[1] + down) + " Z\" class=\"ch-rdot ch-r-median\"" + outline + "/>";
-                else out += "<circle cx=\"" + fmt(p[0]) + "\" cy=\"" + fmt(p[1]) + "\" r=\"3.2\" class=\"ch-rdot ch-r-" + (sr.cls || "all") + "\"/>";
+                else out += "<circle cx=\"" + fmt(p[0]) + "\" cy=\"" + fmt(p[1]) + "\" r=\"" + fmt(dotR) + "\" class=\"ch-rdot ch-r-" + (sr.cls || "all") + "\"" + outline + "/>";
             });
         });
         if (lab !== "none") {
@@ -810,10 +816,15 @@ export function assuranceRadial(cells, opts) {
         var labelRoom = opts.labels === "none" ? 8 : (opts.labelSize ? opts.labelSize * 2.6 : 34);
         var R = size / 2 - labelRoom, cx = width / 2, cy = size / 2, r0 = R * 0.3;
         var hid = (uid || "ch") + "-hatch", out = "<defs>" + hatchDef(hid, "") + "</defs>";
+        var stroke = size < 80 ? "stroke-width:" + fmt(Math.max(0.45, size / 90)) : "";
         var glyph = { "yes": "\u25CF", "partial": "\u25D0", "not found": "\u25CB", "n/a": "\u2013" };
         cells.forEach(function (c, i) {
             var a0 = -90 + i * step - step / 2 + 2, a1 = a0 + step - 4, mid = -90 + i * step;
-            out += "<path d=\"" + sector(cx, cy, r0, R, a0, a1) + "\" class=\"ch-wtrack" + (c.points === null ? " ch-wtrack-na\" style=\"fill:url(#" + hid + ")\"" : "\"") + "/>";
+            var bits = [];
+            if (c.points === null) bits.push("fill:url(#" + hid + ")");
+            if (stroke) bits.push(stroke);
+            var style = bits.length ? " style=\"" + bits.join(";") + "\"" : "";
+            out += "<path d=\"" + sector(cx, cy, r0, R, a0, a1) + "\" class=\"ch-wtrack" + (c.points === null ? " ch-wtrack-na" : "") + "\"" + style + "/>";
             if (c.points) out += "<path d=\"" + sector(cx, cy, r0, r0 + (R - r0) * c.points / 2, a0, a1) + "\" class=\"ch-wfill" + (c.points === 1 ? " ch-wfill-p" : "") + (opts.cls ? " ch-w-" + opts.cls : "") + "\"/>";
             if (opts.labels !== "none") {
                 var g = polar(cx, cy, R + 14, mid), cc = Math.cos(mid * Math.PI / 180);
