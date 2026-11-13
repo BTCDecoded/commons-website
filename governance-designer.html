@@ -96,17 +96,29 @@
       }
       .template-card {
         background-color: var(--bg-primary) !important;
-        border: 1.5px dotted var(--orange) !important;
+        border: 1.5px solid #3a3a42 !important;
         border-radius: 8px !important;
         padding: 1.25rem 1.35rem 1.35rem !important;
         text-align: left !important;
       }
+      .template-card.is-commons { border: 1.5px dotted var(--orange) !important; }
       .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
       .tpl-key { list-style: none; padding: 0; margin: 0 auto 1.25rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.55rem 1.25rem; max-width: 44rem; }
       .tpl-key li { display: flex; align-items: center; gap: 0.45rem; color: var(--text-secondary); font-size: 0.9rem; }
       .tpl-note { max-width: 42rem; margin: 0 auto 1.5rem; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; }
       .tpl-head { display: flex; align-items: center; gap: 0.55rem; margin-bottom: 0.65rem; }
       .tpl-gov { display: inline-flex; color: var(--orange); }
+      .tpl-gov-single { color: #c4c4cc; }
+      .tpl-gov-group { color: #56B4E9; }
+      .tpl-gov-foundation { color: #F0E442; }
+      .tpl-pips { list-style: none; display: flex; gap: 0.35rem; padding: 0; margin: 0 0 0.85rem; }
+      .tpl-pips li { flex: 1; min-width: 0; text-align: center; font-size: 0.62rem; letter-spacing: 0.03em; text-transform: uppercase; color: #8d8d96; }
+      .tpl-pips i { display: block; height: 8px; border-radius: 2px; border: 1.5px solid #4a4a52; margin-bottom: 0.25rem; }
+      .tpl-pips .is-on { color: #eee; }
+      .tpl-pips .is-on i { background: var(--orange); border-color: var(--orange); }
+      .tpl-pip { display: inline-block; width: 1.4rem; height: 8px; border-radius: 2px; vertical-align: middle; }
+      .tpl-pip-on { background: var(--orange); }
+      .tpl-pip-off { border: 1.5px solid #4a4a52; }
       .tpl-gov svg { display: block; }
       .tpl-count { display: inline-flex; align-items: center; justify-content: center; min-width: 1.4rem; height: 1.15rem; color: var(--text-primary, #fff); font-weight: 600; font-size: 0.85rem; }
       .tpl-ring { display: inline-block; width: 2.6rem; height: 1.15rem; border: 1.5px dotted var(--orange); border-radius: 4px; }
@@ -268,8 +280,8 @@
             <div class="marketplace-header">
               <h3>Governance Fork Marketplace</h3>
               <p>
-                Four starter templates from the governance file. Not a census
-                of community forks, and not adoption data.
+                Starter templates. Not a census of community forks, and not
+                adoption data.
               </p>
             </div>
 
@@ -308,25 +320,31 @@
             <div class="templates-header">
               <h3>Start from a Template</h3>
               <p>
-                Four starter rulesets. The marks match the ecosystem page.
-                One click loads the pairs into the custom form.
+                Starter rulesets. The marks match the ecosystem page.
+                One click loads the choices into the custom form.
               </p>
             </div>
             <ul class="tpl-key" aria-label="Template key">
+              <li><span class="tpl-gov tpl-gov-single" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="3.2"/></svg></span> one author</li>
+              <li><span class="tpl-gov tpl-gov-group" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="2.6" cy="8.2" r="2"/><circle cx="7" cy="4.6" r="2"/><circle cx="11.4" cy="8.2" r="2"/></svg></span> maintainer group</li>
+              <li><span class="tpl-gov tpl-gov-foundation" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="4.2" cy="7" r="2.1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6.2 7 H12.2 M9.4 7 V5.2 M11.4 7 V5.6" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></span> foundation, one signing key</li>
               <li><span class="tpl-gov" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M1.5 3.2 H12.5 M1.5 7 H12.5 M1.5 10.8 H8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span> Commons governance</li>
               <li><span class="tpl-count" aria-hidden="true">7</span> stated maintainer count</li>
               <li><span class="tpl-ring" aria-hidden="true"></span> using Commons</li>
+              <li><span class="tpl-pip tpl-pip-on" aria-hidden="true"></span> on</li>
+              <li><span class="tpl-pip tpl-pip-off" aria-hidden="true"></span> not used</li>
             </ul>
-            <p class="tpl-note">Each card states who signs, the written pairs, the emergency path, teams, removal, appeal, the governance-node quorum, public comment, and that enforcement is not on. The economic contribution minimums are a choice in the form. None of these four uses them. The six measures on the <a href="ecosystem.html#forms">ecosystem forms</a> are judgments of a form. These cards do not score them. The bar is this template's longest review, beside 365 days.</p>
+            <p class="tpl-note">The five pips are teams, removal, a governance-node quorum, public comment, and the economic gate. A filled pip is on for that template. The dotted outline is using Commons. One author, a foundation key, and a formal board do not use it. Bounded commons is the one template that turns the designer's contribution minimums on. None of these is a measurement of a project on the ecosystem page. Enforcement is not on. The six measures on the <a href="ecosystem.html#forms">ecosystem forms</a> are judgments of a form. These cards do not score them. The bar is this template's longest review, beside 365 days.</p>
 
             <div class="template-grid">
-              <div class="template-card" data-template="conservative">
+              <div class="template-card is-commons" data-template="conservative">
                 <div class="tpl-head">
-                  <span class="tpl-gov" title="Commons governance"><span class="visually-hidden">Commons governance. </span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 3.2 H12.5 M1.5 7 H12.5 M1.5 10.8 H8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span>
+                  <span class="tpl-gov tpl-gov-commons" title="Commons governance"><span class="visually-hidden">Commons governance. </span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 3.2 H12.5 M1.5 7 H12.5 M1.5 10.8 H8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span>
                   <span class="tpl-count" title="stated maintainer count">7</span>
                 </div>
                 <h4>Conservative</h4>
                 <p>Higher signatures and a longer wait before a change stands.</p>
+                <ul class="tpl-pips" aria-label="On this template"><li class="is-on"><i></i><span>Teams</span></li><li class="is-on"><i></i><span>Removal</span></li><li class="is-on"><i></i><span>Quorum</span></li><li class="is-on"><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
                 <dl class="tpl-facets">
                   <div><dt>Who</dt><dd>Commons governance, 7 maintainers</dd></div>
                   <div><dt>Routine</dt><dd>4 of 5, 14 days</dd></div>
@@ -345,13 +363,14 @@
                 <button class="btn btn-primary template-fork-btn">Fork This Template</button>
               </div>
 
-              <div class="template-card" data-template="balanced">
+              <div class="template-card is-commons" data-template="balanced">
                 <div class="tpl-head">
-                  <span class="tpl-gov" title="Commons governance"><span class="visually-hidden">Commons governance. </span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 3.2 H12.5 M1.5 7 H12.5 M1.5 10.8 H8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span>
+                  <span class="tpl-gov tpl-gov-commons" title="Commons governance"><span class="visually-hidden">Commons governance. </span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 3.2 H12.5 M1.5 7 H12.5 M1.5 10.8 H8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span>
                   <span class="tpl-count" title="stated maintainer count">5</span>
                 </div>
                 <h4>Balanced (Default)</h4>
                 <p>The designer's default pairs. Not the repository layer table.</p>
+                <ul class="tpl-pips" aria-label="On this template"><li class="is-on"><i></i><span>Teams</span></li><li class="is-on"><i></i><span>Removal</span></li><li class="is-on"><i></i><span>Quorum</span></li><li class="is-on"><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
                 <dl class="tpl-facets">
                   <div><dt>Who</dt><dd>Commons governance, 5 maintainers</dd></div>
                   <div><dt>Routine</dt><dd>3 of 5, 7 days</dd></div>
@@ -370,13 +389,14 @@
                 <button class="btn btn-primary template-fork-btn">Fork This Template</button>
               </div>
 
-              <div class="template-card" data-template="agile">
+              <div class="template-card is-commons" data-template="agile">
                 <div class="tpl-head">
-                  <span class="tpl-gov" title="Commons governance"><span class="visually-hidden">Commons governance. </span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 3.2 H12.5 M1.5 7 H12.5 M1.5 10.8 H8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span>
+                  <span class="tpl-gov tpl-gov-commons" title="Commons governance"><span class="visually-hidden">Commons governance. </span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 3.2 H12.5 M1.5 7 H12.5 M1.5 10.8 H8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span>
                   <span class="tpl-count" title="stated maintainer count">5</span>
                 </div>
                 <h4>Agile</h4>
                 <p>Lower signatures and a shorter wait. The emergency path is 3 of 5.</p>
+                <ul class="tpl-pips" aria-label="On this template"><li><i></i><span>Teams</span></li><li class="is-on"><i></i><span>Removal</span></li><li><i></i><span>Quorum</span></li><li><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
                 <dl class="tpl-facets">
                   <div><dt>Who</dt><dd>Commons governance, 5 maintainers</dd></div>
                   <div><dt>Routine</dt><dd>2 of 3, 3 days</dd></div>
@@ -395,13 +415,14 @@
                 <button class="btn btn-primary template-fork-btn">Fork This Template</button>
               </div>
 
-              <div class="template-card" data-template="community">
+              <div class="template-card is-commons" data-template="community">
                 <div class="tpl-head">
-                  <span class="tpl-gov" title="Commons governance"><span class="visually-hidden">Commons governance. </span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 3.2 H12.5 M1.5 7 H12.5 M1.5 10.8 H8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span>
+                  <span class="tpl-gov tpl-gov-commons" title="Commons governance"><span class="visually-hidden">Commons governance. </span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 3.2 H12.5 M1.5 7 H12.5 M1.5 10.8 H8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span>
                   <span class="tpl-count" title="stated maintainer count">5</span>
                 </div>
                 <h4>Community-Driven</h4>
                 <p>The registry's stated difference is maintainer review and discussion people can see. The pairs match the default.</p>
+                <ul class="tpl-pips" aria-label="On this template"><li><i></i><span>Teams</span></li><li class="is-on"><i></i><span>Removal</span></li><li class="is-on"><i></i><span>Quorum</span></li><li class="is-on"><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
                 <dl class="tpl-facets">
                   <div><dt>Who</dt><dd>Commons governance, 5 maintainers</dd></div>
                   <div><dt>Routine</dt><dd>3 of 5, 7 days</dd></div>
@@ -415,6 +436,137 @@
                   <div><dt>Quorum</dt><dd>2 of 3, when enforcement is on</dd></div>
                   <div><dt>Public comment</dt><dd>30 days</dd></div>
                   <div><dt>Discussion</dt><dd>Maintainer review, visible to the community</dd></div>
+                  <div><dt>Enforcement</dt><dd>Not on. A template is not a live gate.</dd></div>
+                </dl>
+                <div class="tpl-meter"><span>Longest review</span><span class="tpl-bar" aria-hidden="true"><i style="width:49%"></i></span><b>180 days</b></div>
+                <button class="btn btn-primary template-fork-btn">Fork This Template</button>
+              </div>
+
+              <div class="template-card" data-template="one-author">
+                <div class="tpl-head">
+                  <span class="tpl-gov tpl-gov-single" title="One author"><span class="visually-hidden">One author. </span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="3.2"/></svg></span>
+                  <span class="tpl-count" title="stated maintainer count">1</span>
+                </div>
+                <h4>One author</h4>
+                <p>One key signs every tier. There is no second key for removal. The form's shortest wait on a consensus-adjacent change is 30 days, and on a rule change is 90.</p>
+                <ul class="tpl-pips" aria-label="On this template"><li><i></i><span>Teams</span></li><li><i></i><span>Removal</span></li><li><i></i><span>Quorum</span></li><li><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
+                <dl class="tpl-facets">
+                  <div><dt>Who</dt><dd>One author, 1 key</dd></div>
+                  <div><dt>Routine</dt><dd>1 of 1, 1 day</dd></div>
+                  <div><dt>Feature</dt><dd>1 of 1, 7 days</dd></div>
+                  <div><dt>Consensus-adjacent</dt><dd>1 of 1, 30 days</dd></div>
+                  <div><dt>Emergency</dt><dd>1 of 1, no review wait</dd></div>
+                  <div><dt>Changing the rules</dt><dd>1 of 1, 90 days</dd></div>
+                  <div><dt>Teams</dt><dd>Not used</dd></div>
+                  <div><dt>Removal</dt><dd>Not used</dd></div>
+                  <div><dt>Appeal</dt><dd>30 days, the form's minimum</dd></div>
+                  <div><dt>Quorum</dt><dd>Not included</dd></div>
+                  <div><dt>Public comment</dt><dd>None</dd></div>
+                  <div><dt>Enforcement</dt><dd>Not on. A template is not a live gate.</dd></div>
+                </dl>
+                <div class="tpl-meter"><span>Longest review</span><span class="tpl-bar" aria-hidden="true"><i style="width:25%"></i></span><b>90 days</b></div>
+                <button class="btn btn-primary template-fork-btn">Fork This Template</button>
+              </div>
+
+              <div class="template-card" data-template="foundation-key">
+                <div class="tpl-head">
+                  <span class="tpl-gov tpl-gov-foundation" title="Foundation, one signing key"><span class="visually-hidden">Foundation, one signing key. </span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="4.2" cy="7" r="2.1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6.2 7 H12.2 M9.4 7 V5.2 M11.4 7 V5.6" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></span>
+                  <span class="tpl-count" title="stated maintainer count">1</span>
+                </div>
+                <h4>Foundation key</h4>
+                <p>One key signs routine work. A board of 5 signs consensus-adjacent changes and changes to the rules. Not a reading of any foundation on the ecosystem page.</p>
+                <ul class="tpl-pips" aria-label="On this template"><li><i></i><span>Teams</span></li><li class="is-on"><i></i><span>Removal</span></li><li><i></i><span>Quorum</span></li><li class="is-on"><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
+                <dl class="tpl-facets">
+                  <div><dt>Who</dt><dd>One signing key. A board of 5 for the rules</dd></div>
+                  <div><dt>Routine</dt><dd>1 of 1, 7 days</dd></div>
+                  <div><dt>Feature</dt><dd>1 of 1, 14 days</dd></div>
+                  <div><dt>Consensus-adjacent</dt><dd>3 of 5, 60 days</dd></div>
+                  <div><dt>Emergency</dt><dd>2 of 3, no review wait</dd></div>
+                  <div><dt>Changing the rules</dt><dd>3 of 5, 180 days</dd></div>
+                  <div><dt>Teams</dt><dd>Not used</dd></div>
+                  <div><dt>Removal</dt><dd>3 of 5</dd></div>
+                  <div><dt>Appeal</dt><dd>60 days</dd></div>
+                  <div><dt>Quorum</dt><dd>Not included</dd></div>
+                  <div><dt>Public comment</dt><dd>30 days</dd></div>
+                  <div><dt>Enforcement</dt><dd>Not on. A template is not a live gate.</dd></div>
+                </dl>
+                <div class="tpl-meter"><span>Longest review</span><span class="tpl-bar" aria-hidden="true"><i style="width:49%"></i></span><b>180 days</b></div>
+                <button class="btn btn-primary template-fork-btn">Fork This Template</button>
+              </div>
+
+              <div class="template-card" data-template="formal-board">
+                <div class="tpl-head">
+                  <span class="tpl-gov tpl-gov-group" title="Maintainer group"><span class="visually-hidden">Maintainer group. </span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="2.6" cy="8.2" r="2"/><circle cx="7" cy="4.6" r="2"/><circle cx="11.4" cy="8.2" r="2"/></svg></span>
+                  <span class="tpl-count" title="stated maintainer count">5</span>
+                </div>
+                <h4>Formal board</h4>
+                <p>A small group with written review and removal. No governance-node quorum, and no teams. The pairs match the default.</p>
+                <ul class="tpl-pips" aria-label="On this template"><li><i></i><span>Teams</span></li><li class="is-on"><i></i><span>Removal</span></li><li><i></i><span>Quorum</span></li><li class="is-on"><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
+                <dl class="tpl-facets">
+                  <div><dt>Who</dt><dd>Maintainer group, 5 maintainers</dd></div>
+                  <div><dt>Routine</dt><dd>3 of 5, 7 days</dd></div>
+                  <div><dt>Feature</dt><dd>4 of 5, 30 days</dd></div>
+                  <div><dt>Consensus-adjacent</dt><dd>5 of 5, 90 days</dd></div>
+                  <div><dt>Emergency</dt><dd>4 of 5, no review wait</dd></div>
+                  <div><dt>Changing the rules</dt><dd>5 of 5, 180 days</dd></div>
+                  <div><dt>Teams</dt><dd>Not used</dd></div>
+                  <div><dt>Removal</dt><dd>6 of 7</dd></div>
+                  <div><dt>Appeal</dt><dd>60 days</dd></div>
+                  <div><dt>Quorum</dt><dd>Not included</dd></div>
+                  <div><dt>Public comment</dt><dd>30 days</dd></div>
+                  <div><dt>Enforcement</dt><dd>Not on. A template is not a live gate.</dd></div>
+                </dl>
+                <div class="tpl-meter"><span>Longest review</span><span class="tpl-bar" aria-hidden="true"><i style="width:49%"></i></span><b>180 days</b></div>
+                <button class="btn btn-primary template-fork-btn">Fork This Template</button>
+              </div>
+
+              <div class="template-card is-commons" data-template="split-powers">
+                <div class="tpl-head">
+                  <span class="tpl-gov tpl-gov-commons" title="Commons governance"><span class="visually-hidden">Commons governance. </span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 3.2 H12.5 M1.5 7 H12.5 M1.5 10.8 H8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span>
+                  <span class="tpl-count" title="stated maintainer count">7</span>
+                </div>
+                <h4>Split powers</h4>
+                <p>Routine changes are fast. Changing the rules takes every maintainer and a year. Not the repository layer table.</p>
+                <ul class="tpl-pips" aria-label="On this template"><li class="is-on"><i></i><span>Teams</span></li><li class="is-on"><i></i><span>Removal</span></li><li class="is-on"><i></i><span>Quorum</span></li><li class="is-on"><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
+                <dl class="tpl-facets">
+                  <div><dt>Who</dt><dd>Commons governance, 7 maintainers</dd></div>
+                  <div><dt>Routine</dt><dd>2 of 3, 3 days</dd></div>
+                  <div><dt>Feature</dt><dd>3 of 5, 14 days</dd></div>
+                  <div><dt>Consensus-adjacent</dt><dd>6 of 7, 180 days</dd></div>
+                  <div><dt>Emergency</dt><dd>4 of 7, no review wait</dd></div>
+                  <div><dt>Changing the rules</dt><dd>7 of 7, 365 days</dd></div>
+                  <div><dt>Teams</dt><dd>6 of 7 inside and across</dd></div>
+                  <div><dt>Removal</dt><dd>7 of 7</dd></div>
+                  <div><dt>Appeal</dt><dd>90 days</dd></div>
+                  <div><dt>Quorum</dt><dd>2 of 3, when enforcement is on</dd></div>
+                  <div><dt>Public comment</dt><dd>30 days</dd></div>
+                  <div><dt>Enforcement</dt><dd>Not on. A template is not a live gate.</dd></div>
+                </dl>
+                <div class="tpl-meter"><span>Longest review</span><span class="tpl-bar" aria-hidden="true"><i style="width:100%"></i></span><b>365 days</b></div>
+                <button class="btn btn-primary template-fork-btn">Fork This Template</button>
+              </div>
+
+              <div class="template-card is-commons" data-template="bounded">
+                <div class="tpl-head">
+                  <span class="tpl-gov tpl-gov-commons" title="Commons governance"><span class="visually-hidden">Commons governance. </span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 3.2 H12.5 M1.5 7 H12.5 M1.5 10.8 H8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span>
+                  <span class="tpl-count" title="stated maintainer count">5</span>
+                </div>
+                <h4>Bounded commons</h4>
+                <p>The default pairs, plus the designer's contribution minimums. Teams, a quorum, and an appeal stay on. The minimums are the designer's, not a measured rule.</p>
+                <ul class="tpl-pips" aria-label="On this template"><li class="is-on"><i></i><span>Teams</span></li><li class="is-on"><i></i><span>Removal</span></li><li class="is-on"><i></i><span>Quorum</span></li><li class="is-on"><i></i><span>Comment</span></li><li class="is-on"><i></i><span>Gate</span></li></ul>
+                <dl class="tpl-facets">
+                  <div><dt>Who</dt><dd>Commons governance, 5 maintainers</dd></div>
+                  <div><dt>Routine</dt><dd>3 of 5, 7 days</dd></div>
+                  <div><dt>Feature</dt><dd>4 of 5, 30 days</dd></div>
+                  <div><dt>Consensus-adjacent</dt><dd>5 of 5, 90 days</dd></div>
+                  <div><dt>Emergency</dt><dd>4 of 5, no review wait</dd></div>
+                  <div><dt>Changing the rules</dt><dd>5 of 5, 180 days</dd></div>
+                  <div><dt>Teams</dt><dd>6 of 7 inside and across</dd></div>
+                  <div><dt>Removal</dt><dd>6 of 7</dd></div>
+                  <div><dt>Appeal</dt><dd>60 days</dd></div>
+                  <div><dt>Quorum</dt><dd>2 of 3, when enforcement is on</dd></div>
+                  <div><dt>Public comment</dt><dd>30 days</dd></div>
+                  <div><dt>Economic gate</dt><dd>Designer's minimums</dd></div>
                   <div><dt>Enforcement</dt><dd>Not on. A template is not a live gate.</dd></div>
                 </dl>
                 <div class="tpl-meter"><span>Longest review</span><span class="tpl-bar" aria-hidden="true"><i style="width:49%"></i></span><b>180 days</b></div>
@@ -488,6 +640,7 @@
                         <div class="parameter-control">
                           <label>Signature Threshold</label>
                           <select id="tier1-signatures" class="param-select">
+                            <option value="1-of-1">1-of-1</option>
                             <option value="2-of-3">2-of-3</option>
                             <option value="3-of-5" selected>
                               3-of-5 (Default)
@@ -514,6 +667,8 @@
                         <div class="parameter-control">
                           <label>Signature Threshold</label>
                           <select id="tier2-signatures" class="param-select">
+                            <option value="1-of-1">1-of-1</option>
+                            <option value="2-of-3">2-of-3</option>
                             <option value="3-of-5">3-of-5</option>
                             <option value="4-of-5" selected>
                               4-of-5 (Default)
@@ -539,6 +694,8 @@
                         <div class="parameter-control">
                           <label>Signature Threshold</label>
                           <select id="tier3-signatures" class="param-select">
+                            <option value="1-of-1">1-of-1</option>
+                            <option value="3-of-5">3-of-5</option>
                             <option value="4-of-5">4-of-5</option>
                             <option value="5-of-5" selected>
                               5-of-5 (Default)
@@ -564,6 +721,8 @@
                         <div class="parameter-control">
                           <label>Signature Threshold</label>
                           <select id="tier4-signatures" class="param-select">
+                            <option value="1-of-1">1-of-1</option>
+                            <option value="2-of-3">2-of-3</option>
                             <option value="3-of-5">3-of-5</option>
                             <option value="4-of-5" selected>
                               4-of-5 (Default)
@@ -590,6 +749,8 @@
                         <div class="parameter-control">
                           <label>Signature Threshold</label>
                           <select id="tier5-signatures" class="param-select">
+                            <option value="1-of-1">1-of-1</option>
+                            <option value="3-of-5">3-of-5</option>
                             <option value="5-of-5" selected>
                               5-of-5 (Default)
                             </option>
@@ -836,6 +997,8 @@
                             </option>
                             <option value="5-of-7">5-of-7</option>
                             <option value="7-of-7">7-of-7</option>
+                            <option value="3-of-5">3-of-5</option>
+                            <option value="off">Not used</option>
                           </select>
                         </div>
                       </div>
@@ -1889,6 +2052,82 @@ Loading preview...</pre
             comment: "30 days",
             review: { private: "4-of-7", public: "5-of-7", response: 30, resolution: 180 },
           },
+          "one-author": {
+            name: "One author",
+            tier1: { signatures: "1-of-1", review: 1 },
+            tier2: { signatures: "1-of-1", review: 7 },
+            tier3: { signatures: "1-of-1", review: 30 },
+            tier4: { signatures: "1-of-1", review: 0 },
+            tier5: { signatures: "1-of-1", review: 90 },
+            maintainers: 1,
+            teams: "Not used",
+            removal: "off",
+            appeal: 30,
+            quorum: "Not included",
+            comment: "None",
+            review: { private: "3-of-7", public: "4-of-7", response: 7, resolution: 90 },
+          },
+          "foundation-key": {
+            name: "Foundation key",
+            tier1: { signatures: "1-of-1", review: 7 },
+            tier2: { signatures: "1-of-1", review: 14 },
+            tier3: { signatures: "3-of-5", review: 60 },
+            tier4: { signatures: "2-of-3", review: 0 },
+            tier5: { signatures: "3-of-5", review: 180 },
+            maintainers: 1,
+            teams: "Not used",
+            removal: "3-of-5",
+            appeal: 60,
+            quorum: "Not included",
+            comment: "30 days",
+            review: { private: "3-of-7", public: "4-of-7", response: 30, resolution: 180 },
+          },
+          "formal-board": {
+            name: "Formal board",
+            tier1: { signatures: "3-of-5", review: 7 },
+            tier2: { signatures: "4-of-5", review: 30 },
+            tier3: { signatures: "5-of-5", review: 90 },
+            tier4: { signatures: "4-of-5", review: 0 },
+            tier5: { signatures: "5-of-5", review: 180 },
+            maintainers: 5,
+            teams: "Not used",
+            removal: "6-of-7",
+            appeal: 60,
+            quorum: "Not included",
+            comment: "30 days",
+            review: { private: "4-of-7", public: "5-of-7", response: 30, resolution: 180 },
+          },
+          "split-powers": {
+            name: "Split powers",
+            tier1: { signatures: "2-of-3", review: 3 },
+            tier2: { signatures: "3-of-5", review: 14 },
+            tier3: { signatures: "6-of-7", review: 180 },
+            tier4: { signatures: "4-of-7", review: 0 },
+            tier5: { signatures: "7-of-7", review: 365 },
+            maintainers: 7,
+            teams: "6 of 7 inside and across",
+            removal: "7-of-7",
+            appeal: 90,
+            quorum: "2 of 3, when enforcement is on",
+            comment: "30 days",
+            review: { private: "5-of-7", public: "6-of-7", response: 30, resolution: 365 },
+          },
+          bounded: {
+            name: "Bounded commons",
+            tier1: { signatures: "3-of-5", review: 7 },
+            tier2: { signatures: "4-of-5", review: 30 },
+            tier3: { signatures: "5-of-5", review: 90 },
+            tier4: { signatures: "4-of-5", review: 0 },
+            tier5: { signatures: "5-of-5", review: 180 },
+            maintainers: 5,
+            teams: "6 of 7 inside and across",
+            removal: "6-of-7",
+            appeal: 60,
+            quorum: "2 of 3, when enforcement is on",
+            comment: "30 days",
+            gate: "defaults",
+            review: { private: "4-of-7", public: "5-of-7", response: 30, resolution: 180 },
+          },
           default: {
             name: "BTCDecoded",
             tier1: { signatures: "3-of-5", review: 7 },
@@ -2131,7 +2370,7 @@ Loading preview...</pre
           }
           setVal("quorum-mode", template.quorum === "Not included" ? "off" : "2-of-3");
           setVal("public-comment", template.comment === "None" ? "0" : "30");
-          setVal("commons-gate", "off");
+          setVal("commons-gate", template.gate === "defaults" ? "defaults" : "off");
 
           // Set metadata
           document.getElementById("ruleset-name").value =
@@ -2401,20 +2640,40 @@ Loading preview...</pre
               return true;
             });
 
-            const preset = {
-              default: forkTemplates.default,
-              conservative: forkTemplates.conservative,
-              agile: forkTemplates.agile,
-              community: forkTemplates.community,
-            };
+            function presetRow(id, t) {
+              return {
+                id: id,
+                name: t.name,
+                description: t.name,
+                forked_from: "default",
+                created_by: "BTCDecoded",
+                verified: false,
+                tier1: t.tier1.signatures,
+                tier1_review: t.tier1.review,
+                tier2: t.tier2.signatures,
+                tier2_review: t.tier2.review,
+                tier3: t.tier3.signatures,
+                tier3_review: t.tier3.review,
+                teams: t.teams === "Not used" ? "not used" : "6 of 7",
+                removal: t.removal === "off" ? "not used" : t.removal,
+                appeal_days: t.appeal,
+                quorum: t.quorum === "Not included" ? "not included" : "2-of-3",
+                public_comment_days: t.comment === "None" ? 0 : 30,
+              };
+            }
             forkRegistry.forEach(function (fork) {
-              const t = preset[fork.id];
+              const t = forkTemplates[fork.id];
               if (!t) return;
               if (!fork.teams) fork.teams = t.teams === "Not used" ? "not used" : "6 of 7";
               if (!fork.removal) fork.removal = t.removal;
               if (fork.appeal_days == null) fork.appeal_days = t.appeal;
               if (!fork.quorum) fork.quorum = t.quorum === "Not included" ? "not included" : "2-of-3";
               if (fork.public_comment_days == null) fork.public_comment_days = t.comment === "None" ? 0 : 30;
+            });
+            Object.keys(forkTemplates).forEach(function (id) {
+              if (id === "default") return;
+              if (forkRegistry.some(function (fork) { return fork.id === id; })) return;
+              forkRegistry.push(presetRow(id, forkTemplates[id]));
             });
             console.log("Successfully loaded fork registry from site bundle");
             return forkRegistry;
@@ -2487,7 +2746,7 @@ Loading preview...</pre
                                 ${fork.tier2 ? `<span class="feature-tag">Tier 2: ${fork.tier2}</span>` : ""}
                                 ${fork.tier3 ? `<span class="feature-tag">Tier 3: ${fork.tier3}</span>` : ""}
                                 ${fork.teams ? `<span class="feature-tag">Teams: ${fork.teams}</span>` : ""}
-                                ${fork.removal ? `<span class="feature-tag">Removal: ${fork.removal}</span>` : ""}
+                                ${fork.removal ? `<span class="feature-tag">Removal: ${fork.removal === "off" ? "not used" : fork.removal}</span>` : ""}
                                 ${fork.quorum ? `<span class="feature-tag">Quorum: ${fork.quorum}</span>` : ""}
                                 ${fork.public_comment_days === 0 ? `<span class="feature-tag">Public comment: none</span>` : fork.public_comment_days ? `<span class="feature-tag">Public comment: ${fork.public_comment_days} days</span>` : ""}
                             </div>
@@ -2616,7 +2875,7 @@ Loading preview...</pre
             el.dispatchEvent(new Event("change", { bubbles: true }));
           };
           if (fork.teams) setFork("teams-mode", fork.teams === "not used" ? "off" : "6-of-7");
-          if (fork.removal) setFork("review-removal", fork.removal);
+          if (fork.removal) setFork("review-removal", fork.removal === "not used" ? "off" : fork.removal);
           if (fork.appeal_days != null) setFork("review-appeal-deadline", fork.appeal_days);
           if (fork.quorum) setFork("quorum-mode", fork.quorum === "not included" ? "off" : "2-of-3");
           if (fork.public_comment_days != null) setFork("public-comment", fork.public_comment_days);
