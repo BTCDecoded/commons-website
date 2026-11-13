@@ -2401,6 +2401,21 @@ Loading preview...</pre
               return true;
             });
 
+            const preset = {
+              default: forkTemplates.default,
+              conservative: forkTemplates.conservative,
+              agile: forkTemplates.agile,
+              community: forkTemplates.community,
+            };
+            forkRegistry.forEach(function (fork) {
+              const t = preset[fork.id];
+              if (!t) return;
+              if (!fork.teams) fork.teams = t.teams === "Not used" ? "not used" : "6 of 7";
+              if (!fork.removal) fork.removal = t.removal;
+              if (fork.appeal_days == null) fork.appeal_days = t.appeal;
+              if (!fork.quorum) fork.quorum = t.quorum === "Not included" ? "not included" : "2-of-3";
+              if (fork.public_comment_days == null) fork.public_comment_days = t.comment === "None" ? 0 : 30;
+            });
             console.log("Successfully loaded fork registry from site bundle");
             return forkRegistry;
           } catch (error) {
@@ -2421,6 +2436,11 @@ Loading preview...</pre
             tier2_review: forkTemplates[id].tier2.review,
             tier3: forkTemplates[id].tier3.signatures,
             tier3_review: forkTemplates[id].tier3.review,
+            teams: forkTemplates[id].teams === "Not used" ? "not used" : "6 of 7",
+            removal: forkTemplates[id].removal,
+            appeal_days: forkTemplates[id].appeal,
+            quorum: forkTemplates[id].quorum === "Not included" ? "not included" : "2-of-3",
+            public_comment_days: forkTemplates[id].comment === "None" ? 0 : 30,
             description: forkTemplates[id].name,
           }));
         }
