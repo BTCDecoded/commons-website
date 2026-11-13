@@ -286,7 +286,7 @@ slots.institution = landingOrder.map(function (slug) {
 
 const blvmLand = bySlug[internal];
 const written = data.written_rule;
-slots["inst-lead"] = esc((blvmLand ? blvmLand.name + ": " + blvmLand.who + ". " : "") + (written ? "The written rule is " + written.text + ". " : "") + (gov.status || ""));
+slots["inst-lead"] = esc(((blvmLand ? blvmLand.name + ": " + blvmLand.who + ". " : "") + (written ? "The written rule is " + written.text + ". " : "") + (gov.status || "")).trim());
 slots["gov-quorum"] = esc(gov.quorum || "");
 slots["layer-note"] = esc(gov.layer_note || "");
 slots.layers = (gov.layers || []).map(function (layer) {

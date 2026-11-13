@@ -15,7 +15,7 @@
     "Rules share uses three different cuts. Those percentages are not comparable across cuts. Several rules-share cells are not measured, including BLVM's.",
     "Size and composition tables cover nine trees. Floresta, rbitcoin, and btcd appear in the other tables but have no size row.",
     "Some checkouts are shallow. Process figures for Bitcoin Core come from cited research reports and are not scored this week for the H2–H6 rows.",
-    "The implementation is called BLVM. \"Bitcoin Commons\" names the written governance rules, which are in Phase 1: enforcement is off and the keys are test keys.",
+    "The implementation is called BLVM. \"Bitcoin Commons\" names the written governance rules.",
     "No chart or caption on this page claims a full-chain differential result."
   ],
   "groups": [
@@ -120,9 +120,9 @@
           "name": "Written rules published by Bitcoin Commons",
           "field": "implementations.json` `written_rule`, `governance.status`, `governance.quorum`, `governance.layers",
           "what": "Written rules for how node software changes, published by Bitcoin Commons: signatures by repository layer, review periods, and a governance-node quorum.",
-          "why": "They make the change process visible and, when enforcement is on, binding.",
+          "why": "They make the change process visible.",
           "how_omitted": "contains figures; the page shows them from data",
-          "caveats": "BLVM is the only implementation here that uses these rules, and enforcement is not on yet. A commit currently stands when one author lands it. This page does not score a future \"on activation\" projection.",
+          "caveats": "BLVM is the only implementation here that uses these rules. This page does not score a future projection.",
           "link": "#institution"
         },
         {

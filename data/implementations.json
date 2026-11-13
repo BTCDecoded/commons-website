@@ -1387,8 +1387,8 @@
     "text": "6 of 7 signatures, 180-day review, 365-day consensus review"
   },
   "governance": {
-    "status": "Phase 1 is current. Enforcement is off and the keys are test keys. The signature counts are the written rule.",
-    "quorum": "When enforcement is on, two of three governance nodes in a written set must each conclude that an action conforms before that action stands. Anyone may run a node and publish a conclusion. Only the written set binds. Changing that set is a Tier 5 governance-rule change. The two written Tier 5 pairs both remain.",
+    "status": "",
+    "quorum": "Two of three governance nodes in a written set must each conclude that an action conforms before that action stands. Anyone may run a node and publish a conclusion. Only the written set binds. Changing that set is a Tier 5 governance-rule change. The two written Tier 5 pairs both remain.",
     "source": "governance/config/repository-layers.yml",
     "layers": [
       {
@@ -1565,7 +1565,7 @@
       {
         "slug": "blvm",
         "name": "BLVM",
-        "text": "One author wrote 825 of 854 commits in blvm-node, all 141 commits in the blvm checkout, 231 of 296 in blvm-consensus, 165 of 167 in the governance repository, and 34 of 55 in blvm-spec. The layer table is the written rule. Enforcement is off, so that quorum is the rule on paper and the history is one writer.",
+        "text": "One author wrote 825 of 854 commits in blvm-node, all 141 commits in the blvm checkout, 231 of 296 in blvm-consensus, 165 of 167 in the governance repository, and 34 of 55 in blvm-spec. The layer table is the written rule.",
         "basis": "git log. blvm-node is a complete history from 2025-10-19 to 2026-11-11. The blvm-consensus count treats an author's personal address and its GitHub noreply alias as one person. The other checkouts are shallow and begin in 2026."
       },
       {
@@ -1697,7 +1697,7 @@
         "items": [
           {
             "name": "BLVM",
-            "text": "The design states a consequence. A non-conforming action is reversed when two of three governance nodes in a written set agree. Anyone may run a node and publish a conclusion. Only the written set binds. That consequence is Designed. It is not Running. Enforcement is off and the keys are test keys, so a commit stands when one author lands it."
+            "text": "The written rule states a consequence. A non-conforming action is reversed when two of three governance nodes in a written set agree. Anyone may run a node and publish a conclusion. Only the written set binds."
           },
           {
             "name": "Bitcoin Core",
@@ -1789,7 +1789,7 @@
         "items": [
           {
             "name": "BLVM",
-            "text": "The layer chart writes 14, 60, 90, 180, and 365 day periods. Those clocks are the written rule. They are not the time a commit waits today, because enforcement is off."
+            "text": "The layer chart writes 14, 60, 90, 180, and 365 day periods. Those clocks are the written rule."
           },
           {
             "name": "Bitcoin Core",
@@ -1823,8 +1823,8 @@
       {
         "slug": "blvm",
         "label": "Commons governance",
-        "detail": "Written rule. Enforcement is off (Phase 1).",
-        "basis": "governance.status and written_rule: 6 of 7 signatures on the spec layer, enforcement off, test keys. landing: one author, 825 of 854 blvm-node commits."
+        "detail": "Written rule.",
+        "basis": "written_rule: 6 of 7 signatures on the spec layer. landing: one author, 825 of 854 blvm-node commits."
       },
       {
         "slug": "bitcoin-core",
