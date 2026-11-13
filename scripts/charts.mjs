@@ -61,13 +61,24 @@ export function releaseBody(id) {
 export function releaseMark(id) {
     return "<svg class=\"eco-relmark\" width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" aria-hidden=\"true\">" + releaseBody(id) + "</svg>";
 }
-// Three insignia, from how many assurance checks are marked yes.
-// n/a is not a check. Partial is not a yes. The percent is a different reading.
+// The emblem is the highest assurance check marked yes. Partial is not a yes.
+// n/a is not a check. The percent is a different reading.
+var ASSURANCE_RANKS = [
+    { id: "spec", check: "formal_spec", label: "Formal spec", why: "The formal spec is marked yes." },
+    { id: "proof", check: "formal_verification", label: "Formal proofs", why: "Formal verification is marked yes, and the formal spec is not." },
+    { id: "property", check: "property_tests", label: "Property tests", why: "Property tests are marked yes. Formal verification and the formal spec are not." },
+    { id: "diff", check: "differential", label: "Differential", why: "Differential testing is marked yes. Property tests, formal verification, and the formal spec are not." },
+    { id: "fuzz", check: "fuzzing", label: "Fuzzing", why: "Fuzzing is marked yes. Differential testing, property tests, formal verification, and the formal spec are not." },
+    { id: "vectors", check: "test_vectors", label: "Test vectors", why: "Test vectors are marked yes. Fuzzing, differential testing, property tests, formal verification, and the formal spec are not." }
+];
+var ASSURANCE_NONE = { id: "none", label: "Unmarked", why: "No assurance check is marked yes." };
 export function assuranceRank(assurance) {
-    var yes = assurance.cells.filter(function (c) { return c.status === "yes"; }).length;
-    if (yes >= 3) return { n: 3, label: "Three stars", why: "Three or more assurance checks are marked yes." };
-    if (yes >= 1) return { n: 2, label: "Two stars", why: "One or two assurance checks are marked yes." };
-    return { n: 1, label: "One star", why: "No assurance check is marked yes." };
+    var yes = {};
+    assurance.cells.forEach(function (c) { if (c.status === "yes") yes[c.id] = 1; });
+    for (var i = 0; i < ASSURANCE_RANKS.length; i++) {
+        if (yes[ASSURANCE_RANKS[i].check]) return ASSURANCE_RANKS[i];
+    }
+    return ASSURANCE_NONE;
 }
 function starPoints(cx, cy, r) {
     var pts = [], i, a, rr;
@@ -78,12 +89,30 @@ function starPoints(cx, cy, r) {
     }
     return pts.join(" ");
 }
-export function assuranceEmblem(n) {
-    if (n !== 1 && n !== 2 && n !== 3) throw new Error("assurance emblem: " + n);
-    var gap = 16, r = 7, body = "", i;
-    for (i = 0; i < n; i++) body += "<polygon points=\"" + starPoints(8 + i * gap, 9, r) + "\" class=\"eco-starfill\"/>";
-    var w = 8 + (n - 1) * gap + 8;
-    return "<svg class=\"eco-emblem-svg\" viewBox=\"0 0 " + w + " 18\" width=\"" + (w * 1.35) + "\" height=\"24\" aria-hidden=\"true\">" + body + "</svg>";
+function fuzzRays() {
+    var out = "", i, a, inner = 3.6, outer, c, s;
+    for (i = 0; i < 8; i++) {
+        a = -Math.PI / 2 + i * Math.PI / 4;
+        outer = i % 2 ? 7.4 : 9.4;
+        c = Math.cos(a);
+        s = Math.sin(a);
+        out += "<line x1=\"" + (12 + inner * c).toFixed(2) + "\" y1=\"" + (12 + inner * s).toFixed(2) + "\" x2=\"" + (12 + outer * c).toFixed(2) + "\" y2=\"" + (12 + outer * s).toFixed(2) + "\" class=\"eco-rank\"/>";
+    }
+    return out;
+}
+var RANK_ICON = {
+    none: "<circle cx=\"12\" cy=\"12\" r=\"7.2\" class=\"eco-rank\"/>",
+    vectors: "<rect x=\"6.2\" y=\"3.2\" width=\"11.6\" height=\"17.6\" rx=\"1.3\" class=\"eco-rank\"/><path d=\"M9 8.2 H15.2 M9 12 H15.2 M9 15.8 H13.2\" class=\"eco-rank\"/>",
+    fuzz: "<circle cx=\"12\" cy=\"12\" r=\"1.7\" class=\"eco-rank-fill\"/>" + fuzzRays(),
+    diff: "<circle cx=\"9\" cy=\"12\" r=\"5.2\" class=\"eco-rank\"/><circle cx=\"15\" cy=\"12\" r=\"5.2\" class=\"eco-rank\"/>",
+    property: "<path d=\"M16.8 8.4 A6.2 6.2 0 1 0 16.4 15.6\" class=\"eco-rank\"/><path d=\"M16.4 15.6 L12.8 14.2 L15.2 18.4 Z\" class=\"eco-rank-fill\"/>",
+    proof: "<circle cx=\"12\" cy=\"12\" r=\"8\" class=\"eco-rank\"/><circle cx=\"12\" cy=\"12\" r=\"5.4\" class=\"eco-rank\"/><path d=\"M9 12.3 L11.1 14.5 L15.3 9.4\" class=\"eco-rank\"/>",
+    spec: "<polygon points=\"" + starPoints(12, 12, 8.4) + "\" class=\"eco-starfill\"/>"
+};
+export function assuranceEmblem(id) {
+    var body = RANK_ICON[id];
+    if (!body) throw new Error("assurance emblem: " + id);
+    return "<svg class=\"eco-emblem-svg\" viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" aria-hidden=\"true\">" + body + "</svg>";
 }
 export function esc(s) {
     return String(s).replace(/[&<>"]/g, function (c) {
