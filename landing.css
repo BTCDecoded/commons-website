@@ -80,7 +80,7 @@ nav {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: clamp(0.7rem, 1.1vw, 1.35rem);
   list-style: none;
 }
 
@@ -89,6 +89,7 @@ nav {
   color: var(--text-secondary);
   text-decoration: none;
   transition: color 0.15s;
+  white-space: nowrap;
 }
 
 .nav-links a:hover { color: var(--text); }
