@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-11-12",
+  "total_points": 30,
+  "note": "The article's nine forms, in the article's order. Each score is a judgment of a form, not a measurement of a tree. A higher total is not a rank of the implementations on this page. n/a: the article does not score a form it reads as unable to apply to Bitcoin.",
+  "source": {
+    "label": "Bitcoin Has Governance",
+    "href": "https://secsovereign.github.io/articles/bitcoin-has-governance/",
+    "generated": "spec-viz-project/src/data/generated/specViz.data.json"
+  },
+  "rows": [
+    {
+      "id": "direct-democracy",
+      "name": "Direct democracy",
+      "total": null,
+      "confidence": null,
+      "na_reason": "Not scored: the article reads this form as unable to apply to Bitcoin",
+      "reading": "Cannot apply. Participants are pseudonymous, and identities are free to create, so votes cannot be counted."
+    },
+    {
+      "id": "token-weighted-voting",
+      "name": "Token-weighted voting",
+      "total": null,
+      "confidence": null,
+      "na_reason": "Not scored: the article reads this form as unable to apply to Bitcoin",
+      "reading": "Cannot apply. Bitcoin has no governance token."
+    },
+    {
+      "id": "single-maintainer",
+      "name": "Single maintainer",
+      "total": 15,
+      "confidence": "low",
+      "reading": "Can apply, at a legitimacy cost. One obvious author and no written rule."
+    },
+    {
+      "id": "foundation-steward",
+      "name": "Foundation steward",
+      "total": 19,
+      "confidence": "low",
+      "reading": "Can apply, with legal exposure. A legal entity is one place a suit or a rule can land."
+    },
+    {
+      "id": "informal-oligarchy",
+      "name": "Informal oligarchy",
+      "total": 15,
+      "confidence": "medium",
+      "reading": "The current repository form in the article. A few people merge, chosen by pull request and a meeting, with no written rule for keys or review."
+    },
+    {
+      "id": "formal-oligarchy",
+      "name": "Formal oligarchy",
+      "total": 18,
+      "confidence": "low",
+      "reading": "The same small set, with published rules for selection, review, and removal."
+    },
+    {
+      "id": "elected-council",
+      "name": "Elected council",
+      "total": 19,
+      "confidence": "medium",
+      "reading": "Can apply, with limits. Bitcoin has no agreed electorate."
+    },
+    {
+      "id": "mixed-constitution",
+      "name": "Mixed constitution",
+      "total": 21,
+      "confidence": "low",
+      "reading": "Separate powers and written thresholds. Untested at Bitcoin's scale. The BLVM layer table is a written version of this shape. This page does not score that projection."
+    },
+    {
+      "id": "ostrom-commons",
+      "name": "Ostrom commons",
+      "total": 22,
+      "confidence": "low",
+      "reading": "Bounded membership, monitoring, and a cheap way to dispute. The cases behind the principles were small and local."
+    }
+  ]
+}
