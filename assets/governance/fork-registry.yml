@@ -34,6 +34,11 @@ forks:
     tier2_review: 30
     tier3: "5-of-5"
     tier3_review: 90
+    teams: "6 of 7"
+    removal: "6-of-7"
+    appeal_days: 60
+    quorum: "2-of-3"
+    public_comment_days: 30
     verified: true
     created_at: "2024-01-01"
     
@@ -50,6 +55,11 @@ forks:
     tier2_review: 60
     tier3: "6-of-7"
     tier3_review: 180
+    teams: "6 of 7"
+    removal: "7-of-7"
+    appeal_days: 90
+    quorum: "2-of-3"
+    public_comment_days: 30
     verified: false
     created_at: "2024-01-15"
     
@@ -66,6 +76,11 @@ forks:
     tier2_review: 14
     tier3: "4-of-5"
     tier3_review: 60
+    teams: "not used"
+    removal: "5-of-7"
+    appeal_days: 30
+    quorum: "not included"
+    public_comment_days: 0
     verified: false
     created_at: "2024-01-15"
     
@@ -82,5 +97,10 @@ forks:
     tier2_review: 30
     tier3: "5-of-5"
     tier3_review: 90
+    teams: "not used"
+    removal: "6-of-7"
+    appeal_days: 60
+    quorum: "2-of-3"
+    public_comment_days: 30
     verified: false
     created_at: "2024-01-15"

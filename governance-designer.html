@@ -317,7 +317,7 @@
               <li><span class="tpl-count" aria-hidden="true">7</span> stated maintainer count</li>
               <li><span class="tpl-ring" aria-hidden="true"></span> using Commons</li>
             </ul>
-            <p class="tpl-note">Each card states who signs, the written pairs, the emergency path, the longest review, and that enforcement is not on. The six measures on the <a href="ecosystem.html#forms">ecosystem forms</a> are judgments of a form. These cards do not score them. The bar is this template's longest review, beside 365 days.</p>
+            <p class="tpl-note">Each card states who signs, the written pairs, the emergency path, teams, removal, appeal, the governance-node quorum, public comment, and that enforcement is not on. The economic contribution minimums are a choice in the form. None of these four uses them. The six measures on the <a href="ecosystem.html#forms">ecosystem forms</a> are judgments of a form. These cards do not score them. The bar is this template's longest review, beside 365 days.</p>
 
             <div class="template-grid">
               <div class="template-card" data-template="conservative">
@@ -334,6 +334,11 @@
                   <div><dt>Consensus-adjacent</dt><dd>6 of 7, 180 days</dd></div>
                   <div><dt>Emergency</dt><dd>4 of 7, no review wait</dd></div>
                   <div><dt>Changing the rules</dt><dd>7 of 7, 365 days</dd></div>
+                  <div><dt>Teams</dt><dd>6 of 7 inside and across</dd></div>
+                  <div><dt>Removal</dt><dd>7 of 7</dd></div>
+                  <div><dt>Appeal</dt><dd>90 days</dd></div>
+                  <div><dt>Quorum</dt><dd>2 of 3, when enforcement is on</dd></div>
+                  <div><dt>Public comment</dt><dd>30 days</dd></div>
                   <div><dt>Enforcement</dt><dd>Not on. A template is not a live gate.</dd></div>
                 </dl>
                 <div class="tpl-meter"><span>Longest review</span><span class="tpl-bar" aria-hidden="true"><i style="width:100%"></i></span><b>365 days</b></div>
@@ -354,6 +359,11 @@
                   <div><dt>Consensus-adjacent</dt><dd>5 of 5, 90 days</dd></div>
                   <div><dt>Emergency</dt><dd>4 of 5, no review wait</dd></div>
                   <div><dt>Changing the rules</dt><dd>5 of 5, 180 days</dd></div>
+                  <div><dt>Teams</dt><dd>6 of 7 inside and across</dd></div>
+                  <div><dt>Removal</dt><dd>6 of 7</dd></div>
+                  <div><dt>Appeal</dt><dd>60 days</dd></div>
+                  <div><dt>Quorum</dt><dd>2 of 3, when enforcement is on</dd></div>
+                  <div><dt>Public comment</dt><dd>30 days</dd></div>
                   <div><dt>Enforcement</dt><dd>Not on. A template is not a live gate.</dd></div>
                 </dl>
                 <div class="tpl-meter"><span>Longest review</span><span class="tpl-bar" aria-hidden="true"><i style="width:49%"></i></span><b>180 days</b></div>
@@ -374,6 +384,11 @@
                   <div><dt>Consensus-adjacent</dt><dd>4 of 5, 60 days</dd></div>
                   <div><dt>Emergency</dt><dd>3 of 5, no review wait</dd></div>
                   <div><dt>Changing the rules</dt><dd>5 of 5, 90 days</dd></div>
+                  <div><dt>Teams</dt><dd>Not used</dd></div>
+                  <div><dt>Removal</dt><dd>5 of 7</dd></div>
+                  <div><dt>Appeal</dt><dd>30 days</dd></div>
+                  <div><dt>Quorum</dt><dd>Not included</dd></div>
+                  <div><dt>Public comment</dt><dd>None</dd></div>
                   <div><dt>Enforcement</dt><dd>Not on. A template is not a live gate.</dd></div>
                 </dl>
                 <div class="tpl-meter"><span>Longest review</span><span class="tpl-bar" aria-hidden="true"><i style="width:25%"></i></span><b>90 days</b></div>
@@ -394,6 +409,11 @@
                   <div><dt>Consensus-adjacent</dt><dd>5 of 5, 90 days</dd></div>
                   <div><dt>Emergency</dt><dd>4 of 5, no review wait</dd></div>
                   <div><dt>Changing the rules</dt><dd>5 of 5, 180 days</dd></div>
+                  <div><dt>Teams</dt><dd>Not used</dd></div>
+                  <div><dt>Removal</dt><dd>6 of 7</dd></div>
+                  <div><dt>Appeal</dt><dd>60 days</dd></div>
+                  <div><dt>Quorum</dt><dd>2 of 3, when enforcement is on</dd></div>
+                  <div><dt>Public comment</dt><dd>30 days</dd></div>
                   <div><dt>Discussion</dt><dd>Maintainer review, visible to the community</dd></div>
                   <div><dt>Enforcement</dt><dd>Not on. A template is not a live gate.</dd></div>
                 </dl>
@@ -604,10 +624,16 @@
                     <div
                       class="section-content"
                       id="commons-contributors-content"
-                      style="display: none"
                     >
                       <div class="parameter-group">
                         <h4>Commons Contributor Thresholds</h4>
+                        <div class="parameter-control">
+                          <label>Economic gate</label>
+                          <select id="commons-gate" class="param-select">
+                            <option value="off" selected>Not used</option>
+                            <option value="defaults">Designer's minimums</option>
+                          </select>
+                        </div>
                         <div class="parameter-control">
                           <label>Merge Mining Minimum (BTC)</label>
                           <input
@@ -680,10 +706,16 @@
                     <div
                       class="section-content"
                       id="teams-content"
-                      style="display: none"
                     >
                       <div class="parameter-group">
                         <h4>Team Consensus</h4>
+                        <div class="parameter-control">
+                          <label>Teams</label>
+                          <select id="teams-mode" class="param-select">
+                            <option value="6-of-7" selected>6 of 7 inside and across</option>
+                            <option value="off">Not used</option>
+                          </select>
+                        </div>
                         <div class="parameter-control">
                           <label>Threshold Per Team</label>
                           <input
@@ -750,8 +782,24 @@
                     <div
                       class="section-content"
                       id="governance-review-content"
-                      style="display: none"
                     >
+                      <div class="parameter-group">
+                        <h4>Quorum and comment</h4>
+                        <div class="parameter-control">
+                          <label>Governance-node quorum</label>
+                          <select id="quorum-mode" class="param-select">
+                            <option value="2-of-3" selected>2 of 3, when enforcement is on</option>
+                            <option value="off">Not included</option>
+                          </select>
+                        </div>
+                        <div class="parameter-control">
+                          <label>Public comment</label>
+                          <select id="public-comment" class="param-select">
+                            <option value="30" selected>30 days</option>
+                            <option value="0">None</option>
+                          </select>
+                        </div>
+                      </div>
                       <div class="parameter-group">
                         <h4>Sanction Thresholds</h4>
                         <div class="parameter-control">
@@ -1187,6 +1235,27 @@ Loading preview...</pre
       </section>
 
     <script>
+        function toggleSection(id) {
+          var content = document.getElementById(id + "-content");
+          if (!content) return;
+          var open = content.style.display === "none";
+          content.style.display = open ? "" : "none";
+          var header = content.previousElementSibling;
+          var mark = header && header.querySelector(".section-toggle");
+          if (mark) mark.textContent = open ? "▲" : "▼";
+        }
+        function applySectionModes() {
+          var gateOff = (document.getElementById("commons-gate") || {}).value === "off";
+          ["commons-merge-mining", "commons-fee-forwarding", "commons-zaps", "commons-marketplace", "commons-measurement-period"].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.disabled = gateOff;
+          });
+          var teamsOff = (document.getElementById("teams-mode") || {}).value === "off";
+          ["team-threshold", "team-total", "inter-team-threshold", "inter-team-total"].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.disabled = teamsOff;
+          });
+        }
       document.addEventListener("DOMContentLoaded", function () {
         // FAQ Accordion functionality
         const faqQuestions = document.querySelectorAll(".faq-question");
@@ -1420,55 +1489,72 @@ Loading preview...</pre
             },
 
             // Dimension 2: Commons contributor thresholds
-            commons_contributor_thresholds: {
-              measurement_period_days: parseInt(
-                document.getElementById("commons-measurement-period")?.value ||
-                  "90",
-              ),
-              merge_mining: {
-                minimum_contribution_btc: parseFloat(
-                  document.getElementById("commons-merge-mining")?.value ||
-                    "0.01",
-                ),
-              },
-              fee_forwarding: {
-                minimum_contribution_btc: parseFloat(
-                  document.getElementById("commons-fee-forwarding")?.value ||
-                    "0.1",
-                ),
-              },
-              zaps: {
-                minimum_contribution_btc: parseFloat(
-                  document.getElementById("commons-zaps")?.value || "0.01",
-                ),
-              },
-              marketplace: {
-                minimum_contribution_btc: parseFloat(
-                  document.getElementById("commons-marketplace")?.value ||
-                    "0.01",
-                ),
-              },
-            },
+            commons_contributor_thresholds:
+              document.getElementById("commons-gate")?.value === "off"
+                ? { used: false }
+                : {
+                    used: true,
+                    measurement_period_days: parseInt(
+                      document.getElementById("commons-measurement-period")
+                        ?.value || "90",
+                    ),
+                    merge_mining: {
+                      minimum_contribution_btc: parseFloat(
+                        document.getElementById("commons-merge-mining")?.value ||
+                          "0.01",
+                      ),
+                    },
+                    fee_forwarding: {
+                      minimum_contribution_btc: parseFloat(
+                        document.getElementById("commons-fee-forwarding")
+                          ?.value || "0.1",
+                      ),
+                    },
+                    zaps: {
+                      minimum_contribution_btc: parseFloat(
+                        document.getElementById("commons-zaps")?.value || "0.01",
+                      ),
+                    },
+                    marketplace: {
+                      minimum_contribution_btc: parseFloat(
+                        document.getElementById("commons-marketplace")?.value ||
+                          "0.01",
+                      ),
+                    },
+                  },
 
             // Dimension 3: Nested Multisig Teams
-            nested_multisig_teams: {
-              team_consensus: {
-                threshold_per_team: parseInt(
-                  document.getElementById("team-threshold")?.value || "6",
-                ),
-                total_per_team: parseInt(
-                  document.getElementById("team-total")?.value || "7",
-                ),
-              },
-              inter_team_consensus: {
-                threshold_teams: parseInt(
-                  document.getElementById("inter-team-threshold")?.value || "6",
-                ),
-                total_teams: parseInt(
-                  document.getElementById("inter-team-total")?.value || "7",
-                ),
-              },
-            },
+            nested_multisig_teams:
+              document.getElementById("teams-mode")?.value === "off"
+                ? { used: false }
+                : {
+                    used: true,
+                    team_consensus: {
+                      threshold_per_team: parseInt(
+                        document.getElementById("team-threshold")?.value || "6",
+                      ),
+                      total_per_team: parseInt(
+                        document.getElementById("team-total")?.value || "7",
+                      ),
+                    },
+                    inter_team_consensus: {
+                      threshold_teams: parseInt(
+                        document.getElementById("inter-team-threshold")?.value ||
+                          "6",
+                      ),
+                      total_teams: parseInt(
+                        document.getElementById("inter-team-total")?.value || "7",
+                      ),
+                    },
+                  },
+
+            governance_node_quorum:
+              document.getElementById("quorum-mode")?.value === "2-of-3"
+                ? "2 of 3, when enforcement is on"
+                : "not included",
+            public_comment_days: parseInt(
+              document.getElementById("public-comment")?.value || "0",
+            ),
 
             // Dimension 4: Governance Review Policy
             governance_review_policy: {
@@ -1512,6 +1598,7 @@ Loading preview...</pre
             },
           };
 
+          applySectionModes();
           document.getElementById("ruleset-preview").textContent =
             JSON.stringify(ruleset, null, 2);
           return ruleset;
@@ -1750,6 +1837,12 @@ Loading preview...</pre
             tier4: { signatures: "4-of-7", review: 0 },
             tier5: { signatures: "7-of-7", review: 365 },
             maintainers: 7,
+            teams: "6 of 7 inside and across",
+            removal: "7-of-7",
+            appeal: 90,
+            quorum: "2 of 3, when enforcement is on",
+            comment: "30 days",
+            review: { private: "5-of-7", public: "6-of-7", response: 30, resolution: 365 },
           },
           balanced: {
             name: "Balanced (Default)",
@@ -1759,6 +1852,12 @@ Loading preview...</pre
             tier4: { signatures: "4-of-5", review: 0 },
             tier5: { signatures: "5-of-5", review: 180 },
             maintainers: 5,
+            teams: "6 of 7 inside and across",
+            removal: "6-of-7",
+            appeal: 60,
+            quorum: "2 of 3, when enforcement is on",
+            comment: "30 days",
+            review: { private: "4-of-7", public: "5-of-7", response: 30, resolution: 180 },
           },
           agile: {
             name: "Agile",
@@ -1768,6 +1867,12 @@ Loading preview...</pre
             tier4: { signatures: "3-of-5", review: 0 },
             tier5: { signatures: "5-of-5", review: 90 },
             maintainers: 5,
+            teams: "Not used",
+            removal: "5-of-7",
+            appeal: 30,
+            quorum: "Not included",
+            comment: "None",
+            review: { private: "3-of-7", public: "4-of-7", response: 7, resolution: 90 },
           },
           community: {
             name: "Community-Driven",
@@ -1777,6 +1882,12 @@ Loading preview...</pre
             tier4: { signatures: "4-of-5", review: 0 },
             tier5: { signatures: "5-of-5", review: 180 },
             maintainers: 5,
+            teams: "Not used",
+            removal: "6-of-7",
+            appeal: 60,
+            quorum: "2 of 3, when enforcement is on",
+            comment: "30 days",
+            review: { private: "4-of-7", public: "5-of-7", response: 30, resolution: 180 },
           },
           default: {
             name: "BTCDecoded",
@@ -1786,6 +1897,12 @@ Loading preview...</pre
             tier4: { signatures: "4-of-5", review: 0 },
             tier5: { signatures: "5-of-5", review: 180 },
             maintainers: 5,
+            teams: "6 of 7 inside and across",
+            removal: "6-of-7",
+            appeal: 60,
+            quorum: "2 of 3, when enforcement is on",
+            comment: "30 days",
+            review: { private: "4-of-7", public: "5-of-7", response: 30, resolution: 180 },
           },
         };
 
@@ -1997,6 +2114,25 @@ Loading preview...</pre
             }
           }
 
+          const setVal = function (id, value) {
+            const el = document.getElementById(id);
+            if (!el || value == null) return;
+            el.value = String(value);
+            el.dispatchEvent(new Event("change", { bubbles: true }));
+          };
+          if (template.teams) setVal("teams-mode", template.teams === "Not used" ? "off" : "6-of-7");
+          if (template.review) {
+            setVal("review-private-warning", template.review.private);
+            setVal("review-public-warning", template.review.public);
+            setVal("review-removal", template.removal);
+            setVal("review-response-deadline", template.review.response);
+            setVal("review-resolution-deadline", template.review.resolution);
+            setVal("review-appeal-deadline", template.appeal);
+          }
+          setVal("quorum-mode", template.quorum === "Not included" ? "off" : "2-of-3");
+          setVal("public-comment", template.comment === "None" ? "0" : "30");
+          setVal("commons-gate", "off");
+
           // Set metadata
           document.getElementById("ruleset-name").value =
             templateName + "-governance-v1";
@@ -2195,6 +2331,21 @@ Loading preview...</pre
             } else if (line.startsWith("tier3_review:")) {
               if (currentFork)
                 currentFork.tier3_review = parseInt(line.split(":")[1].trim());
+            } else if (line.startsWith("teams:")) {
+              if (currentFork)
+                currentFork.teams = line.split(":").slice(1).join(":").trim().replace(/^["']|["']$/g, "");
+            } else if (line.startsWith("removal:")) {
+              if (currentFork)
+                currentFork.removal = line.split(":").slice(1).join(":").trim().replace(/^["']|["']$/g, "");
+            } else if (line.startsWith("appeal_days:")) {
+              if (currentFork)
+                currentFork.appeal_days = parseInt(line.split(":")[1].trim());
+            } else if (line.startsWith("quorum:")) {
+              if (currentFork)
+                currentFork.quorum = line.split(":").slice(1).join(":").trim().replace(/^["']|["']$/g, "");
+            } else if (line.startsWith("public_comment_days:")) {
+              if (currentFork)
+                currentFork.public_comment_days = parseInt(line.split(":")[1].trim());
             } else if (line.startsWith("verified:")) {
               if (currentFork)
                 currentFork.verified = line.split(":")[1].trim() === "true";
@@ -2315,6 +2466,10 @@ Loading preview...</pre
                                 ${fork.tier1 ? `<span class="feature-tag">Tier 1: ${fork.tier1}</span>` : ""}
                                 ${fork.tier2 ? `<span class="feature-tag">Tier 2: ${fork.tier2}</span>` : ""}
                                 ${fork.tier3 ? `<span class="feature-tag">Tier 3: ${fork.tier3}</span>` : ""}
+                                ${fork.teams ? `<span class="feature-tag">Teams: ${fork.teams}</span>` : ""}
+                                ${fork.removal ? `<span class="feature-tag">Removal: ${fork.removal}</span>` : ""}
+                                ${fork.quorum ? `<span class="feature-tag">Quorum: ${fork.quorum}</span>` : ""}
+                                ${fork.public_comment_days === 0 ? `<span class="feature-tag">Public comment: none</span>` : fork.public_comment_days ? `<span class="feature-tag">Public comment: ${fork.public_comment_days} days</span>` : ""}
                             </div>
                             <button class="btn ${isDefault ? "btn-outline" : "btn-primary"} fork-btn" data-fork="${fork.id}">${isDefault ? "View Details" : "Fork This"}</button>
                         </div>
@@ -2433,6 +2588,19 @@ Loading preview...</pre
           const tier3Review = document.getElementById("tier3-review");
           tier3Review.value = fork.tier3_review || 90;
           tier3Review.dispatchEvent(new Event("change", { bubbles: true }));
+
+          const setFork = function (id, value) {
+            const el = document.getElementById(id);
+            if (!el || value == null || value === "") return;
+            el.value = String(value);
+            el.dispatchEvent(new Event("change", { bubbles: true }));
+          };
+          if (fork.teams) setFork("teams-mode", fork.teams === "not used" ? "off" : "6-of-7");
+          if (fork.removal) setFork("review-removal", fork.removal);
+          if (fork.appeal_days != null) setFork("review-appeal-deadline", fork.appeal_days);
+          if (fork.quorum) setFork("quorum-mode", fork.quorum === "not included" ? "off" : "2-of-3");
+          if (fork.public_comment_days != null) setFork("public-comment", fork.public_comment_days);
+          setFork("commons-gate", "off");
 
           // Set metadata
           document.getElementById("ruleset-name").value =
@@ -2589,6 +2757,36 @@ Loading preview...</pre
                                 <td>${fork1.tier3_review || "N/A"} days</td>
                                 <td>${fork2.tier3_review || "N/A"} days</td>
                                 <td class="diff-cell">${calculateDiff(fork1.tier3_review || "N/A", fork2.tier3_review || "N/A", "number")} ${fork1.tier3_review && fork2.tier3_review && fork1.tier3_review !== fork2.tier3_review ? "days" : ""}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Teams</strong></td>
+                                <td>${fork1.teams || "N/A"}</td>
+                                <td>${fork2.teams || "N/A"}</td>
+                                <td class="diff-cell">${calculateDiff(fork1.teams || "N/A", fork2.teams || "N/A", "text")}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Removal</strong></td>
+                                <td>${fork1.removal || "N/A"}</td>
+                                <td>${fork2.removal || "N/A"}</td>
+                                <td class="diff-cell">${calculateDiff(fork1.removal || "N/A", fork2.removal || "N/A", "signature", fork1Name, fork2Name)}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Appeal</strong></td>
+                                <td>${fork1.appeal_days == null ? "N/A" : fork1.appeal_days + " days"}</td>
+                                <td>${fork2.appeal_days == null ? "N/A" : fork2.appeal_days + " days"}</td>
+                                <td class="diff-cell">${calculateDiff(fork1.appeal_days == null ? "N/A" : fork1.appeal_days, fork2.appeal_days == null ? "N/A" : fork2.appeal_days, "number")}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Quorum</strong></td>
+                                <td>${fork1.quorum || "N/A"}</td>
+                                <td>${fork2.quorum || "N/A"}</td>
+                                <td class="diff-cell">${calculateDiff(fork1.quorum || "N/A", fork2.quorum || "N/A", "text")}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Public comment</strong></td>
+                                <td>${fork1.public_comment_days == null ? "N/A" : fork1.public_comment_days === 0 ? "none" : fork1.public_comment_days + " days"}</td>
+                                <td>${fork2.public_comment_days == null ? "N/A" : fork2.public_comment_days === 0 ? "none" : fork2.public_comment_days + " days"}</td>
+                                <td class="diff-cell">${calculateDiff(fork1.public_comment_days == null ? "N/A" : fork1.public_comment_days, fork2.public_comment_days == null ? "N/A" : fork2.public_comment_days, "number")}</td>
                             </tr>
                         </tbody>
                     </table>
