@@ -5,7 +5,7 @@
 // drawn as zero. A comparison chart with no measured spoke is left off the
 // card. n/a stays out of the assurance score. Fuzz targets listed in
 // ctx.model.pending say "pending fix".
-import { figure, assuranceRadial, radar, svgOnce, esc, median, govMark, releaseStage, releaseMark } from "../charts.mjs";
+import { figure, assuranceRadial, radar, svgOnce, esc, median, govMark, releaseStage, releaseMark, assuranceRank, assuranceEmblem } from "../charts.mjs";
 import { codeHealth } from "./06-stars.mjs";
 
 function radarJson(obj) {
@@ -212,6 +212,8 @@ export default {
                 "</div>";
             const pk = r.picker;
             const rel = releaseStage(r.stability);
+            const rank = assuranceRank(a);
+            const emblem = "<p class=\"eco-emblem\" title=\"" + esc(rank.why) + "\">" + assuranceEmblem(rank.n) + "<span class=\"eco-emblem-l\"><b>" + esc(rank.label) + "</b><small>" + esc(rank.why) + "</small></span></p>";
             const pickBits = "<span class=\"eco-pick-bits\" hidden><span class=\"eco-gov eco-gov-" + pk.kind + "\" title=\"" + esc(pk.label) + "\"><span class=\"visually-hidden\">" + esc(pk.label) + ". </span>" + govMark(pk.kind) + (pk.keepers ? "<span class=\"eco-keepers\">" + pk.keepers + "</span>" : "") + "</span><span class=\"eco-rel eco-rel-" + rel.id + "\" title=\"" + esc(rel.why) + "\"><span class=\"visually-hidden\">" + esc(rel.label) + ". </span>" + releaseMark(rel.id) + "</span>" + (pk.age ? "<span class=\"eco-pick-age\" title=\"" + esc(pk.from) + "\">" + esc(pk.age) + "</span>" : "") + "</span>";
             const releaseBadge = "<p class=\"eco-release eco-rel-" + rel.id + "\" title=\"" + esc(rel.why) + "\">" + releaseMark(rel.id) + "<span>" + esc(rel.label) + "</span></p>";
             const axesData = radarJson({
@@ -230,6 +232,7 @@ export default {
                 "<div class=\"eco-sheet\">" +
                 charts +
                 "<div class=\"eco-sheet-main\">" +
+                emblem +
                 releaseBadge +
                 profile +
                 "<ul class=\"eco-badges\" aria-label=\"Badges\">" +

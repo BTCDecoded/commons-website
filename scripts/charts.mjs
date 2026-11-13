@@ -61,6 +61,30 @@ export function releaseBody(id) {
 export function releaseMark(id) {
     return "<svg class=\"eco-relmark\" width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" aria-hidden=\"true\">" + releaseBody(id) + "</svg>";
 }
+// Three insignia, from how many assurance checks are marked yes.
+// n/a is not a check. Partial is not a yes. The percent is a different reading.
+export function assuranceRank(assurance) {
+    var yes = assurance.cells.filter(function (c) { return c.status === "yes"; }).length;
+    if (yes >= 3) return { n: 3, label: "Three stars", why: "Three or more assurance checks are marked yes." };
+    if (yes >= 1) return { n: 2, label: "Two stars", why: "One or two assurance checks are marked yes." };
+    return { n: 1, label: "One star", why: "No assurance check is marked yes." };
+}
+function starPoints(cx, cy, r) {
+    var pts = [], i, a, rr;
+    for (i = 0; i < 10; i++) {
+        a = -Math.PI / 2 + i * Math.PI / 5;
+        rr = i % 2 ? r * 0.4 : r;
+        pts.push(Math.round((cx + rr * Math.cos(a)) * 100) / 100 + "," + Math.round((cy + rr * Math.sin(a)) * 100) / 100);
+    }
+    return pts.join(" ");
+}
+export function assuranceEmblem(n) {
+    if (n !== 1 && n !== 2 && n !== 3) throw new Error("assurance emblem: " + n);
+    var gap = 16, r = 7, body = "", i;
+    for (i = 0; i < n; i++) body += "<polygon points=\"" + starPoints(8 + i * gap, 9, r) + "\" class=\"eco-starfill\"/>";
+    var w = 8 + (n - 1) * gap + 8;
+    return "<svg class=\"eco-emblem-svg\" viewBox=\"0 0 " + w + " 18\" width=\"" + (w * 1.35) + "\" height=\"24\" aria-hidden=\"true\">" + body + "</svg>";
+}
 export function esc(s) {
     return String(s).replace(/[&<>"]/g, function (c) {
         return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
