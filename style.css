@@ -1470,6 +1470,19 @@ button.btn {
   background-color: var(--bg-secondary);
 }
 
+.compare-table-content tr.is-group th {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 1.1rem 1rem 0.35rem;
+  border-bottom: 0;
+}
+
 .compare-table-content th {
   padding: 1.25rem 1rem;
   font-weight: 600;

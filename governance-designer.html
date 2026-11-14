@@ -1426,8 +1426,9 @@
             <div class="compare-header">
               <h3>Compare Governance Forks</h3>
               <p>
-                Side-by-side comparison of different governance models. See
-                differences at a glance.
+                Side-by-side comparison of the starter rules. The table includes
+                each signature tier, the emergency path, changing the rules,
+                the review deadlines, and the economic gate.
               </p>
             </div>
 
@@ -2644,71 +2645,56 @@
           updateRulesetPreview();
         }
 
+        function forkFromTemplate(id) {
+          const t = forkTemplates[id];
+          if (!t) return null;
+          return {
+            id: id,
+            name: t.name,
+            description: t.name,
+            forked_from: id === "default" ? null : "default",
+            created_by: "BTCDecoded",
+            verified: id === "default",
+            tier1: t.tier1.signatures,
+            tier1_review: t.tier1.review,
+            tier2: t.tier2.signatures,
+            tier2_review: t.tier2.review,
+            tier3: t.tier3.signatures,
+            tier3_review: t.tier3.review,
+            tier4: t.tier4 && t.tier4.signatures,
+            tier4_review: t.tier4 && t.tier4.review,
+            tier5: t.tier5 && t.tier5.signatures,
+            tier5_review: t.tier5 && t.tier5.review,
+            maintainers: t.maintainers,
+            teams: t.teams === "Not used" ? "not used" : "6 of 7",
+            removal: t.removal === "off" ? "not used" : t.removal,
+            appeal_days: t.appeal,
+            quorum: t.quorum === "Not included" ? "not included" : "2-of-3",
+            public_comment_days: t.comment === "None" ? 0 : 30,
+            review_private: t.review && t.review.private,
+            review_public: t.review && t.review.public,
+            review_response: t.review && t.review.response,
+            review_resolution: t.review && t.review.resolution,
+            gate: t.gate === "defaults" ? "Designer's minimums" : "Not used",
+          };
+        }
+
         // Comparison Function (updated to use registry)
         function updateComparison() {
           if (forkRegistry && forkRegistry.length > 0) {
             updateComparisonFromRegistry(forkRegistry);
           } else {
-            // Fallback to templates
             const fork1 = document.getElementById("compare-fork1").value;
             const fork2 = document.getElementById("compare-fork2").value;
-
             if (fork1 === fork2) {
               document.getElementById("compare-results").innerHTML =
                 '<p class="compare-error">Please select two different forks to compare.</p>';
               return;
             }
-
-            const t1 = forkTemplates[fork1];
-            const t2 = forkTemplates[fork2];
-
-            if (!t1 || !t2) return;
-
-            const comparison = `
-                        <table class="compare-table-content">
-                            <thead>
-                                <tr>
-                                    <th>Parameter</th>
-                                    <th>${t1.name}</th>
-                                    <th>${t2.name}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Routine</strong></td>
-                                    <td>${quorumCell(t1.tier1.signatures)}</td>
-                                    <td>${quorumCell(t2.tier1.signatures)}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Routine wait</strong></td>
-                                    <td>${t1.tier1.review} days</td>
-                                    <td>${t2.tier1.review} days</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Feature</strong></td>
-                                    <td>${quorumCell(t1.tier2.signatures)}</td>
-                                    <td>${quorumCell(t2.tier2.signatures)}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Feature wait</strong></td>
-                                    <td>${t1.tier2.review} days</td>
-                                    <td>${t2.tier2.review} days</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Consensus-adjacent</strong></td>
-                                    <td>${quorumCell(t1.tier3.signatures)}</td>
-                                    <td>${quorumCell(t2.tier3.signatures)}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Consensus-adjacent wait</strong></td>
-                                    <td>${t1.tier3.review} days</td>
-                                    <td>${t2.tier3.review} days</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    `;
-
-            document.getElementById("compare-results").innerHTML = comparison;
+            const left = forkFromTemplate(fork1);
+            const right = forkFromTemplate(fork2);
+            if (!left || !right) return;
+            updateComparisonFromRegistry([left, right]);
           }
         }
 
@@ -2901,40 +2887,24 @@
               return true;
             });
 
-            function presetRow(id, t) {
-              return {
-                id: id,
-                name: t.name,
-                description: t.name,
-                forked_from: "default",
-                created_by: "BTCDecoded",
-                verified: false,
-                tier1: t.tier1.signatures,
-                tier1_review: t.tier1.review,
-                tier2: t.tier2.signatures,
-                tier2_review: t.tier2.review,
-                tier3: t.tier3.signatures,
-                tier3_review: t.tier3.review,
-                teams: t.teams === "Not used" ? "not used" : "6 of 7",
-                removal: t.removal === "off" ? "not used" : t.removal,
-                appeal_days: t.appeal,
-                quorum: t.quorum === "Not included" ? "not included" : "2-of-3",
-                public_comment_days: t.comment === "None" ? 0 : 30,
-              };
+            function presetRow(id) {
+              return forkFromTemplate(id);
             }
             forkRegistry.forEach(function (fork) {
-              const t = forkTemplates[fork.id];
-              if (!t) return;
-              if (!fork.teams) fork.teams = t.teams === "Not used" ? "not used" : "6 of 7";
-              if (!fork.removal) fork.removal = t.removal;
-              if (fork.appeal_days == null) fork.appeal_days = t.appeal;
-              if (!fork.quorum) fork.quorum = t.quorum === "Not included" ? "not included" : "2-of-3";
-              if (fork.public_comment_days == null) fork.public_comment_days = t.comment === "None" ? 0 : 30;
+              const filled = forkFromTemplate(fork.id);
+              if (!filled) return;
+              [
+                "tier4", "tier4_review", "tier5", "tier5_review", "maintainers",
+                "teams", "removal", "appeal_days", "quorum", "public_comment_days",
+                "review_private", "review_public", "review_response", "review_resolution", "gate"
+              ].forEach(function (key) {
+                if (fork[key] == null || fork[key] === "") fork[key] = filled[key];
+              });
             });
             Object.keys(forkTemplates).forEach(function (id) {
               if (id === "default") return;
               if (forkRegistry.some(function (fork) { return fork.id === id; })) return;
-              forkRegistry.push(presetRow(id, forkTemplates[id]));
+              forkRegistry.push(presetRow(id));
             });
             console.log("Successfully loaded fork registry from site bundle");
             return forkRegistry;
@@ -2944,25 +2914,7 @@
 
           // Fallback to templates if bundled registry failed
           console.warn("Falling back to template data");
-          return Object.keys(forkTemplates).map((id) => ({
-            id,
-            name: forkTemplates[id].name,
-            forked_from: id === "default" ? null : "default",
-            verified: id === "default",
-            created_by: "BTCDecoded",
-            tier1: forkTemplates[id].tier1.signatures,
-            tier1_review: forkTemplates[id].tier1.review,
-            tier2: forkTemplates[id].tier2.signatures,
-            tier2_review: forkTemplates[id].tier2.review,
-            tier3: forkTemplates[id].tier3.signatures,
-            tier3_review: forkTemplates[id].tier3.review,
-            teams: forkTemplates[id].teams === "Not used" ? "not used" : "6 of 7",
-            removal: forkTemplates[id].removal,
-            appeal_days: forkTemplates[id].appeal,
-            quorum: forkTemplates[id].quorum === "Not included" ? "not included" : "2-of-3",
-            public_comment_days: forkTemplates[id].comment === "None" ? 0 : 30,
-            description: forkTemplates[id].name,
-          }));
+          return Object.keys(forkTemplates).map(forkFromTemplate);
         }
 
         // Render marketplace cards from registry
@@ -3251,6 +3203,24 @@
             }
           }
 
+          function dayCell(n) {
+            if (n == null || n === "" || n !== n) return "N/A";
+            n = parseInt(n, 10);
+            if (n !== n) return "N/A";
+            if (n === 0) return "no review wait";
+            return n === 1 ? "1 day" : n + " days";
+          }
+          function dayDiff(a, b) {
+            const diff = calculateDiff(a == null || a === "" ? "N/A" : a, b == null || b === "" ? "N/A" : b, "number");
+            return diff === "Same" || diff === "N/A" ? diff : diff + " days";
+          }
+          function sigDiff(a, b, nameA, nameB) {
+            a = a || "N/A";
+            b = b || "N/A";
+            const kind = parseSignatureThreshold(a) && parseSignatureThreshold(b) ? "signature" : "text";
+            return calculateDiff(a, b, kind, nameA, nameB);
+          }
+
           const comparison = `
                     <table class="compare-table-content">
                         <thead>
@@ -3262,6 +3232,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr class="is-group"><th colspan="4">Signatures</th></tr>
                             <tr>
                                 <td><strong>Routine</strong></td>
                                 <td>${quorumCell(fork1.tier1)}</td>
@@ -3270,9 +3241,9 @@
                             </tr>
                             <tr>
                                 <td><strong>Routine wait</strong></td>
-                                <td>${fork1.tier1_review || "N/A"} days</td>
-                                <td>${fork2.tier1_review || "N/A"} days</td>
-                                <td class="diff-cell">${calculateDiff(fork1.tier1_review || "N/A", fork2.tier1_review || "N/A", "number")} ${fork1.tier1_review && fork2.tier1_review && fork1.tier1_review !== fork2.tier1_review ? "days" : ""}</td>
+                                <td>${dayCell(fork1.tier1_review)}</td>
+                                <td>${dayCell(fork2.tier1_review)}</td>
+                                <td class="diff-cell">${dayDiff(fork1.tier1_review, fork2.tier1_review)}</td>
                             </tr>
                             <tr>
                                 <td><strong>Feature</strong></td>
@@ -3282,9 +3253,9 @@
                             </tr>
                             <tr>
                                 <td><strong>Feature wait</strong></td>
-                                <td>${fork1.tier2_review || "N/A"} days</td>
-                                <td>${fork2.tier2_review || "N/A"} days</td>
-                                <td class="diff-cell">${calculateDiff(fork1.tier2_review || "N/A", fork2.tier2_review || "N/A", "number")} ${fork1.tier2_review && fork2.tier2_review && fork1.tier2_review !== fork2.tier2_review ? "days" : ""}</td>
+                                <td>${dayCell(fork1.tier2_review)}</td>
+                                <td>${dayCell(fork2.tier2_review)}</td>
+                                <td class="diff-cell">${dayDiff(fork1.tier2_review, fork2.tier2_review)}</td>
                             </tr>
                             <tr>
                                 <td><strong>Consensus-adjacent</strong></td>
@@ -3294,9 +3265,71 @@
                             </tr>
                             <tr>
                                 <td><strong>Consensus-adjacent wait</strong></td>
-                                <td>${fork1.tier3_review || "N/A"} days</td>
-                                <td>${fork2.tier3_review || "N/A"} days</td>
-                                <td class="diff-cell">${calculateDiff(fork1.tier3_review || "N/A", fork2.tier3_review || "N/A", "number")} ${fork1.tier3_review && fork2.tier3_review && fork1.tier3_review !== fork2.tier3_review ? "days" : ""}</td>
+                                <td>${dayCell(fork1.tier3_review)}</td>
+                                <td>${dayCell(fork2.tier3_review)}</td>
+                                <td class="diff-cell">${dayDiff(fork1.tier3_review, fork2.tier3_review)}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Emergency</strong></td>
+                                <td>${quorumCell(fork1.tier4)}</td>
+                                <td>${quorumCell(fork2.tier4)}</td>
+                                <td class="diff-cell">${sigDiff(fork1.tier4, fork2.tier4, fork1Name, fork2Name)}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Emergency wait</strong></td>
+                                <td>${dayCell(fork1.tier4_review)}</td>
+                                <td>${dayCell(fork2.tier4_review)}</td>
+                                <td class="diff-cell">${dayDiff(fork1.tier4_review, fork2.tier4_review)}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Changing the rules</strong></td>
+                                <td>${quorumCell(fork1.tier5)}</td>
+                                <td>${quorumCell(fork2.tier5)}</td>
+                                <td class="diff-cell">${sigDiff(fork1.tier5, fork2.tier5, fork1Name, fork2Name)}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Changing the rules wait</strong></td>
+                                <td>${dayCell(fork1.tier5_review)}</td>
+                                <td>${dayCell(fork2.tier5_review)}</td>
+                                <td class="diff-cell">${dayDiff(fork1.tier5_review, fork2.tier5_review)}</td>
+                            </tr>
+                            <tr class="is-group"><th colspan="4">Review</th></tr>
+                            <tr>
+                                <td><strong>Private warning</strong></td>
+                                <td>${quorumCell(fork1.review_private)}</td>
+                                <td>${quorumCell(fork2.review_private)}</td>
+                                <td class="diff-cell">${sigDiff(fork1.review_private, fork2.review_private, fork1Name, fork2Name)}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Public warning</strong></td>
+                                <td>${quorumCell(fork1.review_public)}</td>
+                                <td>${quorumCell(fork2.review_public)}</td>
+                                <td class="diff-cell">${sigDiff(fork1.review_public, fork2.review_public, fork1Name, fork2Name)}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Response</strong></td>
+                                <td>${dayCell(fork1.review_response)}</td>
+                                <td>${dayCell(fork2.review_response)}</td>
+                                <td class="diff-cell">${dayDiff(fork1.review_response, fork2.review_response)}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Resolution</strong></td>
+                                <td>${dayCell(fork1.review_resolution)}</td>
+                                <td>${dayCell(fork2.review_resolution)}</td>
+                                <td class="diff-cell">${dayDiff(fork1.review_resolution, fork2.review_resolution)}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Appeal</strong></td>
+                                <td>${dayCell(fork1.appeal_days)}</td>
+                                <td>${dayCell(fork2.appeal_days)}</td>
+                                <td class="diff-cell">${dayDiff(fork1.appeal_days, fork2.appeal_days)}</td>
+                            </tr>
+                            <tr class="is-group"><th colspan="4">Who takes part</th></tr>
+                            <tr>
+                                <td><strong>Maintainers</strong></td>
+                                <td>${fork1.maintainers == null ? "N/A" : fork1.maintainers}</td>
+                                <td>${fork2.maintainers == null ? "N/A" : fork2.maintainers}</td>
+                                <td class="diff-cell">${calculateDiff(fork1.maintainers == null ? "N/A" : fork1.maintainers, fork2.maintainers == null ? "N/A" : fork2.maintainers, "number")}</td>
                             </tr>
                             <tr>
                                 <td><strong>Teams</strong></td>
@@ -3311,12 +3344,6 @@
                                 <td class="diff-cell">${calculateDiff(fork1.removal || "N/A", fork2.removal || "N/A", "signature", fork1Name, fork2Name)}</td>
                             </tr>
                             <tr>
-                                <td><strong>Appeal</strong></td>
-                                <td>${fork1.appeal_days == null ? "N/A" : fork1.appeal_days + " days"}</td>
-                                <td>${fork2.appeal_days == null ? "N/A" : fork2.appeal_days + " days"}</td>
-                                <td class="diff-cell">${calculateDiff(fork1.appeal_days == null ? "N/A" : fork1.appeal_days, fork2.appeal_days == null ? "N/A" : fork2.appeal_days, "number")}</td>
-                            </tr>
-                            <tr>
                                 <td><strong>Quorum</strong></td>
                                 <td>${quorumCell(fork1.quorum)}</td>
                                 <td>${quorumCell(fork2.quorum)}</td>
@@ -3327,6 +3354,12 @@
                                 <td>${fork1.public_comment_days == null ? "N/A" : fork1.public_comment_days === 0 ? "none" : fork1.public_comment_days + " days"}</td>
                                 <td>${fork2.public_comment_days == null ? "N/A" : fork2.public_comment_days === 0 ? "none" : fork2.public_comment_days + " days"}</td>
                                 <td class="diff-cell">${calculateDiff(fork1.public_comment_days == null ? "N/A" : fork1.public_comment_days, fork2.public_comment_days == null ? "N/A" : fork2.public_comment_days, "number")}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Economic gate</strong></td>
+                                <td>${fork1.gate || "Not used"}</td>
+                                <td>${fork2.gate || "Not used"}</td>
+                                <td class="diff-cell">${calculateDiff(fork1.gate || "Not used", fork2.gate || "Not used", "text")}</td>
                             </tr>
                         </tbody>
                     </table>
