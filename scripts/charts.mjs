@@ -752,6 +752,7 @@ export function radar(axes, series, opts) {
             var ang = -90 + i * step, pend = a.pending || (one && one.pending);
             out += "<path d=\"" + sector(cx, cy, 0, R, ang - step / 2.6, ang + step / 2.6) + "\" style=\"fill:url(#" + (pend ? pid : hid) + ")\" class=\"ch-rmiss\"/>";
         });
+        var firstPts = null;
         series.forEach(function (sr) {
             var pts = sr.values.map(function (val, i) {
                 var a = axes[i];
@@ -759,6 +760,7 @@ export function radar(axes, series, opts) {
                 var f = Math.max(0, Math.min(1, val.v / a.max)); if (a.invert) f = 1 - f;
                 return polar(cx, cy, R * f, -90 + i * step);
             });
+            if (!firstPts) firstPts = pts;
             var fill = "";
             pts.forEach(function (p, i) {
                 var q = pts[(i + 1) % n];
@@ -793,14 +795,19 @@ export function radar(axes, series, opts) {
                 var name = lab === "full" ? a.label : a.short || a.label;
                 var lines = lab === "full" ? wrap(name, fsz, narrowLab ? 70 : 110) : [name];
                 var extra = [];
+                var atPoint = !!(a.invert && opts.values && series[0] && !a.pending && firstPts && firstPts[i]);
                 if (a.pending) extra.push("pending fix");
-                else if (opts.values && series[0]) extra.push(series[0].values[i].text);
+                else if (opts.values && series[0] && !atPoint) extra.push(series[0].values[i].text);
                 lines = lines.concat(extra);
                 var y0 = p[1] + dy - (Math.sin(ang * Math.PI / 180) < -0.5 ? (lines.length - 1) * (fsz + 2) : 0);
                 lines.forEach(function (l, j) {
                     var isVal = j >= lines.length - extra.length;
                     out += t(p[0], y0 + j * (fsz + 2), l, "ch-t " + (isVal ? (a.pending ? "ch-pendt" : "ch-val") : "ch-label"), " text-anchor=\"" + anchor + "\" font-size=\"" + fsz + "\"");
                 });
+                if (atPoint) {
+                    var dot = firstPts[i], vx = dot[0] - cx, vy = dot[1] - cy, len = Math.sqrt(vx * vx + vy * vy) || 1;
+                    out += t(dot[0] + vx / len * 11, dot[1] + vy / len * 11, series[0].values[i].text, "ch-t ch-val", " text-anchor=\"middle\" font-size=\"" + fsz + "\"");
+                }
             });
         }
         return { body: out, height: cy + R + (lab === "none" ? 6 : pad - 4) };

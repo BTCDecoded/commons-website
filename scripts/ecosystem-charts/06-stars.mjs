@@ -26,7 +26,9 @@ export function codeHealth(rows, pending) {
     const axes = AX.map(function (a) {
         const vals = rows.map(a.get).filter(function (v) { return typeof v === "number"; });
         const max = a.max || Math.max.apply(null, vals) || 1;
-        return { key: a.key, label: a.label + (a.key in pend ? "" : " (0 to " + max.toLocaleString("en-US") + ")"), short: a.short, max: max, invert: a.invert, pending: a.key in pend, get: a.get, fmt: a.fmt };
+        const hi = max.toLocaleString("en-US");
+        const range = a.key in pend ? "" : a.invert ? " (0 at the rim, " + hi + " at the centre)" : " (0 to " + hi + ")";
+        return { key: a.key, label: a.label + range, short: a.short, max: max, invert: a.invert, pending: a.key in pend, get: a.get, fmt: a.fmt };
     });
     function series(r, cls) {
         return { name: r.name, cls: cls, values: axes.map(function (a) {
