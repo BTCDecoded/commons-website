@@ -345,17 +345,17 @@
           "name": "Tagged releases, 12 months",
           "field": "metrics.json` `rows[].releases_12m",
           "what": "Git tags whose creator date falls in the 12-month window.",
-          "why": "It is a tag count, not a stability grade. Patches and release candidates make the count larger without being a new release line. The health star uses the new-release-line count.",
+          "why": "It is a tag count, not a stability grade. Patches and release candidates make the count larger without being a new release series. The health star uses the release-series count.",
           "how": "`releases_12m`. Annotated tags use the tagger date; lightweight tags use the tagged commit date (`creatordate`). Names that contain `/` (Go module subpath tags) are excluded. BLVM's note: blvm-node tags.",
           "caveats_omitted": "contains figures; the page shows them from data",
           "link": "#depth"
         },
         {
-          "name": "New release lines, 12 months",
+          "name": "Release series, 12 months",
           "field": "metrics.json` `rows[].release_lines_12m",
-          "what": "Version lines whose first non-candidate tag falls in the 12-month window.",
-          "why": "A new line is the release a 6-to-7-month cadence describes. On the health star, 1 or 2 new lines sit at the rim. A count of 0 sits at the centre. A larger count sits inward of the rim, and the largest count is the furthest in.",
-          "how": "`release_lines_12m`. At version 1 and above the line is the major number. Before 1.0 the line is 0.y. A release candidate, a name containing /, a name that does not start with v or V, and a name ending in -final are not a line.",
+          "what": "Version series whose first non-candidate tag falls in the 12-month window.",
+          "why": "A series is the release a 6-to-7-month cadence describes. On the health star, 1 or 2 new series sit at the rim. A count of 0 sits at the centre. A larger count sits inward of the rim, and the largest count is the furthest in.",
+          "how": "`release_lines_12m`. At version 1 and above the series is the major number. Before 1.0 the series is 0.y. A release candidate, a name containing /, a name that does not start with v or V, and a name ending in -final are not a series.",
           "caveats_omitted": "contains figures; the page shows them from data",
           "link": "#depth"
         },
