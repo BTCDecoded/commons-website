@@ -177,6 +177,16 @@
       .sig-read { display: flex; align-items: center; gap: 0.4rem; min-height: 1.1rem; margin-top: 0.55rem; }
       .feature-tag { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 0.4rem; }
       .genealogy-detail { display: inline-flex; align-items: center; gap: 0.35rem; }
+      .genealogy-container { min-height: 0; overflow: visible; padding: 0; background: transparent; border: 0; box-shadow: none; }
+      .genealogy-tree-root, .genealogy-children, .genealogy-children-row { flex-wrap: wrap; overflow: visible; justify-content: center; }
+      .genealogy-node { min-width: min(100%, 16rem); max-width: 22rem; margin: 0.5rem; }
+      .genealogy-node-content { padding: 1rem 1.05rem; }
+      .genealogy-node-content:hover { transform: none; }
+      .genealogy-facets { margin: 0.4rem 0 0; }
+      .genealogy-facets div { display: grid; grid-template-columns: 9.5rem 1fr; gap: 0.35rem 0.6rem; align-items: center; padding: 0.28rem 0; border-top: 1px solid var(--border-color); }
+      .genealogy-facets dt { margin: 0; color: var(--text-secondary); font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; }
+      .genealogy-facets dd { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.5rem; }
+      .genealogy-node details summary { cursor: pointer; color: var(--text-secondary); margin-top: 0.45rem; }
       .feature-k { color: var(--text-secondary); font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; }
       .rules-read { list-style: none; padding: 0; margin: 0; }
       .rules-read li { display: grid; grid-template-columns: 9.5rem 1fr; gap: 0.5rem; align-items: center; padding: 0.35rem 0; border-top: 1px solid var(--border-color); }
@@ -1334,10 +1344,11 @@
           <!-- Fork Genealogy Tab -->
           <div id="genealogy-tab" class="fork-tab-content">
             <div class="genealogy-header">
-              <h3>Fork Genealogy Tree</h3>
+              <h3>Fork lineage</h3>
               <p>
-                Visualize how governance forks relate to each other. See the
-                evolution of the commons.
+                Starter rulesets, and which registry row says it was forked from
+                another. The implementations are on the
+                <a href="ecosystem.html">ecosystem page</a>.
               </p>
             </div>
 
@@ -1355,27 +1366,7 @@
               <div class="genealogy-loading">Loading fork genealogy...</div>
             </div>
 
-            <div class="genealogy-legend">
-              <h4>Legend</h4>
-              <div class="legend-items">
-                <div class="legend-item">
-                  <span class="legend-color default"></span>
-                  <span>Default/Root Fork</span>
-                </div>
-                <div class="legend-item">
-                  <span class="legend-color template"></span>
-                  <span>Template Fork</span>
-                </div>
-                <div class="legend-item">
-                  <span class="legend-color community"></span>
-                  <span>Community Fork</span>
-                </div>
-                <div class="legend-item">
-                  <span class="legend-color verified"></span>
-                  <span>Verified Fork</span>
-                </div>
-              </div>
-            </div>
+            <p class="repo-layer-note">An orange dot is a key that must sign. A gray dot is another key in that set. Root is the registry row the others name as their source.</p>
           </div>
 
           <!-- Compare Forks Tab -->
@@ -3420,34 +3411,31 @@
               displayName = "BTCDecoded";
             }
 
+            function facet(label, raw) {
+              if (raw == null || raw === "") return "";
+              return `<div><dt>${label}</dt><dd>${quorumCell(raw)}</dd></div>`;
+            }
             let html = `
                         <div class="genealogy-node ${forkType}" data-level="${level}">
                             <div class="genealogy-node-content">
                                 <div class="genealogy-node-header">
                                     <h4>${displayName}</h4>
-                                    ${fork.verified ? '<span class="genealogy-badge verified">✓ Verified</span>' : ""}
-                                    ${fork.id === "default" ? '<span class="genealogy-badge default">Root</span>' : ""}
+                                    ${isRoot ? '<span class="genealogy-badge default">Root</span>' : ""}
                                 </div>
-                                <p class="genealogy-node-desc">${fork.description || "No description"}</p>
-                                <div class="genealogy-node-details">
-                                    <span class="genealogy-detail"><span class="feature-k">Routine</span> ${quorumCell(fork.tier1)}</span>
-                                    <span class="genealogy-detail"><span class="feature-k">Feature</span> ${quorumCell(fork.tier2)}</span>
-                                    <span class="genealogy-detail"><span class="feature-k">Consensus-adjacent</span> ${quorumCell(fork.tier3)}</span>
-                                    ${fork.created_by ? `<span class="genealogy-detail">By: ${fork.created_by}</span>` : ""}
-                                </div>
-                                ${fork.github ? `<a href="${fork.github}" target="_blank" class="genealogy-link">View on GitHub →</a>` : ""}
+                                <dl class="genealogy-facets">
+                                    ${facet("Routine", fork.tier1)}
+                                    ${facet("Feature", fork.tier2)}
+                                    ${facet("Consensus-adjacent", fork.tier3)}
+                                    ${facet("Teams", fork.teams)}
+                                    ${facet("Removal", fork.removal === "off" ? "not used" : fork.removal)}
+                                    ${facet("Quorum", fork.quorum)}
+                                </dl>
+                                ${fork.description ? `<details><summary>About</summary><p class="genealogy-node-desc">${fork.description}</p></details>` : ""}
+                                ${fork.github ? `<a href="${fork.github}" target="_blank" class="genealogy-link">View on GitHub</a>` : ""}
                             </div>
                     `;
 
-            if (children.length > 0 && isRoot) {
-              // For root node, render all children in a single row
-              html += '<div class="genealogy-children genealogy-children-row">';
-              children.forEach((child) => {
-                html += renderForkNode(child, level + 1);
-              });
-              html += "</div>";
-            } else if (children.length > 0) {
-              // For non-root nodes, render children normally
+            if (children.length > 0) {
               html += '<div class="genealogy-children">';
               children.forEach((child) => {
                 html += renderForkNode(child, level + 1);
