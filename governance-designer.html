@@ -120,6 +120,10 @@
       .tpl-pip { display: inline-block; width: 1.4rem; height: 8px; border-radius: 2px; vertical-align: middle; }
       .tpl-pip-on { background: var(--orange); }
       .tpl-pip-off { border: 1.5px solid #4a4a52; }
+      .tpl-q { display: inline-flex; gap: 3px; align-items: center; }
+      .tpl-q i { width: 9px; height: 9px; border-radius: 50%; background: #6e6e78; }
+      .tpl-q i.is-need { background: var(--orange); }
+      .tpl-wait { color: var(--text-secondary); font-size: 0.85rem; }
       .tpl-gov svg { display: block; }
       .tpl-count { display: inline-flex; align-items: center; justify-content: center; min-width: 1.4rem; height: 1.15rem; color: var(--text-primary, #fff); font-weight: 600; font-size: 0.85rem; }
       .tpl-ring { display: inline-block; width: 2.6rem; height: 1.15rem; border: 1.5px dotted var(--orange); border-radius: 4px; }
@@ -128,7 +132,7 @@
       .tpl-facets { margin: 0 0 0.9rem; }
       .tpl-facets div { display: grid; grid-template-columns: 9.5rem 1fr; gap: 0.35rem 0.75rem; padding: 0.28rem 0; border-top: 1px solid var(--border-color); }
       .tpl-facets dt { margin: 0; color: var(--text-secondary); font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; }
-      .tpl-facets dd { margin: 0; font-size: 0.92rem; }
+      .tpl-facets dd { margin: 0; font-size: 0.92rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.35rem 0.55rem; }
       .tpl-meter { display: grid; grid-template-columns: 7.5rem 1fr auto; gap: 0.45rem; align-items: center; margin: 0 0 1rem; color: var(--text-secondary); font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; }
       .tpl-meter b { font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--text-primary, #fff); font-size: 0.85rem; }
       .tpl-bar { display: block; height: 5px; background: #3a3a42; border-radius: 2px; }
@@ -151,13 +155,34 @@
           grid-template-columns: 1fr !important;
         }
       }
+      @media (max-width: 640px) {
+        #action-tiers-content .parameter-group { grid-template-columns: 1fr !important; }
+      }
       .fork-preview {
         position: sticky !important;
         top: 2rem !important;
         align-self: start !important;
-        max-height: calc(100vh - 4rem) !important;
-        overflow-y: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
       }
+      .fork-parameters { max-height: none !important; overflow: visible !important; }
+      #action-tiers-content .parameter-group {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem 1.25rem;
+      }
+      #action-tiers-content .parameter-group h4 { grid-column: 1 / -1; margin-bottom: 0.25rem; }
+      .preview-content { max-height: none !important; overflow: visible !important; }
+      .parameter-group:hover { transform: none !important; }
+      .sig-read { display: flex; align-items: center; gap: 0.4rem; min-height: 1.1rem; margin-top: 0.55rem; }
+      .feature-tag { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 0.4rem; }
+      .genealogy-detail { display: inline-flex; align-items: center; gap: 0.35rem; }
+      .feature-k { color: var(--text-secondary); font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; }
+      .rules-read { list-style: none; padding: 0; margin: 0; }
+      .rules-read li { display: grid; grid-template-columns: 9.5rem 1fr; gap: 0.5rem; align-items: center; padding: 0.35rem 0; border-top: 1px solid var(--border-color); }
+      .rules-read b { font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-secondary); font-weight: 600; }
+      .rules-raw { margin-top: 1rem; }
+      .rules-raw summary { cursor: pointer; color: var(--text-secondary); }
       .parameter-group {
         padding: 1.5rem !important;
         background-color: var(--bg-secondary) !important;
@@ -275,6 +300,10 @@
             </button>
             <button class="fork-tab" data-tab="compare">Compare Forks</button>
           </div>
+          <ul class="tpl-key quorum-key" aria-label="Signature key">
+            <li><span class="tpl-q" aria-hidden="true"><i class="is-need"></i></span> must sign</li>
+            <li><span class="tpl-q" aria-hidden="true"><i></i></span> another key in the set</li>
+          </ul>
 
           <!-- Fork Marketplace -->
           <div id="marketplace-tab" class="fork-tab-content active">
@@ -334,8 +363,10 @@
               <li><span class="tpl-ring" aria-hidden="true"></span> using Commons</li>
               <li><span class="tpl-pip tpl-pip-on" aria-hidden="true"></span> on</li>
               <li><span class="tpl-pip tpl-pip-off" aria-hidden="true"></span> not used</li>
+              <li><span class="tpl-q" aria-hidden="true"><i class="is-need"></i></span> must sign</li>
+              <li><span class="tpl-q" aria-hidden="true"><i></i></span> another key in the set</li>
             </ul>
-            <p class="tpl-note">The five pips are teams, removal, a governance-node quorum, public comment, and the economic gate. A filled pip is on for that template. The dotted outline is using Commons. One author, the two informal templates, a foundation key, and a formal board do not use it. One author is one dot, the same size as each person in a maintainer group. Bounded commons is the one template that turns the designer's contribution minimums on. None of these is a measurement of a project on the ecosystem page. The six measures on the <a href="ecosystem.html#forms">ecosystem forms</a> are judgments of a form. These cards do not score them. The bar is this template's longest review, beside 365 days.</p>
+            <p class="tpl-note">The five pips are teams, removal, a governance-node quorum, public comment, and the economic gate. A filled pip is on for that template. An orange dot is a key that must sign. A gray dot is another key in that set. The dotted outline is using Commons. One author, the two informal templates, a foundation key, and a formal board do not use it. One author is one dot, the same size as each person in a maintainer group. Bounded commons is the one template that turns the designer's contribution minimums on. None of these is a measurement of a project on the ecosystem page. The six measures on the <a href="ecosystem.html#forms">ecosystem forms</a> are judgments of a form. These cards do not score them. The bar is this template's longest review, beside 365 days.</p>
 
             <div class="template-grid">
               <div class="template-card is-commons" data-template="conservative">
@@ -348,15 +379,15 @@
                 <ul class="tpl-pips" aria-label="On this template"><li class="is-on"><i></i><span>Teams</span></li><li class="is-on"><i></i><span>Removal</span></li><li class="is-on"><i></i><span>Quorum</span></li><li class="is-on"><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
                 <dl class="tpl-facets">
                   <div><dt>Who</dt><dd>Commons governance, 7 maintainers</dd></div>
-                  <div><dt>Routine</dt><dd>4 of 5, 14 days</dd></div>
-                  <div><dt>Feature</dt><dd>5 of 5, 60 days</dd></div>
-                  <div><dt>Consensus-adjacent</dt><dd>6 of 7, 180 days</dd></div>
-                  <div><dt>Emergency</dt><dd>4 of 7, no review wait</dd></div>
-                  <div><dt>Changing the rules</dt><dd>7 of 7, 365 days</dd></div>
-                  <div><dt>Teams</dt><dd>6 of 7 inside and across</dd></div>
-                  <div><dt>Removal</dt><dd>7 of 7</dd></div>
+                  <div><dt>Routine</dt><dd><span class="tpl-q" title="4 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">4 of 5</span><span class="tpl-wait">14 days</span></dd></div>
+                  <div><dt>Feature</dt><dd><span class="tpl-q" title="5 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i></span><span class="visually-hidden">5 of 5</span><span class="tpl-wait">60 days</span></dd></div>
+                  <div><dt>Consensus-adjacent</dt><dd><span class="tpl-q" title="6 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">6 of 7</span><span class="tpl-wait">180 days</span></dd></div>
+                  <div><dt>Emergency</dt><dd><span class="tpl-q" title="4 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i><i></i><i></i></span><span class="visually-hidden">4 of 7</span><span class="tpl-wait">no review wait</span></dd></div>
+                  <div><dt>Changing the rules</dt><dd><span class="tpl-q" title="7 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i></span><span class="visually-hidden">7 of 7</span><span class="tpl-wait">365 days</span></dd></div>
+                  <div><dt>Teams</dt><dd><span class="tpl-q" title="6 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">6 of 7</span><span class="tpl-wait">inside and across</span></dd></div>
+                  <div><dt>Removal</dt><dd><span class="tpl-q" title="7 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i></span><span class="visually-hidden">7 of 7</span></dd></div>
                   <div><dt>Appeal</dt><dd>90 days</dd></div>
-                  <div><dt>Quorum</dt><dd>2 of 3</dd></div>
+                  <div><dt>Quorum</dt><dd><span class="tpl-q" title="2 of 3" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">2 of 3</span></dd></div>
                   <div><dt>Public comment</dt><dd>30 days</dd></div>
                 </dl>
                 <div class="tpl-meter"><span>Longest review</span><span class="tpl-bar" aria-hidden="true"><i style="width:100%"></i></span><b>365 days</b></div>
@@ -373,15 +404,15 @@
                 <ul class="tpl-pips" aria-label="On this template"><li class="is-on"><i></i><span>Teams</span></li><li class="is-on"><i></i><span>Removal</span></li><li class="is-on"><i></i><span>Quorum</span></li><li class="is-on"><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
                 <dl class="tpl-facets">
                   <div><dt>Who</dt><dd>Commons governance, 5 maintainers</dd></div>
-                  <div><dt>Routine</dt><dd>3 of 5, 7 days</dd></div>
-                  <div><dt>Feature</dt><dd>4 of 5, 30 days</dd></div>
-                  <div><dt>Consensus-adjacent</dt><dd>5 of 5, 90 days</dd></div>
-                  <div><dt>Emergency</dt><dd>4 of 5, no review wait</dd></div>
-                  <div><dt>Changing the rules</dt><dd>5 of 5, 180 days</dd></div>
-                  <div><dt>Teams</dt><dd>6 of 7 inside and across</dd></div>
-                  <div><dt>Removal</dt><dd>6 of 7</dd></div>
+                  <div><dt>Routine</dt><dd><span class="tpl-q" title="3 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i><i></i></span><span class="visually-hidden">3 of 5</span><span class="tpl-wait">7 days</span></dd></div>
+                  <div><dt>Feature</dt><dd><span class="tpl-q" title="4 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">4 of 5</span><span class="tpl-wait">30 days</span></dd></div>
+                  <div><dt>Consensus-adjacent</dt><dd><span class="tpl-q" title="5 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i></span><span class="visually-hidden">5 of 5</span><span class="tpl-wait">90 days</span></dd></div>
+                  <div><dt>Emergency</dt><dd><span class="tpl-q" title="4 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">4 of 5</span><span class="tpl-wait">no review wait</span></dd></div>
+                  <div><dt>Changing the rules</dt><dd><span class="tpl-q" title="5 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i></span><span class="visually-hidden">5 of 5</span><span class="tpl-wait">180 days</span></dd></div>
+                  <div><dt>Teams</dt><dd><span class="tpl-q" title="6 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">6 of 7</span><span class="tpl-wait">inside and across</span></dd></div>
+                  <div><dt>Removal</dt><dd><span class="tpl-q" title="6 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">6 of 7</span></dd></div>
                   <div><dt>Appeal</dt><dd>60 days</dd></div>
-                  <div><dt>Quorum</dt><dd>2 of 3</dd></div>
+                  <div><dt>Quorum</dt><dd><span class="tpl-q" title="2 of 3" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">2 of 3</span></dd></div>
                   <div><dt>Public comment</dt><dd>30 days</dd></div>
                 </dl>
                 <div class="tpl-meter"><span>Longest review</span><span class="tpl-bar" aria-hidden="true"><i style="width:49%"></i></span><b>180 days</b></div>
@@ -398,13 +429,13 @@
                 <ul class="tpl-pips" aria-label="On this template"><li><i></i><span>Teams</span></li><li class="is-on"><i></i><span>Removal</span></li><li><i></i><span>Quorum</span></li><li><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
                 <dl class="tpl-facets">
                   <div><dt>Who</dt><dd>Commons governance, 5 maintainers</dd></div>
-                  <div><dt>Routine</dt><dd>2 of 3, 3 days</dd></div>
-                  <div><dt>Feature</dt><dd>3 of 5, 14 days</dd></div>
-                  <div><dt>Consensus-adjacent</dt><dd>4 of 5, 60 days</dd></div>
-                  <div><dt>Emergency</dt><dd>3 of 5, no review wait</dd></div>
-                  <div><dt>Changing the rules</dt><dd>5 of 5, 90 days</dd></div>
+                  <div><dt>Routine</dt><dd><span class="tpl-q" title="2 of 3" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">2 of 3</span><span class="tpl-wait">3 days</span></dd></div>
+                  <div><dt>Feature</dt><dd><span class="tpl-q" title="3 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i><i></i></span><span class="visually-hidden">3 of 5</span><span class="tpl-wait">14 days</span></dd></div>
+                  <div><dt>Consensus-adjacent</dt><dd><span class="tpl-q" title="4 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">4 of 5</span><span class="tpl-wait">60 days</span></dd></div>
+                  <div><dt>Emergency</dt><dd><span class="tpl-q" title="3 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i><i></i></span><span class="visually-hidden">3 of 5</span><span class="tpl-wait">no review wait</span></dd></div>
+                  <div><dt>Changing the rules</dt><dd><span class="tpl-q" title="5 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i></span><span class="visually-hidden">5 of 5</span><span class="tpl-wait">90 days</span></dd></div>
                   <div><dt>Teams</dt><dd>Not used</dd></div>
-                  <div><dt>Removal</dt><dd>5 of 7</dd></div>
+                  <div><dt>Removal</dt><dd><span class="tpl-q" title="5 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i><i></i></span><span class="visually-hidden">5 of 7</span></dd></div>
                   <div><dt>Appeal</dt><dd>30 days</dd></div>
                   <div><dt>Quorum</dt><dd>Not included</dd></div>
                   <div><dt>Public comment</dt><dd>None</dd></div>
@@ -423,15 +454,15 @@
                 <ul class="tpl-pips" aria-label="On this template"><li><i></i><span>Teams</span></li><li class="is-on"><i></i><span>Removal</span></li><li class="is-on"><i></i><span>Quorum</span></li><li class="is-on"><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
                 <dl class="tpl-facets">
                   <div><dt>Who</dt><dd>Commons governance, 5 maintainers</dd></div>
-                  <div><dt>Routine</dt><dd>3 of 5, 7 days</dd></div>
-                  <div><dt>Feature</dt><dd>4 of 5, 30 days</dd></div>
-                  <div><dt>Consensus-adjacent</dt><dd>5 of 5, 90 days</dd></div>
-                  <div><dt>Emergency</dt><dd>4 of 5, no review wait</dd></div>
-                  <div><dt>Changing the rules</dt><dd>5 of 5, 180 days</dd></div>
+                  <div><dt>Routine</dt><dd><span class="tpl-q" title="3 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i><i></i></span><span class="visually-hidden">3 of 5</span><span class="tpl-wait">7 days</span></dd></div>
+                  <div><dt>Feature</dt><dd><span class="tpl-q" title="4 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">4 of 5</span><span class="tpl-wait">30 days</span></dd></div>
+                  <div><dt>Consensus-adjacent</dt><dd><span class="tpl-q" title="5 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i></span><span class="visually-hidden">5 of 5</span><span class="tpl-wait">90 days</span></dd></div>
+                  <div><dt>Emergency</dt><dd><span class="tpl-q" title="4 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">4 of 5</span><span class="tpl-wait">no review wait</span></dd></div>
+                  <div><dt>Changing the rules</dt><dd><span class="tpl-q" title="5 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i></span><span class="visually-hidden">5 of 5</span><span class="tpl-wait">180 days</span></dd></div>
                   <div><dt>Teams</dt><dd>Not used</dd></div>
-                  <div><dt>Removal</dt><dd>6 of 7</dd></div>
+                  <div><dt>Removal</dt><dd><span class="tpl-q" title="6 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">6 of 7</span></dd></div>
                   <div><dt>Appeal</dt><dd>60 days</dd></div>
-                  <div><dt>Quorum</dt><dd>2 of 3</dd></div>
+                  <div><dt>Quorum</dt><dd><span class="tpl-q" title="2 of 3" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">2 of 3</span></dd></div>
                   <div><dt>Public comment</dt><dd>30 days</dd></div>
                   <div><dt>Discussion</dt><dd>Maintainer review, visible to the community</dd></div>
                 </dl>
@@ -449,11 +480,11 @@
                 <ul class="tpl-pips" aria-label="On this template"><li><i></i><span>Teams</span></li><li><i></i><span>Removal</span></li><li><i></i><span>Quorum</span></li><li><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
                 <dl class="tpl-facets">
                   <div><dt>Who</dt><dd>One author, 1 key</dd></div>
-                  <div><dt>Routine</dt><dd>1 of 1, 1 day</dd></div>
-                  <div><dt>Feature</dt><dd>1 of 1, 7 days</dd></div>
-                  <div><dt>Consensus-adjacent</dt><dd>1 of 1, 30 days</dd></div>
-                  <div><dt>Emergency</dt><dd>1 of 1, no review wait</dd></div>
-                  <div><dt>Changing the rules</dt><dd>1 of 1, 90 days</dd></div>
+                  <div><dt>Routine</dt><dd><span class="tpl-q" title="1 of 1" aria-hidden="true"><i class="is-need"></i></span><span class="visually-hidden">1 of 1</span><span class="tpl-wait">1 day</span></dd></div>
+                  <div><dt>Feature</dt><dd><span class="tpl-q" title="1 of 1" aria-hidden="true"><i class="is-need"></i></span><span class="visually-hidden">1 of 1</span><span class="tpl-wait">7 days</span></dd></div>
+                  <div><dt>Consensus-adjacent</dt><dd><span class="tpl-q" title="1 of 1" aria-hidden="true"><i class="is-need"></i></span><span class="visually-hidden">1 of 1</span><span class="tpl-wait">30 days</span></dd></div>
+                  <div><dt>Emergency</dt><dd><span class="tpl-q" title="1 of 1" aria-hidden="true"><i class="is-need"></i></span><span class="visually-hidden">1 of 1</span><span class="tpl-wait">no review wait</span></dd></div>
+                  <div><dt>Changing the rules</dt><dd><span class="tpl-q" title="1 of 1" aria-hidden="true"><i class="is-need"></i></span><span class="visually-hidden">1 of 1</span><span class="tpl-wait">90 days</span></dd></div>
                   <div><dt>Teams</dt><dd>Not used</dd></div>
                   <div><dt>Removal</dt><dd>Not used</dd></div>
                   <div><dt>Appeal</dt><dd>30 days, the form's minimum</dd></div>
@@ -474,11 +505,11 @@
                 <ul class="tpl-pips" aria-label="On this template"><li><i></i><span>Teams</span></li><li><i></i><span>Removal</span></li><li><i></i><span>Quorum</span></li><li><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
                 <dl class="tpl-facets">
                   <div><dt>Who</dt><dd>Maintainer group, 3 maintainers</dd></div>
-                  <div><dt>Routine</dt><dd>1 of 3, 1 day</dd></div>
-                  <div><dt>Feature</dt><dd>1 of 3, 7 days</dd></div>
-                  <div><dt>Consensus-adjacent</dt><dd>1 of 3, 30 days</dd></div>
-                  <div><dt>Emergency</dt><dd>1 of 3, no review wait</dd></div>
-                  <div><dt>Changing the rules</dt><dd>1 of 3, 90 days</dd></div>
+                  <div><dt>Routine</dt><dd><span class="tpl-q" title="1 of 3" aria-hidden="true"><i class="is-need"></i><i></i><i></i></span><span class="visually-hidden">1 of 3</span><span class="tpl-wait">1 day</span></dd></div>
+                  <div><dt>Feature</dt><dd><span class="tpl-q" title="1 of 3" aria-hidden="true"><i class="is-need"></i><i></i><i></i></span><span class="visually-hidden">1 of 3</span><span class="tpl-wait">7 days</span></dd></div>
+                  <div><dt>Consensus-adjacent</dt><dd><span class="tpl-q" title="1 of 3" aria-hidden="true"><i class="is-need"></i><i></i><i></i></span><span class="visually-hidden">1 of 3</span><span class="tpl-wait">30 days</span></dd></div>
+                  <div><dt>Emergency</dt><dd><span class="tpl-q" title="1 of 3" aria-hidden="true"><i class="is-need"></i><i></i><i></i></span><span class="visually-hidden">1 of 3</span><span class="tpl-wait">no review wait</span></dd></div>
+                  <div><dt>Changing the rules</dt><dd><span class="tpl-q" title="1 of 3" aria-hidden="true"><i class="is-need"></i><i></i><i></i></span><span class="visually-hidden">1 of 3</span><span class="tpl-wait">90 days</span></dd></div>
                   <div><dt>Teams</dt><dd>Not used</dd></div>
                   <div><dt>Removal</dt><dd>Not used</dd></div>
                   <div><dt>Appeal</dt><dd>30 days, the form's minimum</dd></div>
@@ -499,11 +530,11 @@
                 <ul class="tpl-pips" aria-label="On this template"><li><i></i><span>Teams</span></li><li><i></i><span>Removal</span></li><li><i></i><span>Quorum</span></li><li><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
                 <dl class="tpl-facets">
                   <div><dt>Who</dt><dd>Maintainer group, 3 maintainers</dd></div>
-                  <div><dt>Routine</dt><dd>2 of 3, 3 days</dd></div>
-                  <div><dt>Feature</dt><dd>2 of 3, 7 days</dd></div>
-                  <div><dt>Consensus-adjacent</dt><dd>2 of 3, 30 days</dd></div>
-                  <div><dt>Emergency</dt><dd>2 of 3, no review wait</dd></div>
-                  <div><dt>Changing the rules</dt><dd>2 of 3, 90 days</dd></div>
+                  <div><dt>Routine</dt><dd><span class="tpl-q" title="2 of 3" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">2 of 3</span><span class="tpl-wait">3 days</span></dd></div>
+                  <div><dt>Feature</dt><dd><span class="tpl-q" title="2 of 3" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">2 of 3</span><span class="tpl-wait">7 days</span></dd></div>
+                  <div><dt>Consensus-adjacent</dt><dd><span class="tpl-q" title="2 of 3" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">2 of 3</span><span class="tpl-wait">30 days</span></dd></div>
+                  <div><dt>Emergency</dt><dd><span class="tpl-q" title="2 of 3" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">2 of 3</span><span class="tpl-wait">no review wait</span></dd></div>
+                  <div><dt>Changing the rules</dt><dd><span class="tpl-q" title="2 of 3" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">2 of 3</span><span class="tpl-wait">90 days</span></dd></div>
                   <div><dt>Teams</dt><dd>Not used</dd></div>
                   <div><dt>Removal</dt><dd>Not used</dd></div>
                   <div><dt>Appeal</dt><dd>30 days, the form's minimum</dd></div>
@@ -524,13 +555,13 @@
                 <ul class="tpl-pips" aria-label="On this template"><li><i></i><span>Teams</span></li><li class="is-on"><i></i><span>Removal</span></li><li><i></i><span>Quorum</span></li><li class="is-on"><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
                 <dl class="tpl-facets">
                   <div><dt>Who</dt><dd>One signing key. A board of 5 for the rules</dd></div>
-                  <div><dt>Routine</dt><dd>1 of 1, 7 days</dd></div>
-                  <div><dt>Feature</dt><dd>1 of 1, 14 days</dd></div>
-                  <div><dt>Consensus-adjacent</dt><dd>3 of 5, 60 days</dd></div>
-                  <div><dt>Emergency</dt><dd>2 of 3, no review wait</dd></div>
-                  <div><dt>Changing the rules</dt><dd>3 of 5, 180 days</dd></div>
+                  <div><dt>Routine</dt><dd><span class="tpl-q" title="1 of 1" aria-hidden="true"><i class="is-need"></i></span><span class="visually-hidden">1 of 1</span><span class="tpl-wait">7 days</span></dd></div>
+                  <div><dt>Feature</dt><dd><span class="tpl-q" title="1 of 1" aria-hidden="true"><i class="is-need"></i></span><span class="visually-hidden">1 of 1</span><span class="tpl-wait">14 days</span></dd></div>
+                  <div><dt>Consensus-adjacent</dt><dd><span class="tpl-q" title="3 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i><i></i></span><span class="visually-hidden">3 of 5</span><span class="tpl-wait">60 days</span></dd></div>
+                  <div><dt>Emergency</dt><dd><span class="tpl-q" title="2 of 3" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">2 of 3</span><span class="tpl-wait">no review wait</span></dd></div>
+                  <div><dt>Changing the rules</dt><dd><span class="tpl-q" title="3 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i><i></i></span><span class="visually-hidden">3 of 5</span><span class="tpl-wait">180 days</span></dd></div>
                   <div><dt>Teams</dt><dd>Not used</dd></div>
-                  <div><dt>Removal</dt><dd>3 of 5</dd></div>
+                  <div><dt>Removal</dt><dd><span class="tpl-q" title="3 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i><i></i></span><span class="visually-hidden">3 of 5</span></dd></div>
                   <div><dt>Appeal</dt><dd>60 days</dd></div>
                   <div><dt>Quorum</dt><dd>Not included</dd></div>
                   <div><dt>Public comment</dt><dd>30 days</dd></div>
@@ -549,13 +580,13 @@
                 <ul class="tpl-pips" aria-label="On this template"><li><i></i><span>Teams</span></li><li class="is-on"><i></i><span>Removal</span></li><li><i></i><span>Quorum</span></li><li class="is-on"><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
                 <dl class="tpl-facets">
                   <div><dt>Who</dt><dd>Maintainer group, 5 maintainers</dd></div>
-                  <div><dt>Routine</dt><dd>3 of 5, 7 days</dd></div>
-                  <div><dt>Feature</dt><dd>4 of 5, 30 days</dd></div>
-                  <div><dt>Consensus-adjacent</dt><dd>5 of 5, 90 days</dd></div>
-                  <div><dt>Emergency</dt><dd>4 of 5, no review wait</dd></div>
-                  <div><dt>Changing the rules</dt><dd>5 of 5, 180 days</dd></div>
+                  <div><dt>Routine</dt><dd><span class="tpl-q" title="3 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i><i></i></span><span class="visually-hidden">3 of 5</span><span class="tpl-wait">7 days</span></dd></div>
+                  <div><dt>Feature</dt><dd><span class="tpl-q" title="4 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">4 of 5</span><span class="tpl-wait">30 days</span></dd></div>
+                  <div><dt>Consensus-adjacent</dt><dd><span class="tpl-q" title="5 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i></span><span class="visually-hidden">5 of 5</span><span class="tpl-wait">90 days</span></dd></div>
+                  <div><dt>Emergency</dt><dd><span class="tpl-q" title="4 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">4 of 5</span><span class="tpl-wait">no review wait</span></dd></div>
+                  <div><dt>Changing the rules</dt><dd><span class="tpl-q" title="5 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i></span><span class="visually-hidden">5 of 5</span><span class="tpl-wait">180 days</span></dd></div>
                   <div><dt>Teams</dt><dd>Not used</dd></div>
-                  <div><dt>Removal</dt><dd>6 of 7</dd></div>
+                  <div><dt>Removal</dt><dd><span class="tpl-q" title="6 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">6 of 7</span></dd></div>
                   <div><dt>Appeal</dt><dd>60 days</dd></div>
                   <div><dt>Quorum</dt><dd>Not included</dd></div>
                   <div><dt>Public comment</dt><dd>30 days</dd></div>
@@ -574,15 +605,15 @@
                 <ul class="tpl-pips" aria-label="On this template"><li class="is-on"><i></i><span>Teams</span></li><li class="is-on"><i></i><span>Removal</span></li><li class="is-on"><i></i><span>Quorum</span></li><li class="is-on"><i></i><span>Comment</span></li><li><i></i><span>Gate</span></li></ul>
                 <dl class="tpl-facets">
                   <div><dt>Who</dt><dd>Commons governance, 7 maintainers</dd></div>
-                  <div><dt>Routine</dt><dd>2 of 3, 3 days</dd></div>
-                  <div><dt>Feature</dt><dd>3 of 5, 14 days</dd></div>
-                  <div><dt>Consensus-adjacent</dt><dd>6 of 7, 180 days</dd></div>
-                  <div><dt>Emergency</dt><dd>4 of 7, no review wait</dd></div>
-                  <div><dt>Changing the rules</dt><dd>7 of 7, 365 days</dd></div>
-                  <div><dt>Teams</dt><dd>6 of 7 inside and across</dd></div>
-                  <div><dt>Removal</dt><dd>7 of 7</dd></div>
+                  <div><dt>Routine</dt><dd><span class="tpl-q" title="2 of 3" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">2 of 3</span><span class="tpl-wait">3 days</span></dd></div>
+                  <div><dt>Feature</dt><dd><span class="tpl-q" title="3 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i><i></i></span><span class="visually-hidden">3 of 5</span><span class="tpl-wait">14 days</span></dd></div>
+                  <div><dt>Consensus-adjacent</dt><dd><span class="tpl-q" title="6 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">6 of 7</span><span class="tpl-wait">180 days</span></dd></div>
+                  <div><dt>Emergency</dt><dd><span class="tpl-q" title="4 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i><i></i><i></i></span><span class="visually-hidden">4 of 7</span><span class="tpl-wait">no review wait</span></dd></div>
+                  <div><dt>Changing the rules</dt><dd><span class="tpl-q" title="7 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i></span><span class="visually-hidden">7 of 7</span><span class="tpl-wait">365 days</span></dd></div>
+                  <div><dt>Teams</dt><dd><span class="tpl-q" title="6 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">6 of 7</span><span class="tpl-wait">inside and across</span></dd></div>
+                  <div><dt>Removal</dt><dd><span class="tpl-q" title="7 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i></span><span class="visually-hidden">7 of 7</span></dd></div>
                   <div><dt>Appeal</dt><dd>90 days</dd></div>
-                  <div><dt>Quorum</dt><dd>2 of 3</dd></div>
+                  <div><dt>Quorum</dt><dd><span class="tpl-q" title="2 of 3" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">2 of 3</span></dd></div>
                   <div><dt>Public comment</dt><dd>30 days</dd></div>
                 </dl>
                 <div class="tpl-meter"><span>Longest review</span><span class="tpl-bar" aria-hidden="true"><i style="width:100%"></i></span><b>365 days</b></div>
@@ -599,15 +630,15 @@
                 <ul class="tpl-pips" aria-label="On this template"><li class="is-on"><i></i><span>Teams</span></li><li class="is-on"><i></i><span>Removal</span></li><li class="is-on"><i></i><span>Quorum</span></li><li class="is-on"><i></i><span>Comment</span></li><li class="is-on"><i></i><span>Gate</span></li></ul>
                 <dl class="tpl-facets">
                   <div><dt>Who</dt><dd>Commons governance, 5 maintainers</dd></div>
-                  <div><dt>Routine</dt><dd>3 of 5, 7 days</dd></div>
-                  <div><dt>Feature</dt><dd>4 of 5, 30 days</dd></div>
-                  <div><dt>Consensus-adjacent</dt><dd>5 of 5, 90 days</dd></div>
-                  <div><dt>Emergency</dt><dd>4 of 5, no review wait</dd></div>
-                  <div><dt>Changing the rules</dt><dd>5 of 5, 180 days</dd></div>
-                  <div><dt>Teams</dt><dd>6 of 7 inside and across</dd></div>
-                  <div><dt>Removal</dt><dd>6 of 7</dd></div>
+                  <div><dt>Routine</dt><dd><span class="tpl-q" title="3 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i><i></i></span><span class="visually-hidden">3 of 5</span><span class="tpl-wait">7 days</span></dd></div>
+                  <div><dt>Feature</dt><dd><span class="tpl-q" title="4 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">4 of 5</span><span class="tpl-wait">30 days</span></dd></div>
+                  <div><dt>Consensus-adjacent</dt><dd><span class="tpl-q" title="5 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i></span><span class="visually-hidden">5 of 5</span><span class="tpl-wait">90 days</span></dd></div>
+                  <div><dt>Emergency</dt><dd><span class="tpl-q" title="4 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">4 of 5</span><span class="tpl-wait">no review wait</span></dd></div>
+                  <div><dt>Changing the rules</dt><dd><span class="tpl-q" title="5 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i></span><span class="visually-hidden">5 of 5</span><span class="tpl-wait">180 days</span></dd></div>
+                  <div><dt>Teams</dt><dd><span class="tpl-q" title="6 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">6 of 7</span><span class="tpl-wait">inside and across</span></dd></div>
+                  <div><dt>Removal</dt><dd><span class="tpl-q" title="6 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">6 of 7</span></dd></div>
                   <div><dt>Appeal</dt><dd>60 days</dd></div>
-                  <div><dt>Quorum</dt><dd>2 of 3</dd></div>
+                  <div><dt>Quorum</dt><dd><span class="tpl-q" title="2 of 3" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i></i></span><span class="visually-hidden">2 of 3</span></dd></div>
                   <div><dt>Public comment</dt><dd>30 days</dd></div>
                   <div><dt>Economic gate</dt><dd>Designer's minimums</dd></div>
                 </dl>
@@ -623,8 +654,9 @@
               <div class="fork-tool-header">
                 <h3>Customize Governance Ruleset</h3>
                 <p>
-                  Adjust parameters below to create your custom governance
-                  model. All changes maintain Bitcoin consensus compatibility.
+                  An orange dot is a key that must sign. A gray dot is another
+                  key in that set. The list on the right follows these choices.
+                  The ruleset file is under that list.
                 </p>
                 <div
                   style="
@@ -659,28 +691,21 @@
               </div>
 
               <div class="fork-tool-content">
-                <div
-                  class="fork-parameters"
-                  style="
-                    max-height: 80vh;
-                    overflow-y: auto;
-                    padding-right: 1rem;
-                  "
-                >
+                <div class="fork-parameters">
                   <!-- Action Tiers Section -->
                   <div class="parameter-section" data-section="action-tiers">
                     <h3
                       class="section-header"
                       onclick="toggleSection('action-tiers')"
                     >
-                      <span>📋 Action Tiers</span>
+                      <span>Action tiers</span>
                       <span class="section-toggle">▼</span>
                     </h3>
                     <div class="section-content" id="action-tiers-content">
                       <div class="parameter-group">
-                        <h4>Tier 1: Routine Maintenance</h4>
+                        <h4>Routine</h4>
                         <div class="parameter-control">
-                          <label>Signature Threshold</label>
+                          <label>Keys</label>
                           <select id="tier1-signatures" class="param-select">
                             <option value="1-of-1">1-of-1</option>
                             <option value="1-of-3">1-of-3</option>
@@ -706,9 +731,9 @@
                       </div>
 
                       <div class="parameter-group">
-                        <h4>Tier 2: Feature Changes</h4>
+                        <h4>Feature</h4>
                         <div class="parameter-control">
-                          <label>Signature Threshold</label>
+                          <label>Keys</label>
                           <select id="tier2-signatures" class="param-select">
                             <option value="1-of-1">1-of-1</option>
                             <option value="1-of-3">1-of-3</option>
@@ -734,9 +759,9 @@
                       </div>
 
                       <div class="parameter-group">
-                        <h4>Tier 3: Consensus-Adjacent</h4>
+                        <h4>Consensus-adjacent</h4>
                         <div class="parameter-control">
-                          <label>Signature Threshold</label>
+                          <label>Keys</label>
                           <select id="tier3-signatures" class="param-select">
                             <option value="1-of-1">1-of-1</option>
                             <option value="1-of-3">1-of-3</option>
@@ -763,9 +788,9 @@
                       </div>
 
                       <div class="parameter-group">
-                        <h4>Tier 4: Emergency Actions</h4>
+                        <h4>Emergency</h4>
                         <div class="parameter-control">
-                          <label>Signature Threshold</label>
+                          <label>Keys</label>
                           <select id="tier4-signatures" class="param-select">
                             <option value="1-of-1">1-of-1</option>
                             <option value="1-of-3">1-of-3</option>
@@ -792,9 +817,9 @@
                       </div>
 
                       <div class="parameter-group">
-                        <h4>Tier 5: Governance Changes</h4>
+                        <h4>Changing the rules</h4>
                         <div class="parameter-control">
-                          <label>Signature Threshold</label>
+                          <label>Keys</label>
                           <select id="tier5-signatures" class="param-select">
                             <option value="1-of-1">1-of-1</option>
                             <option value="1-of-3">1-of-3</option>
@@ -910,7 +935,7 @@
                   <!-- Nested Multisig Teams Section -->
                   <div class="parameter-section" data-section="teams">
                     <h3 class="section-header" onclick="toggleSection('teams')">
-                      <span>👥 Nested Multisig Teams</span>
+                      <span>Teams</span>
                       <span class="section-toggle">▼</span>
                     </h3>
                     <div
@@ -986,7 +1011,7 @@
                       class="section-header"
                       onclick="toggleSection('governance-review')"
                     >
-                      <span>⚖️ Governance Review Policy</span>
+                      <span>Review</span>
                       <span class="section-toggle">▼</span>
                     </h3>
                     <div
@@ -1096,7 +1121,7 @@
                       class="section-header"
                       onclick="toggleSection('repositories')"
                     >
-                      <span>📦 Repository Selection</span>
+                      <span>Repositories</span>
                       <span class="section-toggle">▼</span>
                     </h3>
                     <div class="section-content" id="repositories-content">
@@ -1274,23 +1299,12 @@
                     </div>
                   </div>
 
-                  <h4>Ruleset Preview</h4>
-                  <p
-                    style="
-                      color: var(--text-secondary);
-                      font-size: 0.9rem;
-                      margin-bottom: 1.25rem;
-                      line-height: 1.6;
-                    "
-                  >
-                    Your custom governance ruleset will appear below. Adjust the
-                    parameters on the left to see changes in real-time.
-                  </p>
-                  <div class="preview-content">
-                    <pre id="ruleset-preview" class="ruleset-preview-code">
-Loading preview...</pre
-                    >
-                  </div>
+                  <h4>This ruleset</h4>
+                  <ul class="rules-read" id="rules-read"></ul>
+                  <details class="rules-raw">
+                    <summary>Ruleset file</summary>
+                    <pre id="ruleset-preview" class="ruleset-preview-code">Loading preview...</pre>
+                  </details>
                   <div class="fork-actions">
                     <button id="export-yaml" class="btn btn-primary">
                       Export as YAML
@@ -1592,6 +1606,81 @@ Loading preview...</pre
           });
         }
 
+        function quorumCell(raw) {
+          var text = String(raw == null ? "" : raw).trim();
+          var pair = text.match(/(\d+)\s*(?:-| )of(?:-| )(\d+)/i);
+          if (!pair) return text ? text.replace(/</g, "") : "N/A";
+          var need = parseInt(pair[1], 10);
+          var total = parseInt(pair[2], 10);
+          if (!(need >= 1 && total >= need && total <= 12)) return text.replace(/</g, "");
+          var dots = "";
+          for (var i = 0; i < total; i++) dots += "<i" + (i < need ? ' class="is-need"' : "") + "></i>";
+          var rest = text.replace(pair[0], "").replace(/\s*\(Default\)\s*/gi, "").replace(/^[\s,:-]+|[\s,:-]+$/g, "");
+          return '<span class="tpl-q" title="' + need + " of " + total + '">' + dots + "</span>" +
+            '<span class="visually-hidden">' + need + " of " + total + "</span>" +
+            (rest ? '<span class="tpl-wait">' + rest.replace(/</g, "") + "</span>" : "");
+        }
+
+        function selectedLabel(id) {
+          var sel = document.getElementById(id);
+          if (!sel || sel.selectedIndex < 0) return "";
+          return sel.options[sel.selectedIndex].text.replace(/\s*\(Default\)\s*/gi, "").trim();
+        }
+
+        function paintQuorums(ruleset) {
+          [
+            "tier1-signatures", "tier2-signatures", "tier3-signatures", "tier4-signatures", "tier5-signatures",
+            "teams-mode", "quorum-mode", "review-private-warning", "review-public-warning", "review-removal"
+          ].forEach(function (id) {
+            var sel = document.getElementById(id);
+            if (!sel || !sel.parentElement) return;
+            var read = sel.parentElement.querySelector(".sig-read");
+            if (!read) {
+              read = document.createElement("span");
+              read.className = "sig-read";
+              sel.insertAdjacentElement("afterend", read);
+            }
+            read.innerHTML = quorumCell(selectedLabel(id));
+          });
+          var list = document.getElementById("rules-read");
+          if (!list || !ruleset) return;
+          function waitLabel(days) {
+            var n = parseInt(days, 10);
+            if (n === 0) return "no review wait";
+            return n === 1 ? "1 day" : n + " days";
+          }
+          function row(label, body) {
+            return "<li><b>" + label + "</b><span>" + body + "</span></li>";
+          }
+          var tiers = [
+            ["Routine", ruleset.action_tiers.tier_1_routine],
+            ["Feature", ruleset.action_tiers.tier_2_features],
+            ["Consensus-adjacent", ruleset.action_tiers.tier_3_consensus_adjacent],
+            ["Emergency", ruleset.action_tiers.tier_4_emergency],
+            ["Changing the rules", ruleset.action_tiers.tier_5_governance]
+          ];
+          var html = "";
+          tiers.forEach(function (pair) {
+            var t = pair[1];
+            html += row(pair[0], quorumCell(t.signatures.required + " of " + t.signatures.total) + ' <span class="tpl-wait">' + waitLabel(t.review_period_days) + "</span>");
+          });
+          var teams = ruleset.nested_multisig_teams;
+          if (!teams || !teams.used) html += row("Teams", "Not used");
+          else {
+            html += row("Inside a team", quorumCell(teams.team_consensus.threshold_per_team + " of " + teams.team_consensus.total_per_team));
+            html += row("Across teams", quorumCell(teams.inter_team_consensus.threshold_teams + " of " + teams.inter_team_consensus.total_teams));
+          }
+          html += row("Private warning", quorumCell(selectedLabel("review-private-warning")));
+          html += row("Public warning", quorumCell(selectedLabel("review-public-warning")));
+          html += row("Removal", quorumCell(selectedLabel("review-removal")));
+          html += row("Quorum", quorumCell(selectedLabel("quorum-mode")));
+          var comment = document.getElementById("public-comment");
+          html += row("Comment", !comment || comment.value === "0" ? "None" : comment.value + " days");
+          var gate = document.getElementById("commons-gate");
+          html += row("Gate", gate && gate.value === "defaults" ? "Designer's minimums" : "Not used");
+          list.innerHTML = html;
+        }
+
         // Fork Governance Tool - Updated to Version 2.0 with all dimensions
         function updateRulesetPreview() {
           const ruleset = {
@@ -1813,6 +1902,7 @@ Loading preview...</pre
           applySectionModes();
           document.getElementById("ruleset-preview").textContent =
             JSON.stringify(ruleset, null, 2);
+          paintQuorums(ruleset);
           return ruleset;
         }
 
@@ -2493,32 +2583,32 @@ Loading preview...</pre
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><strong>Tier 1: Signature Threshold</strong></td>
-                                    <td>${t1.tier1.signatures}</td>
-                                    <td>${t2.tier1.signatures}</td>
+                                    <td><strong>Routine</strong></td>
+                                    <td>${quorumCell(t1.tier1.signatures)}</td>
+                                    <td>${quorumCell(t2.tier1.signatures)}</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Tier 1: Review Period</strong></td>
+                                    <td><strong>Routine wait</strong></td>
                                     <td>${t1.tier1.review} days</td>
                                     <td>${t2.tier1.review} days</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Tier 2: Signature Threshold</strong></td>
-                                    <td>${t1.tier2.signatures}</td>
-                                    <td>${t2.tier2.signatures}</td>
+                                    <td><strong>Feature</strong></td>
+                                    <td>${quorumCell(t1.tier2.signatures)}</td>
+                                    <td>${quorumCell(t2.tier2.signatures)}</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Tier 2: Review Period</strong></td>
+                                    <td><strong>Feature wait</strong></td>
                                     <td>${t1.tier2.review} days</td>
                                     <td>${t2.tier2.review} days</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Tier 3: Signature Threshold</strong></td>
-                                    <td>${t1.tier3.signatures}</td>
-                                    <td>${t2.tier3.signatures}</td>
+                                    <td><strong>Consensus-adjacent</strong></td>
+                                    <td>${quorumCell(t1.tier3.signatures)}</td>
+                                    <td>${quorumCell(t2.tier3.signatures)}</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Tier 3: Review Period</strong></td>
+                                    <td><strong>Consensus-adjacent wait</strong></td>
                                     <td>${t1.tier3.review} days</td>
                                     <td>${t2.tier3.review} days</td>
                                 </tr>
@@ -2821,13 +2911,13 @@ Loading preview...</pre
                             </div>
                             <p class="fork-description">${fork.description || "No description available"}</p>
                             <div class="fork-features">
-                                ${fork.tier1 ? `<span class="feature-tag">Tier 1: ${fork.tier1}</span>` : ""}
-                                ${fork.tier2 ? `<span class="feature-tag">Tier 2: ${fork.tier2}</span>` : ""}
-                                ${fork.tier3 ? `<span class="feature-tag">Tier 3: ${fork.tier3}</span>` : ""}
-                                ${fork.teams ? `<span class="feature-tag">Teams: ${fork.teams}</span>` : ""}
-                                ${fork.removal ? `<span class="feature-tag">Removal: ${fork.removal === "off" ? "not used" : fork.removal}</span>` : ""}
-                                ${fork.quorum ? `<span class="feature-tag">Quorum: ${fork.quorum}</span>` : ""}
-                                ${fork.public_comment_days === 0 ? `<span class="feature-tag">Public comment: none</span>` : fork.public_comment_days ? `<span class="feature-tag">Public comment: ${fork.public_comment_days} days</span>` : ""}
+                                ${fork.tier1 ? `<span class="feature-tag"><span class="feature-k">Routine</span> ${quorumCell(fork.tier1)}${fork.tier1_review != null ? ` <span class="tpl-wait">${fork.tier1_review === 0 ? "no review wait" : fork.tier1_review + " days"}</span>` : ""}</span>` : ""}
+                                ${fork.tier2 ? `<span class="feature-tag"><span class="feature-k">Feature</span> ${quorumCell(fork.tier2)}${fork.tier2_review != null ? ` <span class="tpl-wait">${fork.tier2_review === 0 ? "no review wait" : fork.tier2_review + " days"}</span>` : ""}</span>` : ""}
+                                ${fork.tier3 ? `<span class="feature-tag"><span class="feature-k">Consensus-adjacent</span> ${quorumCell(fork.tier3)}${fork.tier3_review != null ? ` <span class="tpl-wait">${fork.tier3_review === 0 ? "no review wait" : fork.tier3_review + " days"}</span>` : ""}</span>` : ""}
+                                ${fork.teams ? `<span class="feature-tag"><span class="feature-k">Teams</span> ${quorumCell(fork.teams)}</span>` : ""}
+                                ${fork.removal ? `<span class="feature-tag"><span class="feature-k">Removal</span> ${quorumCell(fork.removal === "off" ? "not used" : fork.removal)}</span>` : ""}
+                                ${fork.quorum ? `<span class="feature-tag"><span class="feature-k">Quorum</span> ${quorumCell(fork.quorum)}</span>` : ""}
+                                ${fork.public_comment_days === 0 ? `<span class="feature-tag"><span class="feature-k">Comment</span> none</span>` : fork.public_comment_days ? `<span class="feature-tag"><span class="feature-k">Comment</span> ${fork.public_comment_days} days</span>` : ""}
                             </div>
                             <button class="btn ${isDefault ? "btn-outline" : "btn-primary"} fork-btn" data-fork="${fork.id}">${isDefault ? "View Details" : "Fork This"}</button>
                         </div>
@@ -3081,51 +3171,51 @@ Loading preview...</pre
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>Tier 1: Signature Threshold</strong></td>
-                                <td>${fork1.tier1 || "N/A"}</td>
-                                <td>${fork2.tier1 || "N/A"}</td>
+                                <td><strong>Routine</strong></td>
+                                <td>${quorumCell(fork1.tier1)}</td>
+                                <td>${quorumCell(fork2.tier1)}</td>
                                 <td class="diff-cell">${calculateDiff(fork1.tier1 || "N/A", fork2.tier1 || "N/A", "signature", fork1Name, fork2Name)}</td>
                             </tr>
                             <tr>
-                                <td><strong>Tier 1: Review Period</strong></td>
+                                <td><strong>Routine wait</strong></td>
                                 <td>${fork1.tier1_review || "N/A"} days</td>
                                 <td>${fork2.tier1_review || "N/A"} days</td>
                                 <td class="diff-cell">${calculateDiff(fork1.tier1_review || "N/A", fork2.tier1_review || "N/A", "number")} ${fork1.tier1_review && fork2.tier1_review && fork1.tier1_review !== fork2.tier1_review ? "days" : ""}</td>
                             </tr>
                             <tr>
-                                <td><strong>Tier 2: Signature Threshold</strong></td>
-                                <td>${fork1.tier2 || "N/A"}</td>
-                                <td>${fork2.tier2 || "N/A"}</td>
+                                <td><strong>Feature</strong></td>
+                                <td>${quorumCell(fork1.tier2)}</td>
+                                <td>${quorumCell(fork2.tier2)}</td>
                                 <td class="diff-cell">${calculateDiff(fork1.tier2 || "N/A", fork2.tier2 || "N/A", "signature", fork1Name, fork2Name)}</td>
                             </tr>
                             <tr>
-                                <td><strong>Tier 2: Review Period</strong></td>
+                                <td><strong>Feature wait</strong></td>
                                 <td>${fork1.tier2_review || "N/A"} days</td>
                                 <td>${fork2.tier2_review || "N/A"} days</td>
                                 <td class="diff-cell">${calculateDiff(fork1.tier2_review || "N/A", fork2.tier2_review || "N/A", "number")} ${fork1.tier2_review && fork2.tier2_review && fork1.tier2_review !== fork2.tier2_review ? "days" : ""}</td>
                             </tr>
                             <tr>
-                                <td><strong>Tier 3: Signature Threshold</strong></td>
-                                <td>${fork1.tier3 || "N/A"}</td>
-                                <td>${fork2.tier3 || "N/A"}</td>
+                                <td><strong>Consensus-adjacent</strong></td>
+                                <td>${quorumCell(fork1.tier3)}</td>
+                                <td>${quorumCell(fork2.tier3)}</td>
                                 <td class="diff-cell">${calculateDiff(fork1.tier3 || "N/A", fork2.tier3 || "N/A", "signature", fork1Name, fork2Name)}</td>
                             </tr>
                             <tr>
-                                <td><strong>Tier 3: Review Period</strong></td>
+                                <td><strong>Consensus-adjacent wait</strong></td>
                                 <td>${fork1.tier3_review || "N/A"} days</td>
                                 <td>${fork2.tier3_review || "N/A"} days</td>
                                 <td class="diff-cell">${calculateDiff(fork1.tier3_review || "N/A", fork2.tier3_review || "N/A", "number")} ${fork1.tier3_review && fork2.tier3_review && fork1.tier3_review !== fork2.tier3_review ? "days" : ""}</td>
                             </tr>
                             <tr>
                                 <td><strong>Teams</strong></td>
-                                <td>${fork1.teams || "N/A"}</td>
-                                <td>${fork2.teams || "N/A"}</td>
+                                <td>${quorumCell(fork1.teams)}</td>
+                                <td>${quorumCell(fork2.teams)}</td>
                                 <td class="diff-cell">${calculateDiff(fork1.teams || "N/A", fork2.teams || "N/A", "text")}</td>
                             </tr>
                             <tr>
                                 <td><strong>Removal</strong></td>
-                                <td>${fork1.removal || "N/A"}</td>
-                                <td>${fork2.removal || "N/A"}</td>
+                                <td>${quorumCell(fork1.removal === "off" ? "not used" : fork1.removal)}</td>
+                                <td>${quorumCell(fork2.removal === "off" ? "not used" : fork2.removal)}</td>
                                 <td class="diff-cell">${calculateDiff(fork1.removal || "N/A", fork2.removal || "N/A", "signature", fork1Name, fork2Name)}</td>
                             </tr>
                             <tr>
@@ -3136,8 +3226,8 @@ Loading preview...</pre
                             </tr>
                             <tr>
                                 <td><strong>Quorum</strong></td>
-                                <td>${fork1.quorum || "N/A"}</td>
-                                <td>${fork2.quorum || "N/A"}</td>
+                                <td>${quorumCell(fork1.quorum)}</td>
+                                <td>${quorumCell(fork2.quorum)}</td>
                                 <td class="diff-cell">${calculateDiff(fork1.quorum || "N/A", fork2.quorum || "N/A", "text")}</td>
                             </tr>
                             <tr>
@@ -3291,9 +3381,9 @@ Loading preview...</pre
                                 </div>
                                 <p class="genealogy-node-desc">${fork.description || "No description"}</p>
                                 <div class="genealogy-node-details">
-                                    <span class="genealogy-detail">T1: ${fork.tier1 || "N/A"}</span>
-                                    <span class="genealogy-detail">T2: ${fork.tier2 || "N/A"}</span>
-                                    <span class="genealogy-detail">T3: ${fork.tier3 || "N/A"}</span>
+                                    <span class="genealogy-detail"><span class="feature-k">Routine</span> ${quorumCell(fork.tier1)}</span>
+                                    <span class="genealogy-detail"><span class="feature-k">Feature</span> ${quorumCell(fork.tier2)}</span>
+                                    <span class="genealogy-detail"><span class="feature-k">Consensus-adjacent</span> ${quorumCell(fork.tier3)}</span>
                                     ${fork.created_by ? `<span class="genealogy-detail">By: ${fork.created_by}</span>` : ""}
                                 </div>
                                 ${fork.github ? `<a href="${fork.github}" target="_blank" class="genealogy-link">View on GitHub →</a>` : ""}
