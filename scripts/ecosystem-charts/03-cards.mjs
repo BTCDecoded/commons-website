@@ -247,6 +247,17 @@ export default {
                 "<div><dt>Assurance</dt><dd>" + esc(a.score + " of " + a.max) + "</dd></div>" +
                 "<div><dt>Accountability</dt><dd>" + esc(r.accountability.label) + "</dd></div>" +
                 "</dl><script type=\"application/json\" class=\"eco-axes\">" + axesData + "</script>";
+            const read = r.reading || { label: "Not classified", detail: "", basis: "", written: "", quorum: "" };
+            const govLead = r.internal
+                ? "On this reading only BLVM uses the written Commons rules."
+                : read.label.indexOf("Not classified") === 0
+                    ? "Not classified means this reading did not assign a label."
+                    : "This implementation keeps its own governance.";
+            const govRows = [["Label", read.label], ["This reading", read.detail], ["Basis", read.basis], ["Written rule", read.written], ["Quorum", read.quorum]]
+                .filter(function (pair) { return pair[1]; })
+                .map(function (pair) { return "<div><dt>" + pair[0] + "</dt><dd>" + esc(pair[1]) + "</dd></div>"; })
+                .join("");
+            const govRead = "<section class=\"eco-govread\"><h4>Governance</h4><p>" + govLead + "</p><dl>" + govRows + "</dl><p class=\"eco-govread-note\">The article's form scores are judgments of a form. This reading does not copy them onto the project. <a href=\"#forms\">Forms</a></p></section>";
             return "<article class=\"eco-card" + (r.internal ? " internal" : "") + "\" id=\"" + id + "\" aria-labelledby=\"" + id + "-h\">" +
                 pickBits +
                 "<h3 id=\"" + id + "-h\">" + esc(r.name) + "</h3>" +
@@ -255,6 +266,7 @@ export default {
                 emblem +
                 "<div class=\"eco-meta\">" + releaseBadge + badgeRow + "</div>" +
                 profile +
+                govRead +
                 "</div>" +
                 charts +
                 fold("eco-onchart-fold", "On the charts",
@@ -290,7 +302,7 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-            caption: "The card leads with the rank, the release, and the three scores, then the charts. Selecting a chart opens it with its labels and values. Language, license, and age, when this page states them, are badges on the card. A hatched spoke is not measured, and it is not drawn as zero. A count that is not measured is left off the card. When none of the five comparisons is measured, that chart is left off the card.",
+            caption: "The card leads with the rank, the release, and the three scores, then this page's governance reading, then the charts. The reading is the label, the detail, and the basis. BLVM's reading includes the written rule and the governance-node quorum. Not classified means this reading did not assign a label. The article's form scores are not copied onto the project. Selecting a chart opens it with its labels and values. Language, license, and age, when this page states them, are badges on the card. A hatched spoke is not measured, and it is not drawn as zero. A count that is not measured is left off the card. When none of the five comparisons is measured, that chart is left off the card.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),

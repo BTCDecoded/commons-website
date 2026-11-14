@@ -530,6 +530,13 @@ function buildModel() {
             slug: r.slug, name: r.name, internal: r.slug === data.internal_slug,
             lineage: lineage,
             accountability: acc ? { rank: acc.rank, label: acc.label, full: g.label, detail: g.detail } : { rank: null, label: "Not classified", full: g ? g.label : "Not classified", detail: g ? g.detail : "" },
+            reading: {
+                label: g ? g.label : "Not classified",
+                detail: g && g.detail ? g.detail : "",
+                basis: g && g.basis ? g.basis : "",
+                written: r.slug === data.internal_slug && data.written_rule ? data.written_rule.text : "",
+                quorum: r.slug === data.internal_slug ? (data.governance.quorum || "") : ""
+            },
             assurance: { cells: cells, score: score, max: max, pct: Math.round(100 * score / max) },
             size: t ? t.values.implementation_code : { value: null, text: "not measured", status: "not-measured" },
             shallow: t ? !!t.shallow : null,
