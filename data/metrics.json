@@ -15,7 +15,9 @@
     "ci_jobs": "GitHub Actions jobs at the pin, expanding a static matrix of lists (an include-only matrix is just the include rows, not one implicit job plus those rows; minus exclude/). A fromJSON(needs.job.outputs.x) matrix is expanded when the default non-PR value is written in the same workflow (suite=all, schedule/push flavors and arches, default mutant PARTS) or when the producer reads this tree's fuzz/Cargo.toml [[bin]] list. Unquoted run: scalars that break PyYAML are quoted and retried. If a matrix still cannot be expanded or a file still fails to parse, the cell is partial and the value is a lower bound.",
     "plugin_system": "yes / no / partial from the pinned tree's docs. own-team optional modules and independently maintained modules; not found when no source.",
     "blvm_size": "Default node first-party crates plus blvm-sdk (blvm-storage-fence lives in the node tree; blvm-sdk-macros lives in the sdk tree). blvm-spec-lock non-test lines are tooling. Tests include spec-lock tests. Same tokei 14 and #[cfg(test)] rules as test_split.",
-    "release_lines_12m": "A release series is a version series whose first tag that is not a release candidate falls in 2025-11-12 to 2026-11-12. At version 1 and above, the series is the major number: 31 and 32 are series, and 31.1 is the same series as 31.0. Before 1.0, the series is 0.y: 0.1.92 is the same series as 0.1.1. A release candidate, a name containing /, a name that does not start with v or V, and a name ending in -final are not a series. Dates are the GitHub tagger date for an annotated tag and the commit date for a lightweight tag, read 2026-11-14."
+    "release_lines_12m": "A release series is a version series whose first tag that is not a release candidate falls in 2025-11-12 to 2026-11-12. At version 1 and above, the series is the major number: 31 and 32 are series, and 31.1 is the same series as 31.0. Before 1.0, the series is 0.y: 0.1.92 is the same series as 0.1.1. A release candidate, a name containing /, a name that does not start with v or V, and a name ending in -final are not a series. Dates are the GitHub tagger date for an annotated tag and the commit date for a lightweight tag, read 2026-11-14.",
+    "shipped_12m": "Shipped releases in 2025-11-12 to 2026-11-12. A shipped release starts with v or V and contains a version. A release candidate, a name containing /, and a name ending in -final are not shipped. Dates are the GitHub tagger date for an annotated tag and the commit date for a lightweight tag, read 2026-11-14. This is not the tagged-release count: that count uses creatordate and keeps release candidates.",
+    "release_year": "Percent of a maintained release year. Series fit is 0 when there is no release series, 1 when there are 1 or 2, and 2 divided by the series count when there are more. Shipment fill is the shipped-release count divided by 13, and it stops at 1. 13 is Bitcoin Core's shipped-release count in this window, the tree whose lifecycle states a major every 6 to 7 months. The year is the series fit times the shipment fill, rounded to the nearest percent. A count past 13 does not raise it."
   },
   "rows": [
     {
@@ -182,6 +184,18 @@
         "text": "1",
         "status": "measured",
         "note": "1 release series: 0.1, first tag v0.1.1 on 2026-05-06. Later 0.1 patches are the same series."
+      },
+      "shipped_12m": {
+        "value": 88,
+        "text": "88",
+        "status": "measured",
+        "note": "88 shipped releases in the window, on the same tag rules as the release series."
+      },
+      "release_year": {
+        "value": 100,
+        "text": "100%",
+        "status": "measured",
+        "note": "Series fit 1 from 1 series. Shipment fill 13/13. Year 100%."
       }
     },
     {
@@ -289,6 +303,18 @@
         "text": "2",
         "status": "measured",
         "note": "2 release series: 31, first tag v31.0 on 2026-04-15; 32, first tag v32.0 on 2026-10-21. Maintenance tags and vN-final markers are not release series."
+      },
+      "shipped_12m": {
+        "value": 13,
+        "text": "13",
+        "status": "measured",
+        "note": "13 shipped releases in the window, on the same tag rules as the release series."
+      },
+      "release_year": {
+        "value": 100,
+        "text": "100%",
+        "status": "measured",
+        "note": "Series fit 1 from 2 series. Shipment fill 13/13. Year 100%."
       }
     },
     {
@@ -396,6 +422,18 @@
         "text": "1",
         "status": "measured",
         "note": "1 release series: 29, first tag V29.3.0.20260920 on 2026-09-20."
+      },
+      "shipped_12m": {
+        "value": 1,
+        "text": "1",
+        "status": "measured",
+        "note": "1 shipped releases in the window, on the same tag rules as the release series."
+      },
+      "release_year": {
+        "value": 8,
+        "text": "8%",
+        "status": "measured",
+        "note": "Series fit 1 from 1 series. Shipment fill 1/13. Year 8%."
       }
     },
     {
@@ -503,6 +541,18 @@
         "text": "1",
         "status": "measured",
         "note": "1 release series: 3, first tag V3.0 on 2026-09-20. V3.1 is the same series."
+      },
+      "shipped_12m": {
+        "value": 2,
+        "text": "2",
+        "status": "measured",
+        "note": "2 shipped releases in the window, on the same tag rules as the release series."
+      },
+      "release_year": {
+        "value": 15,
+        "text": "15%",
+        "status": "measured",
+        "note": "Series fit 1 from 1 series. Shipment fill 2/13. Year 15%."
       }
     },
     {
@@ -610,6 +660,18 @@
         "text": "3",
         "status": "measured",
         "note": "3 release series: 29, first tag v29.3.knots20260507 on 2026-09-08; 30, first tag v30.3-roots.1 on 2026-10-08; 31, first tag v31.1-roots.1 on 2026-10-13."
+      },
+      "shipped_12m": {
+        "value": 13,
+        "text": "13",
+        "status": "measured",
+        "note": "13 shipped releases in the window, on the same tag rules as the release series."
+      },
+      "release_year": {
+        "value": 67,
+        "text": "67%",
+        "status": "measured",
+        "note": "Series fit 0.67 from 3 series. Shipment fill 13/13. Year 67%."
       }
     },
     {
@@ -717,6 +779,18 @@
         "text": "0",
         "status": "measured",
         "note": "No tags in the window."
+      },
+      "shipped_12m": {
+        "value": 0,
+        "text": "0",
+        "status": "measured",
+        "note": "0 shipped releases in the window, on the same tag rules as the release series."
+      },
+      "release_year": {
+        "value": 0,
+        "text": "0%",
+        "status": "measured",
+        "note": "Series fit 0 from 0 series. Shipment fill 0/13. Year 0%."
       }
     },
     {
@@ -824,6 +898,18 @@
         "text": "7",
         "status": "measured",
         "note": "7 release series: 0.1 through 0.7. First tags v0.1.0 on 2026-05-08, v0.2.0 on 2026-05-27, v0.3.0 on 2026-06-10, v0.4.0 on 2026-07-06, v0.5.0 on 2026-08-25, v0.6.0 on 2026-10-05, v0.7.0 on 2026-10-30."
+      },
+      "shipped_12m": {
+        "value": 16,
+        "text": "16",
+        "status": "measured",
+        "note": "16 shipped releases in the window, on the same tag rules as the release series."
+      },
+      "release_year": {
+        "value": 29,
+        "text": "29%",
+        "status": "measured",
+        "note": "Series fit 0.29 from 7 series. Shipment fill 13/13. Year 29%."
       }
     },
     {
@@ -931,6 +1017,18 @@
         "text": "1",
         "status": "measured",
         "note": "1 release series: 4, first tag v4.0.10211 on 2026-10-14. Later 4.0 build tags are the same series."
+      },
+      "shipped_12m": {
+        "value": 9,
+        "text": "9",
+        "status": "measured",
+        "note": "9 shipped releases in the window, on the same tag rules as the release series."
+      },
+      "release_year": {
+        "value": 69,
+        "text": "69%",
+        "status": "measured",
+        "note": "Series fit 1 from 1 series. Shipment fill 9/13. Year 69%."
       }
     },
     {
@@ -1038,6 +1136,18 @@
         "text": "0",
         "status": "measured",
         "note": "No tags in the window."
+      },
+      "shipped_12m": {
+        "value": 0,
+        "text": "0",
+        "status": "measured",
+        "note": "0 shipped releases in the window, on the same tag rules as the release series."
+      },
+      "release_year": {
+        "value": 0,
+        "text": "0%",
+        "status": "measured",
+        "note": "Series fit 0 from 0 series. Shipment fill 0/13. Year 0%."
       }
     },
     {
@@ -1145,6 +1255,18 @@
         "text": "1",
         "status": "measured",
         "note": "1 release series: 0.9, first tag v0.9.0 on 2026-03-31. v0.8.1 continues a series that started before the window. floresta-common-1.0.0 does not start with v and is not a node tag."
+      },
+      "shipped_12m": {
+        "value": 3,
+        "text": "3",
+        "status": "measured",
+        "note": "3 shipped releases in the window, on the same tag rules as the release series."
+      },
+      "release_year": {
+        "value": 23,
+        "text": "23%",
+        "status": "measured",
+        "note": "Series fit 1 from 1 series. Shipment fill 3/13. Year 23%."
       }
     },
     {
@@ -1252,6 +1374,18 @@
         "text": "5",
         "status": "measured",
         "note": "5 release series: 0.5 through 0.9. First tags v0.5.1 on 2026-08-22, v0.6.0 on 2026-09-07, v0.7.0 on 2026-09-18, v0.8.0 on 2026-10-09, v0.9.0 on 2026-11-06."
+      },
+      "shipped_12m": {
+        "value": 10,
+        "text": "10",
+        "status": "measured",
+        "note": "10 shipped releases in the window, on the same tag rules as the release series."
+      },
+      "release_year": {
+        "value": 31,
+        "text": "31%",
+        "status": "measured",
+        "note": "Series fit 0.4 from 5 series. Shipment fill 10/13. Year 31%."
       }
     },
     {
@@ -1363,6 +1497,18 @@
         "text": "2",
         "status": "measured",
         "note": "2 release series: 0.26, first non-candidate tag v0.26.0 on 2026-06-18; 0.27, first tag v0.27.0 on 2026-10-21."
+      },
+      "shipped_12m": {
+        "value": 3,
+        "text": "3",
+        "status": "measured",
+        "note": "3 shipped releases in the window, on the same tag rules as the release series."
+      },
+      "release_year": {
+        "value": 23,
+        "text": "23%",
+        "status": "measured",
+        "note": "Series fit 1 from 2 series. Shipment fill 3/13. Year 23%."
       }
     }
   ]

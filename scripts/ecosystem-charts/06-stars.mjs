@@ -17,7 +17,7 @@ export function codeHealth(rows, pending) {
         { key: "test_split_total", label: "Test lines", short: "Tests", get: function (r) { return mval(r, "test_split_total"); } },
         { key: "vector_files", label: "Vector files", short: "Vectors", get: function (r) { return mval(r, "vector_files"); } },
         { key: "spec_files", label: "Spec files", short: "Specs", get: function (r) { return mval(r, "spec_files"); } },
-        { key: "release_lines_12m", label: "Release series, 12 months", short: "Series", get: function (r) { return mval(r, "release_lines_12m"); }, cadence: { lo: 1, hi: 2 } },
+        { key: "release_year", label: "Release year", short: "Year", get: function (r) { return mval(r, "release_year"); }, fmt: function (v) { return v + "%"; } },
         { key: "plugin", label: "Plug-in support", short: "Plug-ins", get: function (r) { const c = r.metrics && r.metrics.plugin_system; return c && c.value in PLUG ? PLUG[c.value] : null; }, max: 2, fmt: function (v) { return ["no", "partial", "yes"][v]; } },
         { key: "direct_deps", label: "Dependency surface (fewer is outward)", short: "Few deps", get: function (r) { return typeof r.stack.direct_deps === "number" ? r.stack.direct_deps : null; }, invert: true },
         { key: "fuzz_targets", label: "Fuzz targets", short: "Fuzz", get: function (r) { return mval(r, "fuzz_targets"); } },
@@ -42,7 +42,8 @@ export function codeHealth(rows, pending) {
         if (a.pending) return { v: null, text: "pending fix", pending: true };
         const vs = rows.map(a.get).filter(function (v) { return typeof v === "number"; });
         const m = vs.length ? median(vs) : null;
-        return m === null ? { v: null, text: "not measured" } : { v: m, text: a.fmt ? String(m) : m.toLocaleString("en-US") };
+        var shown = a.key === "release_year" ? a.fmt(m) : (a.fmt ? String(m) : m.toLocaleString("en-US"));
+        return m === null ? { v: null, text: "not measured" } : { v: m, text: shown };
     }) };
     return { axes: axes, series: series, median: med };
 }
@@ -67,9 +68,9 @@ export default {
                 const coreAbove = axes.filter(function (a, i) { const b = series(core, "").values[i], m = med.values[i]; if (b.v === null || m.v === null) return false; return spokeRadius(a, b.v) > spokeRadius(a, m.v); }).length;
                 return "The median star is drawn on " + measured.length + " measured code-health axes; Bitcoin Core is above the median on " + coreAbove + " of them.";
             })(),
-            caption: "Each spoke is one measure, scaled from 0 at the centre to the largest value among the 12 at the rim; dependency surface is reversed so fewer libraries sit further out. The series spoke counts release series, not every tag and not lines of code. At version 1 and above a series is a new major. Before 1.0 a series is a new 0.y. Patches, release candidates, and maintenance of an older series do not count. Bitcoin Core's lifecycle aims at a major release every 6 to 7 months, which is 1 or 2 new series in this window, and that count sits at the rim. A count of 0 sits at the centre. A larger count sits inward of the rim, and the largest count is the furthest in. Orange circles: BLVM. Blue squares: Bitcoin Core. Yellow dashed triangles: median. The grid below shows every implementation on the same scales; select one to open its card.",
+            caption: "Each spoke is one measure, scaled from 0 at the centre to the largest value among the 12 at the rim; dependency surface is reversed so fewer libraries sit further out. The year spoke is a percent of a maintained release year. Series fit is 1 for 1 or 2 release series, the count a major every 6 to 7 months gives, and 2 divided by the count when there are more. Shipment fill is the shipped-release count divided by 13, Bitcoin Core's shipped releases in this window, and it stops at 1. The percent is those two parts multiplied. A tagged count past 13 does not raise it, and a single tag on a good series stays low. Orange circles: BLVM. Blue squares: Bitcoin Core. Yellow dashed triangles: median. The grid below shows every implementation on the same scales; select one to open its card.",
             measures: "Code health from the Depth, Modules and Stack tables; it matters because it shows the work behind a project, not whether its rules are right.",
-            takeaway: "A bigger star means more measured activity on these axes, not more correct code. The series spoke is the exception: it measures release series against a major release every 6 to 7 months" + (Object.keys(pend).length ? ". Yellow-hatched spokes are being corrected and are not shown." : "."),
+            takeaway: "A bigger star means more measured activity on these axes, not more correct code. The year spoke is the exception: it multiplies a 6-to-7-month series fit by shipment fill, and shipments past 13 do not raise it" + (Object.keys(pend).length ? ". Yellow-hatched spokes are being corrected and are not shown." : "."),
             title: "Code-health star charts",
             desc: [med, series(core, ""), series(blvm, "")].map(function (s) { return s.name + ": " + axes.map(function (a, i) { return a.label + " " + s.values[i].text; }).join(", "); }).join(". ") + ".",
             chart: compose([{ heading: "BLVM, Bitcoin Core and the median", chart: overlay }, { heading: "All " + rows.length + ", same scales", chart: grid }]),

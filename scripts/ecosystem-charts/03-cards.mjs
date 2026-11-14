@@ -392,7 +392,9 @@ export default {
                     liveGroup("Last 12 months", [
                         liveFact("Authors", metricText(r.metrics, "authors_12m")),
                         liveFact("Tagged releases", metricText(r.metrics, "releases_12m")),
+                        liveFact("Shipped releases", metricText(r.metrics, "shipped_12m")),
                         liveFact("Release series", metricText(r.metrics, "release_lines_12m")),
+                        liveFact("Release year", metricText(r.metrics, "release_year")),
                         liveFact("Fuzz targets", fuzzText)
                     ])) +
                 stabMeter(r.stability) +
