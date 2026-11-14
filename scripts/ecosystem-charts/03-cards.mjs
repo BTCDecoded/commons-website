@@ -309,7 +309,7 @@ export default {
                 Object.keys(d.nodes).forEach(function (id) {
                     var n = d.nodes[id];
                     if (!n || !n.label) throw new Error("cards: diagram node missing a label " + id);
-                    nodes[id] = { label: n.label, short: n.short || n.label, sub: n.sub || "", cls: n.cls || "" };
+                    nodes[id] = { label: n.label, short: n.short || n.label, sub: n.sub || "", cls: n.cls || "", changed: false };
                 });
                 var edges = d.edges.map(function (e) {
                     if (!nodes[e.from] || !nodes[e.to]) throw new Error("cards: diagram edge missing a node");
@@ -318,9 +318,15 @@ export default {
                 var bands = d.bands.map(function (b) {
                     return { label: b.label || "", sub: b.sub || "", rows: b.rows };
                 });
+                (d.changed || []).forEach(function (id) {
+                    if (!nodes[id]) throw new Error("cards: changed library is not drawn " + id);
+                    nodes[id].changed = true;
+                });
                 var desc = bands.map(function (b) {
                     return [].concat.apply([], b.rows).map(function (id) { return nodes[id].label; }).join(", ");
                 }).join(". ") + ". " + edges.map(function (e) { return nodes[e.from].label + " to " + nodes[e.to].label; }).join("; ") + ".";
+                var changedLabels = (d.changed || []).map(function (id) { return nodes[id].label; });
+                if (changedLabels.length) desc += " Shaded dotted outline: " + changedLabels.join(", ") + ".";
                 return figure({
                     id: "fig-lay-" + r.slug,
                     cls: "eco-layfig",
@@ -393,7 +399,7 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-            caption: "The card leads with the rank, the release, and the three scores, then this page's governance reading, then the layer diagram, then the charts. The reading uses the same mark as the graph. A signature count is one dot per key: orange must sign, gray is another key in the set. BLVM's reading includes the written rule, the governance-node quorum, and the five written repository layers. Every profile then draws the libraries or crates its default node links, in the same panel. A box marked vendored is a path the line counter already treats that way. These drawings are not signature layers. Not classified means this reading did not assign a label. The article's form scores are not copied onto the project. Selecting a chart opens it with its labels and values. Language, license, and age, when this page states them, are badges on the card. A hatched spoke is not measured, and it is not drawn as zero. A count that is not measured is left off the card. When none of the five comparisons is measured, that chart is left off the card.",
+            caption: "The card leads with the rank, the release, and the three scores, then this page's governance reading, then the layer diagram, then the charts. The reading uses the same mark as the graph. A signature count is one dot per key: orange must sign, gray is another key in the set. BLVM's reading includes the written rule, the governance-node quorum, and the five written repository layers. Every profile then draws the libraries or crates its default node links, in the same panel. On a fork, a shaded dotted outline marks a library whose sources differ from the parent that fork names. A box marked vendored is a path the line counter already treats that way. These drawings are not signature layers. Not classified means this reading did not assign a label. The article's form scores are not copied onto the project. Selecting a chart opens it with its labels and values. Language, license, and age, when this page states them, are badges on the card. A hatched spoke is not measured, and it is not drawn as zero. A count that is not measured is left off the card. When none of the five comparisons is measured, that chart is left off the card.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),

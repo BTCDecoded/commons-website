@@ -651,6 +651,27 @@ export function layered(bands, nodes, edges, opts) {
             else d = "M" + fmt(e._sx) + " " + fmt(sy) + " V" + fmt(e._ty1) + " H" + fmt(e._lane) + " V" + fmt(e._ty2) + " H" + fmt(e._tx) + " V" + fmt(ey);
             paths += "<path d=\"" + d + "\" class=\"ch-edge" + (e.dashed ? " ch-edge-dash" : "") + "\" marker-end=\"url(#" + arrow + ")\"/>";
         });
+        var shades = "";
+        rows.forEach(function (row) {
+            var run = [];
+            function flush() {
+                if (!run.length) return;
+                var x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+                run.forEach(function (id) {
+                    var p = pos[id];
+                    x0 = Math.min(x0, p.x); y0 = Math.min(y0, p.y);
+                    x1 = Math.max(x1, p.x + p.w); y1 = Math.max(y1, p.y + p.h);
+                });
+                var pad = 5;
+                shades += "<rect x=\"" + fmt(x0 - pad) + "\" y=\"" + fmt(y0 - pad) + "\" width=\"" + fmt(x1 - x0 + pad * 2) + "\" height=\"" + fmt(y1 - y0 + pad * 2) + "\" rx=\"10\" class=\"ch-changed\"><title>Changed code</title></rect>";
+                run = [];
+            }
+            row.ids.forEach(function (id) {
+                if (nodes[id] && nodes[id].changed) run.push(id);
+                else flush();
+            });
+            flush();
+        });
         var boxes = "";
         Object.keys(pos).forEach(function (id) {
             var p = pos[id], n = nodes[id], label = narrow && n.short ? n.short : n.label;
@@ -659,7 +680,7 @@ export function layered(bands, nodes, edges, opts) {
             p.sub.forEach(function (l, j) { boxes += t(p.x + p.w / 2, p.y + 19 + (j + 1) * (ss + 3) + 1, l, "ch-t ch-nsub", " text-anchor=\"middle\" font-size=\"" + ss + "\""); });
         });
         var defs = "<defs><marker id=\"" + arrow + "\" viewBox=\"0 0 8 8\" refX=\"7\" refY=\"4\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L8 4 L0 8 z\" class=\"ch-arrowhead\"/></marker></defs>";
-        return { body: defs + "<g font-size=\"" + fs + "\">" + strips + paths + heads + boxes + "</g>", height: height + 1 };
+        return { body: defs + "<g font-size=\"" + fs + "\">" + strips + paths + heads + shades + boxes + "</g>", height: height + 1 };
     };
 }
 
