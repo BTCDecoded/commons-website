@@ -749,15 +749,17 @@ function sector(cx, cy, r0, r1, a0, a1) {
 // ---------- radar / star chart ----------
 // axes:   [{ label, short, max, invert, cadence, pending, scale }]
 //         value / max sets the radius; invert puts 0 at the rim.
-//         cadence {lo, hi, span} puts that band at the rim. 0, and a value
-//         `span` or more past the band, sit at the centre.
+//         cadence {lo, hi} puts that band at the rim. A count of 0 sits at
+//         the centre. A larger count sits inward, and the largest count is
+//         the furthest in, still off the centre.
 export function spokeRadius(axis, v) {
     if (axis.cadence) {
         var c = axis.cadence;
         if (v <= 0) return 0;
         if (v >= c.lo && v <= c.hi) return 1;
+        var span = Math.max(1, axis.max - c.hi);
         var d = v < c.lo ? c.lo - v : v - c.hi;
-        return Math.max(0, 1 - d / c.span);
+        return Math.max(0.28, 1 - d / span);
     }
     var f = Math.max(0, Math.min(1, v / axis.max));
     if (axis.invert) f = 1 - f;
@@ -839,7 +841,7 @@ export function radar(axes, series, opts) {
                 var name = lab === "full" ? a.label : a.short || a.label;
                 var lines = lab === "full" ? wrap(name, fsz, narrowLab ? 70 : 110) : [name];
                 var extra = [];
-                var atPoint = !!((a.invert || a.cadence) && opts.values && series[0] && !a.pending && firstPts && firstPts[i]);
+                var atPoint = !!(a.invert && opts.values && series[0] && !a.pending && firstPts && firstPts[i]);
                 if (a.pending) extra.push("pending fix");
                 else if (opts.values && series[0] && !atPoint) extra.push(series[0].values[i].text);
                 lines = lines.concat(extra);
