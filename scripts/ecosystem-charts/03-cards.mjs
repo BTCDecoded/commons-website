@@ -141,6 +141,13 @@ export default {
     slot: "chart-cards",
     build: function (ctx) {
         const rows = ctx.model.rows;
+        const layouts = ctx.readJson("data/layouts.json");
+        const layoutBySlug = {};
+        (layouts.rows || []).forEach(function (row) {
+            if (layoutBySlug[row.slug]) throw new Error("cards: duplicate layout " + row.slug);
+            if (!row.units || !row.units.length) throw new Error("cards: empty layout " + row.slug);
+            layoutBySlug[row.slug] = row;
+        });
         const med = median(rows.map(function (r) { return r.assurance.pct; }));
         const pendFuzz = "fuzz_targets" in ctx.model.pending;
         const health = codeHealth(rows, ctx.model.pending);
@@ -267,26 +274,37 @@ export default {
                 : read.label.indexOf("Not classified") === 0
                     ? "Not classified means this reading did not assign a label."
                     : "This implementation keeps its own governance.";
-            function layerStack(mine) {
+            function layerStack() {
                 var layers = (ctx.data.governance && ctx.data.governance.layers) || [];
                 if (layers.length !== 5) throw new Error("cards: expected 5 repository layers");
                 var bands = layers.map(function (layer) {
                     if (!layer.purpose || !layer.repositories || !layer.repositories.length) throw new Error("cards: layer missing purpose or repositories");
-                    if (!mine) return "<li class=\"eco-lband is-empty\"><b>" + esc(layer.purpose) + "</b></li>";
                     var review = layer.review_period_days + "-day review";
                     if (layer.consensus_review_period_days) review += ", " + layer.consensus_review_period_days + "-day consensus review";
                     var pair = layer.signatures_required + " of " + layer.signatures_total;
                     return "<li class=\"eco-lband\"><div class=\"eco-lband-h\"><b>" + esc(layer.purpose) + "</b>" + quorumDots(pair) + "<span class=\"tpl-wait\">" + esc(review) + "</span></div><p class=\"eco-lrepos\">" + esc(layer.repositories.join(", ")) + "</p></li>";
                 }).join("");
-                var cap = mine ? "Written repository layers." : "Commons repository layers. This tree is not in that table.";
-                return "<div class=\"eco-lstack\"><p class=\"eco-lcap\">" + cap + "</p><ol>" + bands + "</ol></div>";
+                return "<div class=\"eco-lstack\"><p class=\"eco-lcap\">Written repository layers.</p><ol>" + bands + "</ol></div>";
+            }
+            function treeLayout() {
+                if (r.internal) return "";
+                var lay = layoutBySlug[r.slug];
+                if (!lay) throw new Error("cards: no layout for " + r.slug);
+                var cap = lay.kind === "workspace" ? "Workspace crates" : lay.kind === "src" ? "Directories under src" : "Directories at the root";
+                var chips = lay.units.map(function (u) {
+                    if (!u.name || !u.path) throw new Error("cards: layout unit missing a name");
+                    var cls = u.tag === "vendored" ? " is-vendor" : u.tag === "tests" ? " is-test" : "";
+                    var note = u.tag === "vendored" ? " <small>vendored</small>" : u.tag === "tests" ? " <small>tests</small>" : "";
+                    return "<li class=\"eco-chip" + cls + "\" title=\"" + esc(u.path) + "\">" + esc(u.name) + note + "</li>";
+                }).join("");
+                return "<div class=\"eco-layout\"><p class=\"eco-lcap\"><a href=\"" + esc(lay.source) + "\">" + cap + "</a></p><ul class=\"eco-chips\">" + chips + "</ul></div>";
             }
             const govRead = "<section class=\"eco-govread" + (pk.kind === "commons" ? " is-commons" : "") + "\">" +
                 "<div class=\"eco-govread-top\"><span class=\"eco-gov eco-gov-" + pk.kind + "\" title=\"" + esc(read.label) + "\">" + govMark(pk.kind) + (pk.keepers ? "<span class=\"eco-keepers\">" + pk.keepers + "</span>" : "") + "</span><b>" + esc(read.label) + "</b></div>" +
                 "<p>" + esc(read.detail || govLead) + "</p>" +
                 govLine("Written rule", read.writtenPair, read.writtenWait) +
                 govLine("Quorum", read.quorumPair, "") +
-                layerStack(r.internal) +
+                (r.internal ? layerStack() : treeLayout()) +
                 "<details><summary>Basis</summary><p>" + esc(read.basis) + (read.quorum ? " " + esc(read.quorum) : "") + "</p><p>" + govLead + " The article's form scores are judgments of a form. This reading does not copy them onto the project.</p></details>" +
                 "<p class=\"eco-govread-note\">" + (r.internal ? "<a href=\"governance-designer.html\">Fork these rules</a>" : "<a href=\"#forms\">Forms</a>") + "</p></section>";
             return "<article class=\"eco-card" + (r.internal ? " internal" : "") + "\" id=\"" + id + "\" aria-labelledby=\"" + id + "-h\">" +
@@ -333,7 +351,7 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-            caption: "The card leads with the rank, the release, and the three scores, then this page's governance reading, then the charts. The reading uses the same mark as the graph. A signature count is one dot per key: orange must sign, gray is another key in the set. BLVM's reading includes the written rule and the governance-node quorum. The reading draws the five Commons repository layers. BLVM fills them with the written repositories and signature dots. The other trees leave those bands empty. Not classified means this reading did not assign a label. The article's form scores are not copied onto the project. Selecting a chart opens it with its labels and values. Language, license, and age, when this page states them, are badges on the card. A hatched spoke is not measured, and it is not drawn as zero. A count that is not measured is left off the card. When none of the five comparisons is measured, that chart is left off the card.",
+            caption: "The card leads with the rank, the release, and the three scores, then this page's governance reading, then the charts. The reading uses the same mark as the graph. A signature count is one dot per key: orange must sign, gray is another key in the set. BLVM's reading includes the written rule, the governance-node quorum, and the five written repository layers. Each other tree draws its own directories or workspace crates at its pin. Vendored and tests mark paths the line counter already treats that way. Those chips are not signature layers. Not classified means this reading did not assign a label. The article's form scores are not copied onto the project. Selecting a chart opens it with its labels and values. Language, license, and age, when this page states them, are badges on the card. A hatched spoke is not measured, and it is not drawn as zero. A count that is not measured is left off the card. When none of the five comparisons is measured, that chart is left off the card.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),

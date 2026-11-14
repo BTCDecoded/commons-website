@@ -1,0 +1,1267 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-11-12",
+  "method": "Read at the stack pin already on this page. A root Cargo.toml workspace members list is the crates, and the chip name is the last path segment. Otherwise the immediate directories under src/. btcd has no src/ and no Cargo workspace, so the chips are the immediate directories at the repository root, skipping names that start with a dot. Vendored means that path is one of the line counter's vendor prefixes for that tree. Tests means the path matches the counter's test paths: test, tests, fuzz, bench, benches, or e2e. No line counts.",
+  "rows": [
+    {
+      "slug": "bitcoin-core",
+      "name": "Bitcoin Core",
+      "repo": "bitcoin/bitcoin",
+      "commit": "f0de87f040621468b956f01f526a43a010310501",
+      "kind": "src",
+      "source": "https://github.com/bitcoin/bitcoin/tree/f0de87f040621468b956f01f526a43a010310501/src",
+      "units": [
+        {
+          "name": "bench",
+          "path": "src/bench",
+          "tag": "tests"
+        },
+        {
+          "name": "common",
+          "path": "src/common",
+          "tag": ""
+        },
+        {
+          "name": "compat",
+          "path": "src/compat",
+          "tag": ""
+        },
+        {
+          "name": "consensus",
+          "path": "src/consensus",
+          "tag": ""
+        },
+        {
+          "name": "crc32c",
+          "path": "src/crc32c",
+          "tag": "vendored"
+        },
+        {
+          "name": "crypto",
+          "path": "src/crypto",
+          "tag": ""
+        },
+        {
+          "name": "index",
+          "path": "src/index",
+          "tag": ""
+        },
+        {
+          "name": "init",
+          "path": "src/init",
+          "tag": ""
+        },
+        {
+          "name": "interfaces",
+          "path": "src/interfaces",
+          "tag": ""
+        },
+        {
+          "name": "ipc",
+          "path": "src/ipc",
+          "tag": ""
+        },
+        {
+          "name": "kernel",
+          "path": "src/kernel",
+          "tag": ""
+        },
+        {
+          "name": "leveldb",
+          "path": "src/leveldb",
+          "tag": "vendored"
+        },
+        {
+          "name": "logging",
+          "path": "src/logging",
+          "tag": ""
+        },
+        {
+          "name": "minisketch",
+          "path": "src/minisketch",
+          "tag": "vendored"
+        },
+        {
+          "name": "node",
+          "path": "src/node",
+          "tag": ""
+        },
+        {
+          "name": "policy",
+          "path": "src/policy",
+          "tag": ""
+        },
+        {
+          "name": "primitives",
+          "path": "src/primitives",
+          "tag": ""
+        },
+        {
+          "name": "qt",
+          "path": "src/qt",
+          "tag": ""
+        },
+        {
+          "name": "rpc",
+          "path": "src/rpc",
+          "tag": ""
+        },
+        {
+          "name": "script",
+          "path": "src/script",
+          "tag": ""
+        },
+        {
+          "name": "secp256k1",
+          "path": "src/secp256k1",
+          "tag": "vendored"
+        },
+        {
+          "name": "support",
+          "path": "src/support",
+          "tag": ""
+        },
+        {
+          "name": "test",
+          "path": "src/test",
+          "tag": "tests"
+        },
+        {
+          "name": "univalue",
+          "path": "src/univalue",
+          "tag": "vendored"
+        },
+        {
+          "name": "util",
+          "path": "src/util",
+          "tag": ""
+        },
+        {
+          "name": "wallet",
+          "path": "src/wallet",
+          "tag": ""
+        },
+        {
+          "name": "zmq",
+          "path": "src/zmq",
+          "tag": ""
+        }
+      ]
+    },
+    {
+      "slug": "knots-legacy",
+      "name": "Knots Legacy",
+      "repo": "DimiH2025/KnotsLegacy",
+      "commit": "7936c49b6739640eb71e55eb2b5f720179b9c3b4",
+      "kind": "src",
+      "source": "https://github.com/DimiH2025/KnotsLegacy/tree/7936c49b6739640eb71e55eb2b5f720179b9c3b4/src",
+      "units": [
+        {
+          "name": "bench",
+          "path": "src/bench",
+          "tag": "tests"
+        },
+        {
+          "name": "common",
+          "path": "src/common",
+          "tag": ""
+        },
+        {
+          "name": "compat",
+          "path": "src/compat",
+          "tag": ""
+        },
+        {
+          "name": "consensus",
+          "path": "src/consensus",
+          "tag": ""
+        },
+        {
+          "name": "crc32c",
+          "path": "src/crc32c",
+          "tag": "vendored"
+        },
+        {
+          "name": "crypto",
+          "path": "src/crypto",
+          "tag": ""
+        },
+        {
+          "name": "index",
+          "path": "src/index",
+          "tag": ""
+        },
+        {
+          "name": "init",
+          "path": "src/init",
+          "tag": ""
+        },
+        {
+          "name": "interfaces",
+          "path": "src/interfaces",
+          "tag": ""
+        },
+        {
+          "name": "ipc",
+          "path": "src/ipc",
+          "tag": ""
+        },
+        {
+          "name": "kernel",
+          "path": "src/kernel",
+          "tag": ""
+        },
+        {
+          "name": "leveldb",
+          "path": "src/leveldb",
+          "tag": "vendored"
+        },
+        {
+          "name": "logging",
+          "path": "src/logging",
+          "tag": ""
+        },
+        {
+          "name": "minisketch",
+          "path": "src/minisketch",
+          "tag": "vendored"
+        },
+        {
+          "name": "node",
+          "path": "src/node",
+          "tag": ""
+        },
+        {
+          "name": "policy",
+          "path": "src/policy",
+          "tag": ""
+        },
+        {
+          "name": "primitives",
+          "path": "src/primitives",
+          "tag": ""
+        },
+        {
+          "name": "qt",
+          "path": "src/qt",
+          "tag": ""
+        },
+        {
+          "name": "rpc",
+          "path": "src/rpc",
+          "tag": ""
+        },
+        {
+          "name": "script",
+          "path": "src/script",
+          "tag": ""
+        },
+        {
+          "name": "secp256k1",
+          "path": "src/secp256k1",
+          "tag": "vendored"
+        },
+        {
+          "name": "stats",
+          "path": "src/stats",
+          "tag": ""
+        },
+        {
+          "name": "support",
+          "path": "src/support",
+          "tag": ""
+        },
+        {
+          "name": "test",
+          "path": "src/test",
+          "tag": "tests"
+        },
+        {
+          "name": "univalue",
+          "path": "src/univalue",
+          "tag": "vendored"
+        },
+        {
+          "name": "util",
+          "path": "src/util",
+          "tag": ""
+        },
+        {
+          "name": "wallet",
+          "path": "src/wallet",
+          "tag": ""
+        },
+        {
+          "name": "zmq",
+          "path": "src/zmq",
+          "tag": ""
+        }
+      ]
+    },
+    {
+      "slug": "bit-block",
+      "name": "Bit-Block",
+      "repo": "DimiH2025/Bit-Block",
+      "commit": "c52f1161349e6a76463156fea39bce191951b915",
+      "kind": "src",
+      "source": "https://github.com/DimiH2025/Bit-Block/tree/c52f1161349e6a76463156fea39bce191951b915/src",
+      "units": [
+        {
+          "name": "bench",
+          "path": "src/bench",
+          "tag": "tests"
+        },
+        {
+          "name": "bip39",
+          "path": "src/bip39",
+          "tag": ""
+        },
+        {
+          "name": "common",
+          "path": "src/common",
+          "tag": ""
+        },
+        {
+          "name": "compat",
+          "path": "src/compat",
+          "tag": ""
+        },
+        {
+          "name": "consensus",
+          "path": "src/consensus",
+          "tag": ""
+        },
+        {
+          "name": "crc32c",
+          "path": "src/crc32c",
+          "tag": "vendored"
+        },
+        {
+          "name": "crypto",
+          "path": "src/crypto",
+          "tag": ""
+        },
+        {
+          "name": "index",
+          "path": "src/index",
+          "tag": ""
+        },
+        {
+          "name": "init",
+          "path": "src/init",
+          "tag": ""
+        },
+        {
+          "name": "interfaces",
+          "path": "src/interfaces",
+          "tag": ""
+        },
+        {
+          "name": "ipc",
+          "path": "src/ipc",
+          "tag": ""
+        },
+        {
+          "name": "kernel",
+          "path": "src/kernel",
+          "tag": ""
+        },
+        {
+          "name": "leveldb",
+          "path": "src/leveldb",
+          "tag": "vendored"
+        },
+        {
+          "name": "logging",
+          "path": "src/logging",
+          "tag": ""
+        },
+        {
+          "name": "minisketch",
+          "path": "src/minisketch",
+          "tag": "vendored"
+        },
+        {
+          "name": "node",
+          "path": "src/node",
+          "tag": ""
+        },
+        {
+          "name": "policy",
+          "path": "src/policy",
+          "tag": ""
+        },
+        {
+          "name": "primitives",
+          "path": "src/primitives",
+          "tag": ""
+        },
+        {
+          "name": "qt",
+          "path": "src/qt",
+          "tag": ""
+        },
+        {
+          "name": "rpc",
+          "path": "src/rpc",
+          "tag": ""
+        },
+        {
+          "name": "script",
+          "path": "src/script",
+          "tag": ""
+        },
+        {
+          "name": "secp256k1",
+          "path": "src/secp256k1",
+          "tag": "vendored"
+        },
+        {
+          "name": "stats",
+          "path": "src/stats",
+          "tag": ""
+        },
+        {
+          "name": "support",
+          "path": "src/support",
+          "tag": ""
+        },
+        {
+          "name": "test",
+          "path": "src/test",
+          "tag": "tests"
+        },
+        {
+          "name": "univalue",
+          "path": "src/univalue",
+          "tag": "vendored"
+        },
+        {
+          "name": "util",
+          "path": "src/util",
+          "tag": ""
+        },
+        {
+          "name": "wallet",
+          "path": "src/wallet",
+          "tag": ""
+        },
+        {
+          "name": "zmq",
+          "path": "src/zmq",
+          "tag": ""
+        }
+      ]
+    },
+    {
+      "slug": "bitcoin-roots",
+      "name": "Bitcoin Roots",
+      "repo": "LuganoPlanB/bitcoin-roots",
+      "commit": "f0393f2688656ba544b40fe508db909152201c18",
+      "kind": "src",
+      "source": "https://github.com/LuganoPlanB/bitcoin-roots/tree/f0393f2688656ba544b40fe508db909152201c18/src",
+      "units": [
+        {
+          "name": "bench",
+          "path": "src/bench",
+          "tag": "tests"
+        },
+        {
+          "name": "common",
+          "path": "src/common",
+          "tag": ""
+        },
+        {
+          "name": "compat",
+          "path": "src/compat",
+          "tag": ""
+        },
+        {
+          "name": "consensus",
+          "path": "src/consensus",
+          "tag": ""
+        },
+        {
+          "name": "crc32c",
+          "path": "src/crc32c",
+          "tag": "vendored"
+        },
+        {
+          "name": "crypto",
+          "path": "src/crypto",
+          "tag": ""
+        },
+        {
+          "name": "index",
+          "path": "src/index",
+          "tag": ""
+        },
+        {
+          "name": "init",
+          "path": "src/init",
+          "tag": ""
+        },
+        {
+          "name": "interfaces",
+          "path": "src/interfaces",
+          "tag": ""
+        },
+        {
+          "name": "ipc",
+          "path": "src/ipc",
+          "tag": ""
+        },
+        {
+          "name": "kernel",
+          "path": "src/kernel",
+          "tag": ""
+        },
+        {
+          "name": "leveldb",
+          "path": "src/leveldb",
+          "tag": "vendored"
+        },
+        {
+          "name": "logging",
+          "path": "src/logging",
+          "tag": ""
+        },
+        {
+          "name": "minisketch",
+          "path": "src/minisketch",
+          "tag": "vendored"
+        },
+        {
+          "name": "node",
+          "path": "src/node",
+          "tag": ""
+        },
+        {
+          "name": "policy",
+          "path": "src/policy",
+          "tag": ""
+        },
+        {
+          "name": "primitives",
+          "path": "src/primitives",
+          "tag": ""
+        },
+        {
+          "name": "qt",
+          "path": "src/qt",
+          "tag": ""
+        },
+        {
+          "name": "rpc",
+          "path": "src/rpc",
+          "tag": ""
+        },
+        {
+          "name": "script",
+          "path": "src/script",
+          "tag": ""
+        },
+        {
+          "name": "secp256k1",
+          "path": "src/secp256k1",
+          "tag": "vendored"
+        },
+        {
+          "name": "stats",
+          "path": "src/stats",
+          "tag": ""
+        },
+        {
+          "name": "support",
+          "path": "src/support",
+          "tag": ""
+        },
+        {
+          "name": "test",
+          "path": "src/test",
+          "tag": "tests"
+        },
+        {
+          "name": "univalue",
+          "path": "src/univalue",
+          "tag": "vendored"
+        },
+        {
+          "name": "util",
+          "path": "src/util",
+          "tag": ""
+        },
+        {
+          "name": "wallet",
+          "path": "src/wallet",
+          "tag": ""
+        },
+        {
+          "name": "zmq",
+          "path": "src/zmq",
+          "tag": ""
+        }
+      ]
+    },
+    {
+      "slug": "bitcoin-rs",
+      "name": "bitcoin-rs",
+      "repo": "gosuda/bitcoin-rs",
+      "commit": "9b8e91ae1aadfaad08e7fccbfa895bcbf41c6620",
+      "kind": "workspace",
+      "source": "https://github.com/gosuda/bitcoin-rs/blob/9b8e91ae1aadfaad08e7fccbfa895bcbf41c6620/Cargo.toml",
+      "units": [
+        {
+          "name": "primitives",
+          "path": "crates/primitives",
+          "tag": ""
+        },
+        {
+          "name": "consensus",
+          "path": "crates/consensus",
+          "tag": ""
+        },
+        {
+          "name": "script",
+          "path": "crates/script",
+          "tag": ""
+        },
+        {
+          "name": "storage",
+          "path": "crates/storage",
+          "tag": ""
+        },
+        {
+          "name": "utxo",
+          "path": "crates/utxo",
+          "tag": ""
+        },
+        {
+          "name": "chain",
+          "path": "crates/chain",
+          "tag": ""
+        },
+        {
+          "name": "chainstate",
+          "path": "crates/chainstate",
+          "tag": ""
+        },
+        {
+          "name": "index",
+          "path": "crates/index",
+          "tag": ""
+        },
+        {
+          "name": "mempool",
+          "path": "crates/mempool",
+          "tag": ""
+        },
+        {
+          "name": "p2p",
+          "path": "crates/p2p",
+          "tag": ""
+        },
+        {
+          "name": "mining",
+          "path": "crates/mining",
+          "tag": ""
+        },
+        {
+          "name": "rpc",
+          "path": "crates/rpc",
+          "tag": ""
+        },
+        {
+          "name": "node",
+          "path": "crates/node",
+          "tag": ""
+        },
+        {
+          "name": "bitcoin-rs",
+          "path": "bin/bitcoin-rs",
+          "tag": ""
+        },
+        {
+          "name": "e2e",
+          "path": "e2e",
+          "tag": "tests"
+        },
+        {
+          "name": "storage-footprint",
+          "path": "tools/storage-footprint",
+          "tag": ""
+        },
+        {
+          "name": "snapshot",
+          "path": "tools/snapshot",
+          "tag": ""
+        },
+        {
+          "name": "contract-index",
+          "path": "tools/contract-index",
+          "tag": ""
+        },
+        {
+          "name": "p2pk-scan",
+          "path": "tools/p2pk-scan",
+          "tag": ""
+        }
+      ]
+    },
+    {
+      "slug": "satd",
+      "name": "satd",
+      "repo": "epochbtc/satd",
+      "commit": "f0ea0e5dfa8446d9cb63fef0a22eaf5f976216ce",
+      "kind": "workspace",
+      "source": "https://github.com/epochbtc/satd/blob/f0ea0e5dfa8446d9cb63fef0a22eaf5f976216ce/Cargo.toml",
+      "units": [
+        {
+          "name": "satd",
+          "path": "satd",
+          "tag": ""
+        },
+        {
+          "name": "sat-cli",
+          "path": "sat-cli",
+          "tag": ""
+        },
+        {
+          "name": "node",
+          "path": "node",
+          "tag": ""
+        },
+        {
+          "name": "node-index",
+          "path": "node-index",
+          "tag": ""
+        },
+        {
+          "name": "node-filter-index",
+          "path": "node-filter-index",
+          "tag": ""
+        },
+        {
+          "name": "node-sp-index",
+          "path": "node-sp-index",
+          "tag": ""
+        },
+        {
+          "name": "esplora-handlers",
+          "path": "esplora-handlers",
+          "tag": ""
+        },
+        {
+          "name": "electrum-proto",
+          "path": "electrum-proto",
+          "tag": ""
+        },
+        {
+          "name": "sat-tui",
+          "path": "sat-tui",
+          "tag": ""
+        },
+        {
+          "name": "mcp",
+          "path": "mcp",
+          "tag": ""
+        },
+        {
+          "name": "consensus",
+          "path": "consensus",
+          "tag": ""
+        },
+        {
+          "name": "events",
+          "path": "events",
+          "tag": ""
+        },
+        {
+          "name": "satd-events-proto",
+          "path": "satd-events-proto",
+          "tag": ""
+        },
+        {
+          "name": "satd-events-client",
+          "path": "satd-events-client",
+          "tag": ""
+        },
+        {
+          "name": "tls-config",
+          "path": "tls-config",
+          "tag": ""
+        },
+        {
+          "name": "satd-auth",
+          "path": "satd-auth",
+          "tag": ""
+        },
+        {
+          "name": "satd-alert",
+          "path": "satd-alert",
+          "tag": ""
+        },
+        {
+          "name": "satd-policy",
+          "path": "satd-policy",
+          "tag": ""
+        },
+        {
+          "name": "satd-psbt",
+          "path": "satd-psbt",
+          "tag": ""
+        }
+      ]
+    },
+    {
+      "slug": "libbitcoin",
+      "name": "libbitcoin",
+      "repo": "libbitcoin/libbitcoin-system",
+      "commit": "9f9cce3086074840951cedf1d381f08112275bfd",
+      "kind": "src",
+      "source": "https://github.com/libbitcoin/libbitcoin-system/tree/9f9cce3086074840951cedf1d381f08112275bfd/src",
+      "units": [
+        {
+          "name": "chain",
+          "path": "src/chain",
+          "tag": ""
+        },
+        {
+          "name": "config",
+          "path": "src/config",
+          "tag": ""
+        },
+        {
+          "name": "crypto",
+          "path": "src/crypto",
+          "tag": ""
+        },
+        {
+          "name": "data",
+          "path": "src/data",
+          "tag": ""
+        },
+        {
+          "name": "endian",
+          "path": "src/endian",
+          "tag": ""
+        },
+        {
+          "name": "error",
+          "path": "src/error",
+          "tag": ""
+        },
+        {
+          "name": "filter",
+          "path": "src/filter",
+          "tag": ""
+        },
+        {
+          "name": "hash",
+          "path": "src/hash",
+          "tag": ""
+        },
+        {
+          "name": "ip",
+          "path": "src/ip",
+          "tag": ""
+        },
+        {
+          "name": "math",
+          "path": "src/math",
+          "tag": ""
+        },
+        {
+          "name": "options",
+          "path": "src/options",
+          "tag": ""
+        },
+        {
+          "name": "radix",
+          "path": "src/radix",
+          "tag": ""
+        },
+        {
+          "name": "serial",
+          "path": "src/serial",
+          "tag": ""
+        },
+        {
+          "name": "stream",
+          "path": "src/stream",
+          "tag": ""
+        },
+        {
+          "name": "unicode",
+          "path": "src/unicode",
+          "tag": ""
+        },
+        {
+          "name": "wallet",
+          "path": "src/wallet",
+          "tag": ""
+        },
+        {
+          "name": "words",
+          "path": "src/words",
+          "tag": ""
+        },
+        {
+          "name": "x509",
+          "path": "src/x509",
+          "tag": ""
+        }
+      ]
+    },
+    {
+      "slug": "hornet",
+      "name": "Hornet",
+      "repo": "tobysharp/hornet",
+      "commit": "151462fa5ceece39c159674886dcfa6cfe9b1234",
+      "kind": "src",
+      "source": "https://github.com/tobysharp/hornet/tree/151462fa5ceece39c159674886dcfa6cfe9b1234/src",
+      "units": [
+        {
+          "name": "hornetlib",
+          "path": "src/hornetlib",
+          "tag": ""
+        },
+        {
+          "name": "hornetnode",
+          "path": "src/hornetnode",
+          "tag": ""
+        },
+        {
+          "name": "hornetnodelib",
+          "path": "src/hornetnodelib",
+          "tag": ""
+        }
+      ]
+    },
+    {
+      "slug": "floresta",
+      "name": "Floresta",
+      "repo": "getfloresta/Floresta",
+      "commit": "cdbcf5a13cba2b0aab505977ba413f707bc06290",
+      "kind": "workspace",
+      "source": "https://github.com/getfloresta/Floresta/blob/cdbcf5a13cba2b0aab505977ba413f707bc06290/Cargo.toml",
+      "units": [
+        {
+          "name": "floresta-proc-macro",
+          "path": "crates/floresta-proc-macro",
+          "tag": ""
+        },
+        {
+          "name": "floresta",
+          "path": "crates/floresta",
+          "tag": ""
+        },
+        {
+          "name": "floresta-node",
+          "path": "crates/floresta-node",
+          "tag": ""
+        },
+        {
+          "name": "floresta-chain",
+          "path": "crates/floresta-chain",
+          "tag": ""
+        },
+        {
+          "name": "floresta-rpc",
+          "path": "crates/floresta-rpc",
+          "tag": ""
+        },
+        {
+          "name": "floresta-common",
+          "path": "crates/floresta-common",
+          "tag": ""
+        },
+        {
+          "name": "floresta-compact-filters",
+          "path": "crates/floresta-compact-filters",
+          "tag": ""
+        },
+        {
+          "name": "floresta-electrum",
+          "path": "crates/floresta-electrum",
+          "tag": ""
+        },
+        {
+          "name": "floresta-watch-only",
+          "path": "crates/floresta-watch-only",
+          "tag": ""
+        },
+        {
+          "name": "floresta-wire",
+          "path": "crates/floresta-wire",
+          "tag": ""
+        },
+        {
+          "name": "floresta-mempool",
+          "path": "crates/floresta-mempool",
+          "tag": ""
+        },
+        {
+          "name": "floresta-domain",
+          "path": "crates/floresta-domain",
+          "tag": ""
+        },
+        {
+          "name": "floresta-metrics",
+          "path": "crates/floresta-metrics",
+          "tag": ""
+        },
+        {
+          "name": "florestad",
+          "path": "bin/florestad",
+          "tag": ""
+        },
+        {
+          "name": "floresta-cli",
+          "path": "bin/floresta-cli",
+          "tag": ""
+        },
+        {
+          "name": "fuzz",
+          "path": "fuzz",
+          "tag": "tests"
+        }
+      ]
+    },
+    {
+      "slug": "rbitcoin",
+      "name": "rbitcoin",
+      "repo": "reardencode/rbitcoin",
+      "commit": "ca7bf804ed44d7efdca3da219ead6e644d35fd9e",
+      "kind": "workspace",
+      "source": "https://github.com/reardencode/rbitcoin/blob/ca7bf804ed44d7efdca3da219ead6e644d35fd9e/Cargo.toml",
+      "units": [
+        {
+          "name": "rbitcoin-primitives",
+          "path": "crates/rbitcoin-primitives",
+          "tag": ""
+        },
+        {
+          "name": "rbitcoin-log",
+          "path": "crates/rbitcoin-log",
+          "tag": ""
+        },
+        {
+          "name": "rbitcoin-store",
+          "path": "crates/rbitcoin-store",
+          "tag": ""
+        },
+        {
+          "name": "rbitcoin-query",
+          "path": "crates/rbitcoin-query",
+          "tag": ""
+        },
+        {
+          "name": "rbitcoin-consensus",
+          "path": "crates/rbitcoin-consensus",
+          "tag": ""
+        },
+        {
+          "name": "rbitcoin-mempool",
+          "path": "crates/rbitcoin-mempool",
+          "tag": ""
+        },
+        {
+          "name": "rbitcoin-net",
+          "path": "crates/rbitcoin-net",
+          "tag": ""
+        },
+        {
+          "name": "rbitcoin-ibd",
+          "path": "crates/rbitcoin-ibd",
+          "tag": ""
+        },
+        {
+          "name": "rbitcoin-rpc",
+          "path": "crates/rbitcoin-rpc",
+          "tag": ""
+        },
+        {
+          "name": "rbitcoin-electrum",
+          "path": "crates/rbitcoin-electrum",
+          "tag": ""
+        },
+        {
+          "name": "rbitcoin-esplora",
+          "path": "crates/rbitcoin-esplora",
+          "tag": ""
+        },
+        {
+          "name": "rbitcoin-sv2",
+          "path": "crates/rbitcoin-sv2",
+          "tag": ""
+        },
+        {
+          "name": "rbitcoin-cli",
+          "path": "crates/rbitcoin-cli",
+          "tag": ""
+        },
+        {
+          "name": "rbitcoin-node",
+          "path": "crates/rbitcoin-node",
+          "tag": ""
+        },
+        {
+          "name": "rbitcoin-test",
+          "path": "crates/rbitcoin-test",
+          "tag": ""
+        },
+        {
+          "name": "rbitcoin-bench",
+          "path": "crates/rbitcoin-bench",
+          "tag": ""
+        }
+      ]
+    },
+    {
+      "slug": "btcd",
+      "name": "btcd",
+      "repo": "btcsuite/btcd",
+      "commit": "dd169fe0c32a56087d28b92fff3b8cf4fb43477a",
+      "kind": "root",
+      "source": "https://github.com/btcsuite/btcd/tree/dd169fe0c32a56087d28b92fff3b8cf4fb43477a",
+      "units": [
+        {
+          "name": "address",
+          "path": "address",
+          "tag": ""
+        },
+        {
+          "name": "addrmgr",
+          "path": "addrmgr",
+          "tag": ""
+        },
+        {
+          "name": "blockchain",
+          "path": "blockchain",
+          "tag": ""
+        },
+        {
+          "name": "btcec",
+          "path": "btcec",
+          "tag": ""
+        },
+        {
+          "name": "btcjson",
+          "path": "btcjson",
+          "tag": ""
+        },
+        {
+          "name": "btcutil",
+          "path": "btcutil",
+          "tag": ""
+        },
+        {
+          "name": "chaincfg",
+          "path": "chaincfg",
+          "tag": ""
+        },
+        {
+          "name": "chainhash",
+          "path": "chainhash",
+          "tag": ""
+        },
+        {
+          "name": "cmd",
+          "path": "cmd",
+          "tag": ""
+        },
+        {
+          "name": "connmgr",
+          "path": "connmgr",
+          "tag": ""
+        },
+        {
+          "name": "database",
+          "path": "database",
+          "tag": ""
+        },
+        {
+          "name": "docs",
+          "path": "docs",
+          "tag": ""
+        },
+        {
+          "name": "integration",
+          "path": "integration",
+          "tag": ""
+        },
+        {
+          "name": "internal",
+          "path": "internal",
+          "tag": ""
+        },
+        {
+          "name": "limits",
+          "path": "limits",
+          "tag": ""
+        },
+        {
+          "name": "mempool",
+          "path": "mempool",
+          "tag": ""
+        },
+        {
+          "name": "mining",
+          "path": "mining",
+          "tag": ""
+        },
+        {
+          "name": "netsync",
+          "path": "netsync",
+          "tag": ""
+        },
+        {
+          "name": "ossec",
+          "path": "ossec",
+          "tag": ""
+        },
+        {
+          "name": "peer",
+          "path": "peer",
+          "tag": ""
+        },
+        {
+          "name": "psbt",
+          "path": "psbt",
+          "tag": ""
+        },
+        {
+          "name": "release",
+          "path": "release",
+          "tag": ""
+        },
+        {
+          "name": "rpcclient",
+          "path": "rpcclient",
+          "tag": ""
+        },
+        {
+          "name": "scripts",
+          "path": "scripts",
+          "tag": ""
+        },
+        {
+          "name": "txscript",
+          "path": "txscript",
+          "tag": ""
+        },
+        {
+          "name": "v2transport",
+          "path": "v2transport",
+          "tag": ""
+        },
+        {
+          "name": "wire",
+          "path": "wire",
+          "tag": ""
+        }
+      ]
+    }
+  ]
+}
