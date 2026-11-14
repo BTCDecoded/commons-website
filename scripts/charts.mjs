@@ -526,14 +526,17 @@ export function layered(bands, nodes, edges, opts) {
     return function (width, uid) {
         var arrow = (uid || "ch") + "-arrow";
         var narrow = width < 500, fs = narrow ? 12 : 13, ss = narrow ? 11 : 11.5;
-        var labelW = narrow ? 0 : (opts.labelWidth || 150), pad = 8, gapX = narrow ? 8 : 12;
+        var labelW = narrow ? 0 : (opts.labelWidth != null ? opts.labelWidth : 150), pad = 8, gapX = narrow ? 8 : 12;
         var areaX = labelW ? labelW + pad : pad, areaW = width - areaX - pad;
         var maxNodeW = opts.maxNodeW || 170;
+        // A fixed column count keeps every box the same width and on the same
+        // left edge. Without it, a one-box row centres and a full row stretches.
+        var fixed = narrow ? (opts.narrowPerRow || opts.perRow || 0) : (opts.perRow || 0);
         // 1. Rows (narrow screens may split a band row further).
         var rows = [];
         bands.forEach(function (b, bi) {
             b.rows.forEach(function (r, ri) {
-                var per = narrow && opts.narrowPerRow ? opts.narrowPerRow : r.length;
+                var per = fixed || (narrow && opts.narrowPerRow ? opts.narrowPerRow : r.length);
                 for (var i = 0; i < r.length; i += per) rows.push({ band: bi, first: ri === 0 && i === 0, ids: r.slice(i, i + per) });
             });
         });
@@ -541,8 +544,10 @@ export function layered(bands, nodes, edges, opts) {
         var pos = {};
         rows.forEach(function (row) {
             var n = row.ids.length;
-            var w = Math.min(maxNodeW, (areaW - (n - 1) * gapX) / n);
-            var total = n * w + (n - 1) * gapX, x0 = areaX + (areaW - total) / 2;
+            var slots = fixed || n;
+            var w = Math.min(maxNodeW, (areaW - (slots - 1) * gapX) / slots);
+            var total = n * w + (n - 1) * gapX;
+            var x0 = (opts.align === "start" || fixed) ? areaX : areaX + (areaW - total) / 2;
             var h = 0;
             row.ids.forEach(function (id, i) {
                 var nd = nodes[id]; if (!nd) throw new Error("layered: no node " + id);
@@ -600,9 +605,10 @@ export function layered(bands, nodes, edges, opts) {
             if (row.first) {
                 if (ri > 0) y += 6;
                 var top = y;
-                var subL = band.sub ? wrap(band.sub, ss, narrow ? width - 2 * pad - 4 : labelW - 12) : [];
-                if (narrow) y += 20 + subL.length * (ss + 3) + 4; else y += 10;
-                bandRects.push({ band: row.band, top: top, subL: subL });
+                var hasHead = !!(band.label || band.sub);
+                var subL = band.sub ? wrap(band.sub, ss, narrow ? width - 2 * pad - 4 : Math.max(labelW - 12, 40)) : [];
+                if (hasHead) { if (narrow) y += 20 + subL.length * (ss + 3) + 4; else y += 10; }
+                bandRects.push({ band: row.band, top: top, subL: subL, hasHead: hasHead });
             }
             row.y = y;
             row.ids.forEach(function (id) { pos[id].y = y; pos[id].h = row.h; });
@@ -611,7 +617,7 @@ export function layered(bands, nodes, edges, opts) {
             var tracks = gapEdges[ri].length;
             row.gapTop = y;
             y += Math.max(last ? 18 : 22, 12 + tracks * 6) + (last ? 8 : 0);
-            if (last && !narrow) {
+            if (last && !narrow && bandRects[bandRects.length - 1].hasHead) {
                 // A band is at least as tall as its label column.
                 var br0 = bandRects[bandRects.length - 1], need = br0.top + 17 + 3 + br0.subL.length * (ss + 3) + 14;
                 if (y < need) { row.gapTop += need - y; y = need; }
@@ -634,7 +640,7 @@ export function layered(bands, nodes, edges, opts) {
             var b = bands[br.band], bottom = i < bandRects.length - 1 ? bandRects[i + 1].top - 4 : br.bottom;
             strips += "<rect x=\"0.5\" y=\"" + fmt(br.top + 0.5) + "\" width=\"" + (width - 1) + "\" height=\"" + fmt(bottom - br.top - 1) + "\" rx=\"8\" class=\"ch-group" + (b.cls ? " ch-group-" + b.cls : "") + "\"/>";
             var lx = narrow ? pad + 2 : pad + 2, ly = br.top + 17;
-            heads += t(lx, ly, b.label, "ch-t ch-ghead ch-halo");
+            if (b.label) heads += t(lx, ly, b.label, "ch-t ch-ghead ch-halo");
             br.subL.forEach(function (l, j) { heads += t(lx, ly + 3 + (j + 1) * (ss + 3), l, "ch-t ch-bsub ch-halo", " font-size=\"" + ss + "\""); });
         });
         var paths = "";

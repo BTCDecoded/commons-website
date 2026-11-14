@@ -313,7 +313,7 @@ export default {
                     caption: d.caption,
                     title: r.name + " layer diagram",
                     desc: desc,
-                    chart: layered(bands, nodes, edges, { labelWidth: 0, maxNodeW: 132, narrowPerRow: 2 }),
+                    chart: layered(bands, nodes, edges, { labelWidth: 0, maxNodeW: 156, perRow: 4, narrowPerRow: 2, align: "start" }),
                     sources: [{ label: d.source_label, href: d.source }],
                     table: {
                         caption: r.name + " dependencies",
@@ -330,9 +330,9 @@ export default {
                 "<p>" + esc(read.detail || govLead) + "</p>" +
                 govLine("Written rule", read.writtenPair, read.writtenWait) +
                 govLine("Quorum", read.quorumPair, "") +
-                (r.internal ? layerStack() : stackDiagram()) +
                 "<details><summary>Basis</summary><p>" + esc(read.basis) + (read.quorum ? " " + esc(read.quorum) : "") + "</p><p>" + govLead + " The article's form scores are judgments of a form. This reading does not copy them onto the project.</p></details>" +
-                "<p class=\"eco-govread-note\">" + (r.internal ? "<a href=\"governance-designer.html\">Fork these rules</a>" : "<a href=\"#forms\">Forms</a>") + "</p></section>";
+                "<p class=\"eco-govread-note\">" + (r.internal ? "<a href=\"governance-designer.html\">Fork these rules</a>" : "<a href=\"#forms\">Forms</a>") + "</p></section>" +
+                "<div class=\"eco-laywrap\">" + (r.internal ? layerStack() : stackDiagram()) + "</div>";
             return "<article class=\"eco-card" + (r.internal ? " internal" : "") + "\" id=\"" + id + "\" aria-labelledby=\"" + id + "-h\">" +
                 pickBits +
                 "<h3 id=\"" + id + "-h\">" + esc(r.name) + "</h3>" +
