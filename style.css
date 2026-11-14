@@ -2179,6 +2179,45 @@ mjx-container:not([display="true"]) {
   text-align: left;
 }
 
+/* Lock names the witness. Binding names the code that witness reads. */
+.spec-reading {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin: 0.6rem 0 1rem;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color, #2a2a2f);
+  border-left-width: 3px;
+  background: var(--bg-secondary, #17171a);
+  border-radius: 4px;
+}
+
+.spec-reading--lock {
+  border-left-color: var(--text-secondary, #888894);
+}
+
+.spec-reading--binding {
+  border-left-color: var(--primary-color, #f7761a);
+}
+
+.spec-reading-kind {
+  font-family: "Overpass Mono", "Courier New", monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary, #888894);
+  flex: none;
+}
+
+.spec-reading--binding .spec-reading-kind {
+  color: var(--primary-color, #f7761a);
+}
+
+.spec-reading-body {
+  min-width: 0;
+  font-size: 0.95rem;
+}
+
 /* Markdown spec viewers + spec-maps / spec-reference: sticky nav (shared with embedded viewers) */
 .orange-paper-nav {
   position: sticky;

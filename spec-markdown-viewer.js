@@ -592,6 +592,29 @@
         wrapFormulaGrids(root);
     }
 
+    function decorateReadingCards(root) {
+        root.querySelectorAll('blockquote').forEach(function (bq) {
+            var first = bq.querySelector('p') || bq;
+            var raw = first.textContent || '';
+            var m = raw.match(/^\s*(Lock|Binding)\.\s*/);
+            if (!m) {
+                return;
+            }
+            var aside = document.createElement('aside');
+            aside.className = 'spec-reading spec-reading--' + m[1].toLowerCase();
+            aside.setAttribute('aria-label', m[1]);
+            var kind = document.createElement('span');
+            kind.className = 'spec-reading-kind';
+            kind.textContent = m[1];
+            var body = document.createElement('div');
+            body.className = 'spec-reading-body';
+            body.innerHTML = first.innerHTML.replace(/^\s*(?:Lock|Binding)\.\s*/, '');
+            aside.appendChild(kind);
+            aside.appendChild(body);
+            bq.replaceWith(aside);
+        });
+    }
+
     function wrapFormulaGrids(root) {
         var cards = Array.prototype.slice.call(root.querySelectorAll('.spec-formula'));
         var i = 0;
@@ -698,6 +721,7 @@
         contentEl.innerHTML = html;
         contentEl.style.display = 'block';
         decorateFormulaBlocks(contentEl);
+        decorateReadingCards(contentEl);
         rewriteSpecLinks(contentEl);
         requestAnimationFrame(function () {
             requestAnimationFrame(scrollToHash);
