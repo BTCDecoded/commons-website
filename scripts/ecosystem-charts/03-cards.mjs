@@ -8,6 +8,7 @@
 // ctx.model.pending say "pending fix".
 import { figure, layered, assuranceRadial, radar, svgOnce, esc, median, govMark, releaseStage, releaseMark, assuranceRank, assuranceEmblem } from "../charts.mjs";
 import { codeHealth } from "./06-stars.mjs";
+import { crateModel } from "./35-crate-tree.mjs";
 
 function radarJson(obj) {
     return JSON.stringify(obj).replace(/</g, "\\u003c");
@@ -287,7 +288,21 @@ export default {
                 return "<div class=\"eco-lstack\"><p class=\"eco-lcap\">Written repository layers.</p><ol>" + bands + "</ol></div>";
             }
             function stackDiagram() {
-                if (r.internal) return "";
+                if (r.internal) {
+                    var m = crateModel(ctx);
+                    return figure({
+                        id: "fig-lay-blvm",
+                        cls: "eco-layfig",
+                        headline: m.headline,
+                        caption: m.caption,
+                        notes: m.notes,
+                        title: m.title,
+                        desc: m.desc,
+                        chart: layered(m.bands, m.nodes, m.edges, { labelWidth: 0, maxNodeW: 156, perRow: 4, narrowPerRow: 2, align: "start" }),
+                        sources: m.sources,
+                        table: m.table
+                    });
+                }
                 var d = diagramBySlug[r.slug];
                 if (!d) throw new Error("cards: no diagram for " + r.slug);
                 var nodes = {};
@@ -330,9 +345,10 @@ export default {
                 "<p>" + esc(read.detail || govLead) + "</p>" +
                 govLine("Written rule", read.writtenPair, read.writtenWait) +
                 govLine("Quorum", read.quorumPair, "") +
+                (r.internal ? layerStack() : "") +
                 "<details><summary>Basis</summary><p>" + esc(read.basis) + (read.quorum ? " " + esc(read.quorum) : "") + "</p><p>" + govLead + " The article's form scores are judgments of a form. This reading does not copy them onto the project.</p></details>" +
                 "<p class=\"eco-govread-note\">" + (r.internal ? "<a href=\"governance-designer.html\">Fork these rules</a>" : "<a href=\"#forms\">Forms</a>") + "</p></section>" +
-                "<div class=\"eco-laywrap\">" + (r.internal ? layerStack() : stackDiagram()) + "</div>";
+                "<div class=\"eco-laywrap\">" + stackDiagram() + "</div>";
             return "<article class=\"eco-card" + (r.internal ? " internal" : "") + "\" id=\"" + id + "\" aria-labelledby=\"" + id + "-h\">" +
                 pickBits +
                 "<h3 id=\"" + id + "-h\">" + esc(r.name) + "</h3>" +
@@ -377,7 +393,7 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-            caption: "The card leads with the rank, the release, and the three scores, then this page's governance reading, then the charts. The reading uses the same mark as the graph. A signature count is one dot per key: orange must sign, gray is another key in the set. BLVM's reading includes the written rule, the governance-node quorum, and the five written repository layers. Each other tree draws its own directories or workspace crates at its pin. Vendored and tests mark paths the line counter already treats that way. Those chips are not signature layers. Not classified means this reading did not assign a label. The article's form scores are not copied onto the project. Selecting a chart opens it with its labels and values. Language, license, and age, when this page states them, are badges on the card. A hatched spoke is not measured, and it is not drawn as zero. A count that is not measured is left off the card. When none of the five comparisons is measured, that chart is left off the card.",
+            caption: "The card leads with the rank, the release, and the three scores, then this page's governance reading, then the layer diagram, then the charts. The reading uses the same mark as the graph. A signature count is one dot per key: orange must sign, gray is another key in the set. BLVM's reading includes the written rule, the governance-node quorum, and the five written repository layers. Every profile then draws the libraries or crates its default node links, in the same panel. A box marked vendored is a path the line counter already treats that way. These drawings are not signature layers. Not classified means this reading did not assign a label. The article's form scores are not copied onto the project. Selecting a chart opens it with its labels and values. Language, license, and age, when this page states them, are badges on the card. A hatched spoke is not measured, and it is not drawn as zero. A count that is not measured is left off the card. When none of the five comparisons is measured, that chart is left off the card.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),
