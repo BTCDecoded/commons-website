@@ -177,16 +177,68 @@
       .sig-read { display: flex; align-items: center; gap: 0.4rem; min-height: 1.1rem; margin-top: 0.55rem; }
       .feature-tag { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 0.4rem; }
       .genealogy-detail { display: inline-flex; align-items: center; gap: 0.35rem; }
-      .genealogy-container { min-height: 0; overflow: visible; padding: 0; background: transparent; border: 0; box-shadow: none; }
-      .genealogy-tree-root, .genealogy-children, .genealogy-children-row { flex-wrap: wrap; overflow: visible; justify-content: center; }
-      .genealogy-node { min-width: min(100%, 16rem); max-width: 22rem; margin: 0.5rem; }
-      .genealogy-node-content { padding: 1rem 1.05rem; }
-      .genealogy-node-content:hover { transform: none; }
-      .genealogy-facets { margin: 0.4rem 0 0; }
-      .genealogy-facets div { display: grid; grid-template-columns: 9.5rem 1fr; gap: 0.35rem 0.6rem; align-items: center; padding: 0.28rem 0; border-top: 1px solid var(--border-color); }
-      .genealogy-facets dt { margin: 0; color: var(--text-secondary); font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; }
-      .genealogy-facets dd { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.5rem; }
-      .genealogy-node details summary { cursor: pointer; color: var(--text-secondary); margin-top: 0.45rem; }
+      #genealogy-tree { max-width: 100%; min-width: 0; overflow: visible; }
+      .genealogy-container { min-height: 0 !important; overflow: visible !important; padding: 0 !important; background: transparent !important; border: 0 !important; box-shadow: none !important; }
+      #genealogy-tree .genealogy-node::before,
+      #genealogy-tree .genealogy-children::before { content: none !important; display: none !important; }
+      .lineage { width: 100%; min-width: 0; }
+      .lineage-root { display: flex; justify-content: center; }
+      .lineage-root .lineage-card { width: min(100%, 28rem); }
+      .lineage-branch { position: relative; margin-top: 0; padding-top: 1.15rem; }
+      .lineage-branch::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 2px;
+        height: 1.15rem;
+        transform: translateX(-50%);
+        background: #5a5a64;
+      }
+      .lineage-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 17.5rem), 1fr));
+        gap: 1.15rem 0.75rem;
+        position: relative;
+        padding-top: 0.7rem;
+        width: 100%;
+        min-width: 0;
+      }
+      .lineage-grid::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #5a5a64;
+      }
+      .lineage-card {
+        position: relative;
+        min-width: 0;
+        padding: 0.85rem 0.9rem 0.95rem;
+        border: 1.5px solid #3a3a42;
+        border-radius: 10px;
+        background: var(--bg-primary);
+      }
+      .lineage-card.is-root { border-color: var(--orange); }
+      .lineage-stem {
+        position: absolute;
+        top: -0.7rem;
+        left: 50%;
+        width: 2px;
+        height: 0.7rem;
+        transform: translateX(-50%);
+        background: #5a5a64;
+      }
+      .lineage-from { margin: 0 0 0.35rem; color: var(--text-secondary); font-size: 0.75rem; text-align: center; }
+      .lineage-card h4 { margin: 0 0 0.35rem; }
+      .lineage-facets { margin: 0.35rem 0 0; }
+      .lineage-facets div { display: grid; grid-template-columns: minmax(0, 8.2rem) minmax(0, 1fr); gap: 0.3rem 0.5rem; align-items: center; padding: 0.28rem 0; border-top: 1px solid var(--border-color); }
+      .lineage-facets dt { margin: 0; color: var(--text-secondary); font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; }
+      .lineage-facets dd { margin: 0; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 0.45rem; }
+      .lineage-card details summary { cursor: pointer; color: var(--text-secondary); margin-top: 0.45rem; }
+      .lineage-sub { margin: 1.25rem 0 0.4rem; color: var(--text-secondary); font-size: 0.85rem; font-weight: 600; }
       .feature-k { color: var(--text-secondary); font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; }
       .rules-read { list-style: none; padding: 0; margin: 0; }
       .rules-read li { display: grid; grid-template-columns: 9.5rem 1fr; gap: 0.5rem; align-items: center; padding: 0.35rem 0; border-top: 1px solid var(--border-color); }
@@ -3372,88 +3424,57 @@
               '<p class="genealogy-error">No forks found in registry.</p>';
             return;
           }
-
-          // Build tree structure
-          const forkMap = new Map();
-          const rootForks = [];
-
-          forks.forEach((fork) => {
-            forkMap.set(fork.id, fork);
-          });
-
-          forks.forEach((fork) => {
-            if (!fork.forked_from || !forkMap.has(fork.forked_from)) {
-              if (!fork.forked_from) rootForks.push(fork);
-            }
-          });
-
-          // If no root, use first fork
-          if (rootForks.length === 0 && forks.length > 0) {
-            rootForks.push(forks.find((f) => f.id === "default") || forks[0]);
+          const byId = {};
+          forks.forEach(function (fork) { byId[fork.id] = fork; });
+          var roots = forks.filter(function (fork) { return !fork.forked_from || !byId[fork.forked_from]; });
+          if (!roots.length) roots = [forks.find(function (fork) { return fork.id === "default"; }) || forks[0]];
+          function escText(value) {
+            return String(value == null ? "" : value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
           }
-
-          function renderForkNode(fork, level = 0) {
-            const isRoot = level === 0;
-            const children = forks.filter((f) => f.forked_from === fork.id);
-            const forkType = fork.verified
-              ? "verified"
-              : fork.id === "default"
-                ? "default"
-                : fork.created_by === "BTCDecoded"
-                  ? "template"
-                  : "community";
-
-            // Clean up name - remove "Governance" and "Default"
-            let displayName = fork.name || fork.id;
-            displayName = displayName.replace(/\s+Governance\s*/gi, "");
-            displayName = displayName.replace(/\s+Default\s*/gi, "");
-            if (fork.id === "default") {
-              displayName = "BTCDecoded";
-            }
-
-            function facet(label, raw) {
-              if (raw == null || raw === "") return "";
-              return `<div><dt>${label}</dt><dd>${quorumCell(raw)}</dd></div>`;
-            }
-            let html = `
-                        <div class="genealogy-node ${forkType}" data-level="${level}">
-                            <div class="genealogy-node-content">
-                                <div class="genealogy-node-header">
-                                    <h4>${displayName}</h4>
-                                    ${isRoot ? '<span class="genealogy-badge default">Root</span>' : ""}
-                                </div>
-                                <dl class="genealogy-facets">
-                                    ${facet("Routine", fork.tier1)}
-                                    ${facet("Feature", fork.tier2)}
-                                    ${facet("Consensus-adjacent", fork.tier3)}
-                                    ${facet("Teams", fork.teams)}
-                                    ${facet("Removal", fork.removal === "off" ? "not used" : fork.removal)}
-                                    ${facet("Quorum", fork.quorum)}
-                                </dl>
-                                ${fork.description ? `<details><summary>About</summary><p class="genealogy-node-desc">${fork.description}</p></details>` : ""}
-                                ${fork.github ? `<a href="${fork.github}" target="_blank" class="genealogy-link">View on GitHub</a>` : ""}
-                            </div>
-                    `;
-
-            if (children.length > 0) {
-              html += '<div class="genealogy-children">';
-              children.forEach((child) => {
-                html += renderForkNode(child, level + 1);
-              });
-              html += "</div>";
-            }
-
-            html += "</div>";
-            return html;
+          function nameOf(fork) {
+            var name = fork.name || fork.id || "";
+            name = name.replace(/\s+Governance\s*/gi, "").replace(/\s+Default\s*/gi, "");
+            if (fork.id === "default") name = "BTCDecoded";
+            return name;
           }
-
-          let treeHTML = '<div class="genealogy-tree-root">';
-          rootForks.forEach((root) => {
-            treeHTML += renderForkNode(root, 0);
+          function facet(label, raw) {
+            if (raw == null || raw === "") return "";
+            return "<div><dt>" + label + "</dt><dd>" + quorumCell(raw) + "</dd></div>";
+          }
+          function card(fork, from) {
+            return '<article class="lineage-card' + (from ? "" : " is-root") + '">' +
+              (from ? '<p class="lineage-from"><span class="lineage-stem" aria-hidden="true"></span>from ' + escText(from) + "</p>" : "") +
+              "<h4>" + escText(nameOf(fork)) + "</h4>" +
+              '<dl class="lineage-facets">' +
+                facet("Routine", fork.tier1) +
+                facet("Feature", fork.tier2) +
+                facet("Consensus-adjacent", fork.tier3) +
+                facet("Teams", fork.teams) +
+                facet("Removal", fork.removal === "off" ? "not used" : fork.removal) +
+                facet("Quorum", fork.quorum) +
+              "</dl>" +
+              (fork.description ? "<details><summary>About</summary><p>" + escText(fork.description) + "</p></details>" : "") +
+              (fork.github ? '<a class="genealogy-link" href="' + escText(fork.github) + '" target="_blank">View on GitHub</a>' : "") +
+              "</article>";
+          }
+          var html = '<div class="lineage">';
+          roots.forEach(function (root) {
+            html += '<div class="lineage-root">' + card(root, "") + "</div>";
+            var kids = forks.filter(function (fork) { return fork.forked_from === root.id; });
+            if (!kids.length) return;
+            html += '<div class="lineage-branch"><div class="lineage-grid">';
+            kids.forEach(function (kid) { html += card(kid, nameOf(root)); });
+            html += "</div></div>";
+            kids.forEach(function (kid) {
+              var grand = forks.filter(function (fork) { return fork.forked_from === kid.id; });
+              if (!grand.length) return;
+              html += '<h4 class="lineage-sub">from ' + escText(nameOf(kid)) + '</h4><div class="lineage-branch"><div class="lineage-grid">';
+              grand.forEach(function (item) { html += card(item, nameOf(kid)); });
+              html += "</div></div>";
+            });
           });
-          treeHTML += "</div>";
-
-          container.innerHTML = treeHTML;
+          html += "</div>";
+          container.innerHTML = html;
         }
 
         // Load and render genealogy on tab switch
