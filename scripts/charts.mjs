@@ -142,7 +142,7 @@ function linkRole(open, body) {
     return body.indexOf("<a ") >= 0 ? open.replace("role=\"img\"", "role=\"group\"") : open;
 }
 function svgOpen(id, w, h, title, desc) {
-    return "<svg class=\"ch-svg\" viewBox=\"0 0 " + w + " " + fmt(h) + "\" width=\"" + w + "\" height=\"" + fmt(h) + "\" role=\"img\" aria-labelledby=\"" + id + "-t " + id + "-d\" preserveAspectRatio=\"xMinYMin meet\">" +
+    return "<svg class=\"ch-svg\" viewBox=\"0 0 " + w + " " + fmt(h) + "\" width=\"" + w + "\" height=\"" + fmt(h) + "\" style=\"aspect-ratio:" + w + " / " + fmt(h) + "\" role=\"img\" aria-labelledby=\"" + id + "-t " + id + "-d\" preserveAspectRatio=\"xMinYMin meet\">" +
         "<title id=\"" + id + "-t\">" + esc(title) + "</title><desc id=\"" + id + "-d\">" + esc(desc) + "</desc>";
 }
 
