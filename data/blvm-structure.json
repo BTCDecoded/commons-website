@@ -23,7 +23,7 @@
       {
         "id": "blvm-node",
         "repo": "blvm-node",
-        "role": "Node: networking, storage, RPC",
+        "role": "Networking, storage, RPC. Open",
         "cargo": "https://github.com/BTCDecoded/blvm-node/blob/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/Cargo.toml",
         "in_default_binary": true
       },
@@ -267,6 +267,28 @@
         "evidence": "blvm-spec-lock optional; \"Not a node dependency. Off unless `--features spec-lock`.\"",
         "source": "https://github.com/BTCDecoded/blvm-consensus/blob/f63c32856a2da874296524f40b8cbd35518d8096/Cargo.toml"
       }
+    ]
+  },
+  "node_diagram": {
+    "pin": "36bb40c7e9a3f805274fa7e1bda30d0a6c082560",
+    "source": "https://github.com/BTCDecoded/blvm-node/blob/36bb40c7e9a3f805274fa7e1bda30d0a6c082560/src/lib.rs",
+    "method": "Modules are the pub mod entries in src/lib.rs at this pin. cli, bip21, and validation are modules of the crate and are not drawn, because they do not call the modules in this drawing. A use is a crate:: path from one of these modules to another in a file that is not a test. An arrow is a use that happens at least twice as often in that direction as the other way. node, network, and module call each other, so they share a row and no arrow is drawn between them. rpc and the module host also call each other, so no arrow is drawn there either. An arrow a longer path already covers is left off the drawing. The table lists every use that met the rule.",
+    "rows": [["rpc"], ["node", "network", "module"], ["storage"], ["config", "utils"]],
+    "nodes": {
+      "rpc": { "label": "rpc", "sub": "RPC server" },
+      "node": { "label": "node", "sub": "chain, mempool, sync" },
+      "network": { "label": "network", "sub": "peers and relay" },
+      "module": { "label": "module", "sub": "module host" },
+      "storage": { "label": "storage", "sub": "blocks and UTXOs" },
+      "config": { "label": "config", "sub": "settings" },
+      "utils": { "label": "utils", "sub": "shared helpers" }
+    },
+    "links": [
+      ["rpc", "node"], ["rpc", "storage"], ["rpc", "network"], ["rpc", "config"], ["rpc", "utils"],
+      ["node", "storage"], ["node", "config"], ["node", "utils"],
+      ["network", "config"], ["network", "utils"], ["network", "module"], ["network", "storage"],
+      ["module", "utils"], ["module", "config"],
+      ["storage", "config"]
     ]
   },
   "layers_source": {

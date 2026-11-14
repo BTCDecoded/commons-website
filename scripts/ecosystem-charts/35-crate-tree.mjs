@@ -31,7 +31,7 @@ export function crateModel(ctx) {
         const nodes = {}, placed = {};
         crates.forEach(function (c) {
             const off = !c.in_default_binary;
-            nodes[c.id] = { label: c.id, short: c.id.replace(/^blvm-/, ""), sub: c.role, cls: c.id === "blvm" ? "hl" : off ? "muted" : "" };
+            nodes[c.id] = { label: c.id, short: c.id.replace(/^blvm-/, ""), sub: c.role, cls: c.id === "blvm" ? "hl" : off ? "muted" : "", open: c.id === "blvm-node" ? "fig-node" : "" };
         });
         const bands = ORDER.map(function (key) {
             const rows = ROWS[key].map(function (r) { return r.filter(function (id) { return byId[id]; }); }).filter(function (r) { return r.length; });
@@ -85,7 +85,7 @@ export function crateModel(ctx) {
             nodes: nodes,
             edges: edges,
             headline: "The default blvm binary is " + linked.length + " BLVM crates. blvm-muhash and blvm-spec-lock are in the application layer (" + app.signatures_required + " of " + app.signatures_total + " signatures, " + app.review_period_days + "-day review). The registry modules are in the extension layer with blvm-sdk, and each depends on blvm-sdk.",
-            caption: "Arrows point from a crate to a crate it depends on, read from each Cargo.toml (node pinned at " + s.crates.node_pin.slice(0, 7) + "). Dashed arrows are optional and off in the default build. Outlined boxes are not linked into the default binary. Each registry module has a solid arrow into blvm-sdk. blvm-spec-lock runs the verification and is on by default. It is not in the node dependency tree and does not compile into the binary, so no arrow is drawn to it. Bands are the repository layers in the governance config, with their written signature rule.",
+            caption: "Arrows point from a crate to a crate it depends on, read from each Cargo.toml (node pinned at " + s.crates.node_pin.slice(0, 7) + "). Dashed arrows are optional and off in the default build. Outlined boxes are not linked into the default binary. Each registry module has a solid arrow into blvm-sdk. blvm-spec-lock runs the verification and is on by default. It is not in the node dependency tree and does not compile into the binary, so no arrow is drawn to it. The blvm-node box opens a diagram of that crate. Clicking the open diagram returns to this one. Bands are the repository layers in the governance config, with their written signature rule.",
             measures: "Which governance layer covers each crate and module, and which crate it depends on.",
             takeaway: "blvm-muhash and blvm-spec-lock are in the application layer. Every registry module depends on blvm-sdk and shares the extension layer.",
             title: "BLVM crate dependencies by governance layer",
@@ -102,6 +102,64 @@ export function crateModel(ctx) {
                 })
             }
         };
+}
+
+export function nodeModel(ctx) {
+    const d = ctx.readJson("data/blvm-structure.json").node_diagram;
+    if (!d || !d.rows || !d.nodes || !d.links) throw new Error("node diagram: missing data");
+    const nodes = {};
+    const rowIndex = {};
+    var nRow = 0;
+    const bands = d.rows.map(function (row) {
+        row.forEach(function (id) {
+            const n = d.nodes[id];
+            if (!n || !n.label) throw new Error("node diagram: missing " + id);
+            nodes[id] = { label: n.label, short: n.label, sub: n.sub || "" };
+            rowIndex[id] = nRow;
+        });
+        nRow++;
+        return { label: "", sub: "", rows: [row] };
+    });
+    const links = d.links.map(function (pair) {
+        if (rowIndex[pair[0]] == null || rowIndex[pair[1]] == null) throw new Error("node diagram: link missing a module");
+        return { from: pair[0], to: pair[1] };
+    });
+    const drawable = links.filter(function (e) { return rowIndex[e.to] > rowIndex[e.from]; });
+    const sideways = links.filter(function (e) { return rowIndex[e.to] <= rowIndex[e.from]; });
+    function reach(from, to, skip) {
+        const seen = {}, stack = [from];
+        while (stack.length) {
+            const x = stack.pop();
+            if (x === to) return true;
+            if (seen[x]) continue; seen[x] = 1;
+            drawable.forEach(function (e) { if (e !== skip && e.from === x) stack.push(e.to); });
+        }
+        return false;
+    }
+    const implied = drawable.filter(function (e) { return reach(e.from, e.to, e); });
+    const edges = drawable.filter(function (e) { return implied.indexOf(e) < 0; });
+    const notes = [];
+    if (sideways.length) notes.push("These uses stay off the drawing because the modules share a row or the arrow would point up: " + sideways.map(function (e) { return e.from + " uses " + e.to; }).join("; ") + ".");
+    if (implied.length) notes.push("Arrows already implied by a longer path are left out of the drawing: " + implied.map(function (e) { return e.from + " also uses " + e.to; }).join("; ") + ". The hidden table lists every use that met the rule.");
+    return {
+        bands: bands,
+        nodes: nodes,
+        edges: edges,
+        headline: "RPC calls the node and the network. The node and the network call storage and the shared helpers, and storage calls config. The module host calls config and the shared helpers.",
+        caption: d.method + " Clicking this diagram returns to the layer diagram.",
+        title: "blvm-node modules",
+        desc: d.rows.map(function (row) { return row.join(", "); }).join(". ") + ". Edges: " + edges.map(function (e) { return e.from + " to " + e.to; }).join("; ") + ".",
+        notes: notes,
+        sources: [{ label: "blvm-node src/lib.rs at " + d.pin.slice(0, 7), href: d.source }],
+        table: {
+            caption: "blvm-node modules and which module they use",
+            columns: ["Module", "Uses"],
+            rows: d.rows.reduce(function (acc, row) { return acc.concat(row); }, []).map(function (id) {
+                const uses = links.filter(function (e) { return e.from === id; }).map(function (e) { return e.to; });
+                return [id, uses.join(", ") || "none in this drawing"];
+            })
+        }
+    };
 }
 
 export default {

@@ -675,9 +675,12 @@ export function layered(bands, nodes, edges, opts) {
         var boxes = "";
         Object.keys(pos).forEach(function (id) {
             var p = pos[id], n = nodes[id], label = narrow && n.short ? n.short : n.label;
+            var drill = n.open ? "<g class=\"ch-drill\" data-open=\"" + n.open + "\"><title>Open the node diagram</title>" : "";
+            boxes += drill;
             boxes += "<rect x=\"" + fmt(p.x) + "\" y=\"" + fmt(p.y) + "\" width=\"" + fmt(p.w) + "\" height=\"" + fmt(p.h) + "\" rx=\"6\" class=\"ch-node" + (n.cls ? " ch-node-" + n.cls : "") + "\"/>";
             boxes += t(p.x + p.w / 2, p.y + 19, label, "ch-t ch-nodet" + (n.cls === "hl" ? " ch-hl" : n.cls === "muted" ? " ch-muted" : ""), " text-anchor=\"middle\"");
             p.sub.forEach(function (l, j) { boxes += t(p.x + p.w / 2, p.y + 19 + (j + 1) * (ss + 3) + 1, l, "ch-t ch-nsub", " text-anchor=\"middle\" font-size=\"" + ss + "\""); });
+            if (n.open) boxes += "</g>";
         });
         var defs = "<defs><marker id=\"" + arrow + "\" viewBox=\"0 0 8 8\" refX=\"7\" refY=\"4\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L8 4 L0 8 z\" class=\"ch-arrowhead\"/></marker></defs>";
         return { body: defs + "<g font-size=\"" + fs + "\">" + strips + paths + heads + shades + boxes + "</g>", height: height + 1 };
