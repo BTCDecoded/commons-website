@@ -175,12 +175,16 @@ export function figure(spec) {
         notes + sources;
     var more = reading ? "<details class=\"ch-more\"><summary>How to read this</summary>" + reading + "</details>" : "";
     var wide = spec.wide || WIDE, narrow = spec.narrow || NARROW;
+    function drawn(chart, id, title, desc) {
+        return draw(chart, wide, "wide", id, title, desc) +
+            (spec.mid ? draw(chart, spec.mid, "mid", id, title, desc) : "") +
+            draw(chart, narrow, "narrow", id, title, desc);
+    }
     var body = spec.html ? spec.html : spec.parts ? spec.parts.map(function (p) {
         var piece = (p.kicker ? "<h3 class=\"ch-sub\" id=\"" + esc(p.id) + "\">" + esc(p.kicker) + "</h3>" : "") +
-            draw(p.chart, wide, "wide", p.id, p.title, p.desc) +
-            draw(p.chart, narrow, "narrow", p.id, p.title, p.desc);
+            drawn(p.chart, p.id, p.title, p.desc);
         return spec.split ? "<div class=\"eco-ov-part\">" + piece + "</div>" : piece;
-    }).join("") : draw(spec.chart, wide, "wide", spec.id, spec.title, spec.desc) + draw(spec.chart, narrow, "narrow", spec.id, spec.title, spec.desc);
+    }).join("") : drawn(spec.chart, spec.id, spec.title, spec.desc);
     if (spec.split) body = "<div class=\"eco-ov\">" + body + "</div>";
     var lead = spec.lead ? "<p class=\"ch-lead\">" + esc(spec.lead) + "</p>" : "";
     return "<figure class=\"ch" + (spec.cls ? " " + spec.cls : "") + "\" id=\"" + esc(spec.id) + "\"><figcaption><strong class=\"ch-head\">" + esc(spec.headline) + "</strong></figcaption>" +
@@ -372,14 +376,22 @@ export function lineage(groups, nodes, edges) {
     return function (width, uid) {
         var arrow = (uid || "ch") + "-arrow";
         var narrow = width < 500, fs = narrow ? 13 : 13;
-        var gapX = narrow ? 26 : 34, gapY = 12, pad = 10, headH = 24, groupGap = narrow ? 14 : 16;
+        var gapX = narrow ? 12 : 28, gapY = 12, pad = 10, headH = 24, groupGap = narrow ? 14 : 16;
         var pos = {}, out = "", gx = 0, gy = 0, rowH = 0;
         groups.forEach(function (g) {
             var grid = g.grid;
-            if (narrow && g.flow) {
-                var flat = [].concat.apply([], grid).filter(Boolean), rows = [];
-                for (var i = 0; i < flat.length; i += 2) rows.push(flat.slice(i, i + 2));
-                grid = rows;
+            if (g.perRow) {
+                var flat = [].concat.apply([], grid).filter(Boolean);
+                var want = width >= 880 ? g.perRow : Math.min(2, g.perRow);
+                var fit = Math.max(1, Math.floor((width - 2 * pad + gapX) / (136 + gapX)));
+                var colsN = Math.max(1, Math.min(want, fit, flat.length));
+                var rebuilt = [];
+                for (var fi = 0; fi < flat.length; fi += colsN) rebuilt.push(flat.slice(fi, fi + colsN));
+                grid = rebuilt;
+            } else if (narrow && g.flow) {
+                var flowFlat = [].concat.apply([], grid).filter(Boolean), flowRows = [];
+                for (var i = 0; i < flowFlat.length; i += 2) flowRows.push(flowFlat.slice(i, i + 2));
+                grid = flowRows;
             }
             var cols = Math.max.apply(null, grid.map(function (r) { return r.length; }));
             var nodeW;

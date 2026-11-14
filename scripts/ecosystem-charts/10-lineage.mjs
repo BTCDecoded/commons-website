@@ -63,11 +63,9 @@ export function lineageSpec(ctx) {
             if (by !== ay) return by - ay;
             return nodes[a].label < nodes[b].label ? -1 : 1;
         });
-        const ownGrid = [];
-        for (var i = 0; i < ownSlugs.length; i += 2) ownGrid.push(ownSlugs.slice(i, i + 2));
         const groups = [
             { id: "core", cls: "core", label: "Satoshi lineage", nodeW: 148, grid: [["bitcoin-core", "bitcoin-roots"], ["knots", "knots-legacy"], [null, "bit-block"]] },
-            { id: "own", label: "Own codebase", nodeW: 148, grid: ownGrid }
+            { id: "own", label: "Own codebase", nodeW: 156, perRow: 3, grid: [ownSlugs] }
         ];
         const derivedNames = rows.filter(function (r) { return derived[r.slug] && r.slug !== "bitcoin-core"; }).map(function (r) { return r.name; });
         const tableRows = rows.map(function (r) {

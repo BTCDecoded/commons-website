@@ -12,7 +12,8 @@ export default {
         return figure({
             id: "fig-overview",
             cls: "ch-wide-fig eco-ov-fig",
-            wide: 760,
+            wide: 940,
+            mid: 760,
             narrow: 360,
             headline: line.headline,
             caption: line.caption,
