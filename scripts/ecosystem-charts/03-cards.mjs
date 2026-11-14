@@ -6,7 +6,7 @@
 // card, and it is not drawn as zero. A comparison chart with no measured spoke is left off the
 // card. n/a stays out of the assurance score. Fuzz targets listed in
 // ctx.model.pending say "pending fix".
-import { figure, assuranceRadial, radar, svgOnce, esc, median, govMark, releaseStage, releaseMark, assuranceRank, assuranceEmblem } from "../charts.mjs";
+import { figure, layered, assuranceRadial, radar, svgOnce, esc, median, govMark, releaseStage, releaseMark, assuranceRank, assuranceEmblem } from "../charts.mjs";
 import { codeHealth } from "./06-stars.mjs";
 
 function radarJson(obj) {
@@ -141,12 +141,12 @@ export default {
     slot: "chart-cards",
     build: function (ctx) {
         const rows = ctx.model.rows;
-        const layouts = ctx.readJson("data/layouts.json");
-        const layoutBySlug = {};
-        (layouts.rows || []).forEach(function (row) {
-            if (layoutBySlug[row.slug]) throw new Error("cards: duplicate layout " + row.slug);
-            if (!row.units || !row.units.length) throw new Error("cards: empty layout " + row.slug);
-            layoutBySlug[row.slug] = row;
+        const diagrams = ctx.readJson("data/diagrams.json");
+        const diagramBySlug = {};
+        (diagrams.rows || []).forEach(function (row) {
+            if (diagramBySlug[row.slug]) throw new Error("cards: duplicate diagram " + row.slug);
+            if (!row.bands || !row.bands.length || !row.edges || !row.links) throw new Error("cards: empty diagram " + row.slug);
+            diagramBySlug[row.slug] = row;
         });
         const med = median(rows.map(function (r) { return r.assurance.pct; }));
         const pendFuzz = "fuzz_targets" in ctx.model.pending;
@@ -286,25 +286,51 @@ export default {
                 }).join("");
                 return "<div class=\"eco-lstack\"><p class=\"eco-lcap\">Written repository layers.</p><ol>" + bands + "</ol></div>";
             }
-            function treeLayout() {
+            function stackDiagram() {
                 if (r.internal) return "";
-                var lay = layoutBySlug[r.slug];
-                if (!lay) throw new Error("cards: no layout for " + r.slug);
-                var cap = lay.kind === "workspace" ? "Workspace crates" : lay.kind === "src" ? "Directories under src" : "Directories at the root";
-                var chips = lay.units.map(function (u) {
-                    if (!u.name || !u.path) throw new Error("cards: layout unit missing a name");
-                    var cls = u.tag === "vendored" ? " is-vendor" : u.tag === "tests" ? " is-test" : "";
-                    var note = u.tag === "vendored" ? " <small>vendored</small>" : u.tag === "tests" ? " <small>tests</small>" : "";
-                    return "<li class=\"eco-chip" + cls + "\" title=\"" + esc(u.path) + "\">" + esc(u.name) + note + "</li>";
-                }).join("");
-                return "<div class=\"eco-layout\"><p class=\"eco-lcap\"><a href=\"" + esc(lay.source) + "\">" + cap + "</a></p><ul class=\"eco-chips\">" + chips + "</ul></div>";
+                var d = diagramBySlug[r.slug];
+                if (!d) throw new Error("cards: no diagram for " + r.slug);
+                var nodes = {};
+                Object.keys(d.nodes).forEach(function (id) {
+                    var n = d.nodes[id];
+                    if (!n || !n.label) throw new Error("cards: diagram node missing a label " + id);
+                    nodes[id] = { label: n.label, short: n.short || n.label, sub: n.sub || "", cls: n.cls || "" };
+                });
+                var edges = d.edges.map(function (e) {
+                    if (!nodes[e.from] || !nodes[e.to]) throw new Error("cards: diagram edge missing a node");
+                    return { from: e.from, to: e.to, dashed: !!e.dashed };
+                });
+                var bands = d.bands.map(function (b) {
+                    return { label: b.label || "", sub: b.sub || "", rows: b.rows };
+                });
+                var desc = bands.map(function (b) {
+                    return [].concat.apply([], b.rows).map(function (id) { return nodes[id].label; }).join(", ");
+                }).join(". ") + ". " + edges.map(function (e) { return nodes[e.from].label + " to " + nodes[e.to].label; }).join("; ") + ".";
+                return figure({
+                    id: "fig-lay-" + r.slug,
+                    cls: "eco-layfig",
+                    headline: d.headline,
+                    caption: d.caption,
+                    title: r.name + " layer diagram",
+                    desc: desc,
+                    chart: layered(bands, nodes, edges, { labelWidth: 0, maxNodeW: 132, narrowPerRow: 2 }),
+                    sources: [{ label: d.source_label, href: d.source }],
+                    table: {
+                        caption: r.name + " dependencies",
+                        columns: ["From", "Depends on"],
+                        rows: d.links.map(function (pair) {
+                            if (!nodes[pair[0]] || !nodes[pair[1]]) throw new Error("cards: diagram link missing a node");
+                            return [pair[0], pair[1]];
+                        })
+                    }
+                });
             }
             const govRead = "<section class=\"eco-govread" + (pk.kind === "commons" ? " is-commons" : "") + "\">" +
                 "<div class=\"eco-govread-top\"><span class=\"eco-gov eco-gov-" + pk.kind + "\" title=\"" + esc(read.label) + "\">" + govMark(pk.kind) + (pk.keepers ? "<span class=\"eco-keepers\">" + pk.keepers + "</span>" : "") + "</span><b>" + esc(read.label) + "</b></div>" +
                 "<p>" + esc(read.detail || govLead) + "</p>" +
                 govLine("Written rule", read.writtenPair, read.writtenWait) +
                 govLine("Quorum", read.quorumPair, "") +
-                (r.internal ? layerStack() : treeLayout()) +
+                (r.internal ? layerStack() : stackDiagram()) +
                 "<details><summary>Basis</summary><p>" + esc(read.basis) + (read.quorum ? " " + esc(read.quorum) : "") + "</p><p>" + govLead + " The article's form scores are judgments of a form. This reading does not copy them onto the project.</p></details>" +
                 "<p class=\"eco-govread-note\">" + (r.internal ? "<a href=\"governance-designer.html\">Fork these rules</a>" : "<a href=\"#forms\">Forms</a>") + "</p></section>";
             return "<article class=\"eco-card" + (r.internal ? " internal" : "") + "\" id=\"" + id + "\" aria-labelledby=\"" + id + "-h\">" +
@@ -332,7 +358,7 @@ export default {
                         liveFact("Fuzz targets", fuzzText)
                     ])) +
                 stabMeter(r.stability) +
-                fold("eco-rest", "Not on the charts",
+                fold("eco-rest", "Other counts",
                     liveGroup("Code", [
                         liveFact("Implementation", counted(tree, "implementation_code")),
                         liveFact("Tooling", counted(tree, "tooling_code")),

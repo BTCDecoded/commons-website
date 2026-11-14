@@ -1,0 +1,3700 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-11-12",
+  "method": "Each diagram is the default node at the stack pin already on this page. C++ arrows are target_link_libraries between the node's own libraries, including vendored libraries the line counter already marks, and not libraries outside the tree. Rust arrows are workspace crates the default node binary reaches. A dependency is a workspace path, or a dependency whose name is a workspace member. Optional dependencies stay off except florestad, whose default feature json-rpc turns on floresta-compact-filters and floresta-rpc. libbitcoin-system is one library, so an arrow is a module under src including another at least twice. btcd arrows are package imports. A set of packages that import each other is one box. An arrow a longer path already covers is left off the drawing and kept in the table. No line counts.",
+  "rows": [
+    {
+      "slug": "bitcoin-core",
+      "headline": "bitcoind links the node and the wallet. Both link bitcoin_common. libbitcoinkernel is not linked by bitcoind.",
+      "caption": "Arrows point from a CMake target to a target it links, read from target_link_libraries. Box names drop a bitcoin_ prefix. A vendored box is a path the line counter already treats as vendored. An arrow a longer path already covers is left off the drawing. The table lists every link. libbitcoinkernel is in the tree and is not linked by bitcoind. bitcoin-qt is off in the default build. Boost and SQLite are outside the tree, so they are not boxes.",
+      "source": "https://github.com/bitcoin/bitcoin/blob/f0de87f040621468b956f01f526a43a010310501/src/CMakeLists.txt",
+      "source_label": "src/CMakeLists.txt at f0de87f",
+      "nodes": {
+        "bitcoind": {
+          "label": "bitcoind",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_node": {
+          "label": "node",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_wallet": {
+          "label": "wallet",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_common": {
+          "label": "common",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_consensus": {
+          "label": "consensus",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_util": {
+          "label": "util",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_crypto": {
+          "label": "crypto",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_clientversion": {
+          "label": "clientversion",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoinkernel": {
+          "label": "kernel",
+          "sub": "not linked by bitcoind",
+          "cls": "muted"
+        },
+        "leveldb": {
+          "label": "leveldb",
+          "sub": "vendored",
+          "cls": ""
+        },
+        "minisketch": {
+          "label": "minisketch",
+          "sub": "vendored",
+          "cls": ""
+        },
+        "univalue": {
+          "label": "univalue",
+          "sub": "vendored",
+          "cls": ""
+        },
+        "secp256k1": {
+          "label": "secp256k1",
+          "sub": "vendored",
+          "cls": ""
+        },
+        "crc32c": {
+          "label": "crc32c",
+          "sub": "vendored",
+          "cls": ""
+        }
+      },
+      "bands": [
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoind"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin_node",
+              "bitcoin_wallet"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin_common"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin_consensus",
+              "bitcoin_util",
+              "bitcoinkernel",
+              "leveldb"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin_clientversion",
+              "bitcoin_crypto",
+              "crc32c",
+              "minisketch",
+              "secp256k1",
+              "univalue"
+            ]
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "bitcoin_common",
+          "to": "bitcoin_consensus"
+        },
+        {
+          "from": "bitcoin_common",
+          "to": "bitcoin_util"
+        },
+        {
+          "from": "bitcoin_common",
+          "to": "univalue"
+        },
+        {
+          "from": "bitcoin_consensus",
+          "to": "bitcoin_crypto"
+        },
+        {
+          "from": "bitcoin_consensus",
+          "to": "secp256k1"
+        },
+        {
+          "from": "bitcoin_node",
+          "to": "bitcoin_common"
+        },
+        {
+          "from": "bitcoin_node",
+          "to": "leveldb"
+        },
+        {
+          "from": "bitcoin_node",
+          "to": "minisketch"
+        },
+        {
+          "from": "bitcoin_util",
+          "to": "bitcoin_clientversion"
+        },
+        {
+          "from": "bitcoin_util",
+          "to": "bitcoin_crypto"
+        },
+        {
+          "from": "bitcoin_wallet",
+          "to": "bitcoin_common"
+        },
+        {
+          "from": "bitcoind",
+          "to": "bitcoin_node"
+        },
+        {
+          "from": "bitcoind",
+          "to": "bitcoin_wallet"
+        },
+        {
+          "from": "bitcoinkernel",
+          "to": "secp256k1"
+        },
+        {
+          "from": "leveldb",
+          "to": "crc32c"
+        }
+      ],
+      "links": [
+        [
+          "bitcoin_common",
+          "bitcoin_consensus"
+        ],
+        [
+          "bitcoin_common",
+          "bitcoin_util"
+        ],
+        [
+          "bitcoin_common",
+          "secp256k1"
+        ],
+        [
+          "bitcoin_common",
+          "univalue"
+        ],
+        [
+          "bitcoin_consensus",
+          "bitcoin_crypto"
+        ],
+        [
+          "bitcoin_consensus",
+          "secp256k1"
+        ],
+        [
+          "bitcoin_node",
+          "bitcoin_common"
+        ],
+        [
+          "bitcoin_node",
+          "bitcoin_util"
+        ],
+        [
+          "bitcoin_node",
+          "leveldb"
+        ],
+        [
+          "bitcoin_node",
+          "minisketch"
+        ],
+        [
+          "bitcoin_node",
+          "univalue"
+        ],
+        [
+          "bitcoin_util",
+          "bitcoin_clientversion"
+        ],
+        [
+          "bitcoin_util",
+          "bitcoin_crypto"
+        ],
+        [
+          "bitcoin_wallet",
+          "bitcoin_common"
+        ],
+        [
+          "bitcoin_wallet",
+          "univalue"
+        ],
+        [
+          "bitcoind",
+          "bitcoin_node"
+        ],
+        [
+          "bitcoind",
+          "bitcoin_wallet"
+        ],
+        [
+          "bitcoinkernel",
+          "secp256k1"
+        ],
+        [
+          "leveldb",
+          "crc32c"
+        ]
+      ]
+    },
+    {
+      "slug": "knots-legacy",
+      "headline": "bitcoind links the node and the wallet. Both link bitcoin_common. libbitcoinkernel links leveldb and is not linked by bitcoind.",
+      "caption": "Arrows point from a CMake target to a target it links, read from target_link_libraries. Box names drop a bitcoin_ prefix. A vendored box is a path the line counter already treats as vendored. An arrow a longer path already covers is left off the drawing. The table lists every link. libbitcoinkernel is in the tree and is not linked by bitcoind. This CMake does not link minisketch. Boost is outside the tree, so it is not a box.",
+      "source": "https://github.com/DimiH2025/KnotsLegacy/blob/7936c49b6739640eb71e55eb2b5f720179b9c3b4/src/CMakeLists.txt",
+      "source_label": "src/CMakeLists.txt at 7936c49",
+      "nodes": {
+        "bitcoind": {
+          "label": "bitcoind",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_node": {
+          "label": "node",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_wallet": {
+          "label": "wallet",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_common": {
+          "label": "common",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_consensus": {
+          "label": "consensus",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_util": {
+          "label": "util",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_crypto": {
+          "label": "crypto",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_clientversion": {
+          "label": "clientversion",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoinkernel": {
+          "label": "kernel",
+          "sub": "not linked by bitcoind",
+          "cls": "muted"
+        },
+        "leveldb": {
+          "label": "leveldb",
+          "sub": "vendored",
+          "cls": ""
+        },
+        "univalue": {
+          "label": "univalue",
+          "sub": "vendored",
+          "cls": ""
+        },
+        "secp256k1": {
+          "label": "secp256k1",
+          "sub": "vendored",
+          "cls": ""
+        },
+        "crc32c": {
+          "label": "crc32c",
+          "sub": "vendored",
+          "cls": ""
+        }
+      },
+      "bands": [
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoind"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin_node",
+              "bitcoin_wallet"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin_common",
+              "bitcoinkernel"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin_consensus",
+              "bitcoin_util",
+              "leveldb"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin_clientversion",
+              "bitcoin_crypto",
+              "crc32c",
+              "secp256k1",
+              "univalue"
+            ]
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "bitcoin_common",
+          "to": "bitcoin_consensus"
+        },
+        {
+          "from": "bitcoin_common",
+          "to": "bitcoin_util"
+        },
+        {
+          "from": "bitcoin_common",
+          "to": "univalue"
+        },
+        {
+          "from": "bitcoin_consensus",
+          "to": "bitcoin_crypto"
+        },
+        {
+          "from": "bitcoin_consensus",
+          "to": "secp256k1"
+        },
+        {
+          "from": "bitcoin_node",
+          "to": "bitcoin_common"
+        },
+        {
+          "from": "bitcoin_node",
+          "to": "leveldb"
+        },
+        {
+          "from": "bitcoin_util",
+          "to": "bitcoin_clientversion"
+        },
+        {
+          "from": "bitcoin_util",
+          "to": "bitcoin_crypto"
+        },
+        {
+          "from": "bitcoin_wallet",
+          "to": "bitcoin_common"
+        },
+        {
+          "from": "bitcoind",
+          "to": "bitcoin_node"
+        },
+        {
+          "from": "bitcoind",
+          "to": "bitcoin_wallet"
+        },
+        {
+          "from": "bitcoinkernel",
+          "to": "bitcoin_clientversion"
+        },
+        {
+          "from": "bitcoinkernel",
+          "to": "bitcoin_crypto"
+        },
+        {
+          "from": "bitcoinkernel",
+          "to": "leveldb"
+        },
+        {
+          "from": "bitcoinkernel",
+          "to": "secp256k1"
+        },
+        {
+          "from": "leveldb",
+          "to": "crc32c"
+        }
+      ],
+      "links": [
+        [
+          "bitcoin_common",
+          "bitcoin_consensus"
+        ],
+        [
+          "bitcoin_common",
+          "bitcoin_util"
+        ],
+        [
+          "bitcoin_common",
+          "secp256k1"
+        ],
+        [
+          "bitcoin_common",
+          "univalue"
+        ],
+        [
+          "bitcoin_consensus",
+          "bitcoin_crypto"
+        ],
+        [
+          "bitcoin_consensus",
+          "secp256k1"
+        ],
+        [
+          "bitcoin_node",
+          "bitcoin_common"
+        ],
+        [
+          "bitcoin_node",
+          "bitcoin_util"
+        ],
+        [
+          "bitcoin_node",
+          "leveldb"
+        ],
+        [
+          "bitcoin_node",
+          "univalue"
+        ],
+        [
+          "bitcoin_util",
+          "bitcoin_clientversion"
+        ],
+        [
+          "bitcoin_util",
+          "bitcoin_crypto"
+        ],
+        [
+          "bitcoin_wallet",
+          "bitcoin_common"
+        ],
+        [
+          "bitcoin_wallet",
+          "univalue"
+        ],
+        [
+          "bitcoind",
+          "bitcoin_node"
+        ],
+        [
+          "bitcoind",
+          "bitcoin_wallet"
+        ],
+        [
+          "bitcoinkernel",
+          "bitcoin_clientversion"
+        ],
+        [
+          "bitcoinkernel",
+          "bitcoin_crypto"
+        ],
+        [
+          "bitcoinkernel",
+          "leveldb"
+        ],
+        [
+          "bitcoinkernel",
+          "secp256k1"
+        ],
+        [
+          "leveldb",
+          "crc32c"
+        ]
+      ]
+    },
+    {
+      "slug": "bit-block",
+      "headline": "bitcoind links the node and the wallet. Both link bitcoin_common. libbitcoinkernel links leveldb and is not linked by bitcoind.",
+      "caption": "Arrows point from a CMake target to a target it links, read from target_link_libraries. Box names drop a bitcoin_ prefix. A vendored box is a path the line counter already treats as vendored. An arrow a longer path already covers is left off the drawing. The table lists every link. libbitcoinkernel is in the tree and is not linked by bitcoind. This CMake does not link minisketch. Boost is outside the tree, so it is not a box.",
+      "source": "https://github.com/DimiH2025/Bit-Block/blob/c52f1161349e6a76463156fea39bce191951b915/src/CMakeLists.txt",
+      "source_label": "src/CMakeLists.txt at c52f116",
+      "nodes": {
+        "bitcoind": {
+          "label": "bitcoind",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_node": {
+          "label": "node",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_wallet": {
+          "label": "wallet",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_common": {
+          "label": "common",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_consensus": {
+          "label": "consensus",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_util": {
+          "label": "util",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_crypto": {
+          "label": "crypto",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_clientversion": {
+          "label": "clientversion",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoinkernel": {
+          "label": "kernel",
+          "sub": "not linked by bitcoind",
+          "cls": "muted"
+        },
+        "leveldb": {
+          "label": "leveldb",
+          "sub": "vendored",
+          "cls": ""
+        },
+        "univalue": {
+          "label": "univalue",
+          "sub": "vendored",
+          "cls": ""
+        },
+        "secp256k1": {
+          "label": "secp256k1",
+          "sub": "vendored",
+          "cls": ""
+        },
+        "crc32c": {
+          "label": "crc32c",
+          "sub": "vendored",
+          "cls": ""
+        }
+      },
+      "bands": [
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoind"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin_node",
+              "bitcoin_wallet"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin_common",
+              "bitcoinkernel"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin_consensus",
+              "bitcoin_util",
+              "leveldb"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin_clientversion",
+              "bitcoin_crypto",
+              "crc32c",
+              "secp256k1",
+              "univalue"
+            ]
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "bitcoin_common",
+          "to": "bitcoin_consensus"
+        },
+        {
+          "from": "bitcoin_common",
+          "to": "bitcoin_util"
+        },
+        {
+          "from": "bitcoin_common",
+          "to": "univalue"
+        },
+        {
+          "from": "bitcoin_consensus",
+          "to": "bitcoin_crypto"
+        },
+        {
+          "from": "bitcoin_consensus",
+          "to": "secp256k1"
+        },
+        {
+          "from": "bitcoin_node",
+          "to": "bitcoin_common"
+        },
+        {
+          "from": "bitcoin_node",
+          "to": "leveldb"
+        },
+        {
+          "from": "bitcoin_util",
+          "to": "bitcoin_clientversion"
+        },
+        {
+          "from": "bitcoin_util",
+          "to": "bitcoin_crypto"
+        },
+        {
+          "from": "bitcoin_wallet",
+          "to": "bitcoin_common"
+        },
+        {
+          "from": "bitcoind",
+          "to": "bitcoin_node"
+        },
+        {
+          "from": "bitcoind",
+          "to": "bitcoin_wallet"
+        },
+        {
+          "from": "bitcoinkernel",
+          "to": "bitcoin_clientversion"
+        },
+        {
+          "from": "bitcoinkernel",
+          "to": "bitcoin_crypto"
+        },
+        {
+          "from": "bitcoinkernel",
+          "to": "leveldb"
+        },
+        {
+          "from": "bitcoinkernel",
+          "to": "secp256k1"
+        },
+        {
+          "from": "leveldb",
+          "to": "crc32c"
+        }
+      ],
+      "links": [
+        [
+          "bitcoin_common",
+          "bitcoin_consensus"
+        ],
+        [
+          "bitcoin_common",
+          "bitcoin_util"
+        ],
+        [
+          "bitcoin_common",
+          "secp256k1"
+        ],
+        [
+          "bitcoin_common",
+          "univalue"
+        ],
+        [
+          "bitcoin_consensus",
+          "bitcoin_crypto"
+        ],
+        [
+          "bitcoin_consensus",
+          "secp256k1"
+        ],
+        [
+          "bitcoin_node",
+          "bitcoin_common"
+        ],
+        [
+          "bitcoin_node",
+          "bitcoin_util"
+        ],
+        [
+          "bitcoin_node",
+          "leveldb"
+        ],
+        [
+          "bitcoin_node",
+          "univalue"
+        ],
+        [
+          "bitcoin_util",
+          "bitcoin_clientversion"
+        ],
+        [
+          "bitcoin_util",
+          "bitcoin_crypto"
+        ],
+        [
+          "bitcoin_wallet",
+          "bitcoin_common"
+        ],
+        [
+          "bitcoin_wallet",
+          "univalue"
+        ],
+        [
+          "bitcoind",
+          "bitcoin_node"
+        ],
+        [
+          "bitcoind",
+          "bitcoin_wallet"
+        ],
+        [
+          "bitcoinkernel",
+          "bitcoin_clientversion"
+        ],
+        [
+          "bitcoinkernel",
+          "bitcoin_crypto"
+        ],
+        [
+          "bitcoinkernel",
+          "leveldb"
+        ],
+        [
+          "bitcoinkernel",
+          "secp256k1"
+        ],
+        [
+          "leveldb",
+          "crc32c"
+        ]
+      ]
+    },
+    {
+      "slug": "bitcoin-roots",
+      "headline": "bitcoind links the node and the wallet. Both link bitcoin_common. libbitcoinkernel is not linked by bitcoind.",
+      "caption": "Arrows point from a CMake target to a target it links, read from target_link_libraries. Box names drop a bitcoin_ prefix. A vendored box is a path the line counter already treats as vendored. An arrow a longer path already covers is left off the drawing. The table lists every link. libbitcoinkernel is in the tree and is not linked by bitcoind. bitcoin-qt is off in the default build. Boost and SQLite are outside the tree, so they are not boxes.",
+      "source": "https://github.com/LuganoPlanB/bitcoin-roots/blob/f0393f2688656ba544b40fe508db909152201c18/src/CMakeLists.txt",
+      "source_label": "src/CMakeLists.txt at f0393f2",
+      "nodes": {
+        "bitcoind": {
+          "label": "bitcoind",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_node": {
+          "label": "node",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_wallet": {
+          "label": "wallet",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_common": {
+          "label": "common",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_consensus": {
+          "label": "consensus",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_util": {
+          "label": "util",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_crypto": {
+          "label": "crypto",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin_clientversion": {
+          "label": "clientversion",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoinkernel": {
+          "label": "kernel",
+          "sub": "not linked by bitcoind",
+          "cls": "muted"
+        },
+        "leveldb": {
+          "label": "leveldb",
+          "sub": "vendored",
+          "cls": ""
+        },
+        "minisketch": {
+          "label": "minisketch",
+          "sub": "vendored",
+          "cls": ""
+        },
+        "univalue": {
+          "label": "univalue",
+          "sub": "vendored",
+          "cls": ""
+        },
+        "secp256k1": {
+          "label": "secp256k1",
+          "sub": "vendored",
+          "cls": ""
+        },
+        "crc32c": {
+          "label": "crc32c",
+          "sub": "vendored",
+          "cls": ""
+        }
+      },
+      "bands": [
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoind"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin_node",
+              "bitcoin_wallet"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin_common"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin_consensus",
+              "bitcoin_util",
+              "bitcoinkernel",
+              "leveldb"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin_clientversion",
+              "bitcoin_crypto",
+              "crc32c",
+              "minisketch",
+              "secp256k1",
+              "univalue"
+            ]
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "bitcoin_common",
+          "to": "bitcoin_consensus"
+        },
+        {
+          "from": "bitcoin_common",
+          "to": "bitcoin_util"
+        },
+        {
+          "from": "bitcoin_common",
+          "to": "univalue"
+        },
+        {
+          "from": "bitcoin_consensus",
+          "to": "bitcoin_crypto"
+        },
+        {
+          "from": "bitcoin_consensus",
+          "to": "secp256k1"
+        },
+        {
+          "from": "bitcoin_node",
+          "to": "bitcoin_common"
+        },
+        {
+          "from": "bitcoin_node",
+          "to": "leveldb"
+        },
+        {
+          "from": "bitcoin_node",
+          "to": "minisketch"
+        },
+        {
+          "from": "bitcoin_util",
+          "to": "bitcoin_clientversion"
+        },
+        {
+          "from": "bitcoin_util",
+          "to": "bitcoin_crypto"
+        },
+        {
+          "from": "bitcoin_wallet",
+          "to": "bitcoin_common"
+        },
+        {
+          "from": "bitcoind",
+          "to": "bitcoin_node"
+        },
+        {
+          "from": "bitcoind",
+          "to": "bitcoin_wallet"
+        },
+        {
+          "from": "bitcoinkernel",
+          "to": "secp256k1"
+        },
+        {
+          "from": "leveldb",
+          "to": "crc32c"
+        }
+      ],
+      "links": [
+        [
+          "bitcoin_common",
+          "bitcoin_consensus"
+        ],
+        [
+          "bitcoin_common",
+          "bitcoin_util"
+        ],
+        [
+          "bitcoin_common",
+          "secp256k1"
+        ],
+        [
+          "bitcoin_common",
+          "univalue"
+        ],
+        [
+          "bitcoin_consensus",
+          "bitcoin_crypto"
+        ],
+        [
+          "bitcoin_consensus",
+          "secp256k1"
+        ],
+        [
+          "bitcoin_node",
+          "bitcoin_common"
+        ],
+        [
+          "bitcoin_node",
+          "bitcoin_util"
+        ],
+        [
+          "bitcoin_node",
+          "leveldb"
+        ],
+        [
+          "bitcoin_node",
+          "minisketch"
+        ],
+        [
+          "bitcoin_node",
+          "univalue"
+        ],
+        [
+          "bitcoin_util",
+          "bitcoin_clientversion"
+        ],
+        [
+          "bitcoin_util",
+          "bitcoin_crypto"
+        ],
+        [
+          "bitcoin_wallet",
+          "bitcoin_common"
+        ],
+        [
+          "bitcoin_wallet",
+          "univalue"
+        ],
+        [
+          "bitcoind",
+          "bitcoin_node"
+        ],
+        [
+          "bitcoind",
+          "bitcoin_wallet"
+        ],
+        [
+          "bitcoinkernel",
+          "secp256k1"
+        ],
+        [
+          "leveldb",
+          "crc32c"
+        ]
+      ]
+    },
+    {
+      "slug": "bitcoin-rs",
+      "headline": "The bitcoin-rs binary depends on the node crate. The node crate sits above rpc, p2p, and the chain crates, and those sit above primitives.",
+      "caption": "Arrows point from a workspace crate to a workspace crate it depends on, in the default node binary. Box names drop the shared prefix. Dependencies outside the workspace are not boxes. Test, bench, fuzz, and tools the binary does not reach are not drawn. An arrow a longer path already covers is left off the drawing. The table lists every workspace dependency.",
+      "source": "https://github.com/gosuda/bitcoin-rs/blob/9b8e91ae1aadfaad08e7fccbfa895bcbf41c6620/Cargo.toml",
+      "source_label": "Cargo.toml at 9b8e91a",
+      "nodes": {
+        "bitcoin-rs": {
+          "label": "bitcoin-rs",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin-rs-chain": {
+          "label": "chain",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin-rs-chainstate": {
+          "label": "chainstate",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin-rs-consensus": {
+          "label": "consensus",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin-rs-index": {
+          "label": "index",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin-rs-mempool": {
+          "label": "mempool",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin-rs-mining": {
+          "label": "mining",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin-rs-node": {
+          "label": "node",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin-rs-p2p": {
+          "label": "p2p",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin-rs-primitives": {
+          "label": "primitives",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin-rs-rpc": {
+          "label": "rpc",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin-rs-script": {
+          "label": "script",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin-rs-storage": {
+          "label": "storage",
+          "sub": "",
+          "cls": ""
+        },
+        "bitcoin-rs-utxo": {
+          "label": "utxo",
+          "sub": "",
+          "cls": ""
+        }
+      },
+      "bands": [
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin-rs"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin-rs-node"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin-rs-rpc"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin-rs-p2p"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin-rs-chainstate",
+              "bitcoin-rs-index",
+              "bitcoin-rs-mining"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin-rs-chain",
+              "bitcoin-rs-mempool"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin-rs-consensus",
+              "bitcoin-rs-utxo"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin-rs-script",
+              "bitcoin-rs-storage"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "bitcoin-rs-primitives"
+            ]
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "bitcoin-rs",
+          "to": "bitcoin-rs-node"
+        },
+        {
+          "from": "bitcoin-rs-chain",
+          "to": "bitcoin-rs-consensus"
+        },
+        {
+          "from": "bitcoin-rs-chainstate",
+          "to": "bitcoin-rs-chain"
+        },
+        {
+          "from": "bitcoin-rs-chainstate",
+          "to": "bitcoin-rs-utxo"
+        },
+        {
+          "from": "bitcoin-rs-consensus",
+          "to": "bitcoin-rs-script"
+        },
+        {
+          "from": "bitcoin-rs-index",
+          "to": "bitcoin-rs-chain"
+        },
+        {
+          "from": "bitcoin-rs-index",
+          "to": "bitcoin-rs-utxo"
+        },
+        {
+          "from": "bitcoin-rs-mempool",
+          "to": "bitcoin-rs-consensus"
+        },
+        {
+          "from": "bitcoin-rs-mining",
+          "to": "bitcoin-rs-chain"
+        },
+        {
+          "from": "bitcoin-rs-mining",
+          "to": "bitcoin-rs-mempool"
+        },
+        {
+          "from": "bitcoin-rs-node",
+          "to": "bitcoin-rs-rpc"
+        },
+        {
+          "from": "bitcoin-rs-p2p",
+          "to": "bitcoin-rs-chainstate"
+        },
+        {
+          "from": "bitcoin-rs-p2p",
+          "to": "bitcoin-rs-index"
+        },
+        {
+          "from": "bitcoin-rs-p2p",
+          "to": "bitcoin-rs-mempool"
+        },
+        {
+          "from": "bitcoin-rs-rpc",
+          "to": "bitcoin-rs-mining"
+        },
+        {
+          "from": "bitcoin-rs-rpc",
+          "to": "bitcoin-rs-p2p"
+        },
+        {
+          "from": "bitcoin-rs-script",
+          "to": "bitcoin-rs-primitives"
+        },
+        {
+          "from": "bitcoin-rs-storage",
+          "to": "bitcoin-rs-primitives"
+        },
+        {
+          "from": "bitcoin-rs-utxo",
+          "to": "bitcoin-rs-storage"
+        }
+      ],
+      "links": [
+        [
+          "bitcoin-rs",
+          "bitcoin-rs-chainstate"
+        ],
+        [
+          "bitcoin-rs",
+          "bitcoin-rs-consensus"
+        ],
+        [
+          "bitcoin-rs",
+          "bitcoin-rs-node"
+        ],
+        [
+          "bitcoin-rs",
+          "bitcoin-rs-storage"
+        ],
+        [
+          "bitcoin-rs-chain",
+          "bitcoin-rs-consensus"
+        ],
+        [
+          "bitcoin-rs-chain",
+          "bitcoin-rs-primitives"
+        ],
+        [
+          "bitcoin-rs-chainstate",
+          "bitcoin-rs-chain"
+        ],
+        [
+          "bitcoin-rs-chainstate",
+          "bitcoin-rs-consensus"
+        ],
+        [
+          "bitcoin-rs-chainstate",
+          "bitcoin-rs-primitives"
+        ],
+        [
+          "bitcoin-rs-chainstate",
+          "bitcoin-rs-script"
+        ],
+        [
+          "bitcoin-rs-chainstate",
+          "bitcoin-rs-storage"
+        ],
+        [
+          "bitcoin-rs-chainstate",
+          "bitcoin-rs-utxo"
+        ],
+        [
+          "bitcoin-rs-consensus",
+          "bitcoin-rs-primitives"
+        ],
+        [
+          "bitcoin-rs-consensus",
+          "bitcoin-rs-script"
+        ],
+        [
+          "bitcoin-rs-index",
+          "bitcoin-rs-chain"
+        ],
+        [
+          "bitcoin-rs-index",
+          "bitcoin-rs-primitives"
+        ],
+        [
+          "bitcoin-rs-index",
+          "bitcoin-rs-script"
+        ],
+        [
+          "bitcoin-rs-index",
+          "bitcoin-rs-storage"
+        ],
+        [
+          "bitcoin-rs-index",
+          "bitcoin-rs-utxo"
+        ],
+        [
+          "bitcoin-rs-mempool",
+          "bitcoin-rs-consensus"
+        ],
+        [
+          "bitcoin-rs-mempool",
+          "bitcoin-rs-primitives"
+        ],
+        [
+          "bitcoin-rs-mempool",
+          "bitcoin-rs-script"
+        ],
+        [
+          "bitcoin-rs-mining",
+          "bitcoin-rs-chain"
+        ],
+        [
+          "bitcoin-rs-mining",
+          "bitcoin-rs-consensus"
+        ],
+        [
+          "bitcoin-rs-mining",
+          "bitcoin-rs-mempool"
+        ],
+        [
+          "bitcoin-rs-mining",
+          "bitcoin-rs-primitives"
+        ],
+        [
+          "bitcoin-rs-mining",
+          "bitcoin-rs-script"
+        ],
+        [
+          "bitcoin-rs-node",
+          "bitcoin-rs-chain"
+        ],
+        [
+          "bitcoin-rs-node",
+          "bitcoin-rs-chainstate"
+        ],
+        [
+          "bitcoin-rs-node",
+          "bitcoin-rs-consensus"
+        ],
+        [
+          "bitcoin-rs-node",
+          "bitcoin-rs-index"
+        ],
+        [
+          "bitcoin-rs-node",
+          "bitcoin-rs-mempool"
+        ],
+        [
+          "bitcoin-rs-node",
+          "bitcoin-rs-mining"
+        ],
+        [
+          "bitcoin-rs-node",
+          "bitcoin-rs-p2p"
+        ],
+        [
+          "bitcoin-rs-node",
+          "bitcoin-rs-primitives"
+        ],
+        [
+          "bitcoin-rs-node",
+          "bitcoin-rs-rpc"
+        ],
+        [
+          "bitcoin-rs-node",
+          "bitcoin-rs-storage"
+        ],
+        [
+          "bitcoin-rs-node",
+          "bitcoin-rs-utxo"
+        ],
+        [
+          "bitcoin-rs-p2p",
+          "bitcoin-rs-chain"
+        ],
+        [
+          "bitcoin-rs-p2p",
+          "bitcoin-rs-chainstate"
+        ],
+        [
+          "bitcoin-rs-p2p",
+          "bitcoin-rs-consensus"
+        ],
+        [
+          "bitcoin-rs-p2p",
+          "bitcoin-rs-index"
+        ],
+        [
+          "bitcoin-rs-p2p",
+          "bitcoin-rs-mempool"
+        ],
+        [
+          "bitcoin-rs-p2p",
+          "bitcoin-rs-primitives"
+        ],
+        [
+          "bitcoin-rs-p2p",
+          "bitcoin-rs-storage"
+        ],
+        [
+          "bitcoin-rs-rpc",
+          "bitcoin-rs-chain"
+        ],
+        [
+          "bitcoin-rs-rpc",
+          "bitcoin-rs-consensus"
+        ],
+        [
+          "bitcoin-rs-rpc",
+          "bitcoin-rs-index"
+        ],
+        [
+          "bitcoin-rs-rpc",
+          "bitcoin-rs-mempool"
+        ],
+        [
+          "bitcoin-rs-rpc",
+          "bitcoin-rs-mining"
+        ],
+        [
+          "bitcoin-rs-rpc",
+          "bitcoin-rs-p2p"
+        ],
+        [
+          "bitcoin-rs-rpc",
+          "bitcoin-rs-primitives"
+        ],
+        [
+          "bitcoin-rs-rpc",
+          "bitcoin-rs-script"
+        ],
+        [
+          "bitcoin-rs-rpc",
+          "bitcoin-rs-utxo"
+        ],
+        [
+          "bitcoin-rs-script",
+          "bitcoin-rs-primitives"
+        ],
+        [
+          "bitcoin-rs-storage",
+          "bitcoin-rs-primitives"
+        ],
+        [
+          "bitcoin-rs-utxo",
+          "bitcoin-rs-primitives"
+        ],
+        [
+          "bitcoin-rs-utxo",
+          "bitcoin-rs-storage"
+        ]
+      ]
+    },
+    {
+      "slug": "satd",
+      "headline": "The satd binary sits above the interface crates, and those sit on the node crate. The node crate depends on consensus, the indexes, and policy.",
+      "caption": "Arrows point from a workspace crate to a workspace crate it depends on, in the default node binary. Box names drop the shared prefix. Dependencies outside the workspace are not boxes. Test, bench, fuzz, and tools the binary does not reach are not drawn. An arrow a longer path already covers is left off the drawing. The table lists every workspace dependency. Optional dependencies are not drawn.",
+      "source": "https://github.com/epochbtc/satd/blob/f0ea0e5dfa8446d9cb63fef0a22eaf5f976216ce/Cargo.toml",
+      "source_label": "Cargo.toml at f0ea0e5",
+      "nodes": {
+        "consensus": {
+          "label": "consensus",
+          "sub": "",
+          "cls": ""
+        },
+        "electrum-proto": {
+          "label": "electrum-proto",
+          "sub": "",
+          "cls": ""
+        },
+        "esplora-handlers": {
+          "label": "esplora-handlers",
+          "sub": "",
+          "cls": ""
+        },
+        "node": {
+          "label": "node",
+          "sub": "",
+          "cls": ""
+        },
+        "node-filter-index": {
+          "label": "node-filter-index",
+          "sub": "",
+          "cls": ""
+        },
+        "node-index": {
+          "label": "node-index",
+          "sub": "",
+          "cls": ""
+        },
+        "node-sp-index": {
+          "label": "node-sp-index",
+          "sub": "",
+          "cls": ""
+        },
+        "satd": {
+          "label": "satd",
+          "sub": "",
+          "cls": ""
+        },
+        "satd-alert": {
+          "label": "satd-alert",
+          "sub": "",
+          "cls": ""
+        },
+        "satd-auth": {
+          "label": "satd-auth",
+          "sub": "",
+          "cls": ""
+        },
+        "satd-events": {
+          "label": "satd-events",
+          "sub": "",
+          "cls": ""
+        },
+        "satd-mcp": {
+          "label": "satd-mcp",
+          "sub": "",
+          "cls": ""
+        },
+        "satd-policy": {
+          "label": "satd-policy",
+          "sub": "",
+          "cls": ""
+        },
+        "satd-psbt": {
+          "label": "satd-psbt",
+          "sub": "",
+          "cls": ""
+        },
+        "tls-config": {
+          "label": "tls-config",
+          "sub": "",
+          "cls": ""
+        }
+      },
+      "bands": [
+        {
+          "label": "",
+          "rows": [
+            [
+              "satd"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "electrum-proto",
+              "esplora-handlers",
+              "satd-alert",
+              "satd-events",
+              "satd-mcp"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "node"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "consensus",
+              "node-filter-index",
+              "node-index",
+              "node-sp-index",
+              "satd-auth",
+              "satd-policy",
+              "satd-psbt",
+              "tls-config"
+            ]
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "electrum-proto",
+          "to": "node"
+        },
+        {
+          "from": "esplora-handlers",
+          "to": "node"
+        },
+        {
+          "from": "node",
+          "to": "consensus"
+        },
+        {
+          "from": "node",
+          "to": "node-filter-index"
+        },
+        {
+          "from": "node",
+          "to": "node-index"
+        },
+        {
+          "from": "node",
+          "to": "node-sp-index"
+        },
+        {
+          "from": "node",
+          "to": "satd-auth"
+        },
+        {
+          "from": "node",
+          "to": "satd-policy"
+        },
+        {
+          "from": "node",
+          "to": "satd-psbt"
+        },
+        {
+          "from": "node",
+          "to": "tls-config"
+        },
+        {
+          "from": "satd",
+          "to": "electrum-proto"
+        },
+        {
+          "from": "satd",
+          "to": "esplora-handlers"
+        },
+        {
+          "from": "satd",
+          "to": "satd-alert"
+        },
+        {
+          "from": "satd",
+          "to": "satd-events"
+        },
+        {
+          "from": "satd",
+          "to": "satd-mcp"
+        },
+        {
+          "from": "satd-alert",
+          "to": "node"
+        },
+        {
+          "from": "satd-events",
+          "to": "node"
+        },
+        {
+          "from": "satd-mcp",
+          "to": "node"
+        }
+      ],
+      "links": [
+        [
+          "electrum-proto",
+          "node"
+        ],
+        [
+          "electrum-proto",
+          "node-index"
+        ],
+        [
+          "electrum-proto",
+          "tls-config"
+        ],
+        [
+          "esplora-handlers",
+          "node"
+        ],
+        [
+          "esplora-handlers",
+          "node-index"
+        ],
+        [
+          "esplora-handlers",
+          "satd-auth"
+        ],
+        [
+          "esplora-handlers",
+          "tls-config"
+        ],
+        [
+          "node",
+          "consensus"
+        ],
+        [
+          "node",
+          "node-filter-index"
+        ],
+        [
+          "node",
+          "node-index"
+        ],
+        [
+          "node",
+          "node-sp-index"
+        ],
+        [
+          "node",
+          "satd-auth"
+        ],
+        [
+          "node",
+          "satd-policy"
+        ],
+        [
+          "node",
+          "satd-psbt"
+        ],
+        [
+          "node",
+          "tls-config"
+        ],
+        [
+          "satd",
+          "electrum-proto"
+        ],
+        [
+          "satd",
+          "esplora-handlers"
+        ],
+        [
+          "satd",
+          "node"
+        ],
+        [
+          "satd",
+          "node-filter-index"
+        ],
+        [
+          "satd",
+          "node-index"
+        ],
+        [
+          "satd",
+          "satd-alert"
+        ],
+        [
+          "satd",
+          "satd-auth"
+        ],
+        [
+          "satd",
+          "satd-events"
+        ],
+        [
+          "satd",
+          "satd-mcp"
+        ],
+        [
+          "satd",
+          "tls-config"
+        ],
+        [
+          "satd-alert",
+          "node"
+        ],
+        [
+          "satd-events",
+          "node"
+        ],
+        [
+          "satd-mcp",
+          "node"
+        ],
+        [
+          "satd-mcp",
+          "satd-auth"
+        ],
+        [
+          "satd-mcp",
+          "tls-config"
+        ]
+      ]
+    },
+    {
+      "slug": "libbitcoin",
+      "headline": "libbitcoin-system is one library. wallet and config include chain, chain includes crypto, and crypto includes hash, data, and math.",
+      "caption": "An arrow is one module under src including another, and only a pair that occurs at least twice. A single include does not set the direction. filter never does, so it is not drawn. An arrow a longer path already covers is left off the drawing. The table lists every pair that met the count. secp256k1 is not a separate library in this build.",
+      "source": "https://github.com/libbitcoin/libbitcoin-system/tree/9f9cce3086074840951cedf1d381f08112275bfd/src",
+      "source_label": "src at 9f9cce3",
+      "nodes": {
+        "words": {
+          "label": "words",
+          "sub": "",
+          "cls": ""
+        },
+        "radix": {
+          "label": "radix",
+          "sub": "",
+          "cls": ""
+        },
+        "data": {
+          "label": "data",
+          "sub": "",
+          "cls": ""
+        },
+        "error": {
+          "label": "error",
+          "sub": "",
+          "cls": ""
+        },
+        "endian": {
+          "label": "endian",
+          "sub": "",
+          "cls": ""
+        },
+        "options": {
+          "label": "options",
+          "sub": "",
+          "cls": ""
+        },
+        "ip": {
+          "label": "ip",
+          "sub": "",
+          "cls": ""
+        },
+        "chain": {
+          "label": "chain",
+          "sub": "",
+          "cls": ""
+        },
+        "config": {
+          "label": "config",
+          "sub": "",
+          "cls": ""
+        },
+        "crypto": {
+          "label": "crypto",
+          "sub": "",
+          "cls": ""
+        },
+        "wallet": {
+          "label": "wallet",
+          "sub": "",
+          "cls": ""
+        },
+        "math": {
+          "label": "math",
+          "sub": "",
+          "cls": ""
+        },
+        "unicode": {
+          "label": "unicode",
+          "sub": "",
+          "cls": ""
+        },
+        "stream": {
+          "label": "stream",
+          "sub": "",
+          "cls": ""
+        },
+        "hash": {
+          "label": "hash",
+          "sub": "",
+          "cls": ""
+        },
+        "serial": {
+          "label": "serial",
+          "sub": "",
+          "cls": ""
+        },
+        "x509": {
+          "label": "x509",
+          "sub": "",
+          "cls": ""
+        }
+      },
+      "bands": [
+        {
+          "label": "",
+          "rows": [
+            [
+              "config",
+              "wallet"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "chain",
+              "x509"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "crypto",
+              "options",
+              "radix"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "hash",
+              "ip",
+              "serial",
+              "stream",
+              "unicode"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "data",
+              "endian",
+              "error",
+              "math",
+              "words"
+            ]
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "chain",
+          "to": "crypto"
+        },
+        {
+          "from": "chain",
+          "to": "error"
+        },
+        {
+          "from": "chain",
+          "to": "radix"
+        },
+        {
+          "from": "config",
+          "to": "chain"
+        },
+        {
+          "from": "config",
+          "to": "unicode"
+        },
+        {
+          "from": "crypto",
+          "to": "hash"
+        },
+        {
+          "from": "hash",
+          "to": "data"
+        },
+        {
+          "from": "hash",
+          "to": "endian"
+        },
+        {
+          "from": "hash",
+          "to": "math"
+        },
+        {
+          "from": "ip",
+          "to": "data"
+        },
+        {
+          "from": "ip",
+          "to": "endian"
+        },
+        {
+          "from": "ip",
+          "to": "math"
+        },
+        {
+          "from": "options",
+          "to": "data"
+        },
+        {
+          "from": "options",
+          "to": "unicode"
+        },
+        {
+          "from": "radix",
+          "to": "serial"
+        },
+        {
+          "from": "radix",
+          "to": "stream"
+        },
+        {
+          "from": "serial",
+          "to": "math"
+        },
+        {
+          "from": "stream",
+          "to": "data"
+        },
+        {
+          "from": "unicode",
+          "to": "math"
+        },
+        {
+          "from": "wallet",
+          "to": "chain"
+        },
+        {
+          "from": "wallet",
+          "to": "unicode"
+        },
+        {
+          "from": "wallet",
+          "to": "words"
+        },
+        {
+          "from": "x509",
+          "to": "crypto"
+        }
+      ],
+      "links": [
+        [
+          "chain",
+          "crypto"
+        ],
+        [
+          "chain",
+          "data"
+        ],
+        [
+          "chain",
+          "endian"
+        ],
+        [
+          "chain",
+          "error"
+        ],
+        [
+          "chain",
+          "hash"
+        ],
+        [
+          "chain",
+          "math"
+        ],
+        [
+          "chain",
+          "radix"
+        ],
+        [
+          "chain",
+          "serial"
+        ],
+        [
+          "chain",
+          "stream"
+        ],
+        [
+          "config",
+          "chain"
+        ],
+        [
+          "config",
+          "data"
+        ],
+        [
+          "config",
+          "hash"
+        ],
+        [
+          "config",
+          "radix"
+        ],
+        [
+          "config",
+          "serial"
+        ],
+        [
+          "config",
+          "unicode"
+        ],
+        [
+          "crypto",
+          "data"
+        ],
+        [
+          "crypto",
+          "endian"
+        ],
+        [
+          "crypto",
+          "hash"
+        ],
+        [
+          "crypto",
+          "math"
+        ],
+        [
+          "hash",
+          "data"
+        ],
+        [
+          "hash",
+          "endian"
+        ],
+        [
+          "hash",
+          "math"
+        ],
+        [
+          "ip",
+          "data"
+        ],
+        [
+          "ip",
+          "endian"
+        ],
+        [
+          "ip",
+          "math"
+        ],
+        [
+          "options",
+          "data"
+        ],
+        [
+          "options",
+          "unicode"
+        ],
+        [
+          "radix",
+          "data"
+        ],
+        [
+          "radix",
+          "math"
+        ],
+        [
+          "radix",
+          "serial"
+        ],
+        [
+          "radix",
+          "stream"
+        ],
+        [
+          "serial",
+          "math"
+        ],
+        [
+          "stream",
+          "data"
+        ],
+        [
+          "unicode",
+          "math"
+        ],
+        [
+          "wallet",
+          "chain"
+        ],
+        [
+          "wallet",
+          "crypto"
+        ],
+        [
+          "wallet",
+          "data"
+        ],
+        [
+          "wallet",
+          "endian"
+        ],
+        [
+          "wallet",
+          "hash"
+        ],
+        [
+          "wallet",
+          "math"
+        ],
+        [
+          "wallet",
+          "radix"
+        ],
+        [
+          "wallet",
+          "stream"
+        ],
+        [
+          "wallet",
+          "unicode"
+        ],
+        [
+          "wallet",
+          "words"
+        ],
+        [
+          "x509",
+          "crypto"
+        ],
+        [
+          "x509",
+          "data"
+        ],
+        [
+          "x509",
+          "hash"
+        ],
+        [
+          "x509",
+          "math"
+        ]
+      ]
+    },
+    {
+      "slug": "hornet",
+      "headline": "hornetnode links hornetnodelib, and hornetnodelib links hornetlib.",
+      "caption": "Arrows are target_link_libraries in src at this pin. hornetlib is the consensus and protocol sources. hornetnodelib is the controller and the network. liburing is outside the tree, so it is not a box.",
+      "source": "https://github.com/tobysharp/hornet/blob/151462fa5ceece39c159674886dcfa6cfe9b1234/src/CMakeLists.txt",
+      "source_label": "src CMakeLists.txt at 151462f",
+      "nodes": {
+        "hornetnode": {
+          "label": "hornetnode",
+          "sub": "executable",
+          "cls": ""
+        },
+        "hornetnodelib": {
+          "label": "hornetnodelib",
+          "sub": "controller and net",
+          "cls": ""
+        },
+        "hornetlib": {
+          "label": "hornetlib",
+          "sub": "consensus and protocol",
+          "cls": ""
+        }
+      },
+      "bands": [
+        {
+          "label": "",
+          "rows": [
+            [
+              "hornetnode"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "hornetnodelib"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "hornetlib"
+            ]
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "hornetnode",
+          "to": "hornetnodelib"
+        },
+        {
+          "from": "hornetnodelib",
+          "to": "hornetlib"
+        }
+      ],
+      "links": [
+        [
+          "hornetnode",
+          "hornetlib"
+        ],
+        [
+          "hornetnode",
+          "hornetnodelib"
+        ],
+        [
+          "hornetnodelib",
+          "hornetlib"
+        ]
+      ]
+    },
+    {
+      "slug": "floresta",
+      "headline": "florestad depends on floresta-node. The node crate sits above electrum, mempool, and wire, and those sit above the chain crate.",
+      "caption": "Arrows point from a workspace crate to a workspace crate it depends on, in the default node binary. Box names drop the shared prefix. Dependencies outside the workspace are not boxes. Test, bench, fuzz, and tools the binary does not reach are not drawn. An arrow a longer path already covers is left off the drawing. The table lists every workspace dependency. florestad's default feature json-rpc turns on floresta-compact-filters and floresta-rpc, so those two arrows are included. floresta-common is the workspace member of that name.",
+      "source": "https://github.com/getfloresta/Floresta/blob/cdbcf5a13cba2b0aab505977ba413f707bc06290/Cargo.toml",
+      "source_label": "Cargo.toml at cdbcf5a",
+      "nodes": {
+        "floresta-chain": {
+          "label": "chain",
+          "sub": "",
+          "cls": ""
+        },
+        "floresta-common": {
+          "label": "common",
+          "sub": "",
+          "cls": ""
+        },
+        "floresta-compact-filters": {
+          "label": "compact-filters",
+          "sub": "",
+          "cls": ""
+        },
+        "floresta-domain": {
+          "label": "domain",
+          "sub": "",
+          "cls": ""
+        },
+        "floresta-electrum": {
+          "label": "electrum",
+          "sub": "",
+          "cls": ""
+        },
+        "floresta-mempool": {
+          "label": "mempool",
+          "sub": "",
+          "cls": ""
+        },
+        "floresta-node": {
+          "label": "node",
+          "sub": "",
+          "cls": ""
+        },
+        "floresta-proc-macro": {
+          "label": "proc-macro",
+          "sub": "",
+          "cls": ""
+        },
+        "floresta-rpc": {
+          "label": "rpc",
+          "sub": "",
+          "cls": ""
+        },
+        "floresta-watch-only": {
+          "label": "watch-only",
+          "sub": "",
+          "cls": ""
+        },
+        "floresta-wire": {
+          "label": "wire",
+          "sub": "",
+          "cls": ""
+        },
+        "florestad": {
+          "label": "florestad",
+          "sub": "",
+          "cls": ""
+        }
+      },
+      "bands": [
+        {
+          "label": "",
+          "rows": [
+            [
+              "florestad"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "floresta-node"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "floresta-electrum"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "floresta-mempool",
+              "floresta-watch-only",
+              "floresta-wire"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "floresta-compact-filters",
+              "floresta-domain"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "floresta-chain",
+              "floresta-rpc"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "floresta-common",
+              "floresta-proc-macro"
+            ]
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "floresta-chain",
+          "to": "floresta-common"
+        },
+        {
+          "from": "floresta-compact-filters",
+          "to": "floresta-chain"
+        },
+        {
+          "from": "floresta-domain",
+          "to": "floresta-chain"
+        },
+        {
+          "from": "floresta-electrum",
+          "to": "floresta-watch-only"
+        },
+        {
+          "from": "floresta-electrum",
+          "to": "floresta-wire"
+        },
+        {
+          "from": "floresta-mempool",
+          "to": "floresta-domain"
+        },
+        {
+          "from": "floresta-node",
+          "to": "floresta-electrum"
+        },
+        {
+          "from": "floresta-node",
+          "to": "floresta-mempool"
+        },
+        {
+          "from": "floresta-node",
+          "to": "floresta-rpc"
+        },
+        {
+          "from": "floresta-rpc",
+          "to": "floresta-proc-macro"
+        },
+        {
+          "from": "floresta-watch-only",
+          "to": "floresta-domain"
+        },
+        {
+          "from": "floresta-wire",
+          "to": "floresta-compact-filters"
+        },
+        {
+          "from": "floresta-wire",
+          "to": "floresta-domain"
+        },
+        {
+          "from": "florestad",
+          "to": "floresta-node"
+        }
+      ],
+      "links": [
+        [
+          "floresta-chain",
+          "floresta-common"
+        ],
+        [
+          "floresta-compact-filters",
+          "floresta-chain"
+        ],
+        [
+          "floresta-domain",
+          "floresta-chain"
+        ],
+        [
+          "floresta-electrum",
+          "floresta-chain"
+        ],
+        [
+          "floresta-electrum",
+          "floresta-common"
+        ],
+        [
+          "floresta-electrum",
+          "floresta-compact-filters"
+        ],
+        [
+          "floresta-electrum",
+          "floresta-domain"
+        ],
+        [
+          "floresta-electrum",
+          "floresta-watch-only"
+        ],
+        [
+          "floresta-electrum",
+          "floresta-wire"
+        ],
+        [
+          "floresta-mempool",
+          "floresta-chain"
+        ],
+        [
+          "floresta-mempool",
+          "floresta-domain"
+        ],
+        [
+          "floresta-node",
+          "floresta-chain"
+        ],
+        [
+          "floresta-node",
+          "floresta-common"
+        ],
+        [
+          "floresta-node",
+          "floresta-compact-filters"
+        ],
+        [
+          "floresta-node",
+          "floresta-domain"
+        ],
+        [
+          "floresta-node",
+          "floresta-electrum"
+        ],
+        [
+          "floresta-node",
+          "floresta-mempool"
+        ],
+        [
+          "floresta-node",
+          "floresta-rpc"
+        ],
+        [
+          "floresta-node",
+          "floresta-watch-only"
+        ],
+        [
+          "floresta-node",
+          "floresta-wire"
+        ],
+        [
+          "floresta-rpc",
+          "floresta-proc-macro"
+        ],
+        [
+          "floresta-watch-only",
+          "floresta-chain"
+        ],
+        [
+          "floresta-watch-only",
+          "floresta-common"
+        ],
+        [
+          "floresta-watch-only",
+          "floresta-domain"
+        ],
+        [
+          "floresta-wire",
+          "floresta-chain"
+        ],
+        [
+          "floresta-wire",
+          "floresta-common"
+        ],
+        [
+          "floresta-wire",
+          "floresta-compact-filters"
+        ],
+        [
+          "floresta-wire",
+          "floresta-domain"
+        ],
+        [
+          "florestad",
+          "floresta-common"
+        ],
+        [
+          "florestad",
+          "floresta-node"
+        ]
+      ]
+    },
+    {
+      "slug": "rbitcoin",
+      "headline": "rbitcoin-node sits above esplora, electrum, ibd, rpc, and sv2. Those sit above net, and net sits above mempool and query.",
+      "caption": "Arrows point from a workspace crate to a workspace crate it depends on, in the default node binary. Box names drop the shared prefix. Dependencies outside the workspace are not boxes. Test, bench, fuzz, and tools the binary does not reach are not drawn. An arrow a longer path already covers is left off the drawing. The table lists every workspace dependency.",
+      "source": "https://github.com/reardencode/rbitcoin/blob/ca7bf804ed44d7efdca3da219ead6e644d35fd9e/Cargo.toml",
+      "source_label": "Cargo.toml at ca7bf80",
+      "nodes": {
+        "rbitcoin-consensus": {
+          "label": "consensus",
+          "sub": "",
+          "cls": ""
+        },
+        "rbitcoin-electrum": {
+          "label": "electrum",
+          "sub": "",
+          "cls": ""
+        },
+        "rbitcoin-esplora": {
+          "label": "esplora",
+          "sub": "",
+          "cls": ""
+        },
+        "rbitcoin-ibd": {
+          "label": "ibd",
+          "sub": "",
+          "cls": ""
+        },
+        "rbitcoin-log": {
+          "label": "log",
+          "sub": "",
+          "cls": ""
+        },
+        "rbitcoin-mempool": {
+          "label": "mempool",
+          "sub": "",
+          "cls": ""
+        },
+        "rbitcoin-net": {
+          "label": "net",
+          "sub": "",
+          "cls": ""
+        },
+        "rbitcoin-node": {
+          "label": "node",
+          "sub": "",
+          "cls": ""
+        },
+        "rbitcoin-primitives": {
+          "label": "primitives",
+          "sub": "",
+          "cls": ""
+        },
+        "rbitcoin-query": {
+          "label": "query",
+          "sub": "",
+          "cls": ""
+        },
+        "rbitcoin-rpc": {
+          "label": "rpc",
+          "sub": "",
+          "cls": ""
+        },
+        "rbitcoin-store": {
+          "label": "store",
+          "sub": "",
+          "cls": ""
+        },
+        "rbitcoin-sv2": {
+          "label": "sv2",
+          "sub": "",
+          "cls": ""
+        }
+      },
+      "bands": [
+        {
+          "label": "",
+          "rows": [
+            [
+              "rbitcoin-node"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "rbitcoin-esplora"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "rbitcoin-electrum",
+              "rbitcoin-ibd",
+              "rbitcoin-rpc",
+              "rbitcoin-sv2"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "rbitcoin-net"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "rbitcoin-mempool",
+              "rbitcoin-query"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "rbitcoin-consensus",
+              "rbitcoin-store"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "rbitcoin-log",
+              "rbitcoin-primitives"
+            ]
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "rbitcoin-consensus",
+          "to": "rbitcoin-primitives"
+        },
+        {
+          "from": "rbitcoin-electrum",
+          "to": "rbitcoin-net"
+        },
+        {
+          "from": "rbitcoin-esplora",
+          "to": "rbitcoin-electrum"
+        },
+        {
+          "from": "rbitcoin-ibd",
+          "to": "rbitcoin-net"
+        },
+        {
+          "from": "rbitcoin-mempool",
+          "to": "rbitcoin-consensus"
+        },
+        {
+          "from": "rbitcoin-mempool",
+          "to": "rbitcoin-store"
+        },
+        {
+          "from": "rbitcoin-net",
+          "to": "rbitcoin-mempool"
+        },
+        {
+          "from": "rbitcoin-net",
+          "to": "rbitcoin-query"
+        },
+        {
+          "from": "rbitcoin-node",
+          "to": "rbitcoin-esplora"
+        },
+        {
+          "from": "rbitcoin-node",
+          "to": "rbitcoin-ibd"
+        },
+        {
+          "from": "rbitcoin-node",
+          "to": "rbitcoin-rpc"
+        },
+        {
+          "from": "rbitcoin-node",
+          "to": "rbitcoin-sv2"
+        },
+        {
+          "from": "rbitcoin-query",
+          "to": "rbitcoin-consensus"
+        },
+        {
+          "from": "rbitcoin-query",
+          "to": "rbitcoin-store"
+        },
+        {
+          "from": "rbitcoin-rpc",
+          "to": "rbitcoin-net"
+        },
+        {
+          "from": "rbitcoin-store",
+          "to": "rbitcoin-log"
+        },
+        {
+          "from": "rbitcoin-store",
+          "to": "rbitcoin-primitives"
+        },
+        {
+          "from": "rbitcoin-sv2",
+          "to": "rbitcoin-net"
+        }
+      ],
+      "links": [
+        [
+          "rbitcoin-consensus",
+          "rbitcoin-primitives"
+        ],
+        [
+          "rbitcoin-electrum",
+          "rbitcoin-consensus"
+        ],
+        [
+          "rbitcoin-electrum",
+          "rbitcoin-log"
+        ],
+        [
+          "rbitcoin-electrum",
+          "rbitcoin-net"
+        ],
+        [
+          "rbitcoin-electrum",
+          "rbitcoin-primitives"
+        ],
+        [
+          "rbitcoin-electrum",
+          "rbitcoin-query"
+        ],
+        [
+          "rbitcoin-electrum",
+          "rbitcoin-store"
+        ],
+        [
+          "rbitcoin-esplora",
+          "rbitcoin-consensus"
+        ],
+        [
+          "rbitcoin-esplora",
+          "rbitcoin-electrum"
+        ],
+        [
+          "rbitcoin-esplora",
+          "rbitcoin-log"
+        ],
+        [
+          "rbitcoin-esplora",
+          "rbitcoin-net"
+        ],
+        [
+          "rbitcoin-esplora",
+          "rbitcoin-primitives"
+        ],
+        [
+          "rbitcoin-esplora",
+          "rbitcoin-query"
+        ],
+        [
+          "rbitcoin-esplora",
+          "rbitcoin-store"
+        ],
+        [
+          "rbitcoin-ibd",
+          "rbitcoin-consensus"
+        ],
+        [
+          "rbitcoin-ibd",
+          "rbitcoin-log"
+        ],
+        [
+          "rbitcoin-ibd",
+          "rbitcoin-net"
+        ],
+        [
+          "rbitcoin-ibd",
+          "rbitcoin-primitives"
+        ],
+        [
+          "rbitcoin-ibd",
+          "rbitcoin-query"
+        ],
+        [
+          "rbitcoin-ibd",
+          "rbitcoin-store"
+        ],
+        [
+          "rbitcoin-mempool",
+          "rbitcoin-consensus"
+        ],
+        [
+          "rbitcoin-mempool",
+          "rbitcoin-log"
+        ],
+        [
+          "rbitcoin-mempool",
+          "rbitcoin-primitives"
+        ],
+        [
+          "rbitcoin-mempool",
+          "rbitcoin-store"
+        ],
+        [
+          "rbitcoin-net",
+          "rbitcoin-consensus"
+        ],
+        [
+          "rbitcoin-net",
+          "rbitcoin-log"
+        ],
+        [
+          "rbitcoin-net",
+          "rbitcoin-mempool"
+        ],
+        [
+          "rbitcoin-net",
+          "rbitcoin-primitives"
+        ],
+        [
+          "rbitcoin-net",
+          "rbitcoin-query"
+        ],
+        [
+          "rbitcoin-net",
+          "rbitcoin-store"
+        ],
+        [
+          "rbitcoin-node",
+          "rbitcoin-consensus"
+        ],
+        [
+          "rbitcoin-node",
+          "rbitcoin-electrum"
+        ],
+        [
+          "rbitcoin-node",
+          "rbitcoin-esplora"
+        ],
+        [
+          "rbitcoin-node",
+          "rbitcoin-ibd"
+        ],
+        [
+          "rbitcoin-node",
+          "rbitcoin-log"
+        ],
+        [
+          "rbitcoin-node",
+          "rbitcoin-mempool"
+        ],
+        [
+          "rbitcoin-node",
+          "rbitcoin-net"
+        ],
+        [
+          "rbitcoin-node",
+          "rbitcoin-primitives"
+        ],
+        [
+          "rbitcoin-node",
+          "rbitcoin-query"
+        ],
+        [
+          "rbitcoin-node",
+          "rbitcoin-rpc"
+        ],
+        [
+          "rbitcoin-node",
+          "rbitcoin-store"
+        ],
+        [
+          "rbitcoin-node",
+          "rbitcoin-sv2"
+        ],
+        [
+          "rbitcoin-query",
+          "rbitcoin-consensus"
+        ],
+        [
+          "rbitcoin-query",
+          "rbitcoin-log"
+        ],
+        [
+          "rbitcoin-query",
+          "rbitcoin-primitives"
+        ],
+        [
+          "rbitcoin-query",
+          "rbitcoin-store"
+        ],
+        [
+          "rbitcoin-rpc",
+          "rbitcoin-consensus"
+        ],
+        [
+          "rbitcoin-rpc",
+          "rbitcoin-log"
+        ],
+        [
+          "rbitcoin-rpc",
+          "rbitcoin-net"
+        ],
+        [
+          "rbitcoin-rpc",
+          "rbitcoin-primitives"
+        ],
+        [
+          "rbitcoin-rpc",
+          "rbitcoin-query"
+        ],
+        [
+          "rbitcoin-rpc",
+          "rbitcoin-store"
+        ],
+        [
+          "rbitcoin-store",
+          "rbitcoin-log"
+        ],
+        [
+          "rbitcoin-store",
+          "rbitcoin-primitives"
+        ],
+        [
+          "rbitcoin-sv2",
+          "rbitcoin-consensus"
+        ],
+        [
+          "rbitcoin-sv2",
+          "rbitcoin-log"
+        ],
+        [
+          "rbitcoin-sv2",
+          "rbitcoin-net"
+        ],
+        [
+          "rbitcoin-sv2",
+          "rbitcoin-primitives"
+        ],
+        [
+          "rbitcoin-sv2",
+          "rbitcoin-query"
+        ],
+        [
+          "rbitcoin-sv2",
+          "rbitcoin-store"
+        ]
+      ]
+    },
+    {
+      "slug": "btcd",
+      "headline": "The btcd process imports netsync. netsync imports mempool and peer, and those import blockchain.",
+      "caption": "An arrow is an import of another package in this repository, from the btcd process and the packages it reaches. address, btcutil, chaincfg, and txscript import each other, so they are one box and the arrows between them are not drawn. psbt and rpcclient are not imported by that process, so they are not drawn. An arrow a longer path already covers is left off the drawing. The table lists every remaining import.",
+      "source": "https://github.com/btcsuite/btcd/tree/dd169fe0c32a56087d28b92fff3b8cf4fb43477a",
+      "source_label": "module at dd169fe",
+      "nodes": {
+        "btcd": {
+          "label": "btcd",
+          "sub": "",
+          "cls": ""
+        },
+        "script": {
+          "label": "script packages",
+          "sub": "address, btcutil, chaincfg, txscript",
+          "cls": ""
+        },
+        "connmgr": {
+          "label": "connmgr",
+          "sub": "",
+          "cls": ""
+        },
+        "netsync": {
+          "label": "netsync",
+          "sub": "",
+          "cls": ""
+        },
+        "blockchain": {
+          "label": "blockchain",
+          "sub": "",
+          "cls": ""
+        },
+        "database": {
+          "label": "database",
+          "sub": "",
+          "cls": ""
+        },
+        "peer": {
+          "label": "peer",
+          "sub": "",
+          "cls": ""
+        },
+        "internal": {
+          "label": "internal",
+          "sub": "",
+          "cls": ""
+        },
+        "chainhash": {
+          "label": "chainhash",
+          "sub": "",
+          "cls": ""
+        },
+        "btcec": {
+          "label": "btcec",
+          "sub": "",
+          "cls": ""
+        },
+        "ossec": {
+          "label": "ossec",
+          "sub": "",
+          "cls": ""
+        },
+        "mempool": {
+          "label": "mempool",
+          "sub": "",
+          "cls": ""
+        },
+        "mining": {
+          "label": "mining",
+          "sub": "",
+          "cls": ""
+        },
+        "limits": {
+          "label": "limits",
+          "sub": "",
+          "cls": ""
+        },
+        "btcjson": {
+          "label": "btcjson",
+          "sub": "",
+          "cls": ""
+        },
+        "wire": {
+          "label": "wire",
+          "sub": "",
+          "cls": ""
+        },
+        "v2transport": {
+          "label": "v2transport",
+          "sub": "",
+          "cls": ""
+        },
+        "addrmgr": {
+          "label": "addrmgr",
+          "sub": "",
+          "cls": ""
+        }
+      },
+      "bands": [
+        {
+          "label": "",
+          "rows": [
+            [
+              "btcd"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "netsync"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "mempool"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "mining",
+              "peer"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "blockchain"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "btcjson",
+              "connmgr",
+              "database"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "addrmgr",
+              "script",
+              "v2transport"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "btcec",
+              "wire"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "rows": [
+            [
+              "chainhash",
+              "internal",
+              "limits",
+              "ossec"
+            ]
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "addrmgr",
+          "to": "wire"
+        },
+        {
+          "from": "blockchain",
+          "to": "database"
+        },
+        {
+          "from": "btcd",
+          "to": "addrmgr"
+        },
+        {
+          "from": "btcd",
+          "to": "connmgr"
+        },
+        {
+          "from": "btcd",
+          "to": "limits"
+        },
+        {
+          "from": "btcd",
+          "to": "netsync"
+        },
+        {
+          "from": "btcd",
+          "to": "ossec"
+        },
+        {
+          "from": "btcec",
+          "to": "chainhash"
+        },
+        {
+          "from": "btcjson",
+          "to": "script"
+        },
+        {
+          "from": "connmgr",
+          "to": "script"
+        },
+        {
+          "from": "database",
+          "to": "script"
+        },
+        {
+          "from": "mempool",
+          "to": "btcjson"
+        },
+        {
+          "from": "mempool",
+          "to": "mining"
+        },
+        {
+          "from": "mining",
+          "to": "blockchain"
+        },
+        {
+          "from": "netsync",
+          "to": "mempool"
+        },
+        {
+          "from": "netsync",
+          "to": "peer"
+        },
+        {
+          "from": "peer",
+          "to": "blockchain"
+        },
+        {
+          "from": "peer",
+          "to": "internal"
+        },
+        {
+          "from": "peer",
+          "to": "v2transport"
+        },
+        {
+          "from": "script",
+          "to": "btcec"
+        },
+        {
+          "from": "script",
+          "to": "wire"
+        },
+        {
+          "from": "v2transport",
+          "to": "btcec"
+        },
+        {
+          "from": "wire",
+          "to": "chainhash"
+        }
+      ],
+      "links": [
+        [
+          "addrmgr",
+          "chainhash"
+        ],
+        [
+          "addrmgr",
+          "wire"
+        ],
+        [
+          "blockchain",
+          "btcec"
+        ],
+        [
+          "blockchain",
+          "chainhash"
+        ],
+        [
+          "blockchain",
+          "database"
+        ],
+        [
+          "blockchain",
+          "script"
+        ],
+        [
+          "blockchain",
+          "wire"
+        ],
+        [
+          "btcd",
+          "addrmgr"
+        ],
+        [
+          "btcd",
+          "blockchain"
+        ],
+        [
+          "btcd",
+          "btcec"
+        ],
+        [
+          "btcd",
+          "btcjson"
+        ],
+        [
+          "btcd",
+          "chainhash"
+        ],
+        [
+          "btcd",
+          "connmgr"
+        ],
+        [
+          "btcd",
+          "database"
+        ],
+        [
+          "btcd",
+          "internal"
+        ],
+        [
+          "btcd",
+          "limits"
+        ],
+        [
+          "btcd",
+          "mempool"
+        ],
+        [
+          "btcd",
+          "mining"
+        ],
+        [
+          "btcd",
+          "netsync"
+        ],
+        [
+          "btcd",
+          "ossec"
+        ],
+        [
+          "btcd",
+          "peer"
+        ],
+        [
+          "btcd",
+          "script"
+        ],
+        [
+          "btcd",
+          "v2transport"
+        ],
+        [
+          "btcd",
+          "wire"
+        ],
+        [
+          "btcec",
+          "chainhash"
+        ],
+        [
+          "btcjson",
+          "chainhash"
+        ],
+        [
+          "btcjson",
+          "script"
+        ],
+        [
+          "btcjson",
+          "wire"
+        ],
+        [
+          "connmgr",
+          "script"
+        ],
+        [
+          "connmgr",
+          "wire"
+        ],
+        [
+          "database",
+          "chainhash"
+        ],
+        [
+          "database",
+          "script"
+        ],
+        [
+          "database",
+          "wire"
+        ],
+        [
+          "mempool",
+          "blockchain"
+        ],
+        [
+          "mempool",
+          "btcjson"
+        ],
+        [
+          "mempool",
+          "chainhash"
+        ],
+        [
+          "mempool",
+          "mining"
+        ],
+        [
+          "mempool",
+          "script"
+        ],
+        [
+          "mempool",
+          "wire"
+        ],
+        [
+          "mining",
+          "blockchain"
+        ],
+        [
+          "mining",
+          "chainhash"
+        ],
+        [
+          "mining",
+          "script"
+        ],
+        [
+          "mining",
+          "wire"
+        ],
+        [
+          "netsync",
+          "blockchain"
+        ],
+        [
+          "netsync",
+          "chainhash"
+        ],
+        [
+          "netsync",
+          "database"
+        ],
+        [
+          "netsync",
+          "mempool"
+        ],
+        [
+          "netsync",
+          "peer"
+        ],
+        [
+          "netsync",
+          "script"
+        ],
+        [
+          "netsync",
+          "wire"
+        ],
+        [
+          "peer",
+          "blockchain"
+        ],
+        [
+          "peer",
+          "chainhash"
+        ],
+        [
+          "peer",
+          "internal"
+        ],
+        [
+          "peer",
+          "script"
+        ],
+        [
+          "peer",
+          "v2transport"
+        ],
+        [
+          "peer",
+          "wire"
+        ],
+        [
+          "script",
+          "btcec"
+        ],
+        [
+          "script",
+          "chainhash"
+        ],
+        [
+          "script",
+          "wire"
+        ],
+        [
+          "v2transport",
+          "btcec"
+        ],
+        [
+          "wire",
+          "chainhash"
+        ]
+      ]
+    }
+  ]
+}
