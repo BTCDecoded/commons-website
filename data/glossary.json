@@ -345,7 +345,7 @@
           "name": "Tagged releases, 12 months",
           "field": "metrics.json` `rows[].releases_12m",
           "what": "Git tags whose creator date falls in the 12-month window.",
-          "why": "It is a release-cadence count, not a stability grade.",
+          "why": "It is a tag count, not a stability grade. On the health star, 1 or 2 tags sit at the rim. That is the count a major release every 6 to 7 months gives in this window, which is the cadence Bitcoin Core's lifecycle states. A count of 0 sits at the centre, and so does a count of 4 or more.",
           "how": "`releases_12m`. Annotated tags use the tagger date; lightweight tags use the tagged commit date (`creatordate`). Names that contain `/` (Go module subpath tags) are excluded. BLVM's note: blvm-node tags.",
           "caveats_omitted": "contains figures; the page shows them from data",
           "link": "#depth"

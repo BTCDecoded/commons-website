@@ -747,8 +747,22 @@ function sector(cx, cy, r0, r1, a0, a1) {
 }
 
 // ---------- radar / star chart ----------
-// axes:   [{ label, short, max, invert, pending, scale }]  value / max sets
-//         the radius; invert puts 0 at the rim (fewer is better).
+// axes:   [{ label, short, max, invert, cadence, pending, scale }]
+//         value / max sets the radius; invert puts 0 at the rim.
+//         cadence {lo, hi, span} puts that band at the rim. 0, and a value
+//         `span` or more past the band, sit at the centre.
+export function spokeRadius(axis, v) {
+    if (axis.cadence) {
+        var c = axis.cadence;
+        if (v <= 0) return 0;
+        if (v >= c.lo && v <= c.hi) return 1;
+        var d = v < c.lo ? c.lo - v : v - c.hi;
+        return Math.max(0, 1 - d / c.span);
+    }
+    var f = Math.max(0, Math.min(1, v / axis.max));
+    if (axis.invert) f = 1 - f;
+    return f;
+}
 // series: [{ name, cls: "hl"|"core"|"median"|"", values: [{ v, text }] }]
 //         v null = not measured. A missing or pending axis is drawn as a
 //         hatched wedge and the outline breaks there; it is never drawn as 0.
@@ -787,7 +801,7 @@ export function radar(axes, series, opts) {
             var pts = sr.values.map(function (val, i) {
                 var a = axes[i];
                 if (a.pending || val.v === null || val.v === undefined) return null;
-                var f = Math.max(0, Math.min(1, val.v / a.max)); if (a.invert) f = 1 - f;
+                var f = spokeRadius(a, val.v);
                 return polar(cx, cy, R * f, -90 + i * step);
             });
             if (!firstPts) firstPts = pts;
@@ -825,7 +839,7 @@ export function radar(axes, series, opts) {
                 var name = lab === "full" ? a.label : a.short || a.label;
                 var lines = lab === "full" ? wrap(name, fsz, narrowLab ? 70 : 110) : [name];
                 var extra = [];
-                var atPoint = !!(a.invert && opts.values && series[0] && !a.pending && firstPts && firstPts[i]);
+                var atPoint = !!((a.invert || a.cadence) && opts.values && series[0] && !a.pending && firstPts && firstPts[i]);
                 if (a.pending) extra.push("pending fix");
                 else if (opts.values && series[0] && !atPoint) extra.push(series[0].values[i].text);
                 lines = lines.concat(extra);

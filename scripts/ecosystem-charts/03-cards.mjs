@@ -186,7 +186,7 @@ export default {
             const starThumb = svgOnce(id + "-s-sm", 168, radar(health.axes, [starSeries, health.median], { labels: "none", size: 168 }), r.name + " code-health thumbnail", starDesc, "eco-star");
             const star = svgOnce(id + "-s", 360, radar(health.axes, [starSeries, health.median], { labels: "short", values: true, pad: 64, size: 360 }), r.name + " code-health star", starDesc, "eco-star");
             const healthData = radarJson({
-                axes: health.axes.map(function (a) { return { short: a.short, max: a.max, invert: !!a.invert, pending: !!a.pending }; }),
+                axes: health.axes.map(function (a) { return { short: a.short, max: a.max, invert: !!a.invert, cadence: a.cadence || null, pending: !!a.pending }; }),
                 series: [starSeries, health.median].map(function (s) { return { name: s.name, cls: s.cls || "", values: s.values.map(function (v) { return { v: v.v, text: v.text, pending: !!v.pending }; }) }; })
             });
             const cmpValues = cmpAxes.map(function (a) {
