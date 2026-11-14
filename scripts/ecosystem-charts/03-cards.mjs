@@ -353,8 +353,8 @@ export default {
                 govLine("Quorum", read.quorumPair, "") +
                 (r.internal ? layerStack() : "") +
                 "<details><summary>Basis</summary><p>" + esc(read.basis) + (read.quorum ? " " + esc(read.quorum) : "") + "</p><p>" + govLead + " The article's form scores are judgments of a form. This reading does not copy them onto the project.</p></details>" +
-                "<p class=\"eco-govread-note\">" + (r.internal ? "<a href=\"governance-designer.html\">Fork these rules</a>" : "<a href=\"#forms\">Forms</a>") + "</p></section>" +
-                "<div class=\"eco-laywrap\">" + stackDiagram() + "</div>";
+                "<p class=\"eco-govread-note\">" + (r.internal ? "<a href=\"governance-designer.html\">Fork these rules</a>" : "<a href=\"#forms\">Forms</a>") + "</p></section>";
+            const stage = "<div class=\"eco-stage\">" + charts + "<div class=\"eco-stage-view\"><div class=\"eco-laywrap\">" + stackDiagram() + "</div></div></div>";
             return "<article class=\"eco-card" + (r.internal ? " internal" : "") + "\" id=\"" + id + "\" aria-labelledby=\"" + id + "-h\">" +
                 pickBits +
                 "<h3 id=\"" + id + "-h\">" + esc(r.name) + "</h3>" +
@@ -364,8 +364,8 @@ export default {
                 "<div class=\"eco-meta\">" + releaseBadge + badgeRow + "</div>" +
                 profile +
                 govRead +
+                stage +
                 "</div>" +
-                charts +
                 fold("eco-onchart-fold", "On the charts",
                     liveGroup("Code", [
                         liveFact("Program", counted(tree, "program_code")),
@@ -399,7 +399,7 @@ export default {
             id: "fig-cards",
             cls: "ch-wide-fig",
             headline: "The median implementation scores " + med + "% on assurance. One card per implementation.",
-            caption: "The card leads with the rank, the release, and the three scores, then this page's governance reading, then the layer diagram, then the charts. The reading uses the same mark as the graph. A signature count is one dot per key: orange must sign, gray is another key in the set. BLVM's reading includes the written rule, the governance-node quorum, and the five written repository layers. Every profile then draws the libraries or crates its default node links, in the same panel. On a fork, a light blue shaded dotted outline marks a library whose sources differ from the parent that fork names. A box marked vendored is a path the line counter already treats that way. These drawings are not signature layers. Not classified means this reading did not assign a label. The article's form scores are not copied onto the project. Selecting a chart opens it with its labels and values. Language, license, and age, when this page states them, are badges on the card. A hatched spoke is not measured, and it is not drawn as zero. A count that is not measured is left off the card. When none of the five comparisons is measured, that chart is left off the card.",
+            caption: "The card leads with the rank, the release, and the three scores, then this page's governance reading, then the layer diagram, then the charts. The reading uses the same mark as the graph. A signature count is one dot per key: orange must sign, gray is another key in the set. BLVM's reading includes the written rule, the governance-node quorum, and the five written repository layers. Every profile then draws the libraries or crates its default node links, in the same panel. On a fork, a light blue shaded dotted outline marks a library whose sources differ from the parent that fork names. A box marked vendored is a path the line counter already treats that way. These drawings are not signature layers. Not classified means this reading did not assign a label. The article's form scores are not copied onto the project. The three charts sit beside the layer diagram. Selecting one replaces the diagram. Selecting it again, or clicking the open chart, returns the diagram. Language, license, and age, when this page states them, are badges on the card. A hatched spoke is not measured, and it is not drawn as zero. A count that is not measured is left off the card. When none of the five comparisons is measured, that chart is left off the card.",
             html: "<div class=\"eco-cards\">" + cards + "</div>",
             measures: "Assurance counts which of six kinds of evidence each project shows that it follows Bitcoin's rules; it matters because a node that disagrees with the others splits from them.",
             takeaway: cardsTakeaway(rows),
