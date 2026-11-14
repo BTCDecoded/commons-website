@@ -14,7 +14,8 @@
     "ci_workflows": "Number of .github/workflows/*.{yml,yaml} files at the pin.",
     "ci_jobs": "GitHub Actions jobs at the pin, expanding a static matrix of lists (an include-only matrix is just the include rows, not one implicit job plus those rows; minus exclude/). A fromJSON(needs.job.outputs.x) matrix is expanded when the default non-PR value is written in the same workflow (suite=all, schedule/push flavors and arches, default mutant PARTS) or when the producer reads this tree's fuzz/Cargo.toml [[bin]] list. Unquoted run: scalars that break PyYAML are quoted and retried. If a matrix still cannot be expanded or a file still fails to parse, the cell is partial and the value is a lower bound.",
     "plugin_system": "yes / no / partial from the pinned tree's docs. own-team optional modules and independently maintained modules; not found when no source.",
-    "blvm_size": "Default node first-party crates plus blvm-sdk (blvm-storage-fence lives in the node tree; blvm-sdk-macros lives in the sdk tree). blvm-spec-lock non-test lines are tooling. Tests include spec-lock tests. Same tokei 14 and #[cfg(test)] rules as test_split."
+    "blvm_size": "Default node first-party crates plus blvm-sdk (blvm-storage-fence lives in the node tree; blvm-sdk-macros lives in the sdk tree). blvm-spec-lock non-test lines are tooling. Tests include spec-lock tests. Same tokei 14 and #[cfg(test)] rules as test_split.",
+    "release_lines_12m": "A new release line is a version line whose first tag that is not a release candidate falls in 2025-11-12 to 2026-11-12. At version 1 and above, the line is the major number: 31 and 32 are lines, and 31.1 is the same line as 31.0. Before 1.0, the line is 0.y: 0.1.92 is the same line as 0.1.1. A release candidate, a name containing /, a name that does not start with v or V, and a name ending in -final are not a line. Dates are the GitHub tagger date for an annotated tag and the commit date for a lightweight tag, read 2026-11-14."
   },
   "rows": [
     {
@@ -167,7 +168,21 @@
         "status": "not-found"
       },
       "plugin_source": "docs/MODULE_SYSTEM.md and modules/README.md at blvm-node 36bb40c7e9a3f805274fa7e1bda30d0a6c082560. Official registry https://raw.githubusercontent.com/BTCDecoded/blvm/main/registry/modules.json at blvm dd014d6, read 2026-11-14 (seven BTCDecoded modules). Independently maintained modules: not found.",
-      "plugin_names": ["blvm-miniscript", "blvm-marketplace", "blvm-governance", "blvm-zmq", "blvm-index", "blvm-payment", "blvm-selective-sync"]
+      "plugin_names": [
+        "blvm-miniscript",
+        "blvm-marketplace",
+        "blvm-governance",
+        "blvm-zmq",
+        "blvm-index",
+        "blvm-payment",
+        "blvm-selective-sync"
+      ],
+      "release_lines_12m": {
+        "value": 1,
+        "text": "1",
+        "status": "measured",
+        "note": "1 new line: 0.1, first tag v0.1.1 on 2026-05-06. Later 0.1 patches are the same line."
+      }
     },
     {
       "slug": "bitcoin-core",
@@ -268,7 +283,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "No loadable plugin API found. doc/multiprocess.md describes IPC for supplemental bitcoin-node and bitcoin-gui binaries, not third-party modules."
+      "plugin_source": "No loadable plugin API found. doc/multiprocess.md describes IPC for supplemental bitcoin-node and bitcoin-gui binaries, not third-party modules.",
+      "release_lines_12m": {
+        "value": 2,
+        "text": "2",
+        "status": "measured",
+        "note": "2 new lines: 31, first tag v31.0 on 2026-04-15; 32, first tag v32.0 on 2026-10-21. Maintenance tags and vN-final markers are not new lines."
+      }
     },
     {
       "slug": "knots-legacy",
@@ -369,7 +390,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found."
+      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found.",
+      "release_lines_12m": {
+        "value": 1,
+        "text": "1",
+        "status": "measured",
+        "note": "1 new line: 29, first tag V29.3.0.20260920 on 2026-09-20."
+      }
     },
     {
       "slug": "bit-block",
@@ -470,7 +497,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found."
+      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found.",
+      "release_lines_12m": {
+        "value": 1,
+        "text": "1",
+        "status": "measured",
+        "note": "1 new line: 3, first tag V3.0 on 2026-09-20. V3.1 is the same line."
+      }
     },
     {
       "slug": "bitcoin-roots",
@@ -571,7 +604,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found."
+      "plugin_source": "Same Core IPC/multiprocess layout (doc/multiprocess.md, src/ipc/). No loadable plugin API found.",
+      "release_lines_12m": {
+        "value": 3,
+        "text": "3",
+        "status": "measured",
+        "note": "3 new lines: 29, first tag v29.3.knots20260507 on 2026-09-08; 30, first tag v30.3-roots.1 on 2026-10-08; 31, first tag v31.1-roots.1 on 2026-10-13."
+      }
     },
     {
       "slug": "bitcoin-rs",
@@ -672,7 +711,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "No plugin or loadable module system found in the tree's docs at 9b8e91ae."
+      "plugin_source": "No plugin or loadable module system found in the tree's docs at 9b8e91ae.",
+      "release_lines_12m": {
+        "value": 0,
+        "text": "0",
+        "status": "measured",
+        "note": "No tags in the window."
+      }
     },
     {
       "slug": "satd",
@@ -773,7 +818,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "No plugin or loadable module system found. In-tree MCP crate and webhooks are APIs, not loadable modules."
+      "plugin_source": "No plugin or loadable module system found. In-tree MCP crate and webhooks are APIs, not loadable modules.",
+      "release_lines_12m": {
+        "value": 7,
+        "text": "7",
+        "status": "measured",
+        "note": "7 new lines: 0.1 through 0.7. First tags v0.1.0 on 2026-05-08, v0.2.0 on 2026-05-27, v0.3.0 on 2026-06-10, v0.4.0 on 2026-07-06, v0.5.0 on 2026-08-25, v0.6.0 on 2026-10-05, v0.7.0 on 2026-10-30."
+      }
     },
     {
       "slug": "libbitcoin",
@@ -874,7 +925,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "README: a toolkit of separately cloned C++ libraries, not a runtime module system in this libbitcoin-system row."
+      "plugin_source": "README: a toolkit of separately cloned C++ libraries, not a runtime module system in this libbitcoin-system row.",
+      "release_lines_12m": {
+        "value": 1,
+        "text": "1",
+        "status": "measured",
+        "note": "1 new line: 4, first tag v4.0.10211 on 2026-10-14. Later 4.0 build tags are the same line."
+      }
     },
     {
       "slug": "hornet",
@@ -975,7 +1032,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "No plugin or loadable module system found in the tree's docs at 151462fa."
+      "plugin_source": "No plugin or loadable module system found in the tree's docs at 151462fa.",
+      "release_lines_12m": {
+        "value": 0,
+        "text": "0",
+        "status": "measured",
+        "note": "No tags in the window."
+      }
     },
     {
       "slug": "floresta",
@@ -1076,7 +1139,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "Compile-time Cargo features only (zmq-server, metrics, tokio-console; default json-rpc enables compact-filters) in bin/florestad/Cargo.toml. No loadable plugin API found."
+      "plugin_source": "Compile-time Cargo features only (zmq-server, metrics, tokio-console; default json-rpc enables compact-filters) in bin/florestad/Cargo.toml. No loadable plugin API found.",
+      "release_lines_12m": {
+        "value": 1,
+        "text": "1",
+        "status": "measured",
+        "note": "1 new line: 0.9, first tag v0.9.0 on 2026-03-31. v0.8.1 continues a line that started before the window. floresta-common-1.0.0 does not start with v and is not a node tag."
+      }
     },
     {
       "slug": "rbitcoin",
@@ -1177,7 +1246,13 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "No plugin or loadable module system found in the tree's docs at ca7bf804."
+      "plugin_source": "No plugin or loadable module system found in the tree's docs at ca7bf804.",
+      "release_lines_12m": {
+        "value": 5,
+        "text": "5",
+        "status": "measured",
+        "note": "5 new lines: 0.5 through 0.9. First tags v0.5.1 on 2026-08-22, v0.6.0 on 2026-09-07, v0.7.0 on 2026-09-18, v0.8.0 on 2026-10-09, v0.9.0 on 2026-11-06."
+      }
     },
     {
       "slug": "btcd",
@@ -1279,7 +1354,16 @@
         "status": "not-found"
       },
       "plugin_source": "database/README.md: designed for different database backends (default ffldb). blockchain/indexers/README.md: two optional in-tree indexers (tx-by-hash, tx-by-address). Not a third-party plugin API. Independently maintained modules: not found.",
-      "plugin_names": ["tx-by-hash indexer", "tx-by-address indexer"]
+      "plugin_names": [
+        "tx-by-hash indexer",
+        "tx-by-address indexer"
+      ],
+      "release_lines_12m": {
+        "value": 2,
+        "text": "2",
+        "status": "measured",
+        "note": "2 new lines: 0.26, first non-candidate tag v0.26.0 on 2026-06-18; 0.27, first tag v0.27.0 on 2026-10-21."
+      }
     }
   ]
 }

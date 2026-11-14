@@ -391,7 +391,8 @@ export default {
                     liveGroup("Stack", [liveFact("Direct deps", r.deps.text)]) +
                     liveGroup("Last 12 months", [
                         liveFact("Authors", metricText(r.metrics, "authors_12m")),
-                        liveFact("Releases", metricText(r.metrics, "releases_12m")),
+                        liveFact("Tagged releases", metricText(r.metrics, "releases_12m")),
+                        liveFact("New release lines", metricText(r.metrics, "release_lines_12m")),
                         liveFact("Fuzz targets", fuzzText)
                     ])) +
                 stabMeter(r.stability) +
