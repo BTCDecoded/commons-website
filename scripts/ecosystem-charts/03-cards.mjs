@@ -298,7 +298,7 @@ export default {
                         notes: m.notes,
                         title: m.title,
                         desc: m.desc,
-                        chart: layered(m.bands, m.nodes, m.edges, { labelWidth: 0, maxNodeW: 156, perRow: 4, narrowPerRow: 2, align: "start" }),
+                        chart: layered(m.bands, m.nodes, m.edges, { labelWidth: 170, maxNodeW: 150, narrowPerRow: 2 }),
                         sources: m.sources,
                         table: m.table
                     });
