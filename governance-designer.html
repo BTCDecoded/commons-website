@@ -370,26 +370,22 @@
           </p>
 
           <!-- Fork Marketplace Tabs -->
-          <div class="fork-tabs">
-            <button class="fork-tab active" data-tab="marketplace">
+          <div class="fork-tabs" role="tablist" aria-label="Governance designer">
+            <button class="fork-tab active" role="tab" id="tab-marketplace" aria-selected="true" aria-controls="marketplace-tab" data-tab="marketplace">
               Browse Forks
             </button>
-            <button class="fork-tab" data-tab="templates">
+            <button class="fork-tab" role="tab" id="tab-templates" aria-selected="false" aria-controls="templates-tab" data-tab="templates">
               Start from Template
             </button>
-            <button class="fork-tab" data-tab="custom">Custom Fork</button>
-            <button class="fork-tab" data-tab="genealogy">
+            <button class="fork-tab" role="tab" id="tab-custom" aria-selected="false" aria-controls="custom-tab" data-tab="custom">Custom Fork</button>
+            <button class="fork-tab" role="tab" id="tab-genealogy" aria-selected="false" aria-controls="genealogy-tab" data-tab="genealogy">
               Fork Genealogy
             </button>
-            <button class="fork-tab" data-tab="compare">Compare Forks</button>
+            <button class="fork-tab" role="tab" id="tab-compare" aria-selected="false" aria-controls="compare-tab" data-tab="compare">Compare Forks</button>
           </div>
-          <ul class="tpl-key quorum-key" aria-label="Signature key">
-            <li><span class="tpl-q" aria-hidden="true"><i class="is-need"></i></span> must sign</li>
-            <li><span class="tpl-q" aria-hidden="true"><i></i></span> another key in the set</li>
-          </ul>
 
           <!-- Fork Marketplace -->
-          <div id="marketplace-tab" class="fork-tab-content active">
+          <div id="marketplace-tab" class="fork-tab-content active" role="tabpanel" aria-labelledby="tab-marketplace">
             <div class="marketplace-header">
               <h3>Governance Fork Marketplace</h3>
               <p>
@@ -429,7 +425,7 @@
           </div>
 
           <!-- Templates Tab -->
-          <div id="templates-tab" class="fork-tab-content">
+          <div id="templates-tab" class="fork-tab-content" role="tabpanel" aria-labelledby="tab-templates">
             <div class="templates-header">
               <h3>Start from a Template</h3>
               <p>
@@ -732,7 +728,7 @@
           </div>
 
           <!-- Custom Fork Tab (existing) -->
-          <div id="custom-tab" class="fork-tab-content">
+          <div id="custom-tab" class="fork-tab-content" role="tabpanel" aria-labelledby="tab-custom">
             <div class="fork-tool-container">
               <div class="fork-tool-header">
                 <h3>Customize Governance Ruleset</h3>
@@ -1393,7 +1389,7 @@
           </div>
 
           <!-- Fork Genealogy Tab -->
-          <div id="genealogy-tab" class="fork-tab-content">
+          <div id="genealogy-tab" class="fork-tab-content" role="tabpanel" aria-labelledby="tab-genealogy">
             <div class="genealogy-header">
               <h3>Fork lineage</h3>
               <p>
@@ -1421,7 +1417,7 @@
           </div>
 
           <!-- Compare Forks Tab -->
-          <div id="compare-tab" class="fork-tab-content">
+          <div id="compare-tab" class="fork-tab-content" role="tabpanel" aria-labelledby="tab-compare">
             <div class="compare-header">
               <h3>Compare Governance Forks</h3>
               <p>
@@ -2406,24 +2402,23 @@
           },
         };
 
+        function showForkTab(name) {
+            document.querySelectorAll(".fork-tab").forEach(function (t) {
+                var on = t.getAttribute("data-tab") === name;
+                t.classList.toggle("active", on);
+                t.setAttribute("aria-selected", on ? "true" : "false");
+            });
+            document.querySelectorAll(".fork-tab-content").forEach(function (content) {
+                content.classList.remove("active");
+            });
+            var panel = document.getElementById(name + "-tab");
+            if (panel) panel.classList.add("active");
+        }
+
         // Tab Switching
         document.querySelectorAll(".fork-tab").forEach((tab) => {
           tab.addEventListener("click", function () {
-            const targetTab = this.getAttribute("data-tab");
-
-            // Update tab buttons
-            document
-              .querySelectorAll(".fork-tab")
-              .forEach((t) => t.classList.remove("active"));
-            this.classList.add("active");
-
-            // Update tab content
-            document
-              .querySelectorAll(".fork-tab-content")
-              .forEach((content) => {
-                content.classList.remove("active");
-              });
-            document.getElementById(targetTab + "-tab").classList.add("active");
+            showForkTab(this.getAttribute("data-tab"));
           });
         });
 
@@ -2433,16 +2428,7 @@
             const template =
               this.closest(".template-card").getAttribute("data-template");
             // Switch to custom tab
-            document
-              .querySelectorAll(".fork-tab")
-              .forEach((t) => t.classList.remove("active"));
-            document
-              .querySelector('.fork-tab[data-tab="custom"]')
-              .classList.add("active");
-            document
-              .querySelectorAll(".fork-tab-content")
-              .forEach((c) => c.classList.remove("active"));
-            document.getElementById("custom-tab").classList.add("active");
+            showForkTab("custom");
 
             // Load template values into form
             loadTemplate(template);
@@ -2977,16 +2963,7 @@
               if (!fork) return;
 
               // Switch to custom tab for all forks
-              document
-                .querySelectorAll(".fork-tab")
-                .forEach((t) => t.classList.remove("active"));
-              document
-                .querySelector('.fork-tab[data-tab="custom"]')
-                .classList.add("active");
-              document
-                .querySelectorAll(".fork-tab-content")
-                .forEach((c) => c.classList.remove("active"));
-              document.getElementById("custom-tab").classList.add("active");
+              showForkTab("custom");
 
               // Load fork into custom form
               loadForkFromRegistry(fork);
