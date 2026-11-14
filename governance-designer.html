@@ -183,6 +183,27 @@
       .rules-read b { font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-secondary); font-weight: 600; }
       .rules-raw { margin-top: 1rem; }
       .rules-raw summary { cursor: pointer; color: var(--text-secondary); }
+      .repo-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; margin: 0 0 1rem; }
+      .repo-actions button, .repo-only {
+        border: 1px solid var(--border-color);
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        border-radius: 999px;
+        padding: 0.25rem 0.7rem;
+        font: inherit;
+        font-size: 0.8rem;
+        cursor: pointer;
+      }
+      .repo-count { color: var(--text-secondary); font-size: 0.85rem; margin-left: auto; }
+      .repo-layer { margin: 0 0 1.1rem; }
+      .repo-layer-head { display: flex; flex-wrap: wrap; gap: 0.4rem 0.7rem; align-items: center; margin: 0 0 0.35rem; }
+      .repo-layer-head label { display: flex; align-items: center; gap: 0.45rem; font-weight: 600; cursor: pointer; }
+      .repo-layer-note { margin: 0 0 0.45rem; color: var(--text-secondary); font-size: 0.85rem; }
+      .repo-layer .repo-selection { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+      .repo-layer .repo-checkbox-label { padding: 0.45rem 0.65rem; }
+      @media (max-width: 640px) {
+        .repo-layer .repo-selection { grid-template-columns: 1fr; }
+      }
       .parameter-group {
         padding: 1.5rem !important;
         background-color: var(--bg-secondary) !important;
@@ -1125,140 +1146,101 @@
                       <span class="section-toggle">▼</span>
                     </h3>
                     <div class="section-content" id="repositories-content">
-                      <p
-                        style="
-                          color: var(--text-secondary);
-                          font-size: 0.9rem;
-                          margin-bottom: 1rem;
-                        "
-                      >
-                        Select which repositories to fork. Multiple repositories
-                        can be selected.
+                      <p class="repo-layer-note">
+                        The layers are the written repository table. All and None
+                        cover the whole list. A layer box covers that layer.
+                        Only keeps that layer and clears the rest. Rules is
+                        governance and blvm-commons, which are not in that table.
                       </p>
-                      <div class="repo-selection">
-                        <label class="repo-checkbox-label">
-                          <input
-                            type="checkbox"
-                            name="fork-repo"
-                            value="blvm-spec"
-                            class="repo-checkbox"
-                            checked
-                          />
-                          <span class="repo-checkbox-text">
-                            <strong>blvm-spec</strong>
-                            <span class="repo-desc"
-                              >Orange Paper - mathematical foundation and
-                              specification</span
-                            >
-                          </span>
-                        </label>
-                        <label class="repo-checkbox-label">
-                          <input
-                            type="checkbox"
-                            name="fork-repo"
-                            value="blvm-consensus"
-                            class="repo-checkbox"
-                            checked
-                          />
-                          <span class="repo-checkbox-text">
-                            <strong>blvm-consensus</strong>
-                            <span class="repo-desc"
-                              >Pure mathematical implementation of consensus
-                              rules</span
-                            >
-                          </span>
-                        </label>
-                        <label class="repo-checkbox-label">
-                          <input
-                            type="checkbox"
-                            name="fork-repo"
-                            value="blvm-protocol"
-                            class="repo-checkbox"
-                            checked
-                          />
-                          <span class="repo-checkbox-text">
-                            <strong>blvm-protocol</strong>
-                            <span class="repo-desc"
-                              >Protocol abstraction layer for Bitcoin
-                              variants</span
-                            >
-                          </span>
-                        </label>
-                        <label class="repo-checkbox-label">
-                          <input
-                            type="checkbox"
-                            name="fork-repo"
-                            value="blvm-node"
-                            class="repo-checkbox"
-                            checked
-                          />
-                          <span class="repo-checkbox-text">
-                            <strong>blvm-node</strong>
-                            <span class="repo-desc"
-                              >Full Bitcoin node library</span
-                            >
-                          </span>
-                        </label>
-                        <label class="repo-checkbox-label">
-                          <input
-                            type="checkbox"
-                            name="fork-repo"
-                            value="blvm"
-                            class="repo-checkbox"
-                            checked
-                          />
-                          <span class="repo-checkbox-text">
-                            <strong>blvm</strong>
-                            <span class="repo-desc"
-                              >Binary wrapper for blvm-node</span
-                            >
-                          </span>
-                        </label>
-                        <label class="repo-checkbox-label">
-                          <input
-                            type="checkbox"
-                            name="fork-repo"
-                            value="blvm-sdk"
-                            class="repo-checkbox"
-                            checked
-                          />
-                          <span class="repo-checkbox-text">
-                            <strong>blvm-sdk</strong>
-                            <span class="repo-desc"
-                              >Developer toolkit and governance primitives</span
-                            >
-                          </span>
-                        </label>
-                        <label class="repo-checkbox-label">
-                          <input
-                            type="checkbox"
-                            name="fork-repo"
-                            value="governance"
-                            class="repo-checkbox"
-                            checked
-                          />
-                          <span class="repo-checkbox-text">
-                            <strong>governance</strong>
-                            <span class="repo-desc"
-                              >Governance configuration and rules</span
-                            >
-                          </span>
-                        </label>
-                        <label class="repo-checkbox-label">
-                          <input
-                            type="checkbox"
-                            name="fork-repo"
-                            value="blvm-commons"
-                            class="repo-checkbox"
-                            checked
-                          />
-                          <span class="repo-checkbox-text">
-                            <strong>blvm-commons</strong>
-                            <span class="repo-desc"
-                              >Governance App.</span
-                            >
-                          </span>
-                        </label>
+                      <div class="repo-actions">
+                        <button type="button" id="repo-all">All</button>
+                        <button type="button" id="repo-none">None</button>
+                        <span class="repo-count" id="repo-count"></span>
+                      </div>
+                      <div class="repo-layer" data-repo-layer="documents">
+                        <div class="repo-layer-head">
+                          <label><input type="checkbox" name="repo-layer" class="repo-checkbox" checked /> Constitutional documents</label>
+                          <span class="tpl-q" title="6 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span>
+                          <span class="visually-hidden">6 of 7</span>
+                          <span class="tpl-wait">180 days, 365-day consensus review</span>
+                          <button type="button" class="repo-only" data-only="documents">Only</button>
+                        </div>
+                        <p class="repo-layer-note">Constitutional documents and mathematical specifications.</p>
+                        <div class="repo-selection"><label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-spec" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-spec</strong></span></label></div>
+                      </div>
+                      <div class="repo-layer" data-repo-layer="proofs">
+                        <div class="repo-layer-head">
+                          <label><input type="checkbox" name="repo-layer" class="repo-checkbox" checked /> Consensus proofs</label>
+                          <span class="tpl-q" title="6 of 7" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span>
+                          <span class="visually-hidden">6 of 7</span>
+                          <span class="tpl-wait">180 days, 365-day consensus review</span>
+                          <button type="button" class="repo-only" data-only="proofs">Only</button>
+                        </div>
+                        <p class="repo-layer-note">Consensus proof implementations and the crates beneath them.</p>
+                        <div class="repo-selection">
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-consensus" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-consensus</strong></span></label>
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-primitives" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-primitives</strong></span></label>
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-secp256k1" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-secp256k1</strong></span></label>
+                        </div>
+                      </div>
+                      <div class="repo-layer" data-repo-layer="protocol">
+                        <div class="repo-layer-head">
+                          <label><input type="checkbox" name="repo-layer" class="repo-checkbox" checked /> Protocol</label>
+                          <span class="tpl-q" title="4 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i></span>
+                          <span class="visually-hidden">4 of 5</span>
+                          <span class="tpl-wait">90 days</span>
+                          <button type="button" class="repo-only" data-only="protocol">Only</button>
+                        </div>
+                        <p class="repo-layer-note">Core protocol implementation.</p>
+                        <div class="repo-selection"><label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-protocol" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-protocol</strong></span></label></div>
+                      </div>
+                      <div class="repo-layer" data-repo-layer="application">
+                        <div class="repo-layer-head">
+                          <label><input type="checkbox" name="repo-layer" class="repo-checkbox" checked /> Application</label>
+                          <span class="tpl-q" title="3 of 5" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i class="is-need"></i><i></i><i></i></span>
+                          <span class="visually-hidden">3 of 5</span>
+                          <span class="tpl-wait">60 days</span>
+                          <button type="button" class="repo-only" data-only="application">Only</button>
+                        </div>
+                        <p class="repo-layer-note">Reference implementation and applications.</p>
+                        <div class="repo-selection">
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-node" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-node</strong></span></label>
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm</strong></span></label>
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-muhash" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-muhash</strong></span></label>
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-spec-lock" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-spec-lock</strong></span></label>
+                        </div>
+                      </div>
+                      <div class="repo-layer" data-repo-layer="extensions">
+                        <div class="repo-layer-head">
+                          <label><input type="checkbox" name="repo-layer" class="repo-checkbox" checked /> Extensions</label>
+                          <span class="tpl-q" title="2 of 3" aria-hidden="true"><i class="is-need"></i><i class="is-need"></i><i></i></span>
+                          <span class="visually-hidden">2 of 3</span>
+                          <span class="tpl-wait">14 days</span>
+                          <button type="button" class="repo-only" data-only="extensions">Only</button>
+                        </div>
+                        <p class="repo-layer-note">Developer tools and extensions.</p>
+                        <div class="repo-selection">
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-sdk" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-sdk</strong></span></label>
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-miniscript" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-miniscript</strong></span></label>
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-marketplace" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-marketplace</strong></span></label>
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-governance" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-governance</strong></span></label>
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-zmq" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-zmq</strong></span></label>
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-index" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-index</strong></span></label>
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-wallet-index" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-wallet-index</strong></span></label>
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-payment" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-payment</strong></span></label>
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-selective-sync" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-selective-sync</strong></span></label>
+                        </div>
+                      </div>
+                      <div class="repo-layer" data-repo-layer="rules">
+                        <div class="repo-layer-head">
+                          <label><input type="checkbox" name="repo-layer" class="repo-checkbox" checked /> Rules</label>
+                          <button type="button" class="repo-only" data-only="rules">Only</button>
+                        </div>
+                        <p class="repo-layer-note">Not a layer in the repository table.</p>
+                        <div class="repo-selection">
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="governance" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>governance</strong></span></label>
+                          <label class="repo-checkbox-label"><input type="checkbox" name="fork-repo" value="blvm-commons" class="repo-checkbox" checked /><span class="repo-checkbox-text"><strong>blvm-commons</strong></span></label>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1678,7 +1660,50 @@
           html += row("Comment", !comment || comment.value === "0" ? "None" : comment.value + " days");
           var gate = document.getElementById("commons-gate");
           html += row("Gate", gate && gate.value === "defaults" ? "Designer's minimums" : "Not used");
+          var repos = ruleset.repositories || [];
+          html += row("Repositories", repos.length ? repos.join(", ") : "None");
           list.innerHTML = html;
+        }
+
+        function repoBoxes() {
+          return Array.prototype.slice.call(document.querySelectorAll('input[name="fork-repo"]'));
+        }
+
+        function selectedRepositories() {
+          return repoBoxes().filter(function (box) { return box.checked; }).map(function (box) { return box.value; });
+        }
+
+        function markRepo(box) {
+          var label = box.closest(".repo-checkbox-label");
+          if (label) label.classList.toggle("checked", box.checked);
+        }
+
+        function syncLayerBoxes() {
+          document.querySelectorAll("[data-repo-layer]").forEach(function (layer) {
+            var boxes = layer.querySelectorAll('input[name="fork-repo"]');
+            var head = layer.querySelector('input[name="repo-layer"]');
+            if (!head) return;
+            var on = 0;
+            boxes.forEach(function (box) { if (box.checked) on += 1; });
+            head.checked = boxes.length > 0 && on === boxes.length;
+            head.indeterminate = on > 0 && on < boxes.length;
+          });
+          var count = document.getElementById("repo-count");
+          if (count) {
+            var all = repoBoxes();
+            var on = all.filter(function (box) { return box.checked; }).length;
+            count.textContent = on + " of " + all.length;
+          }
+        }
+
+        function setRepositoryChecks(want, only) {
+          repoBoxes().forEach(function (box) {
+            if (only) box.checked = !!want[box.value];
+            else if (want[box.value]) box.checked = true;
+            markRepo(box);
+          });
+          syncLayerBoxes();
+          updateRulesetPreview();
         }
 
         // Fork Governance Tool - Updated to Version 2.0 with all dimensions
@@ -1892,6 +1917,8 @@
               },
             },
 
+            repositories: selectedRepositories(),
+
             metadata: {
               exported_by: "thebitcoincommons.org",
               source_repository: "BTCDecoded/governance",
@@ -1965,28 +1992,42 @@
           .querySelectorAll('input[name="fork-repo"]')
           .forEach((checkbox) => {
             checkbox.addEventListener("change", function () {
-              // Update checked class for styling (fallback for browsers without :has())
-              if (this.checked) {
-                this.closest(".repo-checkbox-label").classList.add("checked");
-              } else {
-                this.closest(".repo-checkbox-label").classList.remove(
-                  "checked",
-                );
-              }
+              markRepo(this);
+              syncLayerBoxes();
               updateRulesetPreview();
             });
           });
-
-        // Initialize checked state on page load
-        document.addEventListener("DOMContentLoaded", function () {
-          document
-            .querySelectorAll('input[name="fork-repo"]:checked')
-            .forEach((checkbox) => {
-              checkbox
-                .closest(".repo-checkbox-label")
-                ?.classList.add("checked");
+        document.querySelectorAll('input[name="repo-layer"]').forEach(function (head) {
+          head.addEventListener("change", function () {
+            var layer = this.closest("[data-repo-layer]");
+            layer.querySelectorAll('input[name="fork-repo"]').forEach(function (box) {
+              box.checked = head.checked;
+              markRepo(box);
             });
+            syncLayerBoxes();
+            updateRulesetPreview();
+          });
         });
+        document.querySelectorAll(".repo-only").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var layer = document.querySelector('[data-repo-layer="' + this.getAttribute("data-only") + '"]');
+            var want = {};
+            if (layer) layer.querySelectorAll('input[name="fork-repo"]').forEach(function (box) { want[box.value] = true; });
+            setRepositoryChecks(want, true);
+          });
+        });
+        var repoAll = document.getElementById("repo-all");
+        var repoNone = document.getElementById("repo-none");
+        if (repoAll) repoAll.addEventListener("click", function () {
+          var want = {};
+          repoBoxes().forEach(function (box) { want[box.value] = true; });
+          setRepositoryChecks(want, true);
+        });
+        if (repoNone) repoNone.addEventListener("click", function () {
+          setRepositoryChecks({}, true);
+        });
+        repoBoxes().forEach(markRepo);
+        syncLayerBoxes();
 
         // Initial preview - wait for DOM to be ready
         if (document.readyState === "loading") {
@@ -2099,6 +2140,14 @@
             yaml += `  exported_by: "${ruleset.metadata.exported_by}"\n`;
             yaml += `  source_repository: "${ruleset.metadata.source_repository}"\n`;
             yaml += `  export_tool_version: "${ruleset.metadata.export_tool_version}"\n`;
+            if (!(ruleset.repositories || []).length) {
+              yaml += `\nrepositories: []\n`;
+            } else {
+              yaml += `\nrepositories:\n`;
+              ruleset.repositories.forEach(function (name) {
+                yaml += `  - ${name}\n`;
+              });
+            }
 
             const blob = new Blob([yaml], { type: "text/yaml" });
             const url = URL.createObjectURL(blob);
