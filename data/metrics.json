@@ -157,8 +157,8 @@
         "status": "measured"
       },
       "plugin_own": {
-        "value": 8,
-        "text": "8",
+        "value": 7,
+        "text": "7",
         "status": "measured"
       },
       "plugin_independent": {
@@ -166,8 +166,8 @@
         "text": "not found",
         "status": "not-found"
       },
-      "plugin_source": "docs/MODULE_SYSTEM.md and modules/README.md at blvm-node 36bb40c7e9a3f805274fa7e1bda30d0a6c082560. Official registry https://raw.githubusercontent.com/BTCDecoded/blvm/main/registry/modules.json fetched 2026-11-12 (eight BTCDecoded modules). Independently maintained modules: not found.",
-      "plugin_names": ["blvm-miniscript", "blvm-marketplace", "blvm-governance", "blvm-zmq", "blvm-index", "blvm-wallet-index", "blvm-payment", "blvm-selective-sync"]
+      "plugin_source": "docs/MODULE_SYSTEM.md and modules/README.md at blvm-node 36bb40c7e9a3f805274fa7e1bda30d0a6c082560. Official registry https://raw.githubusercontent.com/BTCDecoded/blvm/main/registry/modules.json at blvm dd014d6, read 2026-11-14 (seven BTCDecoded modules). Independently maintained modules: not found.",
+      "plugin_names": ["blvm-miniscript", "blvm-marketplace", "blvm-governance", "blvm-zmq", "blvm-index", "blvm-payment", "blvm-selective-sync"]
     },
     {
       "slug": "bitcoin-core",

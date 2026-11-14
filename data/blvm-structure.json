@@ -112,13 +112,6 @@
         "cargo": "https://github.com/BTCDecoded/blvm-index/blob/3f4f30c43ff9687bfe540aba95ddd4f7bf9c59f7/Cargo.toml"
       },
       {
-        "id": "blvm-wallet-index",
-        "repo": "blvm-wallet-index",
-        "role": "Address index",
-        "in_default_binary": false,
-        "cargo": "https://github.com/BTCDecoded/blvm-wallet-index/blob/1c888fb0dfd882766ed6b6333a3af8cca984785f/Cargo.toml"
-      },
-      {
         "id": "blvm-payment",
         "repo": "blvm-payment",
         "role": "Payment requests",
@@ -182,13 +175,6 @@
         "default": true,
         "evidence": "blvm-sdk = { version = \">=0.1, <1\", default-features = false, features = [\"node\"] }",
         "source": "https://github.com/BTCDecoded/blvm-index/blob/3f4f30c43ff9687bfe540aba95ddd4f7bf9c59f7/Cargo.toml#L29"
-      },
-      {
-        "from": "blvm-wallet-index",
-        "to": "blvm-sdk",
-        "default": true,
-        "evidence": "blvm-sdk = { version = \">=0.1, <1\", default-features = false, features = [\"node\"] }",
-        "source": "https://github.com/BTCDecoded/blvm-wallet-index/blob/1c888fb0dfd882766ed6b6333a3af8cca984785f/Cargo.toml#L24"
       },
       {
         "from": "blvm-payment",

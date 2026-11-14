@@ -12,7 +12,7 @@ const ORDER = ["layer_5_extension", "layer_4_application", "layer_3_implementati
 const ROWS = {
     layer_5_extension: [
         ["blvm-miniscript", "blvm-marketplace", "blvm-governance", "blvm-zmq"],
-        ["blvm-index", "blvm-wallet-index", "blvm-payment", "blvm-selective-sync"],
+        ["blvm-index", "blvm-payment", "blvm-selective-sync"],
         ["blvm-sdk"]
     ],
     layer_4_application: [["blvm"], ["blvm-node"], ["blvm-muhash", "blvm-spec-lock", "blvm-storage-fence"]],

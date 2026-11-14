@@ -1453,7 +1453,6 @@
           "blvm-governance",
           "blvm-zmq",
           "blvm-index",
-          "blvm-wallet-index",
           "blvm-payment",
           "blvm-selective-sync"
         ],
