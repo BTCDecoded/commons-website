@@ -276,7 +276,7 @@
     {
       "slug": "knots-legacy",
       "headline": "bitcoind links the node and the wallet. Both link bitcoin_common. libbitcoinkernel links leveldb and is not linked by bitcoind.",
-      "caption": "Arrows point from a CMake target to a target it links, read from target_link_libraries. Box names drop a bitcoin_ prefix. A vendored box is a path the line counter already treats as vendored. An arrow a longer path already covers is left off the drawing. The table lists every link. libbitcoinkernel is in the tree and is not linked by bitcoind. This CMake does not link minisketch. Boost is outside the tree, so it is not a box. A shaded dotted outline is a library whose sources differ from Bitcoin Knots v29.3.knots20260507.",
+      "caption": "Arrows point from a CMake target to a target it links, read from target_link_libraries. Box names drop a bitcoin_ prefix. A vendored box is a path the line counter already treats as vendored. An arrow a longer path already covers is left off the drawing. The table lists every link. libbitcoinkernel is in the tree and is not linked by bitcoind. This CMake does not link minisketch. Boost is outside the tree, so it is not a box. A light blue shaded dotted outline is a library whose sources differ from Bitcoin Knots v29.3.knots20260507.",
       "source": "https://github.com/DimiH2025/KnotsLegacy/blob/7936c49b6739640eb71e55eb2b5f720179b9c3b4/src/CMakeLists.txt",
       "source_label": "src/CMakeLists.txt at 7936c49",
       "nodes": {
@@ -561,7 +561,7 @@
     {
       "slug": "bit-block",
       "headline": "bitcoind links the node and the wallet. Both link bitcoin_common. libbitcoinkernel links leveldb and is not linked by bitcoind.",
-      "caption": "Arrows point from a CMake target to a target it links, read from target_link_libraries. Box names drop a bitcoin_ prefix. A vendored box is a path the line counter already treats as vendored. An arrow a longer path already covers is left off the drawing. The table lists every link. libbitcoinkernel is in the tree and is not linked by bitcoind. This CMake does not link minisketch. Boost is outside the tree, so it is not a box. A shaded dotted outline is a library whose sources differ from Bitcoin Knots v29.1.knots20250903.",
+      "caption": "Arrows point from a CMake target to a target it links, read from target_link_libraries. Box names drop a bitcoin_ prefix. A vendored box is a path the line counter already treats as vendored. An arrow a longer path already covers is left off the drawing. The table lists every link. libbitcoinkernel is in the tree and is not linked by bitcoind. This CMake does not link minisketch. Boost is outside the tree, so it is not a box. A light blue shaded dotted outline is a library whose sources differ from Bitcoin Knots v29.1.knots20250903.",
       "source": "https://github.com/DimiH2025/Bit-Block/blob/c52f1161349e6a76463156fea39bce191951b915/src/CMakeLists.txt",
       "source_label": "src/CMakeLists.txt at c52f116",
       "nodes": {
@@ -850,7 +850,7 @@
     {
       "slug": "bitcoin-roots",
       "headline": "bitcoind links the node and the wallet. Both link bitcoin_common. libbitcoinkernel is not linked by bitcoind.",
-      "caption": "Arrows point from a CMake target to a target it links, read from target_link_libraries. Box names drop a bitcoin_ prefix. A vendored box is a path the line counter already treats as vendored. An arrow a longer path already covers is left off the drawing. The table lists every link. libbitcoinkernel is in the tree and is not linked by bitcoind. bitcoin-qt is off in the default build. Boost and SQLite are outside the tree, so they are not boxes. A shaded dotted outline is a library whose sources differ from Bitcoin Core v32.1.",
+      "caption": "Arrows point from a CMake target to a target it links, read from target_link_libraries. Box names drop a bitcoin_ prefix. A vendored box is a path the line counter already treats as vendored. An arrow a longer path already covers is left off the drawing. The table lists every link. libbitcoinkernel is in the tree and is not linked by bitcoind. bitcoin-qt is off in the default build. Boost and SQLite are outside the tree, so they are not boxes. A light blue shaded dotted outline is a library whose sources differ from Bitcoin Core v32.1.",
       "source": "https://github.com/LuganoPlanB/bitcoin-roots/blob/f0393f2688656ba544b40fe508db909152201c18/src/CMakeLists.txt",
       "source_label": "src/CMakeLists.txt at f0393f2",
       "nodes": {
