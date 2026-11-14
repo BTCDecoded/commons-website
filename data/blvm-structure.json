@@ -72,7 +72,7 @@
       {
         "id": "blvm-spec-lock",
         "repo": "blvm-spec-lock",
-        "role": "Proof tooling, off by default",
+        "role": "On by default; not in the binary",
         "in_default_binary": false,
         "cargo": "https://github.com/BTCDecoded/blvm-spec-lock/blob/dbff220efd14daf5d409ebf74e6f467799cd7c8d/Cargo.toml"
       },

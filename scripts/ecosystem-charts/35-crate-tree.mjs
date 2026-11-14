@@ -79,13 +79,13 @@ export function crateModel(ctx) {
         const notes = [];
         if (implied.length) notes.push("Arrows already implied by a longer path are left out of the drawing: " + implied.map(function (e) { return e.from + " also depends on " + e.to + (e["default"] ? "" : " (optional, off)"); }).join("; ") + ". The hidden table lists every edge.");
         notes.push("blvm-storage-fence lives in the blvm-node repository, so it takes that repository&rsquo;s layer.");
-        if (upward.length) notes.push("These dependencies are drawn in a higher layer than the crate that uses them, so the arrow is not drawn. The table lists them: " + upward.map(function (e) { return e.from + " depends on " + e.to + (e["default"] ? "" : " (optional, off)"); }).join("; ") + ".");
+        if (upward.length) notes.push("These dependencies are drawn in a higher layer than the crate that uses them, so the arrow is not drawn. The table lists them: " + upward.map(function (e) { return e.from + " depends on " + e.to + (e.to === "blvm-spec-lock" ? " (not compiled into the binary)" : e["default"] ? "" : " (optional, off)"); }).join("; ") + ".");
         return {
             bands: bands,
             nodes: nodes,
             edges: edges,
             headline: "The default blvm binary is " + linked.length + " BLVM crates. blvm-muhash and blvm-spec-lock are in the application layer (" + app.signatures_required + " of " + app.signatures_total + " signatures, " + app.review_period_days + "-day review). The registry modules are in the extension layer with blvm-sdk, and each depends on blvm-sdk.",
-            caption: "Arrows point from a crate to a crate it depends on, read from each Cargo.toml (node pinned at " + s.crates.node_pin.slice(0, 7) + "). Dashed arrows are optional and off in the default build. Outlined boxes are not linked into the default binary. Each registry module has a solid arrow into blvm-sdk. Protocol and consensus optionally depend on blvm-spec-lock; those arrows are not drawn because spec-lock is in the application layer, above them. Bands are the repository layers in the governance config, with their written signature rule.",
+            caption: "Arrows point from a crate to a crate it depends on, read from each Cargo.toml (node pinned at " + s.crates.node_pin.slice(0, 7) + "). Dashed arrows are optional and off in the default build. Outlined boxes are not linked into the default binary. Each registry module has a solid arrow into blvm-sdk. blvm-spec-lock runs the verification and is on by default. It is not in the node dependency tree and does not compile into the binary, so no arrow is drawn to it. Bands are the repository layers in the governance config, with their written signature rule.",
             measures: "Which governance layer covers each crate and module, and which crate it depends on.",
             takeaway: "blvm-muhash and blvm-spec-lock are in the application layer. Every registry module depends on blvm-sdk and shares the extension layer.",
             title: "BLVM crate dependencies by governance layer",
@@ -97,7 +97,7 @@ export function crateModel(ctx) {
                 columns: ["Crate", "In default binary", "Layer", "Depends on", "Source"],
                 rows: crates.map(function (c) {
                     const l = layerOf[c.repo];
-                    const deps = s.crates.edges.filter(function (e) { return e.from === c.id; }).map(function (e) { return e.to + (e["default"] ? "" : " (optional, off)"); });
+                    const deps = s.crates.edges.filter(function (e) { return e.from === c.id; }).map(function (e) { return e.to + (e.to === "blvm-spec-lock" ? " (not compiled into the binary)" : e["default"] ? "" : " (optional, off)"); });
                     return [c.id, c.in_default_binary ? "yes" : "no", l ? "Layer " + l.n + ", " + l.layer.signatures_required + " of " + l.layer.signatures_total : "No layer listed", deps.join(", ") || "no BLVM crates", c.cargo];
                 })
             }
