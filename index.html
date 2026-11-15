@@ -91,7 +91,7 @@
             <i class="fa-solid fa-xmark" aria-hidden="true"></i>
           </summary>
           <ul class="nav-links">
-            <li><a href="#spec">Specification</a></li>
+            <li><a href="#pipeline">Specification</a></li>
             <li><a href="#implementations">Install</a></li>
             <li><a href="#node">Node</a></li>
             <li><a href="whitepaper.html">White paper</a></li>
@@ -106,7 +106,7 @@
           </ul>
         </details>
         <ul class="nav-links">
-          <li><a href="#spec">Specification</a></li>
+          <li><a href="#pipeline">Specification</a></li>
           <li><a href="#implementations">Install</a></li>
           <li><a href="#node">Node</a></li>
           <li><a href="whitepaper.html">White paper</a></li>
@@ -148,124 +148,6 @@
     </header>
 
     <main id="main-content">
-      <section class="implementations" id="implementations">
-        <div class="implementations-copy">
-          <span class="section-tag">Install</span>
-          <h2 class="implementations-title">Run an implementation of the spec.</h2>
-          <p>
-            Commons is the spec. Implementations ship the binaries.
-            More can join the
-            <a
-              href="https://github.com/BTCDecoded/governance/blob/main/IMPLEMENTATIONS_REGISTRY.md"
-              >registry</a
-            >.
-            <a href="ecosystem.html">The ecosystem page</a> compares them:
-            who governs each one, how far its checks go, and what its code looks like.
-          </p>
-        </div>
-        <div class="implementation-row">
-          <div class="implementation-meta">
-            <div class="implementation-name">
-              BLVM
-              <span id="release-banner-badge" class="implementation-version">v0.1.80</span>
-            </div>
-            <div class="implementation-note">by BTCDecoded</div>
-          </div>
-          <div class="implementation-actions">
-            <a class="btn-primary" href="https://btcdecoded.org/install/"
-              >Install</a
-            >
-            <a class="btn-secondary" href="https://btcdecoded.org">Site</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="spec">
-        <div class="section-header">
-          <span class="section-tag">The stack</span>
-          <div>
-            <h2 class="section-title">
-              Spec, node, white paper, and governance — each one auditable.
-            </h2>
-            <p class="section-body">
-              None of them ask for your trust; all of them expose their work.
-            </p>
-          </div>
-        </div>
-
-        <div class="features">
-          <div class="feature">
-            <h3>Consensus Spec</h3>
-            <p>
-              Numbered Bitcoin consensus rules — what must hold on the network.
-            </p>
-            <a href="spec.html" class="feature-link">Read the register <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
-          </div>
-
-          <div class="feature">
-            <h3>Orange Paper</h3>
-            <p>
-              Formal math and invariants. The document implementations target.
-            </p>
-            <a href="orange-paper.html" class="feature-link">Open the paper <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
-          </div>
-
-          <div class="feature" id="node">
-            <h3>Node</h3>
-            <p>
-              A second Bitcoin full node for the same chain as Core.
-              Compatibility is checked in layers.
-            </p>
-            <a href="https://btcdecoded.org" class="feature-link">Run the node <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
-            <a href="ecosystem.html" class="feature-link">Compare the nodes <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
-          </div>
-
-          <div class="feature" id="whitepaper">
-            <h3>White Paper</h3>
-            <p>
-              Coordination without authority. The design argument for forkable
-              governance.
-            </p>
-            <a href="whitepaper.html" class="feature-link"
-              >Read the paper <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a
-            >
-          </div>
-
-          <div class="feature" id="governance">
-            <h3>Governance</h3>
-            <p>
-              Published rules for who can change what, and how long review
-              lasts. The designer is not a live gate. A weekly count of the
-              programs sits beside that.
-            </p>
-            <a href="governance-designer.html" class="feature-link"
-              >Open the designer <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a
-            >
-            <a href="ecosystem.html" class="feature-link"
-              >Ecosystem <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a
-            >
-          </div>
-
-          <div class="feature">
-            <h3>Compact</h3>
-            <p>
-              Purpose and principles for Commons governance. The written rules.
-            </p>
-            <a href="compact.html" class="feature-link">Read the Compact <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
-          </div>
-        </div>
-
-        <figure class="chart-embed chart-embed--gov-spectrum">
-          <iframe
-            id="gov-spectrum"
-            title="Governance spectrum: centralized to decentralized (Bank, Bitcoin now, Modular, Chaos)"
-            src="node-charts/governance-spectrum-line.html"
-            loading="lazy"
-            height="200"
-          ></iframe>
-        </figure>
-      </section>
-
       <section class="section" id="pipeline">
         <div class="section-header">
           <span class="section-tag">Specification</span>
@@ -314,6 +196,8 @@
               <p>
                 Consensus math and invariants — the document independent
                 implementations target.
+                <a href="orange-paper.html">Open the paper</a>.
+                Its sections are mapped <a href="#spec-viz">in the chart below</a>.
               </p>
             </div>
           </div>
@@ -328,15 +212,18 @@
               </p>
             </div>
           </div>
-          <div class="pipeline-step">
+          <div class="pipeline-step" id="node">
             <div class="pipeline-num">5</div>
             <div class="pipeline-content">
               <div class="pipeline-tag">Testing</div>
               <h3>Layers of check</h3>
               <p>
                 Property tests, fuzzing, golden vectors, and a Core
-                differential.
+                differential. BLVM is a second full node for the same chain
+                as Core, and these checks are layered.
               </p>
+              <a href="https://btcdecoded.org" class="feature-link">Run the node <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+              <a href="ecosystem.html" class="feature-link">Compare the nodes <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
             </div>
           </div>
         </div>
@@ -367,6 +254,99 @@
             loading="lazy"
           ></iframe>
         </div>
+      </section>
+
+      <section class="implementations" id="implementations">
+        <div class="implementations-copy">
+          <span class="section-tag">Install</span>
+          <h2 class="implementations-title">Run an implementation of the spec.</h2>
+          <p>
+            Commons is the spec. Implementations ship the binaries.
+            More can join the
+            <a
+              href="https://github.com/BTCDecoded/governance/blob/main/IMPLEMENTATIONS_REGISTRY.md"
+              >registry</a
+            >.
+            <a href="ecosystem.html">The ecosystem page</a> compares them:
+            who governs each one, how far its checks go, and what its code looks like.
+          </p>
+        </div>
+        <div class="implementation-row">
+          <div class="implementation-meta">
+            <div class="implementation-name">
+              BLVM
+              <span id="release-banner-badge" class="implementation-version">v0.1.80</span>
+            </div>
+            <div class="implementation-note">by BTCDecoded</div>
+          </div>
+          <div class="implementation-actions">
+            <a class="btn-primary" href="https://btcdecoded.org/install/"
+              >Install</a
+            >
+            <a class="btn-secondary" href="https://btcdecoded.org">Site</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="spec">
+        <div class="section-header">
+          <span class="section-tag">The stack</span>
+          <div>
+            <h2 class="section-title">
+              White paper, governance, and the Compact.
+            </h2>
+            <p class="section-body">
+              These are the rules for changing the software. The spec and the
+              node are in the pipeline above.
+            </p>
+          </div>
+        </div>
+
+        <div class="features features-3">
+          <div class="feature" id="whitepaper">
+            <h3>White Paper</h3>
+            <p>
+              Coordination without authority. The design argument for forkable
+              governance.
+            </p>
+            <a href="whitepaper.html" class="feature-link"
+              >Read the paper <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a
+            >
+          </div>
+
+          <div class="feature" id="governance">
+            <h3>Governance</h3>
+            <p>
+              Published rules for who can change what, and how long review
+              lasts. The designer is not a live gate. A weekly count of the
+              programs sits beside that.
+            </p>
+            <a href="governance-designer.html" class="feature-link"
+              >Open the designer <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a
+            >
+            <a href="ecosystem.html" class="feature-link"
+              >Ecosystem <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a
+            >
+          </div>
+
+          <div class="feature">
+            <h3>Compact</h3>
+            <p>
+              Purpose and principles for Commons governance. The written rules.
+            </p>
+            <a href="compact.html" class="feature-link">Read the Compact <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </div>
+        </div>
+
+        <figure class="chart-embed chart-embed--gov-spectrum">
+          <iframe
+            id="gov-spectrum"
+            title="Governance spectrum: centralized to decentralized (Bank, Bitcoin now, Modular, Chaos)"
+            src="node-charts/governance-spectrum-line.html"
+            loading="lazy"
+            height="200"
+          ></iframe>
+        </figure>
       </section>
 
       <div class="philosophy">
