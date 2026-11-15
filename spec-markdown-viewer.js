@@ -709,6 +709,134 @@
         });
     }
 
+    function addHeadingPermalinks(root) {
+        root.querySelectorAll('h2, h3, h4').forEach(function (heading) {
+            if (!heading.id || heading.querySelector('.spec-permalink')) {
+                return;
+            }
+            var link = document.createElement('a');
+            link.className = 'spec-permalink';
+            link.href = '#' + heading.id;
+            link.textContent = '#';
+            link.setAttribute('aria-label', 'Link to this section');
+            link.addEventListener('click', function () {
+                var url = location.origin + location.pathname + location.search + '#' + heading.id;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(url).catch(function () {});
+                }
+            });
+            heading.appendChild(link);
+        });
+    }
+
+    var fnIndexPromise = null;
+
+    function loadFnIndex() {
+        if (!fnIndexPromise) {
+            fnIndexPromise = fetch('fn-index.json', { credentials: 'omit' })
+                .then(function (res) {
+                    return res.ok ? res.json() : null;
+                })
+                .catch(function () {
+                    return null;
+                });
+        }
+        return fnIndexPromise;
+    }
+
+    function linkImplementationPaths(root) {
+        if (fileName !== 'CONSENSUS_SPEC.md') {
+            return;
+        }
+        loadFnIndex().then(function (index) {
+            if (!index || !index.fns || !index.rev) {
+                return;
+            }
+            var base = 'https://github.com/' + (index.repo || 'BTCDecoded/blvm-consensus') + '/blob/' + index.rev + '/';
+            root.querySelectorAll('code').forEach(function (code) {
+                if (code.closest('a')) {
+                    return;
+                }
+                var hit = index.fns[(code.textContent || '').trim()];
+                if (!hit) {
+                    return;
+                }
+                var link = document.createElement('a');
+                link.className = 'spec-fn';
+                link.href = base + hit[0] + '#L' + hit[1];
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                code.parentNode.insertBefore(link, code);
+                link.appendChild(code);
+            });
+        });
+    }
+
+    function citationsFromSpec(markdown, targetFile) {
+        var map = {};
+        var rule = '';
+        var needle = targetFile + '#';
+        markdown.split('\n').forEach(function (line) {
+            var heading = line.match(/^### ([A-Z][A-Z0-9]*-\d+)\s*$/);
+            if (heading) {
+                rule = heading[1];
+                return;
+            }
+            if (!rule || line.indexOf(needle) === -1) {
+                return;
+            }
+            var re = new RegExp(targetFile.replace('.', '\\.') + '#([A-Za-z0-9._-]+)', 'g');
+            var match;
+            while ((match = re.exec(line))) {
+                var id = match[1];
+                var list = map[id] || (map[id] = []);
+                if (!list.some(function (item) { return item.rule === rule; })) {
+                    list.push({ rule: rule, slug: rule.toLowerCase() });
+                }
+            }
+        });
+        return map;
+    }
+
+    function addSpecCitations(root) {
+        if (fileName !== 'PROTOCOL.md' && fileName !== 'ARCHITECTURE.md') {
+            return;
+        }
+        fetch(rawBase + 'CONSENSUS_SPEC.md', { credentials: 'omit' })
+            .then(function (res) {
+                return res.ok ? res.text() : '';
+            })
+            .then(function (markdown) {
+                if (!markdown) {
+                    return;
+                }
+                var map = citationsFromSpec(markdown, fileName);
+                root.querySelectorAll('h2, h3, h4').forEach(function (heading) {
+                    var cites = heading.id && map[heading.id];
+                    if (!cites || !cites.length) {
+                        return;
+                    }
+                    if (heading.nextElementSibling && heading.nextElementSibling.classList.contains('spec-cited-by')) {
+                        return;
+                    }
+                    var note = document.createElement('p');
+                    note.className = 'spec-cited-by';
+                    note.appendChild(document.createTextNode('Cited by '));
+                    cites.forEach(function (cite, index) {
+                        if (index) {
+                            note.appendChild(document.createTextNode(', '));
+                        }
+                        var link = document.createElement('a');
+                        link.href = 'spec.html#' + cite.slug;
+                        link.textContent = cite.rule;
+                        note.appendChild(link);
+                    });
+                    heading.insertAdjacentElement('afterend', note);
+                });
+            })
+            .catch(function () {});
+    }
+
     async function renderMarkdownPayload(markdown, prebuiltHtml) {
         var html = prebuiltHtml || '';
         if (!html) {
@@ -723,6 +851,9 @@
         decorateFormulaBlocks(contentEl);
         decorateReadingCards(contentEl);
         rewriteSpecLinks(contentEl);
+        addHeadingPermalinks(contentEl);
+        linkImplementationPaths(contentEl);
+        addSpecCitations(contentEl);
         requestAnimationFrame(function () {
             requestAnimationFrame(scrollToHash);
         });
