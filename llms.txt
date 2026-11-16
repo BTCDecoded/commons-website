@@ -1,6 +1,6 @@
 # Bitcoin Commons
 
-> Open, mathematically specified Bitcoin infrastructure: the Orange Paper consensus IR, BLVM implementation, and cryptographic governance for transparent development.
+> Open, mathematically specified Bitcoin infrastructure: the Orange Paper consensus IR and the BLVM implementation. Governance is forkable. The designer is not a live merge gate.
 
 Bitcoin Commons publishes the **normative consensus specification** (Orange Paper) separately from the **BLVM** reference implementation (Rust crates, node, SDK). The Orange Paper is implementation-agnostic mathematical notation; **blvm-consensus** implements and validates against it using tests, differential testing against Bitcoin Core, and BLVM Specification Lock (Z3) on annotated functions.
 
