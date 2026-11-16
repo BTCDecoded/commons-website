@@ -226,8 +226,8 @@
           "status": "measured"
         },
         "test_per_implementation": {
-          "value": 1.02,
-          "text": "1.02",
+          "value": 0.93,
+          "text": "0.93",
           "status": "measured"
         },
         "vendored_code": {
@@ -287,8 +287,8 @@
           "status": "not-measured"
         },
         "test_per_implementation": {
-          "value": 0.91,
-          "text": "0.91",
+          "value": 0.83,
+          "text": "0.83",
           "status": "measured"
         },
         "vendored_code": {
@@ -348,8 +348,8 @@
           "status": "not-measured"
         },
         "test_per_implementation": {
-          "value": 0.88,
-          "text": "0.88",
+          "value": 0.81,
+          "text": "0.81",
           "status": "measured"
         },
         "vendored_code": {
@@ -409,8 +409,8 @@
           "status": "not-measured"
         },
         "test_per_implementation": {
-          "value": 1.08,
-          "text": "1.08",
+          "value": 1.0,
+          "text": "1.00",
           "status": "measured"
         },
         "vendored_code": {
@@ -470,8 +470,8 @@
           "status": "measured"
         },
         "test_per_implementation": {
-          "value": 0.78,
-          "text": "0.78",
+          "value": 0.69,
+          "text": "0.69",
           "status": "measured"
         },
         "vendored_code": {
@@ -531,8 +531,8 @@
           "status": "measured"
         },
         "test_per_implementation": {
-          "value": 0.86,
-          "text": "0.86",
+          "value": 0.9,
+          "text": "0.90",
           "status": "measured"
         },
         "vendored_code": {
@@ -592,8 +592,8 @@
           "status": "measured"
         },
         "test_per_implementation": {
-          "value": 0.71,
-          "text": "0.71",
+          "value": 0.35,
+          "text": "0.35",
           "status": "measured"
         },
         "vendored_code": {
@@ -654,8 +654,8 @@
           "status": "no-cut"
         },
         "test_per_implementation": {
-          "value": 0.52,
-          "text": "0.52",
+          "value": 0.51,
+          "text": "0.51",
           "status": "measured"
         },
         "vendored_code": {
