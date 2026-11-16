@@ -1,0 +1,3166 @@
+{
+  "repo": "BTCDecoded/blvm-consensus",
+  "rev": "1ed36c25d260676c623af123d3832e9352a0bbdd",
+  "fns": {
+    "activation::taproot_activation_height": [
+      "src/activation.rs",
+      199
+    ],
+    "activation::taproot_active_at_height": [
+      "src/activation.rs",
+      189
+    ],
+    "bip113::get_median_time_past": [
+      "src/bip113.rs",
+      49
+    ],
+    "bip113::get_median_time_past_reversed": [
+      "src/bip113.rs",
+      88
+    ],
+    "bip119::calculate_template_hash": [
+      "src/bip119.rs",
+      104
+    ],
+    "bip119::extract_template_hash_from_script": [
+      "src/bip119.rs",
+      236
+    ],
+    "bip119::is_ctv_script": [
+      "src/bip119.rs",
+      262
+    ],
+    "bip119::validate_template_hash": [
+      "src/bip119.rs",
+      206
+    ],
+    "bip348::batch_verify_signatures_from_stack": [
+      "src/bip348.rs",
+      453
+    ],
+    "bip348::try_parse_taproot_schnorr_witness_sig": [
+      "src/bip348.rs",
+      563
+    ],
+    "bip348::verify_signature_from_stack": [
+      "src/bip348.rs",
+      352
+    ],
+    "bip348::verify_tapscript_schnorr_signature": [
+      "src/bip348.rs",
+      600
+    ],
+    "bip_validation::bip30_lookup_skippable": [
+      "src/bip_validation.rs",
+      106
+    ],
+    "bip_validation::bip34_magnitude": [
+      "src/bip_validation.rs",
+      222
+    ],
+    "bip_validation::build_bip30_index": [
+      "src/bip_validation.rs",
+      29
+    ],
+    "bip_validation::check_bip147": [
+      "src/bip_validation.rs",
+      682
+    ],
+    "bip_validation::check_bip147_network": [
+      "src/bip_validation.rs",
+      598
+    ],
+    "bip_validation::check_bip30": [
+      "src/bip_validation.rs",
+      133
+    ],
+    "bip_validation::check_bip30_network": [
+      "src/bip_validation.rs",
+      555
+    ],
+    "bip_validation::check_bip34": [
+      "src/bip_validation.rs",
+      198
+    ],
+    "bip_validation::check_bip34_network": [
+      "src/bip_validation.rs",
+      568
+    ],
+    "bip_validation::check_bip54_coinbase": [
+      "src/bip_validation.rs",
+      379
+    ],
+    "bip_validation::check_bip54_sigop_limit": [
+      "src/bip_validation.rs",
+      356
+    ],
+    "bip_validation::check_bip54_timewarp": [
+      "src/bip_validation.rs",
+      318
+    ],
+    "bip_validation::check_bip54_tx_stripped_size": [
+      "src/bip_validation.rs",
+      350
+    ],
+    "bip_validation::check_bip66": [
+      "src/bip_validation.rs",
+      407
+    ],
+    "bip_validation::check_bip66_network": [
+      "src/bip_validation.rs",
+      578
+    ],
+    "bip_validation::check_bip90": [
+      "src/bip_validation.rs",
+      536
+    ],
+    "bip_validation::check_bip90_network": [
+      "src/bip_validation.rs",
+      588
+    ],
+    "bip_validation::encode_bip34_coinbase_script": [
+      "src/bip_validation.rs",
+      243
+    ],
+    "bip_validation::is_bip30_repeat_block": [
+      "src/bip_validation.rs",
+      66
+    ],
+    "bip_validation::is_bip54_active": [
+      "src/bip_validation.rs",
+      312
+    ],
+    "bip_validation::is_bip54_active_at": [
+      "src/bip_validation.rs",
+      287
+    ],
+    "bip_validation::is_known_bip34_block": [
+      "src/bip_validation.rs",
+      90
+    ],
+    "bip_validation::is_known_bip34_header": [
+      "src/bip_validation.rs",
+      76
+    ],
+    "bip_validation::is_null_dummy": [
+      "src/bip_validation.rs",
+      703
+    ],
+    "bip_validation::is_strict_der": [
+      "src/bip_validation.rs",
+      429
+    ],
+    "bip_validation::script_contains_executable_opcode": [
+      "src/bip_validation.rs",
+      619
+    ],
+    "bip_validation::script_has_checkmultisig": [
+      "src/bip_validation.rs",
+      665
+    ],
+    "bip_validation::script_sig_starts_with_height": [
+      "src/bip_validation.rs",
+      268
+    ],
+    "block::a_non_genesis_block_at_height_zero_still_adds_its_coinbase": [
+      "src/block/mod.rs",
+      1651
+    ],
+    "block::apply::apply_transaction": [
+      "src/block/apply.rs",
+      58
+    ],
+    "block::apply::apply_transaction_with_id": [
+      "src/block/apply.rs",
+      76
+    ],
+    "block::apply::calculate_tx_id": [
+      "src/block/apply.rs",
+      341
+    ],
+    "block::apply::take_outputs_for_txid": [
+      "src/block/apply.rs",
+      19
+    ],
+    "block::apply_transaction": [
+      "src/block/apply.rs",
+      58
+    ],
+    "block::block_header_hash": [
+      "src/block/header.rs",
+      104
+    ],
+    "block::block_validation_context_for_connect_ibd": [
+      "src/block/mod.rs",
+      428
+    ],
+    "block::build_time_context": [
+      "src/block/mod.rs",
+      312
+    ],
+    "block::calculate_tx_id": [
+      "src/block/apply.rs",
+      341
+    ],
+    "block::compute_block_tx_ids": [
+      "src/block/mod.rs",
+      514
+    ],
+    "block::compute_block_tx_ids_into": [
+      "src/block/mod.rs",
+      494
+    ],
+    "block::compute_block_tx_ids_spec": [
+      "src/block/mod.rs",
+      479
+    ],
+    "block::compute_block_tx_ids_spec_matches_optimized_paths": [
+      "src/block/mod.rs",
+      522
+    ],
+    "block::connect::arc_empty_witness_rows": [
+      "src/block/connect.rs",
+      53
+    ],
+    "block::connect::assume_valid_skips_signatures": [
+      "src/block/connect.rs",
+      37
+    ],
+    "block::connect::coinbase_script_sig_len": [
+      "src/block/connect.rs",
+      69
+    ],
+    "block::connect::connect_block_inner": [
+      "src/block/connect.rs",
+      3227
+    ],
+    "block::connect::connect_block_inner_with_tx_ids": [
+      "src/block/connect.rs",
+      4198
+    ],
+    "block::connect::enforce_relative_locks": [
+      "src/block/connect.rs",
+      158
+    ],
+    "block::connect::enforce_tx_finality": [
+      "src/block/connect.rs",
+      127
+    ],
+    "block::connect::genesis_utxo_unchanged": [
+      "src/block/connect.rs",
+      81
+    ],
+    "block::connect::invalid_block_result": [
+      "src/block/connect.rs",
+      100
+    ],
+    "block::connect::is_genesis_block": [
+      "src/block/connect.rs",
+      77
+    ],
+    "block::connect::make_fee_overflow_error": [
+      "src/block/connect.rs",
+      60
+    ],
+    "block::connect::parse_perf_cliff_ranges": [
+      "src/block/connect.rs",
+      301
+    ],
+    "block::connect::perf_cliff_default_bands": [
+      "src/block/connect.rs",
+      289
+    ],
+    "block::connect::perf_cliff_sample_height": [
+      "src/block/connect.rs",
+      321
+    ],
+    "block::connect::perf_cliff_stride": [
+      "src/block/connect.rs",
+      345
+    ],
+    "block::connect::try_batch_precompute_sighashes_ibd": [
+      "src/block/connect.rs",
+      400
+    ],
+    "block::connect::try_precompute_p2pkh_hash160": [
+      "src/block/connect.rs",
+      383
+    ],
+    "block::connect::tx_has_relative_lock": [
+      "src/block/connect.rs",
+      266
+    ],
+    "block::connect::use_ecdsa_batch_collect": [
+      "src/block/connect.rs",
+      370
+    ],
+    "block::connect::use_per_sig_schnorr": [
+      "src/block/connect.rs",
+      358
+    ],
+    "block::connect::validate_production_transactions": [
+      "src/block/connect.rs",
+      539
+    ],
+    "block::connect_block": [
+      "src/block/mod.rs",
+      149
+    ],
+    "block::connect_block_ibd": [
+      "src/block/mod.rs",
+      230
+    ],
+    "block::connect_block_ibd_with_undo": [
+      "src/block/mod.rs",
+      268
+    ],
+    "block::connect_block_with_chainwork": [
+      "src/block/mod.rs",
+      180
+    ],
+    "block::every_network_genesis_leaves_the_utxo_set_and_delta_empty": [
+      "src/block/mod.rs",
+      1534
+    ],
+    "block::genesis_block": [
+      "src/block/mod.rs",
+      16
+    ],
+    "block::genesis_coinbase_is_missing_when_spent_at_maturity": [
+      "src/block/mod.rs",
+      1572
+    ],
+    "block::genesis_coinbase_stays_out_of_the_utxo_set": [
+      "src/block/mod.rs",
+      1518
+    ],
+    "block::get_assume_valid_height": [
+      "src/block/mod.rs",
+      108
+    ],
+    "block::header::block_header_hash": [
+      "src/block/header.rs",
+      104
+    ],
+    "block::header::genesis_coinbase": [
+      "src/block/header.rs",
+      117
+    ],
+    "block::header::genesis_header": [
+      "src/block/header.rs",
+      175
+    ],
+    "block::header::genesis_header_hash": [
+      "src/block/header.rs",
+      113
+    ],
+    "block::header::header_for_genesis_coinbase": [
+      "src/block/header.rs",
+      179
+    ],
+    "block::header::validate_block_header": [
+      "src/block/header.rs",
+      66
+    ],
+    "block::header::validate_prev_block_hash": [
+      "src/block/header.rs",
+      206
+    ],
+    "block::script_cache::add_per_tx_script_flags": [
+      "src/block/script_cache.rs",
+      92
+    ],
+    "block::script_cache::block_hash_from_rpc_hex": [
+      "src/block/script_cache.rs",
+      151
+    ],
+    "block::script_cache::calculate_base_script_flags_for_block": [
+      "src/block/script_cache.rs",
+      29
+    ],
+    "block::script_cache::calculate_base_script_flags_for_block_network": [
+      "src/block/script_cache.rs",
+      65
+    ],
+    "block::script_cache::calculate_script_flags_for_block": [
+      "src/block/script_cache.rs",
+      110
+    ],
+    "block::script_cache::calculate_script_flags_for_block_network": [
+      "src/block/script_cache.rs",
+      122
+    ],
+    "block::script_cache::calculate_script_flags_for_block_with_base": [
+      "src/block/script_cache.rs",
+      136
+    ],
+    "block::script_cache::compute_bip143_and_precomp": [
+      "src/block/script_cache.rs",
+      416
+    ],
+    "block::script_cache::get_block_script_flags": [
+      "src/block/script_cache.rs",
+      239
+    ],
+    "block::script_cache::get_block_script_verify_flags_core": [
+      "src/block/script_cache.rs",
+      203
+    ],
+    "block::script_cache::insert_script_exec_cache_for_block": [
+      "src/block/script_cache.rs",
+      259
+    ],
+    "block::script_cache::merge_overlay_changes_to_cache": [
+      "src/block/script_cache.rs",
+      297
+    ],
+    "block::script_cache::script_flag_exceptions_lookup": [
+      "src/block/script_cache.rs",
+      173
+    ],
+    "block::script_cache::tx_has_nonempty_input_witness": [
+      "src/block/script_cache.rs",
+      78
+    ],
+    "block::script_cache::tx_requires_witness_script_flags": [
+      "src/block/script_cache.rs",
+      85
+    ],
+    "block::script_cache::undo_log_from_overlay": [
+      "src/block/script_cache.rs",
+      377
+    ],
+    "block::skip_script_exec_cache": [
+      "src/block/mod.rs",
+      98
+    ],
+    "block::test_apply_transaction_insufficient_funds": [
+      "src/block/mod.rs",
+      1179
+    ],
+    "block::test_apply_transaction_missing_utxo": [
+      "src/block/mod.rs",
+      1221
+    ],
+    "block::test_apply_transaction_multiple_inputs": [
+      "src/block/mod.rs",
+      1385
+    ],
+    "block::test_apply_transaction_multiple_outputs": [
+      "src/block/mod.rs",
+      852
+    ],
+    "block::test_apply_transaction_no_outputs": [
+      "src/block/mod.rs",
+      1447
+    ],
+    "block::test_apply_transaction_regular": [
+      "src/block/mod.rs",
+      810
+    ],
+    "block::test_calculate_tx_id": [
+      "src/block/mod.rs",
+      1039
+    ],
+    "block::test_calculate_tx_id_different_versions": [
+      "src/block/mod.rs",
+      1076
+    ],
+    "block::test_connect_block_coinbase_exceeds_subsidy": [
+      "src/block/mod.rs",
+      760
+    ],
+    "block::test_connect_block_coinbase_exceeds_subsidy_edge": [
+      "src/block/mod.rs",
+      1289
+    ],
+    "block::test_connect_block_empty_transactions": [
+      "src/block/mod.rs",
+      1099
+    ],
+    "block::test_connect_block_first_tx_not_coinbase": [
+      "src/block/mod.rs",
+      710
+    ],
+    "block::test_connect_block_first_tx_not_coinbase_edge": [
+      "src/block/mod.rs",
+      1337
+    ],
+    "block::test_connect_block_invalid_coinbase": [
+      "src/block/mod.rs",
+      1131
+    ],
+    "block::test_connect_block_invalid_header": [
+      "src/block/mod.rs",
+      578
+    ],
+    "block::test_connect_block_no_transactions": [
+      "src/block/mod.rs",
+      679
+    ],
+    "block::test_connect_block_rejects_bits_that_are_not_the_parents": [
+      "src/block/mod.rs",
+      627
+    ],
+    "block::test_is_coinbase_false_multiple_inputs": [
+      "src/block/mod.rs",
+      1005
+    ],
+    "block::test_is_coinbase_false_wrong_hash": [
+      "src/block/mod.rs",
+      957
+    ],
+    "block::test_is_coinbase_false_wrong_index": [
+      "src/block/mod.rs",
+      981
+    ],
+    "block::test_is_coinbase_true": [
+      "src/block/mod.rs",
+      933
+    ],
+    "block::test_validate_block_header_accepts_version_zero": [
+      "src/block/mod.rs",
+      903
+    ],
+    "block::test_validate_block_header_future_timestamp": [
+      "src/block/mod.rs",
+      1250
+    ],
+    "block::test_validate_block_header_invalid_bits": [
+      "src/block/mod.rs",
+      918
+    ],
+    "block::test_validate_block_header_valid": [
+      "src/block/mod.rs",
+      885
+    ],
+    "block::test_validate_block_header_zero_timestamp": [
+      "src/block/mod.rs",
+      1270
+    ],
+    "block::validate_prev_block_hash": [
+      "src/block/header.rs",
+      206
+    ],
+    "checkqueue::condvar_wait_poison_recovery": [
+      "src/checkqueue.rs",
+      25
+    ],
+    "checkqueue::lock_poison_recovery": [
+      "src/checkqueue.rs",
+      21
+    ],
+    "config::get_assume_valid_hash": [
+      "src/config.rs",
+      331
+    ],
+    "config::get_assume_valid_height": [
+      "src/config.rs",
+      316
+    ],
+    "config::get_consensus_config": [
+      "src/config.rs",
+      304
+    ],
+    "config::get_consensus_config_ref": [
+      "src/config.rs",
+      299
+    ],
+    "config::get_n_minimum_chain_work": [
+      "src/config.rs",
+      338
+    ],
+    "config::init_consensus_config": [
+      "src/config.rs",
+      292
+    ],
+    "config::init_rayon_for_script_verification": [
+      "src/config.rs",
+      373
+    ],
+    "config::reset_assume_valid_height": [
+      "src/config.rs",
+      353
+    ],
+    "config::set_assume_valid_height": [
+      "src/config.rs",
+      346
+    ],
+    "config::use_overlay_delta": [
+      "src/config.rs",
+      360
+    ],
+    "ecdsa_batch::accept_collected_ecdsa": [
+      "src/ecdsa_batch.rs",
+      517
+    ],
+    "ecdsa_batch::accept_owned_ecdsa": [
+      "src/ecdsa_batch.rs",
+      536
+    ],
+    "ecdsa_batch::flush_chunk_env": [
+      "src/ecdsa_batch.rs",
+      92
+    ],
+    "ecdsa_batch::is_multisig_trial_index": [
+      "src/ecdsa_batch.rs",
+      50
+    ],
+    "ecdsa_batch::resolve_multisig_list": [
+      "src/ecdsa_batch.rs",
+      459
+    ],
+    "ecdsa_timers::collect_pool": [
+      "src/ecdsa_timers.rs",
+      103
+    ],
+    "ecdsa_timers::collect_threads": [
+      "src/ecdsa_timers.rs",
+      86
+    ],
+    "ecdsa_timers::enabled": [
+      "src/ecdsa_timers.rs",
+      12
+    ],
+    "ecdsa_timers::note_batch_ns": [
+      "src/ecdsa_timers.rs",
+      39
+    ],
+    "ecdsa_timers::note_block_done": [
+      "src/ecdsa_timers.rs",
+      46
+    ],
+    "ecdsa_timers::note_collect_ns": [
+      "src/ecdsa_timers.rs",
+      32
+    ],
+    "ecdsa_timers::reset": [
+      "src/ecdsa_timers.rs",
+      77
+    ],
+    "ecdsa_timers::snapshot": [
+      "src/ecdsa_timers.rs",
+      69
+    ],
+    "ecdsa_wave::flush_batch": [
+      "src/ecdsa_wave.rs",
+      146
+    ],
+    "ecdsa_wave::hub": [
+      "src/ecdsa_wave.rs",
+      84
+    ],
+    "ecdsa_wave::is_enabled": [
+      "src/ecdsa_wave.rs",
+      70
+    ],
+    "ecdsa_wave::park_pending": [
+      "src/ecdsa_wave.rs",
+      59
+    ],
+    "ecdsa_wave::submit": [
+      "src/ecdsa_wave.rs",
+      195
+    ],
+    "ecdsa_wave::take_parked": [
+      "src/ecdsa_wave.rs",
+      66
+    ],
+    "ecdsa_wave::wave_enabled": [
+      "src/ecdsa_wave.rs",
+      16
+    ],
+    "ecdsa_wave::wave_loop": [
+      "src/ecdsa_wave.rs",
+      101
+    ],
+    "ecdsa_wave::wave_max_sigs": [
+      "src/ecdsa_wave.rs",
+      31
+    ],
+    "ecdsa_wave::wave_wait_ms": [
+      "src/ecdsa_wave.rs",
+      42
+    ],
+    "economic::block_subsidy_at_interval": [
+      "src/economic.rs",
+      76
+    ],
+    "economic::calculate_fee": [
+      "src/economic.rs",
+      220
+    ],
+    "economic::check_coinbase_subsidy": [
+      "src/economic.rs",
+      91
+    ],
+    "economic::get_block_subsidy": [
+      "src/economic.rs",
+      22
+    ],
+    "economic::get_block_subsidy_for_network": [
+      "src/economic.rs",
+      64
+    ],
+    "economic::is_coinbase": [
+      "src/economic.rs",
+      289
+    ],
+    "economic::subsidy_halving_interval": [
+      "src/economic.rs",
+      53
+    ],
+    "economic::total_supply": [
+      "src/economic.rs",
+      165
+    ],
+    "economic::validate_supply_limit": [
+      "src/economic.rs",
+      284
+    ],
+    "economic::verify_utxo_supply": [
+      "src/economic.rs",
+      123
+    ],
+    "lib::script_err_as_false": [
+      "src/lib.rs",
+      81
+    ],
+    "locktime::check_bip112": [
+      "src/locktime.rs",
+      71
+    ],
+    "locktime::check_bip65": [
+      "src/locktime.rs",
+      62
+    ],
+    "locktime::decode_locktime_value": [
+      "src/locktime.rs",
+      90
+    ],
+    "locktime::encode_locktime_value": [
+      "src/locktime.rs",
+      114
+    ],
+    "locktime::extract_sequence_locktime_value": [
+      "src/locktime.rs",
+      178
+    ],
+    "locktime::extract_sequence_type_flag": [
+      "src/locktime.rs",
+      165
+    ],
+    "locktime::get_locktime_type": [
+      "src/locktime.rs",
+      31
+    ],
+    "locktime::get_locktime_type_timestamp": [
+      "src/locktime.rs",
+      47
+    ],
+    "locktime::is_sequence_disabled": [
+      "src/locktime.rs",
+      191
+    ],
+    "locktime::locktime_types_match": [
+      "src/locktime.rs",
+      81
+    ],
+    "mempool::accept_to_memory_pool": [
+      "src/mempool.rs",
+      36
+    ],
+    "mempool::calculate_script_flags": [
+      "src/mempool.rs",
+      165
+    ],
+    "mempool::calculate_transaction_size": [
+      "src/mempool.rs",
+      1223
+    ],
+    "mempool::calculate_transaction_size_vbytes": [
+      "src/mempool.rs",
+      1024
+    ],
+    "mempool::calculate_tx_id": [
+      "src/mempool.rs",
+      1216
+    ],
+    "mempool::check_mempool_rules": [
+      "src/mempool.rs",
+      743
+    ],
+    "mempool::creates_new_dependencies": [
+      "src/mempool.rs",
+      1076
+    ],
+    "mempool::has_conflict_with_tx": [
+      "src/mempool.rs",
+      1060
+    ],
+    "mempool::has_conflicts": [
+      "src/mempool.rs",
+      777
+    ],
+    "mempool::incremental_relay_bump": [
+      "src/mempool.rs",
+      1047
+    ],
+    "mempool::incremental_relay_bump_for": [
+      "src/mempool.rs",
+      1052
+    ],
+    "mempool::input_allowed_for_replacement": [
+      "src/mempool.rs",
+      851
+    ],
+    "mempool::is_coinbase": [
+      "src/mempool.rs",
+      1229
+    ],
+    "mempool::is_disabled_policy_opcode": [
+      "src/mempool.rs",
+      1148
+    ],
+    "mempool::is_final_tx": [
+      "src/mempool.rs",
+      912
+    ],
+    "mempool::is_standard_script": [
+      "src/mempool.rs",
+      1177
+    ],
+    "mempool::is_standard_tx": [
+      "src/mempool.rs",
+      257
+    ],
+    "mempool::is_standard_tx_with_config": [
+      "src/mempool.rs",
+      195
+    ],
+    "mempool::mempool_size_limits_exceeded": [
+      "src/mempool.rs",
+      567
+    ],
+    "mempool::relative_lock_unsatisfied": [
+      "src/mempool.rs",
+      954
+    ],
+    "mempool::replacement_checks": [
+      "src/mempool.rs",
+      311
+    ],
+    "mempool::replacement_checks_with_witness": [
+      "src/mempool.rs",
+      323
+    ],
+    "mempool::script_opcode_advance": [
+      "src/mempool.rs",
+      1112
+    ],
+    "mempool::signals_rbf": [
+      "src/mempool.rs",
+      1012
+    ],
+    "mempool::sigop_adjusted_vsize": [
+      "src/mempool.rs",
+      1270
+    ],
+    "mempool::update_mempool_after_block": [
+      "src/mempool.rs",
+      646
+    ],
+    "mempool::update_mempool_after_block_with_lookup": [
+      "src/mempool.rs",
+      689
+    ],
+    "mempool::verify_mempool_scripts": [
+      "src/mempool.rs",
+      788
+    ],
+    "mempool::witnessed_vsize": [
+      "src/mempool.rs",
+      1034
+    ],
+    "mining::align_declared_witnesses": [
+      "src/mining.rs",
+      514
+    ],
+    "mining::append_witness_commitment": [
+      "src/mining.rs",
+      740
+    ],
+    "mining::append_witness_commitment_from_nested": [
+      "src/mining.rs",
+      749
+    ],
+    "mining::calculate_block_hash": [
+      "src/mining.rs",
+      1083
+    ],
+    "mining::calculate_merkle_root": [
+      "src/mining.rs",
+      801
+    ],
+    "mining::calculate_merkle_root_from_tx_ids": [
+      "src/mining.rs",
+      931
+    ],
+    "mining::calculate_tx_hash": [
+      "src/mining.rs",
+      1056
+    ],
+    "mining::check_template_weight": [
+      "src/mining.rs",
+      607
+    ],
+    "mining::compute_merkle_root_and_mutated": [
+      "src/mining.rs",
+      946
+    ],
+    "mining::create_block_template": [
+      "src/mining.rs",
+      318
+    ],
+    "mining::create_block_template_declared": [
+      "src/mining.rs",
+      568
+    ],
+    "mining::create_block_template_with_outputs": [
+      "src/mining.rs",
+      434
+    ],
+    "mining::create_coinbase_transaction": [
+      "src/mining.rs",
+      386
+    ],
+    "mining::create_coinbase_with_outputs": [
+      "src/mining.rs",
+      397
+    ],
+    "mining::create_new_block": [
+      "src/mining.rs",
+      86
+    ],
+    "mining::create_new_block_with_time": [
+      "src/mining.rs",
+      117
+    ],
+    "mining::declared_tx_spends_witness_utxo": [
+      "src/mining.rs",
+      504
+    ],
+    "mining::double_sha256_hash": [
+      "src/mining.rs",
+      1100
+    ],
+    "mining::encode_varint": [
+      "src/mining.rs",
+      1064
+    ],
+    "mining::fit_payouts_to_reward": [
+      "src/mining.rs",
+      710
+    ],
+    "mining::get_current_timestamp": [
+      "src/mining.rs",
+      1106
+    ],
+    "mining::merkle_tree_from_hashes": [
+      "src/mining.rs",
+      961
+    ],
+    "mining::mine_block": [
+      "src/mining.rs",
+      288
+    ],
+    "mining::nested_witnesses_for_selected": [
+      "src/mining.rs",
+      629
+    ],
+    "mining::resolve_declared_txs": [
+      "src/mining.rs",
+      475
+    ],
+    "mining::selected_tx_fee": [
+      "src/mining.rs",
+      678
+    ],
+    "mining::serialize_tx_for_hash": [
+      "src/mining.rs",
+      1001
+    ],
+    "mining::sha256_hash": [
+      "src/mining.rs",
+      1093
+    ],
+    "mining::sum_selected_fees": [
+      "src/mining.rs",
+      664
+    ],
+    "mining::template_bits": [
+      "src/mining.rs",
+      20
+    ],
+    "mining::template_block_version": [
+      "src/mining.rs",
+      64
+    ],
+    "orange_paper_property_helpers::expected_verifyconsensuscommitment_from_orange_paper": [
+      "src/orange_paper_property_helpers.rs",
+      14
+    ],
+    "orange_paper_property_helpers::expected_verifyconsensuscommitment_from_orange_paper_impl": [
+      "src/orange_paper_property_helpers.rs",
+      35
+    ],
+    "pow::batch_check_proof_of_work": [
+      "src/pow.rs",
+      422
+    ],
+    "pow::check_proof_of_work": [
+      "src/pow.rs",
+      374
+    ],
+    "pow::compress_target": [
+      "src/pow.rs",
+      1091
+    ],
+    "pow::difficulty_from_bits": [
+      "src/pow.rs",
+      940
+    ],
+    "pow::expand_target": [
+      "src/pow.rs",
+      988
+    ],
+    "pow::get_block_proof": [
+      "src/pow.rs",
+      1048
+    ],
+    "pow::get_next_work_required": [
+      "src/pow.rs",
+      35
+    ],
+    "pow::get_next_work_required_corrected": [
+      "src/pow.rs",
+      53
+    ],
+    "pow::get_next_work_required_internal": [
+      "src/pow.rs",
+      64
+    ],
+    "pow::meet_regtest_proof_of_work": [
+      "src/pow.rs",
+      400
+    ],
+    "pow::next_required_bits": [
+      "src/pow.rs",
+      264
+    ],
+    "pow::pow_params": [
+      "src/pow.rs",
+      200
+    ],
+    "pow::proof_hash_meets_target": [
+      "src/pow.rs",
+      384
+    ],
+    "pow::retarget_bits": [
+      "src/pow.rs",
+      332
+    ],
+    "pow::serialize_header": [
+      "src/pow.rs",
+      1152
+    ],
+    "pow::u256_from_bytes": [
+      "src/pow.rs",
+      1168
+    ],
+    "profile_log::sender": [
+      "src/profile_log.rs",
+      19
+    ],
+    "reorganization::calculate_block_hash": [
+      "src/reorganization.rs",
+      801
+    ],
+    "reorganization::calculate_chain_work": [
+      "src/reorganization.rs",
+      771
+    ],
+    "reorganization::calculate_tx_id": [
+      "src/reorganization.rs",
+      791
+    ],
+    "reorganization::common_ancestor_height_at_reorg": [
+      "src/reorganization.rs",
+      596
+    ],
+    "reorganization::disconnect_block": [
+      "src/reorganization.rs",
+      657
+    ],
+    "reorganization::find_common_ancestor": [
+      "src/reorganization.rs",
+      609
+    ],
+    "reorganization::readd_disconnected_to_mempool": [
+      "src/reorganization.rs",
+      519
+    ],
+    "reorganization::reorganize_chain": [
+      "src/reorganization.rs",
+      21
+    ],
+    "reorganization::reorganize_chain_with_witnesses": [
+      "src/reorganization.rs",
+      115
+    ],
+    "reorganization::should_reorganize": [
+      "src/reorganization.rs",
+      751
+    ],
+    "reorganization::undo_log_from_connected_block": [
+      "src/reorganization.rs",
+      700
+    ],
+    "reorganization::update_mempool_after_reorg": [
+      "src/reorganization.rs",
+      424
+    ],
+    "reorganization::update_mempool_after_reorg_simple": [
+      "src/reorganization.rs",
+      568
+    ],
+    "reorganization::update_mempool_after_reorg_with_readd": [
+      "src/reorganization.rs",
+      496
+    ],
+    "reorganization::work_for_bits": [
+      "src/reorganization.rs",
+      759
+    ],
+    "script::apply_data_push": [
+      "src/script/mod.rs",
+      535
+    ],
+    "script::apply_p2sh_redeem": [
+      "src/script/mod.rs",
+      806
+    ],
+    "script::arithmetic::op_add": [
+      "src/script/arithmetic.rs",
+      9
+    ],
+    "script::arithmetic::op_booland": [
+      "src/script/arithmetic.rs",
+      64
+    ],
+    "script::arithmetic::op_boolor": [
+      "src/script/arithmetic.rs",
+      76
+    ],
+    "script::arithmetic::op_div_disabled": [
+      "src/script/arithmetic.rs",
+      36
+    ],
+    "script::arithmetic::op_greaterthan": [
+      "src/script/arithmetic.rs",
+      139
+    ],
+    "script::arithmetic::op_greaterthanorequal": [
+      "src/script/arithmetic.rs",
+      167
+    ],
+    "script::arithmetic::op_lessthan": [
+      "src/script/arithmetic.rs",
+      125
+    ],
+    "script::arithmetic::op_lessthanorequal": [
+      "src/script/arithmetic.rs",
+      153
+    ],
+    "script::arithmetic::op_lshift_disabled": [
+      "src/script/arithmetic.rs",
+      50
+    ],
+    "script::arithmetic::op_max": [
+      "src/script/arithmetic.rs",
+      193
+    ],
+    "script::arithmetic::op_min": [
+      "src/script/arithmetic.rs",
+      181
+    ],
+    "script::arithmetic::op_mod_disabled": [
+      "src/script/arithmetic.rs",
+      43
+    ],
+    "script::arithmetic::op_mul_disabled": [
+      "src/script/arithmetic.rs",
+      29
+    ],
+    "script::arithmetic::op_numequal": [
+      "src/script/arithmetic.rs",
+      88
+    ],
+    "script::arithmetic::op_numequalverify": [
+      "src/script/arithmetic.rs",
+      102
+    ],
+    "script::arithmetic::op_numnotequal": [
+      "src/script/arithmetic.rs",
+      111
+    ],
+    "script::arithmetic::op_rshift_disabled": [
+      "src/script/arithmetic.rs",
+      57
+    ],
+    "script::arithmetic::op_sub": [
+      "src/script/arithmetic.rs",
+      19
+    ],
+    "script::arithmetic::op_within": [
+      "src/script/arithmetic.rs",
+      205
+    ],
+    "script::bip143_p2wpkh_script_code": [
+      "src/script/mod.rs",
+      96
+    ],
+    "script::canonical_p2pk_pubkey": [
+      "src/script/mod.rs",
+      1039
+    ],
+    "script::charge_checkmultisig_pubkeys": [
+      "src/script/mod.rs",
+      65
+    ],
+    "script::checkmultisig_window": [
+      "src/script/mod.rs",
+      6344
+    ],
+    "script::clear_all_caches": [
+      "src/script/mod.rs",
+      8145
+    ],
+    "script::clear_hash_cache": [
+      "src/script/mod.rs",
+      8128
+    ],
+    "script::clear_script_cache": [
+      "src/script/mod.rs",
+      8107
+    ],
+    "script::clear_stack_pool": [
+      "src/script/mod.rs",
+      8164
+    ],
+    "script::compute_script_cache_key": [
+      "src/script/mod.rs",
+      274
+    ],
+    "script::control_flow::in_false_branch": [
+      "src/script/control_flow.rs",
+      14
+    ],
+    "script::control_flow::is_minimal_if_condition": [
+      "src/script/control_flow.rs",
+      26
+    ],
+    "script::crypto_ops::cache_key_from_first_sha": [
+      "src/script/crypto_ops.rs",
+      79
+    ],
+    "script::crypto_ops::clear_hash_cache": [
+      "src/script/crypto_ops.rs",
+      27
+    ],
+    "script::crypto_ops::is_hash_caching_disabled": [
+      "src/script/crypto_ops.rs",
+      21
+    ],
+    "script::crypto_ops::op_checksig_simple": [
+      "src/script/crypto_ops.rs",
+      203
+    ],
+    "script::crypto_ops::op_checksigverify_simple": [
+      "src/script/crypto_ops.rs",
+      258
+    ],
+    "script::crypto_ops::op_hash160": [
+      "src/script/crypto_ops.rs",
+      122
+    ],
+    "script::crypto_ops::op_hash256": [
+      "src/script/crypto_ops.rs",
+      164
+    ],
+    "script::crypto_ops::op_ripemd160": [
+      "src/script/crypto_ops.rs",
+      87
+    ],
+    "script::crypto_ops::op_sha1": [
+      "src/script/crypto_ops.rs",
+      98
+    ],
+    "script::crypto_ops::op_sha256": [
+      "src/script/crypto_ops.rs",
+      109
+    ],
+    "script::crypto_ops::with_hash_cache": [
+      "src/script/crypto_ops.rs",
+      69
+    ],
+    "script::dead_branch_opcode_error": [
+      "src/script/mod.rs",
+      384
+    ],
+    "script::disable_caching": [
+      "src/script/mod.rs",
+      251
+    ],
+    "script::disable_fast_paths": [
+      "src/script/mod.rs",
+      257
+    ],
+    "script::eval_checksig_ecdsa": [
+      "src/script/mod.rs",
+      6961
+    ],
+    "script::eval_checksig_tapscript": [
+      "src/script/mod.rs",
+      6874
+    ],
+    "script::eval_script": [
+      "src/script/mod.rs",
+      328
+    ],
+    "script::eval_script_impl": [
+      "src/script/mod.rs",
+      349
+    ],
+    "script::eval_script_inner": [
+      "src/script/mod.rs",
+      605
+    ],
+    "script::eval_script_with_context_full": [
+      "src/script/mod.rs",
+      4420
+    ],
+    "script::eval_script_with_context_full_inner": [
+      "src/script/mod.rs",
+      4474
+    ],
+    "script::execute_opcode": [
+      "src/script/mod.rs",
+      5290
+    ],
+    "script::execute_opcode_cold": [
+      "src/script/mod.rs",
+      8061
+    ],
+    "script::execute_opcode_with_context_full": [
+      "src/script/mod.rs",
+      7072
+    ],
+    "script::failed_multisig_nullfail": [
+      "src/script/mod.rs",
+      1555
+    ],
+    "script::fast_paths_disabled": [
+      "src/script/mod.rs",
+      268
+    ],
+    "script::find_and_delete": [
+      "src/script/mod.rs",
+      6799
+    ],
+    "script::finish_p2wpkh_ecdsa": [
+      "src/script/mod.rs",
+      2326
+    ],
+    "script::get_and_reset_fast_path_counts": [
+      "src/script/mod.rs",
+      8080
+    ],
+    "script::get_pooled_stack": [
+      "src/script/mod.rs",
+      183
+    ],
+    "script::get_script_cache": [
+      "src/script/mod.rs",
+      160
+    ],
+    "script::is_caching_disabled": [
+      "src/script/mod.rs",
+      263
+    ],
+    "script::is_op_success": [
+      "src/script/mod.rs",
+      367
+    ],
+    "script::is_push_opcode": [
+      "src/script/mod.rs",
+      360
+    ],
+    "script::make_operation_limit_error": [
+      "src/script/mod.rs",
+      52
+    ],
+    "script::make_stack_overflow_error": [
+      "src/script/mod.rs",
+      88
+    ],
+    "script::multisig_script_code": [
+      "src/script/mod.rs",
+      6765
+    ],
+    "script::op_advance": [
+      "src/script/mod.rs",
+      409
+    ],
+    "script::opcode_position_at_byte": [
+      "src/script/mod.rs",
+      6844
+    ],
+    "script::p2sh_push_only_check": [
+      "src/script/mod.rs",
+      6246
+    ],
+    "script::parse_borrowed_pushes": [
+      "src/script/mod.rs",
+      6312
+    ],
+    "script::parse_one_data_push": [
+      "src/script/mod.rs",
+      6196
+    ],
+    "script::parse_p2pk_script_sig": [
+      "src/script/mod.rs",
+      6187
+    ],
+    "script::parse_p2pkh_script_sig": [
+      "src/script/mod.rs",
+      6170
+    ],
+    "script::parse_p2sh_p2pk_pushes": [
+      "src/script/mod.rs",
+      6135
+    ],
+    "script::parse_p2sh_p2pkh_for_precompute": [
+      "src/script/mod.rs",
+      6161
+    ],
+    "script::parse_p2sh_p2pkh_pushes": [
+      "src/script/mod.rs",
+      6098
+    ],
+    "script::parse_redeem_multisig": [
+      "src/script/mod.rs",
+      6370
+    ],
+    "script::parse_script_sig_push_only": [
+      "src/script/mod.rs",
+      6267
+    ],
+    "script::parse_taproot_keypath_sig": [
+      "src/script/mod.rs",
+      3241
+    ],
+    "script::pop_if_condition": [
+      "src/script/mod.rs",
+      512
+    ],
+    "script::pop_nocheck_multisig": [
+      "src/script/mod.rs",
+      5252
+    ],
+    "script::push_encoding_is_minimal": [
+      "src/script/mod.rs",
+      484
+    ],
+    "script::redeem_push_is_canonical": [
+      "src/script/mod.rs",
+      6689
+    ],
+    "script::reset_benchmarking_state": [
+      "src/script/mod.rs",
+      8185
+    ],
+    "script::return_pooled_stack": [
+      "src/script/mod.rs",
+      210
+    ],
+    "script::script_bool_bytes": [
+      "src/script/mod.rs",
+      83
+    ],
+    "script::script_get_op_advance": [
+      "src/script/mod.rs",
+      6737
+    ],
+    "script::script_num_decode": [
+      "src/script/mod.rs",
+      5052
+    ],
+    "script::script_num_encode": [
+      "src/script/mod.rs",
+      5163
+    ],
+    "script::script_num_from_opcode": [
+      "src/script/mod.rs",
+      6662
+    ],
+    "script::script_num_is_minimally_encoded": [
+      "src/script/mod.rs",
+      5035
+    ],
+    "script::serialize_push_data": [
+      "src/script/mod.rs",
+      6699
+    ],
+    "script::signature::batch_verify_signatures": [
+      "src/script/signature.rs",
+      247
+    ],
+    "script::signature::new_secp": [
+      "src/script/signature.rs",
+      30
+    ],
+    "script::signature::reject_strictenc": [
+      "src/script/signature.rs",
+      57
+    ],
+    "script::signature::reject_strictenc_pubkey": [
+      "src/script/signature.rs",
+      72
+    ],
+    "script::signature::reject_strictenc_signature": [
+      "src/script/signature.rs",
+      90
+    ],
+    "script::signature::verify_pre_extracted_ecdsa": [
+      "src/script/signature.rs",
+      224
+    ],
+    "script::signature::verify_signature": [
+      "src/script/signature.rs",
+      116
+    ],
+    "script::signature::with_secp_context": [
+      "src/script/signature.rs",
+      48
+    ],
+    "script::single_data_push": [
+      "src/script/mod.rs",
+      2469
+    ],
+    "script::stack::cast_to_bool": [
+      "src/script/stack.rs",
+      35
+    ],
+    "script::stack::to_stack_element": [
+      "src/script/stack.rs",
+      22
+    ],
+    "script::strictenc_nocheck_multisig": [
+      "src/script/mod.rs",
+      5216
+    ],
+    "script::take_fast_path_unexec_if": [
+      "src/script/mod.rs",
+      8096
+    ],
+    "script::tapscript_opcode_end": [
+      "src/script/mod.rs",
+      451
+    ],
+    "script::templates::find_single_unexec_if": [
+      "src/script/templates.rs",
+      133
+    ],
+    "script::templates::has_op_success": [
+      "src/script/templates.rs",
+      101
+    ],
+    "script::templates::looks_compressed_pubkey": [
+      "src/script/templates.rs",
+      286
+    ],
+    "script::templates::match_tap_checksig_remainder": [
+      "src/script/templates.rs",
+      176
+    ],
+    "script::templates::parse_bare_multisig_keys": [
+      "src/script/templates.rs",
+      290
+    ],
+    "script::templates::push_payload_after_op_return": [
+      "src/script/templates.rs",
+      232
+    ],
+    "script::templates::scan": [
+      "src/script/templates.rs",
+      46
+    ],
+    "script::templates::scan_data_like_ms": [
+      "src/script/templates.rs",
+      270
+    ],
+    "script::templates::scan_nulldata": [
+      "src/script/templates.rs",
+      200
+    ],
+    "script::templates::scan_tx": [
+      "src/script/templates.rs",
+      83
+    ],
+    "script::templates::scan_unexec_if": [
+      "src/script/templates.rs",
+      119
+    ],
+    "script::templates::scan_witness": [
+      "src/script/templates.rs",
+      63
+    ],
+    "script::templates::tap_checksig_leaf": [
+      "src/script/templates.rs",
+      191
+    ],
+    "script::templates::try_verify_p2tr_unexec_if_fast_path": [
+      "src/script/templates.rs",
+      335
+    ],
+    "script::try_collect_witness_ecdsa": [
+      "src/script/mod.rs",
+      2674
+    ],
+    "script::try_verify_bare_multisig_fast_path": [
+      "src/script/mod.rs",
+      1810
+    ],
+    "script::try_verify_p2pk_fast_path": [
+      "src/script/mod.rs",
+      1059
+    ],
+    "script::try_verify_p2pkh_fast_path": [
+      "src/script/mod.rs",
+      1126
+    ],
+    "script::try_verify_p2sh_fast_path": [
+      "src/script/mod.rs",
+      2096
+    ],
+    "script::try_verify_p2sh_multisig_fast_path": [
+      "src/script/mod.rs",
+      1569
+    ],
+    "script::try_verify_p2sh_multisig_ibd": [
+      "src/script/mod.rs",
+      1779
+    ],
+    "script::try_verify_p2tr_keypath_fast_path": [
+      "src/script/mod.rs",
+      3300
+    ],
+    "script::try_verify_p2tr_scriptpath_p2pk_fast_path": [
+      "src/script/mod.rs",
+      3171
+    ],
+    "script::try_verify_p2wpkh_fast_path": [
+      "src/script/mod.rs",
+      2555
+    ],
+    "script::try_verify_p2wpkh_in_p2sh_fast_path": [
+      "src/script/mod.rs",
+      2609
+    ],
+    "script::try_verify_p2wsh_fast_path": [
+      "src/script/mod.rs",
+      2802
+    ],
+    "script::try_verify_p2wsh_in_p2sh_fast_path": [
+      "src/script/mod.rs",
+      2728
+    ],
+    "script::upgradable_nop": [
+      "src/script/mod.rs",
+      5203
+    ],
+    "script::verify_p2pk_inline": [
+      "src/script/mod.rs",
+      1473
+    ],
+    "script::verify_p2pkh_inline": [
+      "src/script/mod.rs",
+      1307
+    ],
+    "script::verify_p2pkh_inline_parsed": [
+      "src/script/mod.rs",
+      1346
+    ],
+    "script::verify_p2sh_p2pk_redeem": [
+      "src/script/mod.rs",
+      2041
+    ],
+    "script::verify_p2sh_p2pkh_redeem": [
+      "src/script/mod.rs",
+      1917
+    ],
+    "script::verify_p2tr_keypath_witness": [
+      "src/script/mod.rs",
+      3265
+    ],
+    "script::verify_p2wpkh_in_p2sh_inline": [
+      "src/script/mod.rs",
+      2481
+    ],
+    "script::verify_p2wpkh_inline": [
+      "src/script/mod.rs",
+      2399
+    ],
+    "script::verify_script": [
+      "src/script/mod.rs",
+      845
+    ],
+    "script::verify_script_with_context": [
+      "src/script/mod.rs",
+      992
+    ],
+    "script::verify_script_with_context_full": [
+      "src/script/mod.rs",
+      3342
+    ],
+    "script::with_push_pattern": [
+      "src/script/mod.rs",
+      6723
+    ],
+    "script_exec_cache::cache_requested": [
+      "src/script_exec_cache.rs",
+      19
+    ],
+    "script_exec_cache::compute_key": [
+      "src/script_exec_cache.rs",
+      42
+    ],
+    "script_exec_cache::contains": [
+      "src/script_exec_cache.rs",
+      60
+    ],
+    "script_exec_cache::enabled": [
+      "src/script_exec_cache.rs",
+      26
+    ],
+    "script_exec_cache::get_cache": [
+      "src/script_exec_cache.rs",
+      30
+    ],
+    "script_exec_cache::insert": [
+      "src/script_exec_cache.rs",
+      70
+    ],
+    "script_profile::add": [
+      "src/script_profile.rs",
+      69
+    ],
+    "script_profile::add_batch_cache_write_ns": [
+      "src/script_profile.rs",
+      185
+    ],
+    "script_profile::add_batch_secp_verify_ns": [
+      "src/script_profile.rs",
+      180
+    ],
+    "script_profile::add_batch_soa_extract_ns": [
+      "src/script_profile.rs",
+      175
+    ],
+    "script_profile::add_checkmultisig_ecdsa_ns": [
+      "src/script_profile.rs",
+      95
+    ],
+    "script_profile::add_collect_chunk_ns": [
+      "src/script_profile.rs",
+      130
+    ],
+    "script_profile::add_collect_copy_ns": [
+      "src/script_profile.rs",
+      125
+    ],
+    "script_profile::add_collect_shard_lock_ns": [
+      "src/script_profile.rs",
+      120
+    ],
+    "script_profile::add_collect_slot_ns": [
+      "src/script_profile.rs",
+      115
+    ],
+    "script_profile::add_ecdsa_cache_hit": [
+      "src/script_profile.rs",
+      190
+    ],
+    "script_profile::add_ecdsa_cache_miss": [
+      "src/script_profile.rs",
+      195
+    ],
+    "script_profile::add_interpreter_ns": [
+      "src/script_profile.rs",
+      84
+    ],
+    "script_profile::add_multisig_ns": [
+      "src/script_profile.rs",
+      90
+    ],
+    "script_profile::add_p2pkh_bip66_ns": [
+      "src/script_profile.rs",
+      165
+    ],
+    "script_profile::add_p2pkh_collect_ns": [
+      "src/script_profile.rs",
+      110
+    ],
+    "script_profile::add_p2pkh_fast_path_entry_ns": [
+      "src/script_profile.rs",
+      160
+    ],
+    "script_profile::add_p2pkh_hash160_ns": [
+      "src/script_profile.rs",
+      105
+    ],
+    "script_profile::add_p2pkh_parse_ns": [
+      "src/script_profile.rs",
+      100
+    ],
+    "script_profile::add_p2pkh_secp_context_ns": [
+      "src/script_profile.rs",
+      170
+    ],
+    "script_profile::add_sighash_ns": [
+      "src/script_profile.rs",
+      79
+    ],
+    "script_profile::add_worker_p2pkh_map_ns": [
+      "src/script_profile.rs",
+      135
+    ],
+    "script_profile::add_worker_refs_lock_ns": [
+      "src/script_profile.rs",
+      145
+    ],
+    "script_profile::add_worker_refs_ns": [
+      "src/script_profile.rs",
+      140
+    ],
+    "script_profile::add_worker_results_extend_ns": [
+      "src/script_profile.rs",
+      155
+    ],
+    "script_profile::add_worker_run_check_loop_ns": [
+      "src/script_profile.rs",
+      150
+    ],
+    "script_profile::get_and_reset_arm_stats": [
+      "src/script_profile.rs",
+      334
+    ],
+    "script_profile::get_and_reset_batch_phase_timing": [
+      "src/script_profile.rs",
+      325
+    ],
+    "script_profile::get_and_reset_collect_timing": [
+      "src/script_profile.rs",
+      306
+    ],
+    "script_profile::get_and_reset_ecdsa_cache_stats": [
+      "src/script_profile.rs",
+      283
+    ],
+    "script_profile::get_and_reset_fallback_shape_stats": [
+      "src/script_profile.rs",
+      270
+    ],
+    "script_profile::get_and_reset_p2pkh_timing": [
+      "src/script_profile.rs",
+      295
+    ],
+    "script_profile::get_and_reset_script_sub_timing": [
+      "src/script_profile.rs",
+      287
+    ],
+    "script_profile::get_and_reset_worker_timing": [
+      "src/script_profile.rs",
+      315
+    ],
+    "script_profile::note_arm_fallback": [
+      "src/script_profile.rs",
+      230
+    ],
+    "script_profile::note_arm_p2pk": [
+      "src/script_profile.rs",
+      206
+    ],
+    "script_profile::note_arm_p2pkh": [
+      "src/script_profile.rs",
+      200
+    ],
+    "script_profile::note_arm_p2sh_multisig": [
+      "src/script_profile.rs",
+      212
+    ],
+    "script_profile::note_arm_p2wpkh": [
+      "src/script_profile.rs",
+      218
+    ],
+    "script_profile::note_arm_p2wsh": [
+      "src/script_profile.rs",
+      224
+    ],
+    "script_profile::note_fallback_shape": [
+      "src/script_profile.rs",
+      237
+    ],
+    "script_profile::take": [
+      "src/script_profile.rs",
+      74
+    ],
+    "secp256k1_backend::blvm_impl::taproot_output_key": [
+      "src/secp256k1_backend/blvm_impl.rs",
+      51
+    ],
+    "secp256k1_backend::blvm_impl::taproot_output_key_with_parity": [
+      "src/secp256k1_backend/blvm_impl.rs",
+      56
+    ],
+    "secp256k1_backend::blvm_impl::verify_ecdsa": [
+      "src/secp256k1_backend/blvm_impl.rs",
+      12
+    ],
+    "secp256k1_backend::blvm_impl::verify_ecdsa_batch": [
+      "src/secp256k1_backend/blvm_impl.rs",
+      43
+    ],
+    "secp256k1_backend::blvm_impl::verify_schnorr": [
+      "src/secp256k1_backend/blvm_impl.rs",
+      30
+    ],
+    "secp256k1_backend::blvm_impl::verify_schnorr_batch": [
+      "src/secp256k1_backend/blvm_impl.rs",
+      34
+    ],
+    "secp256k1_backend::secp256k1_impl::bip341_tagged_hash": [
+      "src/secp256k1_backend/secp256k1_impl.rs",
+      135
+    ],
+    "secp256k1_backend::secp256k1_impl::compact_size_encode": [
+      "src/secp256k1_backend/secp256k1_impl.rs",
+      145
+    ],
+    "secp256k1_backend::secp256k1_impl::tap_branch_hash": [
+      "src/secp256k1_backend/secp256k1_impl.rs",
+      211
+    ],
+    "secp256k1_backend::secp256k1_impl::tap_leaf_hash": [
+      "src/secp256k1_backend/secp256k1_impl.rs",
+      162
+    ],
+    "secp256k1_backend::secp256k1_impl::tap_sighash_hash": [
+      "src/secp256k1_backend/secp256k1_impl.rs",
+      218
+    ],
+    "secp256k1_backend::secp256k1_impl::taproot_output_key": [
+      "src/secp256k1_backend/secp256k1_impl.rs",
+      62
+    ],
+    "secp256k1_backend::secp256k1_impl::taproot_output_key_with_parity": [
+      "src/secp256k1_backend/secp256k1_impl.rs",
+      96
+    ],
+    "secp256k1_backend::secp256k1_impl::verify_ecdsa": [
+      "src/secp256k1_backend/secp256k1_impl.rs",
+      7
+    ],
+    "secp256k1_backend::secp256k1_impl::verify_schnorr": [
+      "src/secp256k1_backend/secp256k1_impl.rs",
+      25
+    ],
+    "secp256k1_backend::secp256k1_impl::verify_schnorr_batch": [
+      "src/secp256k1_backend/secp256k1_impl.rs",
+      46
+    ],
+    "secp256k1_backend::tap_branch_hash": [
+      "src/secp256k1_backend/mod.rs",
+      166
+    ],
+    "secp256k1_backend::tap_leaf_hash": [
+      "src/secp256k1_backend/mod.rs",
+      154
+    ],
+    "secp256k1_backend::tap_sighash_hash": [
+      "src/secp256k1_backend/mod.rs",
+      178
+    ],
+    "secp256k1_backend::taproot_output_key": [
+      "src/secp256k1_backend/mod.rs",
+      122
+    ],
+    "secp256k1_backend::taproot_output_key_with_parity": [
+      "src/secp256k1_backend/mod.rs",
+      137
+    ],
+    "secp256k1_backend::verify_ecdsa": [
+      "src/secp256k1_backend/mod.rs",
+      19
+    ],
+    "secp256k1_backend::verify_ecdsa_batch": [
+      "src/secp256k1_backend/mod.rs",
+      72
+    ],
+    "secp256k1_backend::verify_ecdsa_direct": [
+      "src/secp256k1_backend/mod.rs",
+      105
+    ],
+    "secp256k1_backend::verify_schnorr": [
+      "src/secp256k1_backend/mod.rs",
+      37
+    ],
+    "secp256k1_backend::verify_schnorr_batch": [
+      "src/secp256k1_backend/mod.rs",
+      52
+    ],
+    "segwit::add_size": [
+      "src/segwit.rs",
+      64
+    ],
+    "segwit::block_witness_commitment_ok": [
+      "src/segwit.rs",
+      322
+    ],
+    "segwit::calculate_base_size": [
+      "src/segwit.rs",
+      47
+    ],
+    "segwit::calculate_block_weight": [
+      "src/segwit.rs",
+      386
+    ],
+    "segwit::calculate_block_weight_from_nested": [
+      "src/segwit.rs",
+      415
+    ],
+    "segwit::calculate_total_size": [
+      "src/segwit.rs",
+      94
+    ],
+    "segwit::calculate_transaction_weight": [
+      "src/segwit.rs",
+      30
+    ],
+    "segwit::coinbase_reserved_nonce": [
+      "src/segwit.rs",
+      310
+    ],
+    "segwit::compact_size_len": [
+      "src/segwit.rs",
+      52
+    ],
+    "segwit::compute_merkle_root": [
+      "src/segwit.rs",
+      258
+    ],
+    "segwit::compute_witness_merkle_root": [
+      "src/segwit.rs",
+      130
+    ],
+    "segwit::compute_witness_merkle_root_from_nested": [
+      "src/segwit.rs",
+      192
+    ],
+    "segwit::extract_witness_commitment": [
+      "src/segwit.rs",
+      354
+    ],
+    "segwit::flat_witness_to_per_input": [
+      "src/segwit.rs",
+      106
+    ],
+    "segwit::hash_witness": [
+      "src/segwit.rs",
+      159
+    ],
+    "segwit::is_segwit_transaction": [
+      "src/segwit.rs",
+      378
+    ],
+    "segwit::last_witness_commitment_in_coinbase_outputs": [
+      "src/segwit.rs",
+      364
+    ],
+    "segwit::sha256d_bytes": [
+      "src/segwit.rs",
+      147
+    ],
+    "segwit::stripped_transaction_size": [
+      "src/segwit.rs",
+      69
+    ],
+    "segwit::transaction_weight_from_stacks": [
+      "src/segwit.rs",
+      442
+    ],
+    "segwit::validate_segwit_block": [
+      "src/segwit.rs",
+      482
+    ],
+    "segwit::validate_witness_commitment": [
+      "src/segwit.rs",
+      278
+    ],
+    "segwit::weight_overflow": [
+      "src/segwit.rs",
+      434
+    ],
+    "segwit::witness_commitment_script": [
+      "src/segwit.rs",
+      335
+    ],
+    "sequence_locks::calculate_sequence_locks": [
+      "src/sequence_locks.rs",
+      56
+    ],
+    "sequence_locks::evaluate_sequence_locks": [
+      "src/sequence_locks.rs",
+      201
+    ],
+    "sequence_locks::sequence_locks": [
+      "src/sequence_locks.rs",
+      243
+    ],
+    "sequence_locks::version_enforces_relative_lock": [
+      "src/sequence_locks.rs",
+      28
+    ],
+    "signet::build_signet_solution_txs": [
+      "src/signet.rs",
+      99
+    ],
+    "signet::check_signet_block_solution": [
+      "src/signet.rs",
+      51
+    ],
+    "signet::default_signet_challenge": [
+      "src/signet.rs",
+      26
+    ],
+    "signet::fetch_and_clear_commitment_section": [
+      "src/signet.rs",
+      264
+    ],
+    "signet::parse_signet_solution": [
+      "src/signet.rs",
+      300
+    ],
+    "signet::push_script_data": [
+      "src/signet.rs",
+      205
+    ],
+    "signet::read_script_op": [
+      "src/signet.rs",
+      225
+    ],
+    "signet::serialize_signet_block_data": [
+      "src/signet.rs",
+      347
+    ],
+    "signet::signet_challenge": [
+      "src/signet.rs",
+      38
+    ],
+    "signet::signet_to_spend_script_sig": [
+      "src/signet.rs",
+      197
+    ],
+    "signet::witness_commitment_output_index": [
+      "src/signet.rs",
+      184
+    ],
+    "sigop::count_sigops_in_script": [
+      "src/sigop.rs",
+      39
+    ],
+    "sigop::count_tapscript_sigops": [
+      "src/sigop.rs",
+      124
+    ],
+    "sigop::count_witness_sigops": [
+      "src/sigop.rs",
+      388
+    ],
+    "sigop::extract_redeem_script_from_scriptsig": [
+      "src/sigop.rs",
+      198
+    ],
+    "sigop::get_legacy_sigop_count": [
+      "src/sigop.rs",
+      265
+    ],
+    "sigop::get_legacy_sigop_count_accurate": [
+      "src/sigop.rs",
+      418
+    ],
+    "sigop::get_p2sh_sigop_count": [
+      "src/sigop.rs",
+      294
+    ],
+    "sigop::get_transaction_sigop_cost": [
+      "src/sigop.rs",
+      481
+    ],
+    "sigop::get_transaction_sigop_cost_with_utxos": [
+      "src/sigop.rs",
+      494
+    ],
+    "sigop::get_transaction_sigop_cost_with_witness_slices": [
+      "src/sigop.rs",
+      545
+    ],
+    "sigop::get_transaction_sigop_count": [
+      "src/sigop.rs",
+      433
+    ],
+    "sigop::get_transaction_sigop_count_for_bip54": [
+      "src/sigop.rs",
+      449
+    ],
+    "sigop::input_witness_sigops": [
+      "src/sigop.rs",
+      354
+    ],
+    "sigop::is_pay_to_script_hash": [
+      "src/sigop.rs",
+      175
+    ],
+    "sigop::is_version_zero_witness_program": [
+      "src/sigop.rs",
+      322
+    ],
+    "sigop::sigop_count_push_opcode": [
+      "src/sigop.rs",
+      189
+    ],
+    "sigop::witness_program_sigops": [
+      "src/sigop.rs",
+      332
+    ],
+    "spec_witnesses::_verify_f_bip147_pre_activation_pass": [
+      "src/spec_witnesses.rs",
+      1312
+    ],
+    "spec_witnesses::_verify_f_bip30_duplicate_rejected": [
+      "src/spec_witnesses.rs",
+      1104
+    ],
+    "spec_witnesses::_verify_f_bip30_repeat_retires_prior_outputs": [
+      "src/spec_witnesses.rs",
+      1923
+    ],
+    "spec_witnesses::_verify_f_bip34_height_seventeen": [
+      "src/spec_witnesses.rs",
+      2024
+    ],
+    "spec_witnesses::_verify_f_bip34_height_zero": [
+      "src/spec_witnesses.rs",
+      2014
+    ],
+    "spec_witnesses::_verify_f_bip34_pre_activation_pass": [
+      "src/spec_witnesses.rs",
+      1131
+    ],
+    "spec_witnesses::_verify_f_bip34_small_height_opcode": [
+      "src/spec_witnesses.rs",
+      2004
+    ],
+    "spec_witnesses::_verify_f_bip54_activation_threshold": [
+      "src/spec_witnesses.rs",
+      1334
+    ],
+    "spec_witnesses::_verify_f_bip54_coinbase_locktime": [
+      "src/spec_witnesses.rs",
+      2055
+    ],
+    "spec_witnesses::_verify_f_bip54_coinbase_sequence": [
+      "src/spec_witnesses.rs",
+      2062
+    ],
+    "spec_witnesses::_verify_f_bip54_signal_bit": [
+      "src/spec_witnesses.rs",
+      1633
+    ],
+    "spec_witnesses::_verify_f_bip54_start_time_zero": [
+      "src/spec_witnesses.rs",
+      1645
+    ],
+    "spec_witnesses::_verify_f_bip65_passes": [
+      "src/spec_witnesses.rs",
+      899
+    ],
+    "spec_witnesses::_verify_f_bip65_passes_timestamp": [
+      "src/spec_witnesses.rs",
+      927
+    ],
+    "spec_witnesses::_verify_f_bip65_passes_zero_zero": [
+      "src/spec_witnesses.rs",
+      762
+    ],
+    "spec_witnesses::_verify_f_bip65_rejects_timestamp_value_too_low": [
+      "src/spec_witnesses.rs",
+      867
+    ],
+    "spec_witnesses::_verify_f_bip65_rejects_type_mismatch": [
+      "src/spec_witnesses.rs",
+      787
+    ],
+    "spec_witnesses::_verify_f_bip65_rejects_type_mismatch_reverse": [
+      "src/spec_witnesses.rs",
+      811
+    ],
+    "spec_witnesses::_verify_f_bip65_rejects_value_too_low": [
+      "src/spec_witnesses.rs",
+      840
+    ],
+    "spec_witnesses::_verify_f_bip66_activation_at": [
+      "src/spec_witnesses.rs",
+      1217
+    ],
+    "spec_witnesses::_verify_f_bip66_pre_activation_pass": [
+      "src/spec_witnesses.rs",
+      1207
+    ],
+    "spec_witnesses::_verify_f_bip90_pre_activation_pass": [
+      "src/spec_witnesses.rs",
+      1292
+    ],
+    "spec_witnesses::_verify_f_bip94_bits_from_first": [
+      "src/spec_witnesses.rs",
+      2070
+    ],
+    "spec_witnesses::_verify_f_bip94_bits_from_last": [
+      "src/spec_witnesses.rs",
+      2082
+    ],
+    "spec_witnesses::_verify_f_bip94_timewarp": [
+      "src/spec_witnesses.rs",
+      2094
+    ],
+    "spec_witnesses::_verify_f_bip94_timewarp_off_boundary": [
+      "src/spec_witnesses.rs",
+      2110
+    ],
+    "spec_witnesses::_verify_f_cast_to_bool_summary": [
+      "src/spec_witnesses.rs",
+      2183
+    ],
+    "spec_witnesses::_verify_f_checkmultisig_counts_pubkeys": [
+      "src/spec_witnesses.rs",
+      1896
+    ],
+    "spec_witnesses::_verify_f_cltv_rejects_above_u32": [
+      "src/spec_witnesses.rs",
+      1765
+    ],
+    "spec_witnesses::_verify_f_cltv_rejects_negative": [
+      "src/spec_witnesses.rs",
+      1754
+    ],
+    "spec_witnesses::_verify_f_coinbase_scriptsig_max": [
+      "src/spec_witnesses.rs",
+      95
+    ],
+    "spec_witnesses::_verify_f_coinbase_scriptsig_min": [
+      "src/spec_witnesses.rs",
+      82
+    ],
+    "spec_witnesses::_verify_f_csfs_empty_sig_valid": [
+      "src/spec_witnesses.rs",
+      1184
+    ],
+    "spec_witnesses::_verify_f_csfs_testnet4_inactive": [
+      "src/spec_witnesses.rs",
+      2047
+    ],
+    "spec_witnesses::_verify_f_csfs_unknown_pubkey_valid": [
+      "src/spec_witnesses.rs",
+      1167
+    ],
+    "spec_witnesses::_verify_f_csfs_zero_pubkey_invalid": [
+      "src/spec_witnesses.rs",
+      1147
+    ],
+    "spec_witnesses::_verify_f_csv_disable_bit_skips_version": [
+      "src/spec_witnesses.rs",
+      1818
+    ],
+    "spec_witnesses::_verify_f_csv_version_below_two_fails": [
+      "src/spec_witnesses.rs",
+      1789
+    ],
+    "spec_witnesses::_verify_f_ctv_testnet4_inactive": [
+      "src/spec_witnesses.rs",
+      2038
+    ],
+    "spec_witnesses::_verify_f_decode_locktime_negative_one": [
+      "src/spec_witnesses.rs",
+      1744
+    ],
+    "spec_witnesses::_verify_f_decode_locktime_negative_zero": [
+      "src/spec_witnesses.rs",
+      1731
+    ],
+    "spec_witnesses::_verify_f_eval_seq_locks_both_met": [
+      "src/spec_witnesses.rs",
+      1032
+    ],
+    "spec_witnesses::_verify_f_eval_seq_locks_disabled": [
+      "src/spec_witnesses.rs",
+      579
+    ],
+    "spec_witnesses::_verify_f_eval_seq_locks_height_met": [
+      "src/spec_witnesses.rs",
+      953
+    ],
+    "spec_witnesses::_verify_f_eval_seq_locks_height_not_met": [
+      "src/spec_witnesses.rs",
+      711
+    ],
+    "spec_witnesses::_verify_f_eval_seq_locks_time_met": [
+      "src/spec_witnesses.rs",
+      1004
+    ],
+    "spec_witnesses::_verify_f_eval_seq_locks_time_not_met": [
+      "src/spec_witnesses.rs",
+      978
+    ],
+    "spec_witnesses::_verify_f_expand_target_exponent": [
+      "src/spec_witnesses.rs",
+      166
+    ],
+    "spec_witnesses::_verify_f_expand_target_non_zero_mantissa": [
+      "src/spec_witnesses.rs",
+      186
+    ],
+    "spec_witnesses::_verify_f_expand_target_zero_mantissa": [
+      "src/spec_witnesses.rs",
+      151
+    ],
+    "spec_witnesses::_verify_f_false_result_empty": [
+      "src/spec_witnesses.rs",
+      1910
+    ],
+    "spec_witnesses::_verify_f_fee_arithmetic_bounded": [
+      "src/spec_witnesses.rs",
+      67
+    ],
+    "spec_witnesses::_verify_f_fee_arithmetic_non_neg": [
+      "src/spec_witnesses.rs",
+      52
+    ],
+    "spec_witnesses::_verify_f_fee_non_neg": [
+      "src/spec_witnesses.rs",
+      36
+    ],
+    "spec_witnesses::_verify_f_header_bits_floor": [
+      "src/spec_witnesses.rs",
+      1072
+    ],
+    "spec_witnesses::_verify_f_header_bits_match_required": [
+      "src/spec_witnesses.rs",
+      2135
+    ],
+    "spec_witnesses::_verify_f_header_timestamp_after_mtp": [
+      "src/spec_witnesses.rs",
+      1087
+    ],
+    "spec_witnesses::_verify_f_header_version_floor": [
+      "src/spec_witnesses.rs",
+      1051
+    ],
+    "spec_witnesses::_verify_f_input_sum_within_max_money": [
+      "src/spec_witnesses.rs",
+      1866
+    ],
+    "spec_witnesses::_verify_f_issued_supply_below_cap": [
+      "src/spec_witnesses.rs",
+      515
+    ],
+    "spec_witnesses::_verify_f_locktime_type_is_height": [
+      "src/spec_witnesses.rs",
+      671
+    ],
+    "spec_witnesses::_verify_f_locktime_type_is_timestamp": [
+      "src/spec_witnesses.rs",
+      687
+    ],
+    "spec_witnesses::_verify_f_merkle_mutation_rejected": [
+      "src/spec_witnesses.rs",
+      1273
+    ],
+    "spec_witnesses::_verify_f_minimal_if_empty_true": [
+      "src/spec_witnesses.rs",
+      1582
+    ],
+    "spec_witnesses::_verify_f_minimal_if_long_false": [
+      "src/spec_witnesses.rs",
+      1598
+    ],
+    "spec_witnesses::_verify_f_mtp_index": [
+      "src/spec_witnesses.rs",
+      598
+    ],
+    "spec_witnesses::_verify_f_mtp_index_n11": [
+      "src/spec_witnesses.rs",
+      642
+    ],
+    "spec_witnesses::_verify_f_mtp_index_n4": [
+      "src/spec_witnesses.rs",
+      617
+    ],
+    "spec_witnesses::_verify_f_nested_redeem_push_canonical": [
+      "src/spec_witnesses.rs",
+      1947
+    ],
+    "spec_witnesses::_verify_f_next_work_clamped": [
+      "src/spec_witnesses.rs",
+      211
+    ],
+    "spec_witnesses::_verify_f_no_duplicate_inputs": [
+      "src/spec_witnesses.rs",
+      1246
+    ],
+    "spec_witnesses::_verify_f_non_der_aborts_script": [
+      "src/spec_witnesses.rs",
+      1934
+    ],
+    "spec_witnesses::_verify_f_off_boundary_parent_bits": [
+      "src/spec_witnesses.rs",
+      2128
+    ],
+    "spec_witnesses::_verify_f_output_sum_bounded": [
+      "src/spec_witnesses.rs",
+      1256
+    ],
+    "spec_witnesses::_verify_f_p2sh_unknown_witness_succeeds": [
+      "src/spec_witnesses.rs",
+      1961
+    ],
+    "spec_witnesses::_verify_f_proof_equal_hash_accepted": [
+      "src/spec_witnesses.rs",
+      1986
+    ],
+    "spec_witnesses::_verify_f_proof_negative_compact_rejected": [
+      "src/spec_witnesses.rs",
+      1974
+    ],
+    "spec_witnesses::_verify_f_relative_lock_unsigned_version": [
+      "src/spec_witnesses.rs",
+      1804
+    ],
+    "spec_witnesses::_verify_f_retarget_interval_count": [
+      "src/spec_witnesses.rs",
+      197
+    ],
+    "spec_witnesses::_verify_f_sequence_disabled_when_bit31_set": [
+      "src/spec_witnesses.rs",
+      1355
+    ],
+    "spec_witnesses::_verify_f_sequence_enabled_when_bit31_clear": [
+      "src/spec_witnesses.rs",
+      1374
+    ],
+    "spec_witnesses::_verify_f_sequence_lock_height_add": [
+      "src/spec_witnesses.rs",
+      747
+    ],
+    "spec_witnesses::_verify_f_sequence_locktime_mask": [
+      "src/spec_witnesses.rs",
+      563
+    ],
+    "spec_witnesses::_verify_f_sequence_time_encoding": [
+      "src/spec_witnesses.rs",
+      732
+    ],
+    "spec_witnesses::_verify_f_sequence_type_height_when_bit22_clear": [
+      "src/spec_witnesses.rs",
+      1412
+    ],
+    "spec_witnesses::_verify_f_sequence_type_time_when_bit22_set": [
+      "src/spec_witnesses.rs",
+      1393
+    ],
+    "spec_witnesses::_verify_f_sigop_count_push_opcode": [
+      "src/spec_witnesses.rs",
+      1778
+    ],
+    "spec_witnesses::_verify_f_stack_combined_fail": [
+      "src/spec_witnesses.rs",
+      131
+    ],
+    "spec_witnesses::_verify_f_stack_combined_safe": [
+      "src/spec_witnesses.rs",
+      120
+    ],
+    "spec_witnesses::_verify_f_stack_size_safe": [
+      "src/spec_witnesses.rs",
+      109
+    ],
+    "spec_witnesses::_verify_f_strict_der_soundness": [
+      "src/spec_witnesses.rs",
+      1227
+    ],
+    "spec_witnesses::_verify_f_stripped_size_counts_scripts": [
+      "src/spec_witnesses.rs",
+      1465
+    ],
+    "spec_witnesses::_verify_f_subsidy_floor_half": [
+      "src/spec_witnesses.rs",
+      411
+    ],
+    "spec_witnesses::_verify_f_subsidy_piecewise": [
+      "src/spec_witnesses.rs",
+      333
+    ],
+    "spec_witnesses::_verify_f_subsidy_zero_after_33": [
+      "src/spec_witnesses.rs",
+      248
+    ],
+    "spec_witnesses::_verify_f_subsidy_zero_after_64": [
+      "src/spec_witnesses.rs",
+      227
+    ],
+    "spec_witnesses::_verify_f_taproot_activation_mainnet": [
+      "src/spec_witnesses.rs",
+      1665
+    ],
+    "spec_witnesses::_verify_f_taproot_activation_regtest": [
+      "src/spec_witnesses.rs",
+      1712
+    ],
+    "spec_witnesses::_verify_f_taproot_activation_testnet": [
+      "src/spec_witnesses.rs",
+      1688
+    ],
+    "spec_witnesses::_verify_f_taproot_output_script_length_invalid": [
+      "src/spec_witnesses.rs",
+      1619
+    ],
+    "spec_witnesses::_verify_f_taproot_sighash_single_missing_output": [
+      "src/spec_witnesses.rs",
+      1833
+    ],
+    "spec_witnesses::_verify_f_tapscript_sighash_single_missing_output": [
+      "src/spec_witnesses.rs",
+      1852
+    ],
+    "spec_witnesses::_verify_f_tapscript_truncated_push_not_success": [
+      "src/spec_witnesses.rs",
+      1880
+    ],
+    "spec_witnesses::_verify_f_total_supply_bound": [
+      "src/spec_witnesses.rs",
+      456
+    ],
+    "spec_witnesses::_verify_f_total_supply_exact": [
+      "src/spec_witnesses.rs",
+      470
+    ],
+    "spec_witnesses::_verify_f_total_supply_mono_step": [
+      "src/spec_witnesses.rs",
+      442
+    ],
+    "spec_witnesses::_verify_f_total_supply_non_neg": [
+      "src/spec_witnesses.rs",
+      428
+    ],
+    "spec_witnesses::_verify_f_upgradable_program_shape": [
+      "src/spec_witnesses.rs",
+      2200
+    ],
+    "spec_witnesses::_verify_f_weight_equiv": [
+      "src/spec_witnesses.rs",
+      1450
+    ],
+    "spec_witnesses::_verify_f_weight_to_vsize_ceiling": [
+      "src/spec_witnesses.rs",
+      1440
+    ],
+    "spec_witnesses::_verify_f_weight_to_vsize_floor": [
+      "src/spec_witnesses.rs",
+      1427
+    ],
+    "spec_witnesses::_verify_f_witness_commitment_shape": [
+      "src/spec_witnesses.rs",
+      2231
+    ],
+    "spec_witnesses::_verify_f_witness_empty_by_length": [
+      "src/spec_witnesses.rs",
+      1482
+    ],
+    "spec_witnesses::_verify_f_witness_payload_byte": [
+      "src/spec_witnesses.rs",
+      2155
+    ],
+    "spec_witnesses::_verify_f_witness_payload_empty": [
+      "src/spec_witnesses.rs",
+      2163
+    ],
+    "spec_witnesses::_verify_f_witness_program_length_20_valid": [
+      "src/spec_witnesses.rs",
+      1501
+    ],
+    "spec_witnesses::_verify_f_witness_program_length_32_valid": [
+      "src/spec_witnesses.rs",
+      1518
+    ],
+    "spec_witnesses::_verify_f_witness_program_length_invalid": [
+      "src/spec_witnesses.rs",
+      1537
+    ],
+    "spec_witnesses::_verify_f_witness_stack_null_by_length": [
+      "src/spec_witnesses.rs",
+      2146
+    ],
+    "spec_witnesses::_verify_f_witness_version_accepted": [
+      "src/spec_witnesses.rs",
+      1565
+    ],
+    "spec_witnesses::_verify_f_witness_version_rejected": [
+      "src/spec_witnesses.rs",
+      1551
+    ],
+    "spec_witnesses::implied_hash": [
+      "src/spec_witnesses.rs",
+      2170
+    ],
+    "taproot::append_bip341_sigmsg": [
+      "src/taproot.rs",
+      440
+    ],
+    "taproot::bip341_precompute": [
+      "src/taproot.rs",
+      416
+    ],
+    "taproot::commitment_bytes": [
+      "src/taproot.rs",
+      373
+    ],
+    "taproot::compute_script_merkle_root": [
+      "src/taproot.rs",
+      139
+    ],
+    "taproot::compute_taproot_annex_sighash_hash": [
+      "src/taproot.rs",
+      194
+    ],
+    "taproot::compute_taproot_signature_hash": [
+      "src/taproot.rs",
+      542
+    ],
+    "taproot::compute_taproot_tweak": [
+      "src/taproot.rs",
+      78
+    ],
+    "taproot::compute_tapscript_signature_hash": [
+      "src/taproot.rs",
+      592
+    ],
+    "taproot::encode_varint": [
+      "src/taproot.rs",
+      633
+    ],
+    "taproot::extract_taproot_output_key": [
+      "src/taproot.rs",
+      62
+    ],
+    "taproot::is_taproot_output": [
+      "src/taproot.rs",
+      294
+    ],
+    "taproot::parse_taproot_script_path_witness": [
+      "src/taproot.rs",
+      221
+    ],
+    "taproot::strip_taproot_annex": [
+      "src/taproot.rs",
+      168
+    ],
+    "taproot::validate_taproot_key_aggregation": [
+      "src/taproot.rs",
+      90
+    ],
+    "taproot::validate_taproot_script": [
+      "src/taproot.rs",
+      37
+    ],
+    "taproot::validate_taproot_script_path": [
+      "src/taproot.rs",
+      106
+    ],
+    "taproot::validate_taproot_script_path_with_leaf_version": [
+      "src/taproot.rs",
+      124
+    ],
+    "taproot::validate_taproot_transaction": [
+      "src/taproot.rs",
+      303
+    ],
+    "taproot::witness_stack_serialize_size": [
+      "src/taproot.rs",
+      184
+    ],
+    "test_utils::create_coinbase_tx": [
+      "src/test_utils.rs",
+      103
+    ],
+    "test_utils::create_test_header": [
+      "src/test_utils.rs",
+      90
+    ],
+    "test_utils::create_test_utxo_set_two_outputs": [
+      "src/test_utils.rs",
+      126
+    ],
+    "test_utils::test_transaction_with_witness_strategy_satisfies_constraint": [
+      "src/test_utils.rs",
+      157
+    ],
+    "test_utils::transaction_strategy": [
+      "src/test_utils.rs",
+      60
+    ],
+    "test_utils::transaction_with_input_count_strategy": [
+      "src/test_utils.rs",
+      30
+    ],
+    "test_utils::transaction_with_witness_strategy": [
+      "src/test_utils.rs",
+      18
+    ],
+    "transaction::calculate_transaction_size": [
+      "src/transaction.rs",
+      765
+    ],
+    "transaction::check_coinbase_maturity": [
+      "src/transaction.rs",
+      16
+    ],
+    "transaction::check_transaction": [
+      "src/transaction.rs",
+      179
+    ],
+    "transaction::check_transaction_fast_path": [
+      "src/transaction.rs",
+      90
+    ],
+    "transaction::check_tx_inputs": [
+      "src/transaction.rs",
+      430
+    ],
+    "transaction::check_tx_inputs_with_owned_data": [
+      "src/transaction.rs",
+      652
+    ],
+    "transaction::check_tx_inputs_with_utxos": [
+      "src/transaction.rs",
+      439
+    ],
+    "transaction::coinbase_or_empty_short_circuit": [
+      "src/transaction.rs",
+      67
+    ],
+    "transaction::is_coinbase": [
+      "src/transaction.rs",
+      735
+    ],
+    "transaction::make_fee_calculation_underflow_error": [
+      "src/transaction.rs",
+      30
+    ],
+    "transaction::sum_output_values": [
+      "src/transaction.rs",
+      39
+    ],
+    "transaction_hash::append_stripped_codeseparators": [
+      "src/transaction_hash.rs",
+      179
+    ],
+    "transaction_hash::batch_bip143_sighash_all_midstate": [
+      "src/transaction_hash.rs",
+      2039
+    ],
+    "transaction_hash::batch_compute_bip143_sighashes": [
+      "src/transaction_hash.rs",
+      1997
+    ],
+    "transaction_hash::batch_compute_legacy_sighashes": [
+      "src/transaction_hash.rs",
+      1608
+    ],
+    "transaction_hash::batch_compute_sighashes": [
+      "src/transaction_hash.rs",
+      1492
+    ],
+    "transaction_hash::blank_input_prefixes": [
+      "src/transaction_hash.rs",
+      1265
+    ],
+    "transaction_hash::build_bip143_preimage": [
+      "src/transaction_hash.rs",
+      1896
+    ],
+    "transaction_hash::build_legacy_sighash_preimage_into": [
+      "src/transaction_hash.rs",
+      1543
+    ],
+    "transaction_hash::build_preimage_1in1out_sighash_all": [
+      "src/transaction_hash.rs",
+      1081
+    ],
+    "transaction_hash::build_preimage_1in_nout_sighash_all": [
+      "src/transaction_hash.rs",
+      1120
+    ],
+    "transaction_hash::build_preimage_2in1out_sighash_all": [
+      "src/transaction_hash.rs",
+      1164
+    ],
+    "transaction_hash::build_preimage_2in2out_sighash_all": [
+      "src/transaction_hash.rs",
+      1214
+    ],
+    "transaction_hash::build_preimage_and_hash": [
+      "src/transaction_hash.rs",
+      1342
+    ],
+    "transaction_hash::calculate_bip143_sighash": [
+      "src/transaction_hash.rs",
+      1825
+    ],
+    "transaction_hash::calculate_transaction_sighash": [
+      "src/transaction_hash.rs",
+      755
+    ],
+    "transaction_hash::calculate_transaction_sighash_single_input": [
+      "src/transaction_hash.rs",
+      789
+    ],
+    "transaction_hash::calculate_transaction_sighash_with_script_code": [
+      "src/transaction_hash.rs",
+      843
+    ],
+    "transaction_hash::clear_sighash_templates": [
+      "src/transaction_hash.rs",
+      1674
+    ],
+    "transaction_hash::compute_legacy_sighash_buffered": [
+      "src/transaction_hash.rs",
+      559
+    ],
+    "transaction_hash::compute_legacy_sighash_nocache": [
+      "src/transaction_hash.rs",
+      459
+    ],
+    "transaction_hash::compute_sighashes_batch": [
+      "src/transaction_hash.rs",
+      652
+    ],
+    "transaction_hash::count_opcode_codeseparators": [
+      "src/transaction_hash.rs",
+      144
+    ],
+    "transaction_hash::derive_bip143_script_code": [
+      "src/transaction_hash.rs",
+      68
+    ],
+    "transaction_hash::derive_bip143_script_code_p2wpkh": [
+      "src/transaction_hash.rs",
+      48
+    ],
+    "transaction_hash::double_sha256": [
+      "src/transaction_hash.rs",
+      1800
+    ],
+    "transaction_hash::insert_midstate_cache": [
+      "src/transaction_hash.rs",
+      268
+    ],
+    "transaction_hash::legacy_all_from_prefix_midstate": [
+      "src/transaction_hash.rs",
+      1286
+    ],
+    "transaction_hash::legacy_sighash_for_vector": [
+      "src/transaction_hash.rs",
+      1451
+    ],
+    "transaction_hash::legacy_sighash_tx_id": [
+      "src/transaction_hash.rs",
+      303
+    ],
+    "transaction_hash::script_code_id": [
+      "src/transaction_hash.rs",
+      294
+    ],
+    "transaction_hash::serialize_script_code_for_legacy_sighash": [
+      "src/transaction_hash.rs",
+      37
+    ],
+    "transaction_hash::sighash_with_cache": [
+      "src/transaction_hash.rs",
+      434
+    ],
+    "transaction_hash::update_varint": [
+      "src/transaction_hash.rs",
+      538
+    ],
+    "transaction_hash::write_script_code_for_sighash": [
+      "src/transaction_hash.rs",
+      96
+    ],
+    "transaction_hash::write_varint_to_vec": [
+      "src/transaction_hash.rs",
+      17
+    ],
+    "utxo_overlay::apply_transaction_to_overlay": [
+      "src/utxo_overlay.rs",
+      368
+    ],
+    "utxo_overlay::apply_transaction_to_overlay_no_undo": [
+      "src/utxo_overlay.rs",
+      473
+    ],
+    "utxo_overlay::apply_transaction_to_overlay_no_undo_cached": [
+      "src/utxo_overlay.rs",
+      499
+    ],
+    "utxo_overlay::apply_transaction_to_overlay_no_undo_impl": [
+      "src/utxo_overlay.rs",
+      513
+    ],
+    "utxo_overlay::apply_transaction_to_overlay_no_undo_with_output_cache": [
+      "src/utxo_overlay.rs",
+      487
+    ],
+    "utxo_overlay::build_block_output_utxo_cache": [
+      "src/utxo_overlay.rs",
+      440
+    ],
+    "utxo_overlay::key_to_outpoint": [
+      "src/utxo_overlay.rs",
+      60
+    ],
+    "utxo_overlay::outpoint_to_key": [
+      "src/utxo_overlay.rs",
+      44
+    ],
+    "utxo_overlay::to_fast_utxo_set": [
+      "src/utxo_overlay.rs",
+      351
+    ],
+    "utxo_overlay::utxo_deletion_key_to_outpoint": [
+      "src/utxo_overlay.rs",
+      52
+    ],
+    "utxo_overlay::utxo_from_tx_output": [
+      "src/utxo_overlay.rs",
+      423
+    ],
+    "version_bits::activation_height_from_headers": [
+      "src/version_bits.rs",
+      121
+    ],
+    "version_bits::bip54_deployment_for_network": [
+      "src/version_bits.rs",
+      85
+    ],
+    "version_bits::bip54_deployment_mainnet": [
+      "src/version_bits.rs",
+      40
+    ],
+    "version_bits::bip54_deployment_regtest": [
+      "src/version_bits.rs",
+      68
+    ],
+    "version_bits::bip54_deployment_testnet": [
+      "src/version_bits.rs",
+      54
+    ],
+    "version_bits::merge_bip54_activation_candidate": [
+      "src/version_bits.rs",
+      168
+    ],
+    "witness::calculate_transaction_weight_segwit": [
+      "src/witness.rs",
+      113
+    ],
+    "witness::extract_witness_program": [
+      "src/witness.rs",
+      277
+    ],
+    "witness::extract_witness_version": [
+      "src/witness.rs",
+      244
+    ],
+    "witness::is_any_witness_program": [
+      "src/witness.rs",
+      198
+    ],
+    "witness::is_invalid_v0_witness_program": [
+      "src/witness.rs",
+      187
+    ],
+    "witness::is_pay_to_anchor": [
+      "src/witness.rs",
+      174
+    ],
+    "witness::is_standard_witness_program": [
+      "src/witness.rs",
+      222
+    ],
+    "witness::is_upgradable_witness_program": [
+      "src/witness.rs",
+      159
+    ],
+    "witness::is_witness_empty": [
+      "src/witness.rs",
+      331
+    ],
+    "witness::is_witness_version_opcode": [
+      "src/witness.rs",
+      235
+    ],
+    "witness::validate_segwit_witness_structure": [
+      "src/witness.rs",
+      38
+    ],
+    "witness::validate_taproot_witness_structure": [
+      "src/witness.rs",
+      60
+    ],
+    "witness::validate_witness_program_length": [
+      "src/witness.rs",
+      310
+    ],
+    "witness::weight_to_vsize": [
+      "src/witness.rs",
+      129
+    ],
+    "witness::witness_program_len": [
+      "src/witness.rs",
+      203
+    ],
+    "witness::witness_stack_is_null": [
+      "src/witness.rs",
+      340
+    ]
+  }
+}
