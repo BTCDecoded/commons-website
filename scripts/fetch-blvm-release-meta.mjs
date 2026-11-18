@@ -2,7 +2,7 @@
 /**
  * Fetches BTCDecoded/blvm latest GitHub Release and writes:
  *   assets/blvm-release.json — public metadata for the homepage
- *   Updates the #release-banner-badge text in index.html
+ *   Updates the #release-banner-badge and #prerelease-banner-badge text in index.html
  *
  * Use GITHUB_TOKEN in CI when available (public repo API ok without auth).
  */
@@ -44,14 +44,24 @@ function escapeHtml(s) {
     .replace(/"/g, "&quot;");
 }
 
-function patchBadgeHtml(html, displayTag) {
-  const escaped = escapeHtml(displayTag);
-  const re = /(<span[^>]*\bid=["']release-banner-badge["'][^>]*>)([\s\S]*?)(<\/span>)/i;
+function patchSpan(html, id, text, hidden) {
+  const re = new RegExp(
+    `(<span[^>]*\\bid=["']${id}["'][^>]*)(>)([\\s\\S]*?)(</span>)`,
+    "i",
+  );
   if (!re.test(html)) {
-    console.warn("fetch-blvm-release-meta: id=release-banner-badge not found in index.html");
+    console.warn(`fetch-blvm-release-meta: id=${id} not found in index.html`);
     return html;
   }
-  return html.replace(re, `$1${escaped}$3`);
+  return html.replace(re, (_, open, _gt, _body, close) => {
+    const attrs = open.replace(/\s+hidden(?:=(?:"[^"]*"|'[^']*'|[^\s>]*))?/i, "");
+    return `${attrs}${hidden ? " hidden" : ""}>${escapeHtml(text)}${close}`;
+  });
+}
+
+function patchBadges(html, displayTag, prereleaseTag) {
+  const withStable = patchSpan(html, "release-banner-badge", displayTag, false);
+  return patchSpan(withStable, "prerelease-banner-badge", prereleaseTag || "", !prereleaseTag);
 }
 
 async function main() {
@@ -62,7 +72,11 @@ async function main() {
       fs.copyFileSync(FALLBACK_JSON, OUT_JSON);
       const meta = JSON.parse(fs.readFileSync(OUT_JSON, "utf8"));
       const html = fs.readFileSync(INDEX_HTML, "utf8");
-      fs.writeFileSync(INDEX_HTML, patchBadgeHtml(html, meta.displayTag), "utf8");
+      fs.writeFileSync(
+        INDEX_HTML,
+        patchBadges(html, meta.displayTag, meta.prereleaseTag || ""),
+        "utf8",
+      );
       console.log("fetch-blvm-release-meta: fallback → assets/blvm-release.json + index badge");
     }
     return;
@@ -91,11 +105,30 @@ async function main() {
         ? latest.html_url.trim()
         : `https://github.com/${REPO}/releases/tag/${tag}`;
 
+    const releasesList = await ghFetch(
+      `https://api.github.com/repos/${REPO}/releases?per_page=30`,
+    );
+    const pre = (Array.isArray(releasesList) ? releasesList : []).find(
+      (release) =>
+        release &&
+        release.draft !== true &&
+        release.prerelease === true &&
+        typeof release.tag_name === "string" &&
+        release.tag_name.trim() &&
+        release.tag_name.trim() !== displayTag,
+    );
+    const prereleaseTag =
+      pre && typeof pre.tag_name === "string" ? pre.tag_name.trim() : "";
+    const prereleaseUrl =
+      pre && typeof pre.html_url === "string" ? pre.html_url.trim() : "";
+
     const meta = {
       displayTag,
       semver,
       releasesLatestUrl,
       releasesTagUrl,
+      prereleaseTag,
+      prereleaseUrl,
       generatedAt: new Date().toISOString(),
       source: `github://${REPO}`,
     };
@@ -103,9 +136,12 @@ async function main() {
     fs.writeFileSync(OUT_JSON, JSON.stringify(meta, null, 2) + "\n", "utf8");
 
     const html = fs.readFileSync(INDEX_HTML, "utf8");
-    fs.writeFileSync(INDEX_HTML, patchBadgeHtml(html, displayTag), "utf8");
+    fs.writeFileSync(INDEX_HTML, patchBadges(html, displayTag, prereleaseTag), "utf8");
 
-    console.log(`fetch-blvm-release-meta: wrote ${OUT_JSON}; index badge → ${displayTag}`);
+    console.log(
+      `fetch-blvm-release-meta: wrote ${OUT_JSON}; index badge → ${displayTag}` +
+        (prereleaseTag ? `; pre-release → ${prereleaseTag}` : ""),
+    );
   } catch (e) {
     console.error("fetch-blvm-release-meta:", e.message ?? e);
     if (process.env.CI === "true" || args.has("--strict")) {
@@ -116,7 +152,7 @@ async function main() {
       const meta = JSON.parse(fs.readFileSync(OUT_JSON, "utf8"));
       const dt = meta.displayTag || "Latest";
       const html = fs.readFileSync(INDEX_HTML, "utf8");
-      fs.writeFileSync(INDEX_HTML, patchBadgeHtml(html, dt), "utf8");
+      fs.writeFileSync(INDEX_HTML, patchBadges(html, dt, meta.prereleaseTag || ""), "utf8");
       console.warn("fetch-blvm-release-meta: using blvm-release.fallback.json");
       return;
     }
