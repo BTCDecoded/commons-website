@@ -62,7 +62,7 @@
           "what": "Conformance against shared test vectors, such as Bitcoin Core's JSON vectors.",
           "why": "Shared vectors are a common check that two implementations accept and reject the same cases.",
           "how": "Public-repository reading, with a source link. This is a yes/partial/not-found status, not the file count in the metrics table.",
-          "caveats": "\"Yes\" does not mean every vector file is run, or run to completion. BLVM runs every committed script and transaction row, and skips a row only for a named reason. libbitcoin and rbitcoin are partial. Hornet is not found.",
+          "caveats": "yes means the script corpus and the transaction valid and invalid corpora. partial means only one of those. libbitcoin and rbitcoin are partial. Hornet is not found. BLVM runs every committed script and transaction row, and skips a row only for a named reason.",
           "link": "#eco-glance"
         },
         {
@@ -71,7 +71,7 @@
           "what": "Property-based tests (proptest, quickcheck, and similar).",
           "why": "They check general rules over many generated cases, not only fixed examples.",
           "how": "Public-repository reading, with a source link. Distinct from the `test_property` line-count in `metrics.json`.",
-          "caveats": "satd and btcd are partial. Most Core-family rows are not found.",
+          "caveats": "yes means the properties cover the consensus rules. partial means a slice of that surface. bitcoin-rs, satd, and btcd are partial. Most Core-family rows are not found.",
           "link": "#eco-glance"
         },
         {
@@ -80,7 +80,7 @@
           "what": "Fuzz targets in the tree.",
           "why": "Fuzzing feeds unexpected inputs to consensus and protocol code.",
           "how": "Public-repository reading, with a source link. The yes/partial status is separate from the numeric `metrics.json` `fuzz_targets` count (see Code health).",
-          "caveats": "btcd is partial. libbitcoin and Hornet are not found. Core-family yes cells include fuzz harnesses carried from Core.",
+          "caveats": "yes means a target exercises script, transaction, or block validation. partial means the targets stay in decode, wire, or an adjacent check. Floresta, satd, and btcd are partial. Core and its forks stay yes: those harnesses are Core's, and the declared counts are higher than BLVM's. bitcoin-rs and rbitcoin stay yes.",
           "link": "#eco-glance"
         },
         {

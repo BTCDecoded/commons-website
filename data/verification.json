@@ -19,19 +19,19 @@
       "id": "test_vectors",
       "name": "Test vectors",
       "short": "Vectors",
-      "what": "Conformance against shared test vectors, such as Bitcoin Core's JSON vectors."
+      "what": "Conformance against the shared Core vectors. yes means the script corpus and the transaction valid and invalid corpora. partial means only one of those corpora."
     },
     {
       "id": "property_tests",
       "name": "Property tests",
       "short": "Property",
-      "what": "Property-based tests (proptest, quickcheck and similar)."
+      "what": "Property-based tests of the consensus rules. yes means the properties cover that surface. partial means the properties cover a slice of it."
     },
     {
       "id": "fuzzing",
       "name": "Fuzzing",
       "short": "Fuzzing",
-      "what": "Fuzz targets in the tree."
+      "what": "Fuzz targets in the tree. yes means a target exercises script, transaction, or block validation. partial means the targets stay in decode, wire, or an adjacent check."
     },
     {
       "id": "formal_verification",
@@ -293,13 +293,13 @@
           "source": "https://github.com/gosuda/bitcoin-rs/tree/60b33f6be7c55eb27e6892cdb7770687a8e40276/crates/consensus/tests/vectors"
         },
         "property_tests": {
-          "status": "yes",
-          "text": "proptest across crates, including script",
+          "status": "partial",
+          "text": "The consensus crate's property tests are script-byte round trips and two Taproot key-path spends. The other proptest files are mempool, storage, wire, and mining.",
           "source": "https://github.com/gosuda/bitcoin-rs/blob/60b33f6be7c55eb27e6892cdb7770687a8e40276/crates/consensus/tests/script_proptest.rs"
         },
         "fuzzing": {
           "status": "yes",
-          "text": "cargo-fuzz targets and a daily fuzz workflow",
+          "text": "Targets include script evaluation, transaction validation, and block validation, plus decode and peer targets.",
           "source": "https://github.com/gosuda/bitcoin-rs/tree/60b33f6be7c55eb27e6892cdb7770687a8e40276/fuzz"
         },
         "formal_verification": {
@@ -334,8 +334,8 @@
           "source": "https://github.com/epochbtc/satd/blob/d2dc5cf78c086db7d8de555050ae52539cd82d5a/satd-policy/Cargo.toml"
         },
         "fuzzing": {
-          "status": "yes",
-          "text": "cargo-fuzz targets and a nightly fuzz workflow",
+          "status": "partial",
+          "text": "Seven targets: one block differential, two verify targets, and parsers for NAP and PSBT. No script or transaction validation target.",
           "source": "https://github.com/epochbtc/satd/tree/d2dc5cf78c086db7d8de555050ae52539cd82d5a/fuzz"
         },
         "formal_verification": {
@@ -422,8 +422,8 @@
           "status": "not found"
         },
         "fuzzing": {
-          "status": "yes",
-          "text": "cargo-fuzz targets and a fuzz workflow",
+          "status": "partial",
+          "text": "Fifteen targets for decode, addresses, and peer messages, plus a merkle root and a utreexo proof. No script, transaction, or block validation target.",
           "source": "https://github.com/getfloresta/Floresta/tree/cdbcf5a13cba2b0aab505977ba413f707bc06290/fuzz"
         },
         "formal_verification": {
