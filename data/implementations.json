@@ -279,7 +279,8 @@
         "rules_share": {
           "value": null,
           "text": "not measured",
-          "status": "not-measured"
+          "status": "not-measured",
+          "note": "The file list behind Bitcoin Core's 6.3% rules share is not stored beside that cell, so the cut was not replayed on this pin."
         },
         "mixed_share": {
           "value": null,
@@ -340,7 +341,8 @@
         "rules_share": {
           "value": null,
           "text": "not measured",
-          "status": "not-measured"
+          "status": "not-measured",
+          "note": "The file list behind Bitcoin Core's 6.3% rules share is not stored beside that cell, so the cut was not replayed on this pin."
         },
         "mixed_share": {
           "value": null,
@@ -401,7 +403,8 @@
         "rules_share": {
           "value": null,
           "text": "not measured",
-          "status": "not-measured"
+          "status": "not-measured",
+          "note": "The file list behind Bitcoin Core's 6.3% rules share is not stored beside that cell, so the cut was not replayed on this pin."
         },
         "mixed_share": {
           "value": null,
@@ -677,6 +680,201 @@
         "files_holding_half": {
           "value": 38,
           "text": "38",
+          "status": "measured"
+        }
+      }
+    },
+    {
+      "slug": "floresta",
+      "name": "Floresta",
+      "side": "external",
+      "profile": "rust-workspace",
+      "instrument": "no rules cut",
+      "commit": "cdbcf5a13cba2b0aab505977ba413f707bc06290",
+      "shallow": false,
+      "values": {
+        "implementation_code": {
+          "value": 24501,
+          "text": "24,501",
+          "status": "measured",
+          "note": "Counted 2026-11-18 with tokei 14.0.0 at the pin already used for the depth row. Test lines are that row's published split. No tooling role, so program equals implementation."
+        },
+        "program_code": {
+          "value": 24501,
+          "text": "24,501",
+          "status": "measured"
+        },
+        "tooling_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "rules_share": {
+          "value": null,
+          "text": "no cut",
+          "status": "no-cut",
+          "note": "No published file or crate boundary for this tree. The cell is no cut, not a zero."
+        },
+        "mixed_share": {
+          "value": null,
+          "text": "no cut",
+          "status": "no-cut"
+        },
+        "test_per_implementation": {
+          "value": 0.92,
+          "text": "0.92",
+          "status": "measured",
+          "note": "22,442 test lines divided by 24,501 implementation lines. The test lines are the published depth split."
+        },
+        "vendored_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured",
+          "note": "No vendor directory in the pinned tree."
+        },
+        "locale_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "share_lines_ge_1000": {
+          "value": 14.6,
+          "text": "14.6%",
+          "status": "measured"
+        },
+        "files_holding_half": {
+          "value": 15,
+          "text": "15",
+          "status": "measured"
+        }
+      }
+    },
+    {
+      "slug": "rbitcoin",
+      "name": "rbitcoin",
+      "side": "external",
+      "profile": "rust-workspace",
+      "instrument": "no rules cut",
+      "commit": "ca7bf804ed44d7efdca3da219ead6e644d35fd9e",
+      "shallow": false,
+      "values": {
+        "implementation_code": {
+          "value": 174786,
+          "text": "174,786",
+          "status": "measured",
+          "note": "Counted 2026-11-18 with tokei 14.0.0 at the pin already used for the depth row. Test lines are that row's published split. Bitcoin Core is a git submodule and is not in this count. No tooling role, so program equals implementation."
+        },
+        "program_code": {
+          "value": 174786,
+          "text": "174,786",
+          "status": "measured"
+        },
+        "tooling_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "rules_share": {
+          "value": null,
+          "text": "no cut",
+          "status": "no-cut",
+          "note": "No published file or crate boundary for this tree. The cell is no cut, not a zero."
+        },
+        "mixed_share": {
+          "value": null,
+          "text": "no cut",
+          "status": "no-cut"
+        },
+        "test_per_implementation": {
+          "value": 1.19,
+          "text": "1.19",
+          "status": "measured",
+          "note": "207,505 test lines divided by 174,786 implementation lines. The test lines are the published depth split."
+        },
+        "vendored_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured",
+          "note": "third_party/ is the vendor prefix and was empty at the pin. The Bitcoin Core submodule is not in the tree."
+        },
+        "locale_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "share_lines_ge_1000": {
+          "value": 52.7,
+          "text": "52.7%",
+          "status": "measured"
+        },
+        "files_holding_half": {
+          "value": 40,
+          "text": "40",
+          "status": "measured"
+        }
+      }
+    },
+    {
+      "slug": "btcd",
+      "name": "btcd",
+      "side": "external",
+      "profile": "generic",
+      "instrument": "no rules cut",
+      "commit": "dd169fe0c32a56087d28b92fff3b8cf4fb43477a",
+      "shallow": false,
+      "values": {
+        "implementation_code": {
+          "value": 66331,
+          "text": "66,331",
+          "status": "measured",
+          "note": "Counted 2026-11-18 with tokei 14.0.0 at the pin already used for the depth row. Test lines are that row's published split. No tooling role, so program equals implementation."
+        },
+        "program_code": {
+          "value": 66331,
+          "text": "66,331",
+          "status": "measured"
+        },
+        "tooling_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "rules_share": {
+          "value": null,
+          "text": "no cut",
+          "status": "no-cut",
+          "note": "No published file or crate boundary for this tree. The cell is no cut, not a zero."
+        },
+        "mixed_share": {
+          "value": null,
+          "text": "no cut",
+          "status": "no-cut"
+        },
+        "test_per_implementation": {
+          "value": 1.02,
+          "text": "1.02",
+          "status": "measured",
+          "note": "67,879 test lines divided by 66,331 implementation lines. The test lines are the published depth split."
+        },
+        "vendored_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured",
+          "note": "No vendor directory in the pinned tree."
+        },
+        "locale_code": {
+          "value": 0,
+          "text": "0",
+          "status": "measured"
+        },
+        "share_lines_ge_1000": {
+          "value": 25.4,
+          "text": "25.4%",
+          "status": "measured"
+        },
+        "files_holding_half": {
+          "value": 33,
+          "text": "33",
           "status": "measured"
         }
       }

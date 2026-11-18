@@ -43,7 +43,10 @@ export default {
         const nTrees = ctx.model.rows.length - noTree.length;
         const list = function (a) { return a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + ", and " + a[a.length - 1]; };
         const lines = G.how_to_read.map(function (l) {
-            if (/^Size and composition tables cover/.test(l)) return "Size and composition tables cover " + nTrees + " trees. " + list(noTree) + " appear in the other tables but have no size row.";
+            if (/^Size and composition tables cover/.test(l)) {
+                if (!noTree.length) return "Size and composition tables cover all " + nTrees + " measured trees.";
+                return "Size and composition tables cover " + nTrees + " trees. " + list(noTree) + " appear in the other tables but have no size row.";
+            }
             // Partial scores 1 on the radials; only not-measured and n/a are gaps.
             if (/^The page is organized on three axes/.test(l)) return "Code-health figures are sizes and counts, not grades.";
             if (/^Assurance radials score/.test(l)) return l.replace(" That rule is printed on the page.", "").replace("A not-measured, partial, or n/a cell", "A not-measured or n/a cell");

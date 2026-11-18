@@ -11,9 +11,9 @@
     "The page is organized on three axes: independence (own codebase or Core-derived), assurance (the six-layer verification stack), and accountability (who can change the code and how). Code-health figures sit under those axes; they are sizes and counts, not grades.",
     "Assurance radials score yes = 2, partial = 1, and not found = 0. That rule is printed on the page. A not-measured, partial, or n/a cell is a gap or hatch, never a zero. A missing spoke is not a weak score.",
     "\"Not found\" means no public source turned up. It does not mean the project lacks the thing.",
-    "Every numeric cell is dated (this reading: 2026-11-12) and pinned to a commit. Sources open under the row. Author and release counts use the 12 months from 2025-11-12 to 2026-11-12.",
-    "Rules share uses three different cuts. Those percentages are not comparable across cuts. Several rules-share cells are not measured, including BLVM's.",
-    "Size and composition tables cover nine trees. Floresta, rbitcoin, and btcd appear in the other tables but have no size row.",
+    "Every numeric cell is dated and pinned to a commit. This reading is 2026-11-12, except the Floresta, rbitcoin, and btcd size rows, counted 2026-11-18 at the pins already used for their depth rows. Author and release counts use the 12 months from 2025-11-12 to 2026-11-12.",
+    "Rules share uses three different cuts. Those percentages are not comparable across cuts. A cell that says not measured was not counted. A cell that says no cut has no rules boundary to count.",
+    "Size and composition tables cover every measured tree.",
     "Some checkouts are shallow. Process figures for Bitcoin Core come from cited research reports and are not scored this week for the H2–H6 rows.",
     "The implementation is called BLVM. \"Bitcoin Commons\" names the written governance rules.",
     "No chart or caption on this page claims a full-chain differential result."
