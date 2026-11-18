@@ -334,7 +334,7 @@
         {
           "name": "Human authors, 12 months",
           "field": "metrics.json` `rows[].authors_12m",
-          "what": "Distinct human commit authors on the landing-share repo set in the last 12 months.",
+          "what": "Distinct human commit authors in the last 12 months. BLVM counts every blvm and blvm-* repository. The other rows stay on the landing-share repository.",
           "why": "It is a head-count of people who landed commits in the window, after aliases are merged and bots are dropped — not a measure of review or of governance.",
           "how_omitted": "contains figures; the page shows them from data",
           "caveats_omitted": "contains figures; the page shows them from data",
