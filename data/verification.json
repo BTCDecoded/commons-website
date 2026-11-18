@@ -43,7 +43,7 @@
       "id": "differential",
       "name": "Differential vs Core",
       "short": "Diff vs Core",
-      "what": "Tests that compare verdicts with Bitcoin Core or its libraries."
+      "what": "A comparison of this implementation's own consensus verdicts with Bitcoin Core. yes means both layers of the canonical chain: every input's script, and every block's accept or reject. partial means a comparison on a generated or sampled set."
     }
   ],
   "rows": [
@@ -152,7 +152,7 @@
         },
         "differential": {
           "status": "yes",
-          "text": "Script verdicts against libbitcoinconsensus; block accept or reject against libbitcoinkernel in blvm-bench. No full-chain result is claimed here",
+          "text": "Phase 1 runs BLVM's script verifier on every non-coinbase input of the canonical chain. Phase 2 compares each block's accept or reject with libbitcoinkernel, with scripts skipped on both sides. Both phases have been run. Mempool, peer, and wallet checks are outside this comparison.",
           "source": "https://github.com/BTCDecoded/blvm-bench/blob/3d5cd92371d497bb3ae7807a5f07cd4ca8c9b762/README_DIFFERENTIAL_TESTING.md"
         }
       }
@@ -308,8 +308,8 @@
           "source": "https://github.com/gosuda/bitcoin-rs/blob/60b33f6be7c55eb27e6892cdb7770687a8e40276/docs/contracts/formal-verification.md"
         },
         "differential": {
-          "status": "yes",
-          "text": "Vector, boundary and block parity tests against libbitcoinkernel",
+          "status": "partial",
+          "text": "Vector, boundary, and block parity tests against libbitcoinkernel. Not a pass over the canonical chain.",
           "source": "https://github.com/gosuda/bitcoin-rs/blob/60b33f6be7c55eb27e6892cdb7770687a8e40276/crates/consensus/tests/kernel_block_parity.rs"
         }
       }
@@ -342,8 +342,8 @@
           "status": "not found"
         },
         "differential": {
-          "status": "yes",
-          "text": "Script shadow validation against libbitcoinkernel and a block differential fuzz workflow",
+          "status": "partial",
+          "text": "Script shadow checks against libbitcoinkernel and a block differential fuzz workflow. Not a pass over the canonical chain.",
           "source": "https://github.com/epochbtc/satd/blob/d2dc5cf78c086db7d8de555050ae52539cd82d5a/.github/workflows/core_block_differential_fuzz.yml"
         }
       }
@@ -462,8 +462,8 @@
           "status": "not found"
         },
         "differential": {
-          "status": "yes",
-          "text": "Script and block differential fuzz targets against libbitcoinconsensus and a Core oracle",
+          "status": "partial",
+          "text": "Regtest fuzz targets that spawn bitcoind and compare accept or reject, plus a VerifyScript oracle. Not a pass over the canonical chain.",
           "source": "https://github.com/reardencode/rbitcoin/blob/ca7bf804ed44d7efdca3da219ead6e644d35fd9e/fuzz/fuzz_targets/script_verify_differential.rs"
         }
       }

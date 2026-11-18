@@ -16,7 +16,7 @@
     "Size and composition tables cover every measured tree.",
     "Some checkouts are shallow. Process figures for Bitcoin Core come from cited research reports and are not scored this week for the H2–H6 rows.",
     "The implementation is called BLVM. \"Bitcoin Commons\" names the written governance rules.",
-    "No chart or caption on this page claims a full-chain differential result."
+    "Differential yes means both layers of the canonical chain have been run: every input's script, and every block's accept or reject. A fuzz oracle or a sampled block set is partial."
   ],
   "groups": [
     {
@@ -98,7 +98,7 @@
           "what": "Tests that compare verdicts with Bitcoin Core or its libraries.",
           "why": "An independent implementation only helps if it can show it enforces the same rules as everyone else.",
           "how": "Public-repository reading, with a source link.",
-          "caveats": "Bitcoin Core is n/a. BLVM's cell states script verdicts against libbitcoinconsensus and block accept or reject against libbitcoinkernel in blvm-bench, and says \"No full-chain result is claimed here.\" Do not describe any row as having a full-chain differential result.",
+          "caveats": "Bitcoin Core is n/a. yes is both layers of the canonical chain. partial is a comparison on a generated or sampled set. Mempool, peer, and wallet checks are outside the comparison.",
           "link": "#eco-glance"
         }
       ]
