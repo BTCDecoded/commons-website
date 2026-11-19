@@ -1,6 +1,10 @@
-# Bitcoin Commons Website
+# Bitcoin Commons
 
-Static GitHub Pages site for The Bitcoin Commons at [thebitcoincommons.org](https://thebitcoincommons.org).
+Bitcoin belongs to no one.
+
+Static GitHub Pages site for [thebitcoincommons.org](https://thebitcoincommons.org).
+
+Bitcoin Commons is the open consensus specification and coordination for independent implementation. BLVM is one implementation of those written rules, not the rules themselves.
 
 ## Structure
 
@@ -18,4 +22,3 @@ The homepage version callout uses data from **`scripts/fetch-blvm-release-meta.m
 ## License
 
 MIT License - see LICENSE file.
-
