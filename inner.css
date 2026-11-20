@@ -486,3 +486,14 @@ mjx-container:not([display="true"]) {
   max-width: 100%;
   overflow-x: auto;
 }
+
+/* Long reference URLs and file paths in the white paper are single unbroken
+   words (up to 71 characters) and push the page past 390 px on phones. */
+.whitepaper-content {
+  overflow-wrap: break-word;
+}
+
+.whitepaper-content a,
+.whitepaper-content :not(pre) > code {
+  overflow-wrap: anywhere;
+}
