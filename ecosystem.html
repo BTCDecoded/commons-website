@@ -20,11 +20,11 @@
     <meta name="twitter:description" content="Program size, test lines, and the operating record of each full-node tree. The written rules are a separate record, in the Consensus Spec.">
     <meta name="twitter:image" content="https://thebitcoincommons.org/assets/brand/BC_share_og_1200x630.png">
     <meta name="twitter:image:alt" content="Ecosystem - Bitcoin Commons">
-    <link rel="stylesheet" href="style.css?v=25" />
+    <link rel="stylesheet" href="style.css?v=26" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="inner.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="inner.css?v=4">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -127,7 +127,7 @@
             grid-column: 1 / -1;
             height: 18px;
             margin-top: 0.35rem;
-            background: #111113;
+            background: #0d0d0d;
             border-radius: 4px;
             overflow: hidden;
         }
@@ -426,7 +426,7 @@
             border: 1px solid var(--rule);
             border-radius: 8px;
             padding: 0.85rem 1rem;
-            background: #111113;
+            background: #0d0d0d;
         }
         .eco-type h3 { margin: 0 0 0.35rem; font-size: 1rem; color: var(--white); font-weight: 500; }
         .eco-type p { margin: 0; max-width: none; }
@@ -532,7 +532,7 @@
             padding: 0.3rem 0.85rem;
             border-radius: 999px;
             border: 1px solid var(--rule);
-            background: #111113;
+            background: #0d0d0d;
         }
         .eco-chip[aria-pressed="true"] { border-color: #8a8a94; color: var(--white); background: #222227; }
         .eco-chip[aria-pressed="false"] { color: #c4c4cc; text-decoration: line-through; }
@@ -558,7 +558,7 @@
         .eco-cmp td .num { display: block; }
         .eco-cmp td small { display: block; color: #c4c4cc; font-size: 0.75rem; margin-top: 0.2rem; font-family: var(--font-sans); }
         .eco-cmp th.internal, .eco-board th.internal { color: var(--orange); }
-        .mini { display: flex; height: 8px; margin-top: 0.3rem; background: #111113; border-radius: 2px; overflow: hidden; }
+        .mini { display: flex; height: 8px; margin-top: 0.3rem; background: #0d0d0d; border-radius: 2px; overflow: hidden; }
         .mini-fill { display: block; height: 100%; background: #b9b9c2; flex: none; }
         .mini-fill.internal { background: var(--orange); }
         .mini-fill.program { background: #b9b9c2; }
@@ -775,7 +775,7 @@
             .eco-measures { grid-template-columns: 1fr; }
         }
         /* Summary charts (scripts/charts.mjs). */
-        .ch { margin: 0.75rem 0 1.25rem; padding: 0.9rem 1rem 0.75rem; border: 1px solid var(--rule); border-radius: 10px; background: #111113; max-width: min(52rem, 100%); box-sizing: border-box; min-width: 0; }
+        .ch { margin: 0.75rem 0 1.25rem; padding: 0.9rem 1rem 0.75rem; border: 1px solid var(--rule); border-radius: 10px; background: #0d0d0d; max-width: min(52rem, 100%); box-sizing: border-box; min-width: 0; }
         .ch figcaption { margin: 0 0 0.75rem; color: var(--text); line-height: 1.45; }
         .ch-head { display: block; color: var(--white); font-weight: 500; font-size: 1.05rem; margin-bottom: 0.2rem; }
         .eco-fv { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin: 0; padding: 0; list-style: none; }
@@ -817,13 +817,13 @@
         .ch-cell.st-nf { fill: #1d1d21; stroke: #3a3a42; stroke-width: 1; }
         .ch-cell.st-na { fill: none; stroke: #2a2a2f; stroke-dasharray: 3 3; }
         .ch-cellt { font-size: 12px; }
-        .st-yes-t { fill: #111113; font-weight: 600; }
+        .st-yes-t { fill: #0d0d0d; font-weight: 600; }
         .st-partial-t { fill: #ffd9b3; }
         .st-nf-t { fill: #a8a8b3; }
         .st-na-t { fill: #a8a8b3; }
         .ch-grid { stroke: #222227; stroke-width: 1; }
-        .ch-dot { fill: #b9b9c2; stroke: #111113; stroke-width: 1.5; }
-        .ch-dot-hl { fill: var(--orange); stroke: #111113; stroke-width: 1.5; }
+        .ch-dot { fill: #b9b9c2; stroke: #0d0d0d; stroke-width: 1.5; }
+        .ch-dot-hl { fill: var(--orange); stroke: #0d0d0d; stroke-width: 1.5; }
         .ch-leader { stroke: #5a5a64; stroke-width: 1; }
         .ch-group { fill: #17171a; stroke: var(--rule); }
         .ch-group-core { stroke: #6d7c8a; }
@@ -872,9 +872,9 @@
         .ch-median-line { stroke: #F0E442; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }
         .ch-med-label { fill: #F0E442; }
         .ch-r-all { fill: #b9b9c2; stroke: #b9b9c2; }
-        .ch-rdot { stroke: #111113; stroke-width: 1; }
+        .ch-rdot { stroke: #0d0d0d; stroke-width: 1; }
         .ch-pendt { fill: #F0E442; }
-        .ch-halo-d { stroke: #111113; stroke-width: 4px; stroke-linejoin: round; paint-order: stroke; }
+        .ch-halo-d { stroke: #0d0d0d; stroke-width: 4px; stroke-linejoin: round; paint-order: stroke; }
         .ch-pendt-html { color: #F0E442; font-weight: 400; }
         .ch-wtrack { fill: #1d1d21; stroke: #5a5a64; stroke-width: 1; }
         .ch-wfill { fill: #b9b9c2; }
@@ -883,7 +883,7 @@
         .ch-wfill-p { fill-opacity: 0.85; }
         .ch-wglyph { fill: var(--white); }
         .ch-wscore { fill: var(--white); font-family: var(--font-mono); font-weight: 600; }
-        .ch-dot-core { fill: #56B4E9; stroke: #111113; stroke-width: 1.5; }
+        .ch-dot-core { fill: #56B4E9; stroke: #0d0d0d; stroke-width: 1.5; }
         .ch-pill { fill: #1d1d21; stroke: #5a5a64; }
         .ch-pill-hl { stroke: var(--orange); }
         .ch-pill-core { stroke: #56B4E9; }
@@ -894,11 +894,11 @@
         .ch-link:hover .ch-pill, .ch-link:hover .ch-node { stroke: var(--white); }
         .ch-sub { margin: 0.9rem 0 0.2rem; font-size: 0.95rem; font-weight: 500; color: #c4c4cc; }
         .ch-lead { margin: 0.35rem 0 0.6rem; color: #c4c4cc; }
-        dialog.eco-dock { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; border: 0; border-radius: 0; background: #111113; color: var(--text); padding: 1rem max(1rem, env(safe-area-inset-right)) 1.5rem max(1rem, env(safe-area-inset-left)); overflow: auto; overscroll-behavior: contain; }
-        dialog.eco-dock::backdrop { background: #111113; }
+        dialog.eco-dock { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; border: 0; border-radius: 0; background: #0d0d0d; color: var(--text); padding: 1rem max(1rem, env(safe-area-inset-right)) 1.5rem max(1rem, env(safe-area-inset-left)); overflow: auto; overscroll-behavior: contain; }
+        dialog.eco-dock::backdrop { background: #0d0d0d; }
         html.eco-lock, html.eco-lock body { overflow: hidden; }
         .eco-dock .eco-card { scroll-margin: 0; }
-        .eco-dock-bar { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 1rem; position: sticky; top: 0; z-index: 5; background: #111113; padding-bottom: 0.65rem; border-bottom: 1px solid var(--rule); }
+        .eco-dock-bar { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 1rem; position: sticky; top: 0; z-index: 5; background: #0d0d0d; padding-bottom: 0.65rem; border-bottom: 1px solid var(--rule); }
         .eco-dock-title { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.45rem 0.7rem; color: var(--white); font-size: 1.35rem; font-weight: 600; margin: 0; min-width: 0; }
         .eco-dock-bits { display: inline-flex; align-items: center; gap: 0.45rem; font-weight: 400; }
         .eco-dock-title.is-internal { color: var(--orange); }
@@ -1001,7 +1001,7 @@
         .eco-dock-matrix { overflow-x: auto; }
         .eco-matrix { width: 100%; font-size: 0.95rem; border-collapse: collapse; }
         .eco-matrix th, .eco-matrix td { text-align: left; white-space: normal; vertical-align: top; padding: 0.35rem 0.75rem 0.35rem 0; }
-        .eco-matrix thead th { position: sticky; top: 4.4rem; background: #111113; z-index: 1; }
+        .eco-matrix thead th { position: sticky; top: 4.4rem; background: #0d0d0d; z-index: 1; }
         .eco-matrix td:not(.nm) { font-family: var(--font-mono); white-space: nowrap; }
         .eco-matrix td.nm { color: #8d8d96; }
         .eco-matrix td.is-hl, .eco-matrix th.is-hl { color: var(--orange); }
@@ -1150,7 +1150,7 @@
         .eco-rel-out, .ch-rel-out, .eco-rel-full, .ch-rel-full { color: #56B4E9; }
         .eco-rel-unknown, .ch-rel-unknown { color: #8d8d96; }
         .ch-cellbg { fill: transparent; stroke: none; }
-        .eco-howto { border: 1px solid var(--rule); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.75rem 0 1rem; background: #111113; max-width: 52rem; }
+        .eco-howto { border: 1px solid var(--rule); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.75rem 0 1rem; background: #0d0d0d; max-width: 52rem; }
         .eco-howto h3 { margin: 0 0 0.5rem; font-size: 1.05rem; }
         .eco-howto p, .eco-howto li { max-width: none; }
         ul.eco-keys { list-style: none; padding: 0; margin: 0.75rem 0 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: 0.55rem 1.25rem; }
@@ -1166,14 +1166,14 @@
         .eco-gloss dd { margin: 0.15rem 0 0; color: #c4c4cc; }
         .eco-gloss dd a { display: inline-flex; align-items: center; min-height: 44px; }
         .eco-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: 0.75rem; margin: 0.75rem 0 1rem; max-width: 100%; }
-        .eco-tile { display: block; border: 1px solid var(--rule); border-radius: 10px; padding: 0.85rem 0.9rem; background: #111113; color: var(--text); text-decoration: none; min-height: 44px; }
+        .eco-tile { display: block; border: 1px solid var(--rule); border-radius: 10px; padding: 0.85rem 0.9rem; background: #0d0d0d; color: var(--text); text-decoration: none; min-height: 44px; }
         .eco-tile:hover, .eco-tile:focus-visible { border-color: var(--orange); outline: none; }
         .eco-tile-axis { display: block; color: #c4c4cc; font-size: 0.8rem; letter-spacing: 0.05em; text-transform: uppercase; }
         .eco-tile-big { display: block; color: var(--white); font-family: var(--font-mono); font-size: 1.6rem; margin: 0.2rem 0; }
         .eco-tile-line { display: block; font-size: 0.95rem; line-height: 1.4; }
         .eco-tile-q { display: block; color: #c4c4cc; font-size: 0.85rem; margin-top: 0.35rem; }
         .eco-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap: 0.75rem; margin: 0.5rem 0 1rem; }
-        .eco-card { border: 1px solid var(--rule); border-radius: 10px; padding: 0.8rem 0.85rem; background: #111113; scroll-margin-top: var(--eco-sticky-offset); }
+        .eco-card { border: 1px solid var(--rule); border-radius: 10px; padding: 0.8rem 0.85rem; background: #0d0d0d; scroll-margin-top: var(--eco-sticky-offset); }
         .eco-card.internal { border-color: var(--orange); }
         .eco-card h3 { margin: 0; font-size: 1.1rem; }
         .eco-card.internal h3 { color: var(--orange); }
@@ -1310,7 +1310,7 @@
         .eco-stab-h .nm { color: #c4c4cc; }
         .eco-stab-meter { display: flex; gap: 3px; }
         .eco-stab-seg { flex: 1; min-height: 1.5rem; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 0.85rem; border: 1px solid #8a8a94; color: var(--white); }
-        .eco-stab-seg.s-met { background: #56B4E9; border-color: #56B4E9; color: #111113; font-weight: 700; }
+        .eco-stab-seg.s-met { background: #56B4E9; border-color: #56B4E9; color: #0d0d0d; font-weight: 700; }
         .eco-stab-seg.s-not_met { background: transparent; }
         .eco-stab-seg.s-not_measured { background: repeating-linear-gradient(135deg, #17171a 0 5px, #3a3a42 5px 7px); color: #e4e4ea; }
         .eco-glance td.stab { white-space: normal; width: 8rem; }
@@ -1321,7 +1321,7 @@
         .eco-howto-lines { margin: 0.4rem 0 0.75rem; padding-left: 1.2rem; max-width: 52rem; }
         .eco-howto-lines li { margin: 0.25rem 0; }
         .eco-gloss-g { margin: 1rem 0 0.35rem; font-size: 1rem; color: var(--white); }
-        .eco-gloss-tag { font-size: 0.8rem; font-weight: 400; color: #111113; background: #56B4E9; border-radius: 3px; padding: 0 0.3rem; }
+        .eco-gloss-tag { font-size: 0.8rem; font-weight: 400; color: #0d0d0d; background: #56B4E9; border-radius: 3px; padding: 0 0.3rem; }
         .eco-stab-tag { margin: 0.3rem 0 0; font-size: 0.85rem; }
         .eco-stab-list { margin: 0.3rem 0 0; font-size: 0.9rem; }
         .eco-stab-list.s-not_met b { color: var(--white); }
@@ -1694,7 +1694,7 @@
         <div class="footer-col">
           <h3>Resources</h3>
           <ul>
-            <li><a href="https://docs.btcdecoded.org/blvm">Documentation</a></li>
+            <li><a href="https://docs.btcdecoded.org/blvm">BLVM docs</a></li>
             <li><a href="index.html#faq">FAQ</a></li>
           </ul>
         </div>
@@ -1705,7 +1705,7 @@
             <li><a href="https://btcdecoded.org">BTCDecoded</a></li>
             <li><a href="https://plebly.fund/#projects">Plebly</a></li>
             <li><a href="https://github.com/BTCDecoded/governance">Governance repo</a></li>
-            <li><a href="https://btcdecoded.org/install/">Install</a></li>
+            <li><a href="https://btcdecoded.org/install/">Install BLVM</a></li>
           </ul>
         </div>
       </div>
