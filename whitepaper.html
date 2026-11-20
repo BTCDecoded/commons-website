@@ -4,25 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'; font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data: https:;">
-    <title>The Bitcoin Commons - White Paper</title>
-    <meta name="description" content="Design argument for Bitcoin Commons: Ostrom's principles, a Governance App merge gate, and forkable rules. Cryptographic enforcement is specified, not yet on.">
+    <title>Bitcoin Commons - White Paper</title>
+    <meta name="description" content="Design argument for Bitcoin Commons: Ostrom's principles, a Governance App merge gate, forkable rules. Cryptographic enforcement is specified, not yet on.">
     <link rel="canonical" href="https://thebitcoincommons.org/whitepaper.html" />
-    <meta property="og:title" content="The Bitcoin Commons - White Paper">
+    <meta property="og:title" content="Bitcoin Commons - White Paper">
     <meta property="og:description" content="Design argument for forkable governance and a cryptographic merge gate. Enforcement is specified, not yet on.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://thebitcoincommons.org/whitepaper.html">
-    <meta property="og:image" content="https://thebitcoincommons.org/assets/og-image.png">
+    <meta property="og:image" content="https://thebitcoincommons.org/assets/brand/BC_share_og_1200x630.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Bitcoin Commons - White Paper">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="The Bitcoin Commons - White Paper">
+    <meta name="twitter:title" content="Bitcoin Commons - White Paper">
     <meta name="twitter:description" content="Design argument for forkable governance and a cryptographic merge gate. Enforcement is specified, not yet on.">
-    <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
-    <link rel="stylesheet" href="style.css?v=25" />
+    <meta name="twitter:image" content="https://thebitcoincommons.org/assets/brand/BC_share_og_1200x630.png">
+    <meta name="twitter:image:alt" content="Bitcoin Commons - White Paper">
+    <link rel="stylesheet" href="style.css?v=26" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="inner.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="inner.css?v=5">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -30,9 +32,13 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link rel="icon" href="favicon.ico" sizes="any">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
-    <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/assets/brand/favicon-48.png" type="image/png" sizes="48x48" />
+    <link rel="icon" href="/assets/brand/favicon-96.png" type="image/png" sizes="96x96" />
+    <link rel="icon" href="/assets/brand/favicon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png" sizes="180x180" />
+    <link rel="manifest" href="/site.webmanifest" />
 </head>
 <body>
     <nav class="site-nav" aria-label="Site">
@@ -47,22 +53,22 @@
           </summary>
           <ul class="nav-links">
             <li><a href="index.html#spec">Specification</a></li>
-            <li><a href="index.html#implementations">Install</a></li>
+            <li><a href="index.html#implementations">Implementations</a></li>
             <li><a href="whitepaper.html" aria-current="page">White paper</a></li>
             <li><a href="index.html#governance">Governance</a></li>
             <li><a href="ecosystem.html">Ecosystem</a></li>
             <li><a href="index.html#faq">FAQ</a></li>
-            <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+            <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">BLVM docs <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
           </ul>
         </details>
         <ul class="nav-links">
           <li><a href="index.html#spec">Specification</a></li>
-          <li><a href="index.html#implementations">Install</a></li>
+          <li><a href="index.html#implementations">Implementations</a></li>
           <li><a href="whitepaper.html" aria-current="page">White paper</a></li>
           <li><a href="index.html#governance">Governance</a></li>
           <li><a href="ecosystem.html">Ecosystem</a></li>
           <li><a href="index.html#faq">FAQ</a></li>
-          <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+          <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">BLVM docs <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
         </ul>
       </div>
     </nav>

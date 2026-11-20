@@ -592,6 +592,21 @@
         wrapFormulaGrids(root);
     }
 
+    /* Wide display equations scroll inside their own wrapper so the page never
+       scrolls sideways on phones. The wrapper scrolls, not .spec-display-math,
+       so stretchy braces inside it are not clipped (see style.css). */
+    function wrapDisplayMath(root) {
+        root.querySelectorAll('.spec-display-math').forEach(function (el) {
+            if (el.closest('.spec-formula') || (el.parentNode && el.parentNode.classList && el.parentNode.classList.contains('spec-display-math-scroll'))) {
+                return;
+            }
+            var wrap = document.createElement('div');
+            wrap.className = 'spec-display-math-scroll';
+            el.parentNode.insertBefore(wrap, el);
+            wrap.appendChild(el);
+        });
+    }
+
     function decorateReadingCards(root) {
         root.querySelectorAll('blockquote').forEach(function (bq) {
             var first = bq.querySelector('p') || bq;
@@ -850,6 +865,7 @@
         contentEl.style.display = 'block';
         decorateFormulaBlocks(contentEl);
         decorateReadingCards(contentEl);
+        wrapDisplayMath(contentEl);
         rewriteSpecLinks(contentEl);
         addHeadingPermalinks(contentEl);
         linkImplementationPaths(contentEl);
