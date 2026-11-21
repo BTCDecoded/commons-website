@@ -438,3 +438,97 @@ mjx-container:not([display="true"]) {
   .spec-rail { display: none; }
   .spec-shell { display: block; max-width: none; }
 }
+
+/* Phone fit + protocol page a11y. Class names match the wrapDisplayMath
+   helper on commons-website#32 so a later merge can keep one copy of the
+   scroll wrappers. Wide math, tables, and pre scroll inside the content
+   width. Body-prose links are underlined; nav, buttons, and permalinks
+   stay as they are. */
+.orange-paper-content {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.orange-paper-container,
+.spec-main {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.orange-paper-content :not(pre) > code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.orange-paper-content a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.orange-paper-content a.spec-permalink {
+  text-decoration: none;
+}
+
+/* The wrapper scrolls; .spec-display-math keeps overflow: visible so
+   stretchy braces are not clipped. Padding gives tall glyphs room. */
+.spec-display-math-scroll,
+.spec-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 0;
+}
+
+.spec-formula-math {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.orange-paper-content pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.spec-display-math-scroll:focus,
+.spec-table-scroll:focus,
+.spec-formula-math:focus,
+.orange-paper-content pre:focus {
+  outline: 1px solid var(--orange);
+  outline-offset: 2px;
+}
+
+.orange-paper-content mjx-container[display="true"] {
+  max-width: none;
+}
+
+.spec-table-scroll table {
+  width: max-content;
+  max-width: none;
+}
+
+/* Wide inline math ($...$) also overflows at 390px; a span keeps it in
+   flow and scrolls inside the content width. */
+.spec-inline-math-scroll {
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  vertical-align: middle;
+}
+
+.spec-inline-math-scroll:focus {
+  outline: 1px solid var(--orange);
+  outline-offset: 2px;
+}
+
+/* MathJax assistive MathML is visually clipped, but width:auto / width:100%
+   on a position:absolute node still widens a position:relative mjx-container
+   and the page. Keep the node in the tree for AT, not in the layout. */
+mjx-container mjx-assistive-mml,
+mjx-container mjx-assistive-mml[display="block"] {
+  width: 1px !important;
+  max-width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+}

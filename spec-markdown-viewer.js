@@ -639,6 +639,183 @@
         }
     }
 
+    /* Wide display equations scroll inside their own wrapper so the page never
+       scrolls sideways on phones. The wrapper scrolls, not .spec-display-math,
+       so stretchy braces inside it are not clipped (see inner.css). Class name
+       matches the helper on commons-website#32. */
+    function wrapDisplayMath(root) {
+        root.querySelectorAll('.spec-display-math').forEach(function (el) {
+            if (el.closest('.spec-formula') || (el.parentNode && el.parentNode.classList && el.parentNode.classList.contains('spec-display-math-scroll'))) {
+                return;
+            }
+            var wrap = document.createElement('div');
+            wrap.className = 'spec-display-math-scroll';
+            el.parentNode.insertBefore(wrap, el);
+            wrap.appendChild(el);
+        });
+    }
+
+    function wrapWideTables(root) {
+        root.querySelectorAll('table').forEach(function (table) {
+            if (table.closest('.spec-table-scroll')) {
+                return;
+            }
+            var wrap = document.createElement('div');
+            wrap.className = 'spec-table-scroll';
+            table.parentNode.insertBefore(wrap, table);
+            wrap.appendChild(table);
+        });
+    }
+
+    function isHorizontallyScrollable(el) {
+        return !!(el && el.scrollWidth > el.clientWidth + 1);
+    }
+
+    function enhanceScrollRegion(el, label) {
+        if (!el.hasAttribute('tabindex')) {
+            el.setAttribute('tabindex', '0');
+        }
+        if (!el.getAttribute('role')) {
+            el.setAttribute('role', 'region');
+        }
+        if (!el.getAttribute('aria-label')) {
+            el.setAttribute('aria-label', label);
+        }
+    }
+
+    function enhanceOverflowRegions(root) {
+        root.querySelectorAll('mjx-container[display="true"]').forEach(function (el) {
+            if (el.closest('.spec-display-math-scroll, .spec-formula-math, .spec-formula')) {
+                return;
+            }
+            var wrap = document.createElement('div');
+            wrap.className = 'spec-display-math-scroll';
+            el.parentNode.insertBefore(wrap, el);
+            wrap.appendChild(el);
+        });
+
+        root.querySelectorAll('mjx-container:not([display="true"])').forEach(function (el) {
+            if (el.closest('.spec-display-math-scroll, .spec-inline-math-scroll, .spec-formula-math, .spec-formula, .spec-table-scroll')) {
+                return;
+            }
+            var parent = el.parentElement;
+            if (!parent) {
+                return;
+            }
+            var limit = parent.clientWidth;
+            if (limit <= 0) {
+                return;
+            }
+            if (el.getBoundingClientRect().width <= limit + 1) {
+                return;
+            }
+            var wrap = document.createElement('span');
+            wrap.className = 'spec-inline-math-scroll';
+            el.parentNode.insertBefore(wrap, el);
+            wrap.appendChild(el);
+        });
+
+        root.querySelectorAll('.spec-display-math-scroll, .spec-inline-math-scroll').forEach(function (el) {
+            if (isHorizontallyScrollable(el)) {
+                enhanceScrollRegion(el, 'Formula');
+            }
+        });
+        root.querySelectorAll('.spec-formula-math').forEach(function (el) {
+            if (isHorizontallyScrollable(el)) {
+                enhanceScrollRegion(el, 'Formula');
+            }
+        });
+        root.querySelectorAll('.spec-table-scroll').forEach(function (el) {
+            if (isHorizontallyScrollable(el)) {
+                enhanceScrollRegion(el, 'Table');
+            }
+        });
+        root.querySelectorAll('pre').forEach(function (el) {
+            if (el.closest('.spec-table-scroll, .spec-display-math-scroll')) {
+                return;
+            }
+            if (isHorizontallyScrollable(el)) {
+                enhanceScrollRegion(el, 'Code block');
+            }
+        });
+    }
+
+    function labelFromHref(href) {
+        try {
+            var u = new URL(href, window.location.href);
+            var host = u.hostname || '';
+            var parts = u.pathname.split('/').filter(Boolean);
+            var last = parts.length ? decodeURIComponent(parts[parts.length - 1]) : '';
+            last = last.replace(/_/g, ' ').replace(/-/g, ' ').trim();
+            if (/(^|\.)wikipedia\.org$/i.test(host)) {
+                return last ? 'Wikipedia: ' + last : 'Wikipedia';
+            }
+            return last || host || href;
+        } catch (err) {
+            return href;
+        }
+    }
+
+    /* MathJax leaves some markdown links (math-only link text, e.g. the
+       Wikipedia Big-O link in PROTOCOL.md) without an accessible name:
+       the glyphs are aria-hidden and mjx-assistive-mml is not used as
+       the link name. Label those from the href; do not edit the spec. */
+    function linkHasAccessibleName(a) {
+        if ((a.getAttribute('aria-label') || '').trim()) {
+            return true;
+        }
+        if ((a.getAttribute('aria-labelledby') || '').trim()) {
+            return true;
+        }
+        var img = a.querySelector('img[alt]');
+        if (img && (img.getAttribute('alt') || '').trim()) {
+            return true;
+        }
+        var name = '';
+        function walk(node) {
+            if (name) {
+                return;
+            }
+            if (node.nodeType === 3) {
+                name += node.textContent;
+                return;
+            }
+            if (node.nodeType !== 1) {
+                return;
+            }
+            if (node.getAttribute('aria-hidden') === 'true') {
+                return;
+            }
+            var tag = node.tagName;
+            if (tag === 'MJX-ASSISTIVE-MML' || tag === 'MJX-CONTAINER' || tag === 'MJX-MATH' || (node.classList && node.classList.contains('MathJax'))) {
+                return;
+            }
+            if (tag === 'SCRIPT' || tag === 'STYLE') {
+                return;
+            }
+            var kids = node.childNodes;
+            for (var i = 0; i < kids.length; i++) {
+                walk(kids[i]);
+            }
+        }
+        walk(a);
+        return name.replace(/\s+/g, ' ').trim().length > 0;
+    }
+
+    function labelEmptyLinks(root) {
+        root.querySelectorAll('a[href]').forEach(function (a) {
+            if (linkHasAccessibleName(a)) {
+                return;
+            }
+            a.setAttribute('aria-label', labelFromHref(a.getAttribute('href') || ''));
+        });
+    }
+
+    function afterTypesetDecorate(root) {
+        enhanceOverflowRegions(root);
+        labelEmptyLinks(root);
+    }
+
     function rewriteSpecLinks(root) {
         root.querySelectorAll('a[href]').forEach(function (a) {
             var href = a.getAttribute('href') || '';
@@ -850,6 +1027,8 @@
         contentEl.style.display = 'block';
         decorateFormulaBlocks(contentEl);
         decorateReadingCards(contentEl);
+        wrapDisplayMath(contentEl);
+        wrapWideTables(contentEl);
         rewriteSpecLinks(contentEl);
         addHeadingPermalinks(contentEl);
         linkImplementationPaths(contentEl);
@@ -895,6 +1074,7 @@
             MathJax.startup.promise.then(function () {
                 return MathJax.typesetPromise();
             }).then(function () {
+                afterTypesetDecorate(contentEl);
                 scrollToHash();
             }).catch(function (err) {
                 console.error('MathJax rendering error:', err);
@@ -906,6 +1086,7 @@
                     MathJax.startup.promise.then(function () {
                         return MathJax.typesetPromise();
                     }).then(function () {
+                        afterTypesetDecorate(contentEl);
                         scrollToHash();
                     }).catch(function (err) {
                         console.error('MathJax rendering error:', err);
