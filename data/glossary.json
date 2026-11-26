@@ -11,7 +11,7 @@
     "The page is organized on three axes: independence (own codebase or Core-derived), assurance (the six-layer verification stack), and accountability (who can change the code and how). Code-health figures sit under those axes; they are sizes and counts, not grades.",
     "Assurance radials score yes = 2, partial = 1, and not found = 0. That rule is printed on the page. A not-measured, partial, or n/a cell is a gap or hatch, never a zero. A missing spoke is not a weak score.",
     "\"Not found\" means no public source turned up. It does not mean the project lacks the thing.",
-    "Every numeric cell is dated and pinned to a commit. This reading is 2026-11-12, except the Floresta, rbitcoin, and btcd size rows, counted 2026-11-18 at the pins already used for their depth rows. Author counts on the card are human authors from 2026-08-28 through 2026-11-25. Release counts stay on the 12 months from 2025-11-12 to 2026-11-12.",
+    "Every numeric cell is dated and pinned to a commit. This reading is 2026-11-12, except the Floresta, rbitcoin, and btcd size rows, counted 2026-11-18 at the pins already used for their depth rows. Author counts on the card are the trailing year, recounted 2026-11-25 for 2025-11-25 through 2026-11-25. Release counts stay on the 12 months from 2025-11-12 to 2026-11-12.",
     "Rules share uses three different cuts. Those percentages are not comparable across cuts. A cell that says not measured was not counted. A cell that says no cut has no rules boundary to count.",
     "Size and composition tables cover every measured tree.",
     "Some checkouts are shallow. Process figures for Bitcoin Core come from cited research reports and are not scored this week for the H2–H6 rows.",
@@ -332,10 +332,10 @@
           "link": "#depth"
         },
         {
-          "name": "Active authors, 90 days",
-          "field": "metrics.json` `rows[].authors_90d",
-          "what": "Distinct human commit authors from 2026-08-28 through 2026-11-25. BLVM counts every blvm and blvm-* repository. The other rows stay on the landing repository's default branch. The trailing 12-month recount stays in the note.",
-          "why": "A 12-month head-count still includes people who left during the year. Ninety days is who landed a commit recently. It is not a measure of review or of governance.",
+          "name": "Human authors, trailing year",
+          "field": "metrics.json` `rows[].authors_12m",
+          "what": "Distinct human commit authors from 2025-11-25 through 2026-11-25. BLVM counts every blvm and blvm-* repository. The other rows stay on the landing repository's default branch.",
+          "why": "It is a head-count of people who landed a commit in the trailing year, after bots are dropped. It is not a measure of review or of governance.",
           "how_omitted": "contains figures; the page shows them from data",
           "caveats_omitted": "contains figures; the page shows them from data",
           "revision": "bitcoin-rs under revision",

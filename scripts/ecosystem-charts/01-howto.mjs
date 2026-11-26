@@ -6,8 +6,8 @@
 // change is correcting are tagged "pending fix".
 import { esc, govMark, releaseMark, assuranceRank, assuranceEmblem } from "../charts.mjs";
 
-const PEND_FIELD = { fuzz_targets: "fuzz_targets", authors_90d: "authors_90d", ci_workflows: "ci_workflows", ci_jobs: "ci_jobs", rules_share: "rules_share" };
-const STAR = { test_split_total: 1, vector_files: 1, spec_files: 1, release_year: 1, fuzz_targets: 1, authors_90d: 1, plugin_system: 1, direct_deps: 1, program_code: 1, checkout: 1, share_lines_ge_1000: 1, test_per_implementation: 1, rules_share: 1 };
+const PEND_FIELD = { fuzz_targets: "fuzz_targets", authors_12m: "authors_12m", ci_workflows: "ci_workflows", ci_jobs: "ci_jobs", rules_share: "rules_share" };
+const STAR = { test_split_total: 1, vector_files: 1, spec_files: 1, release_year: 1, fuzz_targets: 1, authors_12m: 1, plugin_system: 1, direct_deps: 1, program_code: 1, checkout: 1, share_lines_ge_1000: 1, test_per_implementation: 1, rules_share: 1 };
 
 function md(s) { return esc(s).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>"); }
 
