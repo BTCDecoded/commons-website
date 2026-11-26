@@ -81,7 +81,7 @@ const HINT = {
     "License": "The repository license file.",
     "Languages": "Languages with 5% or more of the code.",
     "Direct deps": "Direct third-party libraries of a default node build.",
-    "Authors": "Human commit authors in the last 12 months.",
+    "Authors": "Human commit authors from 2025-11-25 through 2026-11-25.",
     "Releases": "Tags in the last 12 months.",
     "CI jobs": "GitHub Actions jobs at the pin.",
     "Fuzz targets": "Declared fuzz harnesses at the pin."
@@ -425,7 +425,7 @@ export default {
             sources: [{ label: "data/verification.json" }, { label: "data/implementations.json" }, { label: "data/stack.json" }, { label: "data/metrics.json" }, { label: "data/stability.json" }],
             table: {
                 caption: "Implementation cards",
-                columns: ["Implementation", "Lineage", "Accountability", "Module system", "Assurance", "Program", "Tests / line", "Modules", "License", "Authors, 12 months", "Release stability"],
+                columns: ["Implementation", "Lineage", "Accountability", "Module system", "Assurance", "Program", "Tests / line", "Modules", "License", "Authors, trailing year", "Release stability"],
                 rows: rows.map(function (r) {
                     var tree = treeOf(ctx, r.slug);
                     return [r.name, r.lineage.label, r.accountability.full, metricText(r.metrics, "plugin_system"), r.assurance.score + " of " + r.assurance.max, counted(tree, "program_code"), counted(tree, "test_per_implementation"), metricText(r.metrics, "plugin_own"), r.stack && r.stack.license ? r.stack.license : "not measured", metricText(r.metrics, "authors_12m"), r.stability.text];

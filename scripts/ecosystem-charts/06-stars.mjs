@@ -21,7 +21,7 @@ export function codeHealth(rows, pending) {
         { key: "plugin", label: "Plug-in support", short: "Plug-ins", get: function (r) { const c = r.metrics && r.metrics.plugin_system; return c && c.value in PLUG ? PLUG[c.value] : null; }, max: 2, fmt: function (v) { return ["no", "partial", "yes"][v]; } },
         { key: "direct_deps", label: "Dependency surface (fewer is outward)", short: "Few deps", get: function (r) { return typeof r.stack.direct_deps === "number" ? r.stack.direct_deps : null; }, invert: true },
         { key: "fuzz_targets", label: "Fuzz targets", short: "Fuzz", get: function (r) { return mval(r, "fuzz_targets"); } },
-        { key: "authors_12m", label: "Authors, 12 months", short: "Authors", get: function (r) { return mval(r, "authors_12m"); } }
+        { key: "authors_12m", label: "Authors, trailing year", short: "Authors", get: function (r) { return mval(r, "authors_12m"); } }
     ];
     const axes = AX.map(function (a) {
         const vals = rows.map(a.get).filter(function (v) { return typeof v === "number"; });
