@@ -21,9 +21,10 @@ const GLYPH = { "yes": "\u25CF", "partial": "\u25D0", "not found": "\u25CB", "n/
 // so in words. Never drawn as zero.
 const STAB_GLYPH = { met: "\u2713", not_met: "\u2715", not_measured: "?" };
 function stabMeter(st) {
-    const segs = st.total ? st.cells.map(function (c) {
-        return "<span class=\"eco-stab-seg s-" + c.status + "\" title=\"" + esc(c.label + ": " + c.status.replace("_", " ")) + "\">" + STAB_GLYPH[c.status] + "</span>";
-    }).join("") : "<span class=\"eco-stab-seg s-not_measured s-all\">not measured</span>";
+    const segs = st.total ? "<ul class=\"eco-stab-meter\">" + st.cells.map(function (c) {
+        var status = c.status.replace("_", " ");
+        return "<li class=\"eco-stab-seg s-" + c.status + "\"><span class=\"eco-stab-glyph\" aria-hidden=\"true\">" + STAB_GLYPH[c.status] + "</span><span class=\"eco-stab-name\">" + esc(c.label) + "</span><span class=\"eco-stab-state\">" + esc(status) + "</span></li>";
+    }).join("") + "</ul>" : "<span class=\"eco-stab-seg s-not_measured s-all\">not measured</span>";
     const names = { met: "met", not_met: "not met", not_measured: "not measured" };
     const used = st.total ? ["met", "not_met", "not_measured"].filter(function (k) { return st.cells.some(function (c) { return c.status === k; }); }) : ["not_measured"];
     const relKey = "<ul class=\"eco-markkey\">" + used.map(function (k) {
@@ -35,7 +36,7 @@ function stabMeter(st) {
     }).join("") : "") + st.tags.filter(function (t) { return t.status !== "n/a"; }).map(function (t) { return "<p class=\"eco-stab-tag\"><b>" + esc(t.label) + ":</b> " + (t.tag ? esc(t.tag) + "" : "not measured") + "</p>"; }).join("");
     return "<div class=\"eco-stab\"><p class=\"eco-stab-h\"><b>Release</b> <span" + (st.measured ? "" : " class=\"nm\"") + ">" + esc(st.text) + "</span></p>" +
         relKey +
-        "<div class=\"eco-stab-meter\">" + segs + "</div>" +
+        segs +
         (lists ? "<details class=\"ch-more\"><summary>Checks</summary>" + lists + "</details>" : "") + "</div>";
 }
 
@@ -263,7 +264,7 @@ export default {
                 if (!(need >= 1 && total >= need && total <= 12)) return "";
                 var dots = "";
                 for (var i = 0; i < total; i++) dots += "<i" + (i < need ? " class=\"is-need\"" : "") + "></i>";
-                return "<span class=\"tpl-q\" title=\"" + need + " of " + total + "\" aria-hidden=\"true\">" + dots + "</span><span class=\"visually-hidden\">" + need + " of " + total + "</span>";
+                return "<span class=\"tpl-q\" aria-hidden=\"true\">" + dots + "</span><span class=\"tpl-qtext\">" + need + " of " + total + "</span>";
             }
             function govLine(label, pair, wait) {
                 var dots = quorumDots(pair);
