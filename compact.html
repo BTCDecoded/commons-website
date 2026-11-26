@@ -7,26 +7,31 @@
     <title>Bitcoin Commons Compact - Bitcoin Commons</title>
     <meta name="description" content="Purpose, legitimacy, and principles for Bitcoin Commons governance. Live from the governance repository.">
     <link rel="canonical" href="https://thebitcoincommons.org/compact.html" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" href="/assets/bitcoin-commons-icon.png" sizes="128x128" />
-    <link rel="apple-touch-icon" href="/assets/bitcoin-commons-symbol.png" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/assets/brand/favicon-48.png" type="image/png" sizes="48x48" />
+    <link rel="icon" href="/assets/brand/favicon-96.png" type="image/png" sizes="96x96" />
+    <link rel="icon" href="/assets/brand/favicon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png" sizes="180x180" />
+    <link rel="manifest" href="/site.webmanifest" />
     <!-- Open Graph -->
     <meta property="og:title" content="Bitcoin Commons Compact">
     <meta property="og:description" content="Purpose, legitimacy, and principles for Bitcoin Commons governance.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://thebitcoincommons.org/compact.html">
-    <meta property="og:image" content="https://thebitcoincommons.org/assets/og-image.png">
+    <meta property="og:image" content="https://thebitcoincommons.org/assets/brand/BC_share_og_1200x630.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Bitcoin Commons Compact — governance principles">
+    <meta property="og:image:alt" content="Bitcoin Commons Compact: governance principles">
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Bitcoin Commons Compact">
     <meta name="twitter:description" content="Purpose, legitimacy, and principles for Bitcoin Commons governance.">
-    <meta name="twitter:image" content="https://thebitcoincommons.org/assets/og-image.png">
+    <meta name="twitter:image" content="https://thebitcoincommons.org/assets/brand/BC_share_og_1200x630.png">
+    <meta name="twitter:image:alt" content="Bitcoin Commons Compact: governance principles">
     
-    <link rel="stylesheet" href="style.css?v=9">
+    <link rel="stylesheet" href="style.css?v=26">
     
     <!-- Marked.js for markdown parsing -->
     <script src="https://cdn.jsdelivr.net/npm/marked@11/marked.min.js"></script>
@@ -51,7 +56,7 @@
         .orange-paper-header h1 {
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
-            color: var(--primary-color, #f7761a);
+            color: var(--primary-color, #F97316);
         }
         
         .orange-paper-header h2 {
@@ -151,7 +156,7 @@
         .orange-paper-content h4 {
             margin-top: 2rem;
             margin-bottom: 1rem;
-            color: var(--primary-color, #f7761a);
+            color: var(--primary-color, #F97316);
         }
         
         .orange-paper-content h1 {
@@ -204,7 +209,7 @@
         
         /* Blockquotes */
         .orange-paper-content blockquote {
-            border-left: 4px solid var(--primary-color, #f7761a);
+            border-left: 4px solid var(--primary-color, #F97316);
             padding-left: 1.5rem;
             margin: 1.5rem 0;
             color: var(--text-secondary, #aaa);
@@ -253,8 +258,8 @@
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="inner.css?v=3">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="inner.css?v=6">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -262,9 +267,6 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link rel="icon" href="favicon.ico" sizes="any">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
-    <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 </head>
 <body>
     <nav class="site-nav" aria-label="Site">
@@ -279,22 +281,22 @@
           </summary>
           <ul class="nav-links">
             <li><a href="index.html#spec">Specification</a></li>
-            <li><a href="index.html#implementations">Install</a></li>
+            <li><a href="index.html#implementations">Implementations</a></li>
             <li><a href="whitepaper.html">White paper</a></li>
             <li><a href="index.html#governance">Governance</a></li>
             <li><a href="ecosystem.html">Ecosystem</a></li>
             <li><a href="index.html#faq">FAQ</a></li>
-            <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+            <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">BLVM docs <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
           </ul>
         </details>
         <ul class="nav-links">
           <li><a href="index.html#spec">Specification</a></li>
-          <li><a href="index.html#implementations">Install</a></li>
+          <li><a href="index.html#implementations">Implementations</a></li>
           <li><a href="whitepaper.html">White paper</a></li>
           <li><a href="index.html#governance">Governance</a></li>
           <li><a href="ecosystem.html">Ecosystem</a></li>
           <li><a href="index.html#faq">FAQ</a></li>
-          <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+          <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">BLVM docs <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
         </ul>
       </div>
     </nav>
@@ -344,6 +346,6 @@
         };
     </script>
     <script src="spec-rail.js?v=2"></script>
-    <script src="spec-markdown-viewer.js?v=18"></script>
+    <script src="spec-markdown-viewer.js?v=20"></script>
 </body>
 </html>

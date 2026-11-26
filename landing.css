@@ -1,15 +1,15 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #111113;
+  --bg: #0d0d0d;
   --bg-alt: #17171a;
   --rule: #2a2a2f;
-  --text: #e8e8ec;
-  --text-secondary: #888894;
-  --orange: #f7761a;
+  --text: #f5f5f7;
+  --text-secondary: #888888;
+  --orange: #F97316;
   --orange-dim: #c05e12;
   --white: #f5f5f7;
-  --font-sans: "Overpass", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
   --font-mono: "Overpass Mono", "Courier New", monospace;
   --max: 1100px;
   color-scheme: dark;
@@ -140,8 +140,8 @@ nav {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 50% at 70% 40%, rgba(247, 118, 26, 0.07) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 60% at 20% 80%, rgba(247, 118, 26, 0.04) 0%, transparent 60%);
+    radial-gradient(ellipse 60% 50% at 70% 40%, rgba(249, 115, 22, 0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 20% 80%, rgba(249, 115, 22, 0.04) 0%, transparent 60%);
   pointer-events: none;
   will-change: transform;
 }
@@ -942,8 +942,8 @@ blockquote footer {
   align-items: center;
   min-height: 2.75rem;
   padding: 0.45rem 0.95rem;
-  background: rgba(247, 118, 26, 0.13);
-  border: 1px solid rgba(247, 118, 26, 0.5);
+  background: rgba(249, 115, 22, 0.13);
+  border: 1px solid rgba(249, 115, 22, 0.5);
   border-radius: 8px;
   font-size: 0.82rem;
   font-weight: 700;
@@ -995,6 +995,7 @@ blockquote footer {
 
   .implementations { grid-template-columns: 1fr; gap: 1.5rem; }
   .implementation-row { flex-wrap: wrap; }
+  .implementation-actions { flex-wrap: wrap; flex-shrink: 1; min-width: 0; }
 
   .site-footer { grid-template-columns: 1fr; gap: 1.5rem; }
 

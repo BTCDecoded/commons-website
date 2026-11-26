@@ -1,23 +1,23 @@
 # Bitcoin Commons
 
-> Open, mathematically specified Bitcoin infrastructure: the Orange Paper consensus IR and the BLVM implementation. Governance is forkable. The designer is not a live merge gate.
+> Open, mathematically specified Bitcoin consensus rules: the Orange Paper consensus IR and the Consensus Spec. BLVM is one implementation. Governance is forkable. The designer is not a live merge gate.
 
-Bitcoin Commons publishes the **normative consensus specification** (Orange Paper) separately from the **BLVM** reference implementation (Rust crates, node, SDK). The Orange Paper is implementation-agnostic mathematical notation; **blvm-consensus** implements and validates against it using tests, differential testing against Bitcoin Core, and BLVM Specification Lock (Z3) on annotated functions.
+Bitcoin Commons publishes the **normative consensus specification** (Orange Paper) separately from **BLVM**, one implementation (Rust crates, node, SDK). The Orange Paper is implementation-agnostic mathematical notation; **blvm-consensus** implements and validates against it using tests and BLVM Specification Lock (Z3) on annotated functions.
 
 For operators: download verified **`blvm`** binaries from the install page. For developers and researchers: use the documentation book for APIs, configuration, and verification methodology. Governance rules are forkable. See system status.
 
 ## Normative specification
 
-- [Orange Paper](https://thebitcoincommons.org/orange-paper.html): Mathematical Bitcoin consensus specification (primary IR for BLVM)
-- [Consensus Spec register](https://thebitcoincommons.org/spec.html): Auditable rule register with cross-links and visualizations
-- [Protocol specification](https://thebitcoincommons.org/protocol.html): Wire-format and network protocol companion to the Orange Paper
-- [Architecture overview](https://thebitcoincommons.org/architecture.html): Six-layer stack (spec, consensus, protocol, node, SDK, governance)
+- [Orange Paper](https://thebitcoincommons.org/orange-paper.html): Mathematical Bitcoin consensus specification, for any implementation
+- [Consensus Spec register](https://thebitcoincommons.org/spec.html): Numbered rule register with cross-links and visualizations
+- [Consensus math](https://thebitcoincommons.org/protocol.html): Formal consensus math (Orange Paper extended spec)
+- [Implementation design](https://thebitcoincommons.org/architecture.html): Implementation algorithms and design choices: one valid approach among others
 
 ## Implementation and downloads
 
 - [Install BLVM](https://btcdecoded.org/install): Current release binaries, checksums, and platform matrix
 - [BTCDecoded llms.txt](https://btcdecoded.org/llms.txt): Machine-readable index for the install/marketing site
-- [blvm (umbrella binary)](https://github.com/BTCDecoded/blvm): Reference node CLI and release artifacts
+- [blvm (umbrella binary)](https://github.com/BTCDecoded/blvm): BLVM node CLI and release artifacts
 - [blvm-consensus](https://github.com/BTCDecoded/blvm-consensus): Consensus rules implementation
 - [blvm-spec-lock](https://github.com/BTCDecoded/blvm-spec-lock): Specification Lock tooling. Z3 checks annotated functions. A passing check is not a body proof.
 

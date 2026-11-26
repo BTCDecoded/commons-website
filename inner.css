@@ -1,29 +1,29 @@
 /* Inner pages: same tokens and chrome as the landing. Loaded after style.css. */
 
 :root {
-  --bitcoin-orange: #f7761a;
-  --primary-color: #f7761a;
-  --text-primary: #e8e8ec;
-  --text-secondary: #888894;
-  --bg-primary: #111113;
+  --bitcoin-orange: #F97316;
+  --primary-color: #F97316;
+  --text-primary: #f5f5f7;
+  --text-secondary: #888888;
+  --bg-primary: #0d0d0d;
   --bg-secondary: #17171a;
   --border-color: #2a2a2f;
-  --bg: #111113;
+  --bg: #0d0d0d;
   --bg-alt: #17171a;
   --rule: #2a2a2f;
-  --text: #e8e8ec;
-  --orange: #f7761a;
+  --text: #f5f5f7;
+  --orange: #F97316;
   --orange-dim: #c05e12;
   --white: #f5f5f7;
-  --font-sans: "Overpass", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
   --font-mono: "Overpass Mono", "Courier New", monospace;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    --text-primary: #e8e8ec;
-    --text-secondary: #888894;
-    --bg-primary: #111113;
+    --text-primary: #f5f5f7;
+    --text-secondary: #888888;
+    --bg-primary: #0d0d0d;
     --bg-secondary: #17171a;
     --border-color: #2a2a2f;
   }
@@ -531,4 +531,21 @@ mjx-container mjx-assistive-mml[display="block"] {
   max-width: 1px !important;
   height: 1px !important;
   overflow: hidden !important;
+}
+
+/* White paper (#32): the 10-column table figure scrolls inside its own box,
+   and long reference URLs and file paths (single words up to 71 characters)
+   may break, so neither pushes the page past 390 px on phones. */
+.whitepaper-content figure.table-figure {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.whitepaper-content {
+  overflow-wrap: break-word;
+}
+
+.whitepaper-content a,
+.whitepaper-content :not(pre) > code {
+  overflow-wrap: anywhere;
 }

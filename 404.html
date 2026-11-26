@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
     <title>Page not found | Bitcoin Commons</title>
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" href="/assets/bitcoin-commons-icon.png" sizes="128x128" />
-    <link rel="apple-touch-icon" href="/assets/bitcoin-commons-symbol.png" />
-    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/assets/brand/favicon-48.png" type="image/png" sizes="48x48" />
+    <link rel="icon" href="/assets/brand/favicon-96.png" type="image/png" sizes="96x96" />
+    <link rel="icon" href="/assets/brand/favicon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png" sizes="180x180" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="stylesheet" href="style.css?v=26">
     <script>
         (function () {
             var path = (location.pathname || '/').replace(/\/+$/, '');
@@ -34,8 +38,8 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="inner.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="inner.css?v=6">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -43,9 +47,6 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link rel="icon" href="favicon.ico" sizes="any">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
-    <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 </head>
 <body class="inner-404">
     <nav class="site-nav" aria-label="Site">
@@ -60,22 +61,22 @@
           </summary>
           <ul class="nav-links">
             <li><a href="index.html#spec">Specification</a></li>
-            <li><a href="index.html#implementations">Install</a></li>
+            <li><a href="index.html#implementations">Implementations</a></li>
             <li><a href="whitepaper.html">White paper</a></li>
             <li><a href="index.html#governance">Governance</a></li>
             <li><a href="ecosystem.html">Ecosystem</a></li>
             <li><a href="index.html#faq">FAQ</a></li>
-            <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+            <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">BLVM docs <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
           </ul>
         </details>
         <ul class="nav-links">
           <li><a href="index.html#spec">Specification</a></li>
-          <li><a href="index.html#implementations">Install</a></li>
+          <li><a href="index.html#implementations">Implementations</a></li>
           <li><a href="whitepaper.html">White paper</a></li>
           <li><a href="index.html#governance">Governance</a></li>
           <li><a href="ecosystem.html">Ecosystem</a></li>
           <li><a href="index.html#faq">FAQ</a></li>
-          <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">Documentation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+          <li><a href="https://docs.btcdecoded.org/blvm" class="nav-cta">BLVM docs <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
         </ul>
       </div>
     </nav>
@@ -85,11 +86,11 @@
         <p>The page you requested is not on this site.</p>
         <p>Looking for the consensus specification or Orange Paper split?</p>
         <ul>
-            <li><a href="/spec.html">CONSENSUS_SPEC.md</a> (consensus rule register)</li>
-            <li><a href="/protocol.html">PROTOCOL.md</a> (rendered viewer)</li>
-            <li><a href="/architecture.html">ARCHITECTURE.md</a> (rendered viewer)</li>
-            <li><a href="/orange-paper.html">THE_ORANGE_PAPER.md</a> (extended overview)</li>
-            <li><a href="/compact.html">COMPACT.md</a> (governance compact)</li>
+            <li><a href="/spec.html">Consensus Spec</a> (rule register)</li>
+            <li><a href="/protocol.html">Consensus math</a> (PROTOCOL.md)</li>
+            <li><a href="/architecture.html">Implementation design</a> (ARCHITECTURE.md)</li>
+            <li><a href="/orange-paper.html">Orange Paper overview</a></li>
+            <li><a href="/compact.html">Compact</a> (governance)</li>
         </ul>
         <p><a href="/index.html">← Home</a></p>
     </div>
