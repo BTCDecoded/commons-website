@@ -9,7 +9,7 @@
     "fuzz_targets": "Declared fuzz targets at the pin, not a count of files in a fuzz directory. C++: invocations of FUZZ_TARGET( and wrappers such as FUZZ_TARGET_DESERIALIZE(, skipping #define lines and lines that continue a macro body (the previous line ends with a backslash). Go: func FuzzXxx(f *testing.F). Rust: cargo-fuzz [[bin]] entries when a fuzz Cargo.toml is present, otherwise fuzz_target! uses (the two Rust counts match on every tree measured here).",
     "vector_files": "Files whose path or name looks like a test vector (vector, tx_valid, tx_invalid, script_tests, sighash, bipN) with suffix .json, .csv, or .hex.",
     "spec_files": "Documentation or model files whose name looks like a spec (spec, THE_ORANGE_PAPER, orange paper, bipN) with suffix .md, .rst, .txt, .lean, or .tex. LICENSE and contributing files are excluded.",
-    "authors_12m": "Human commit authors from 2025-11-12 to 2026-11-12 inclusive. Other rows use the landing-share repository. Known aliases are merged from a local mailmap (AUTHOR_MAILMAP); the mailmap is not in this repository. Bots and agents are excluded: any name or email containing [bot], merge-script, github-actions, dependabot, Cursor Agent, Claude, Grok Bot Engineer, Devin AI, OpenAI, and other obvious agent identities (rbitcoin-grok, Tau Agent, and similar), plus authors whose email host is localhost, local, or omp. Unique names are compared case-insensitively after the mailmap. If the mailmap is absent, those rows are not measured rather than silently published without alias merging. A shallow clone that does not reach the window start is not measured. The BLVM row dated 2026-11-18 is every blvm and blvm-* repository on its default branch. Identical email addresses are one author. A CI mailbox is not a human author. The private mailmap was not on the machine, so a second address for the same login was left separate.",
+    "authors_12m": "Human commit authors from 2025-11-12 to 2026-11-12 inclusive. Other rows use the landing-share repository. Known aliases are merged from a local mailmap (AUTHOR_MAILMAP); the mailmap is not in this repository. Bots and agents are excluded: any name or email containing [bot], merge-script, github-actions, dependabot, Cursor Agent, Claude, Grok Bot Engineer, Devin AI, OpenAI, and other obvious agent identities (rbitcoin-grok, Tau Agent, and similar), plus authors whose email host is localhost, local, or omp. Unique names are compared case-insensitively after the mailmap. If the mailmap is absent, those rows are not measured rather than silently published without alias merging. A shallow clone that does not reach the window start is not measured. The BLVM row dated 2026-11-18 is every blvm and blvm-* repository on its default branch. Identical email addresses are one author. A CI mailbox is not a human author. The private mailmap was not on the machine, so a second address for the same login was left separate. The card and the star use the recount dated 2026-11-25: author dates 2025-11-25 through 2026-11-25, identical email addresses, the same bot filter. The private mailmap was not applied on that recount. On Bitcoin Roots, a commit already in bitcoin/bitcoin, or a commit that repeats a Core commit's subject and author email, is not counted.",
     "releases_12m": "Git tags whose creatordate falls in 2025-11-12 to 2026-11-12. Annotated tags use the tagger date; lightweight tags use the tagged commit date.",
     "ci_workflows": "Number of .github/workflows/*.{yml,yaml} files at the pin.",
     "ci_jobs": "GitHub Actions jobs at the pin, expanding a static matrix of lists (an include-only matrix is just the include rows, not one implicit job plus those rows; minus exclude/). A fromJSON(needs.job.outputs.x) matrix is expanded when the default non-PR value is written in the same workflow (suite=all, schedule/push flavors and arches, default mutant PARTS) or when the producer reads this tree's fuzz/Cargo.toml [[bin]] list. Unquoted run: scalars that break PyYAML are quoted and retried. If a matrix still cannot be expanded or a file still fails to parse, the cell is partial and the value is a lower bound.",
@@ -131,10 +131,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 8,
-        "text": "8",
+        "value": 11,
+        "text": "11",
         "status": "measured",
-        "note": "Counted 2026-11-18 on main across the 34 blvm and blvm-* repositories, 2025-11-12 to 2026-11-12. The existing bot filter applies. Identical email addresses are one author: 12 names, 9 mailboxes, and the CI mailbox is not counted, leaving 8 human authors. The private mailmap was not applied, so a login that also uses a different address stays two authors. This is not the blvm-node landing share."
+        "note": "Counted 2026-11-25 on the default branch of the same 34 blvm and blvm-* repositories. Author dates 2025-11-25 through 2026-11-25. Identical email addresses are one author. The bot filter applies. The CI mailbox is not counted. The private mailmap was not applied, so a login that also uses a different address stays two authors. This is not the blvm-node landing share."
       },
       "releases_12m": {
         "value": 85,
@@ -259,10 +259,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 144,
-        "text": "144",
+        "value": 179,
+        "text": "179",
         "status": "measured",
-        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 153. oldest visible 2009-08-30"
+        "note": "Counted 2026-11-25 on bitcoin/bitcoin master, author dates 2025-11-25 through 2026-11-25. Identical email addresses are one author. The private mailmap was not applied. The 2026-11-12 cell was 144 with that mailmap, so this 179 is not a growth figure. A full checkout of this repository still shows oldest visible 2009-08-30."
       },
       "releases_12m": {
         "value": 34,
@@ -378,10 +378,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 45,
-        "text": "45",
+        "value": 2,
+        "text": "2",
         "status": "measured",
-        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 47. oldest visible 2009-08-30"
+        "note": "Counted 2026-11-25 on DimiH2025/KnotsLegacy branch legacy, tip 2026-11-24. Reachable history on that branch starts 2025-10-10 and holds 51 commits. The 2026-11-12 cell was 45 on a checkout whose oldest commit was 2009-08-30."
       },
       "releases_12m": {
         "value": 1,
@@ -497,10 +497,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 1,
-        "text": "1",
+        "value": 2,
+        "text": "2",
         "status": "measured",
-        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 2. oldest visible 2025-08-23"
+        "note": "Counted 2026-11-25 on DimiH2025/Bit-Block main, tip 2026-11-19. Author dates 2025-11-25 through 2026-11-25. Identical email addresses are one author."
       },
       "releases_12m": {
         "value": 2,
@@ -616,10 +616,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 145,
-        "text": "145",
+        "value": 17,
+        "text": "17",
         "status": "measured",
-        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 154. oldest visible 2009-08-30"
+        "note": "Counted 2026-11-25 on LuganoPlanB/bitcoin-roots main, tip 2026-11-25. Author dates 2025-11-25 through 2026-11-25. A commit already in bitcoin/bitcoin, or a commit that repeats a Core commit's subject and author email, is Core's and is not counted. The remaining commits have 17 human authors. Identical email addresses are one author. The private mailmap was not applied. The branch carries the upstream commit stream, which is why counting every author in that history gave 155."
       },
       "releases_12m": {
         "value": 14,
@@ -735,10 +735,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 9,
-        "text": "9",
+        "value": 17,
+        "text": "17",
         "status": "measured",
-        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 32. repository begins 2026-05-19 (inside window; full history)"
+        "note": "Counted 2026-11-25 on gosuda/bitcoin-rs, tip 2026-11-26. The repository begins 2026-05-19. Author dates 2025-11-25 through 2026-11-25. Identical email addresses are one author. The bot filter applies. The private mailmap was not applied."
       },
       "releases_12m": {
         "value": 0,
@@ -854,10 +854,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 1,
-        "text": "1",
+        "value": 2,
+        "text": "2",
         "status": "measured",
-        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 2. repository begins 2026-03-16 (inside window; full history)"
+        "note": "Counted 2026-11-25 on epochbtc/satd, tip 2026-11-25. The repository begins 2026-03-16. Author dates 2025-11-25 through 2026-11-25. Identical email addresses are one author. The bot filter applies."
       },
       "releases_12m": {
         "value": 20,
@@ -973,10 +973,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 10,
-        "text": "10",
+        "value": 12,
+        "text": "12",
         "status": "measured",
-        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 17. oldest visible 2011-05-19"
+        "note": "Counted 2026-11-25 on libbitcoin/libbitcoin-system, tip 2026-11-25. Author dates 2025-11-25 through 2026-11-25. Identical email addresses are one author. The private mailmap was not applied."
       },
       "releases_12m": {
         "value": 9,
@@ -1092,10 +1092,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 1,
-        "text": "1",
+        "value": 4,
+        "text": "4",
         "status": "measured",
-        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 2. oldest visible 2025-05-03"
+        "note": "Counted 2026-11-25 on tobysharp/hornet, tip 2026-11-15. Oldest visible commit 2025-12-14, inside the 12-month window. Identical email addresses are one author."
       },
       "releases_12m": {
         "value": 0,
@@ -1211,10 +1211,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 44,
-        "text": "44",
+        "value": 48,
+        "text": "48",
         "status": "measured",
-        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 47. author history from a blobless clone, oldest visible 2025-10-04"
+        "note": "Counted 2026-11-25 on getfloresta/Floresta, tip 2026-11-25. Author dates 2025-11-25 through 2026-11-25. Identical email addresses are one author. The private mailmap was not applied. The 2026-11-12 cell was 44 with that mailmap."
       },
       "releases_12m": {
         "value": 4,
@@ -1330,10 +1330,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 26,
-        "text": "26",
+        "value": 29,
+        "text": "29",
         "status": "measured",
-        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 38. author history from a blobless clone, repository begins 2026-07-14 (inside window; full history)"
+        "note": "Counted 2026-11-25 on reardencode/rbitcoin, tip 2026-11-25. The repository begins 2026-07-14. Author dates 2025-11-25 through 2026-11-25. Identical email addresses are one author. The bot filter applies. The private mailmap was not applied."
       },
       "releases_12m": {
         "value": 10,
@@ -1449,10 +1449,10 @@
         "status": "measured"
       },
       "authors_12m": {
-        "value": 22,
-        "text": "22",
+        "value": 24,
+        "text": "24",
         "status": "measured",
-        "note": "human authors (known aliases merged, bots and agents excluded). Raw unique %aN names before the filter: 24. author history from a blobless clone, oldest visible 2025-10-27"
+        "note": "Counted 2026-11-25 on btcsuite/btcd, tip 2026-11-23. Author dates 2025-11-25 through 2026-11-25. Identical email addresses are one author. The private mailmap was not applied. The 2026-11-12 cell was 22 with that mailmap."
       },
       "releases_12m": {
         "value": 5,
