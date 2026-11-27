@@ -982,6 +982,13 @@ LANDING_GIT = {
     "blvm": ("/workspace/BTCDecoded/blvm-node", "36bb40c7e9a3f805274fa7e1bda30d0a6c082560"),
 }
 
+# The stability checklist's release pool. blvm-node tags are automated
+# crates.io cuts: the body points at the commit history and the release has
+# no signature asset. The node binary is published from BTCDecoded/blvm.
+STABILITY_RELEASE_REPO = {
+    "blvm": "BTCDecoded/blvm",
+}
+
 # Optional blobless --shallow-since=2025-11-12 clones for author counts when
 # the pin checkout is too shallow. Built with:
 #   git clone --bare --filter=blob:none --shallow-since=2025-10-01 --single-branch \
@@ -1357,7 +1364,7 @@ LTS_PAGES = {
 }
 
 PRE_TAG = re.compile(
-    r"(?i)(^|[.\-_/])(alpha|beta|rc\d*|pre|preview|dev|nightly|snapshot)([.\-_/]|$)|rc\d+$"
+    r"(?i)(^|[.\-_/])(alpha|beta|rc\d*|prerelease|pre|preview|dev|nightly|snapshot)([.\-_/]|$)|rc\d+$"
 )
 VERSION_RE = re.compile(r"(?i)^v?(\d+)\.(\d+)")
 AUTOMATED_NOTES = re.compile(r"(?i)^\s*automated release of \S+\.?\s*$")
@@ -1617,14 +1624,16 @@ def http_ok(url: str) -> bool | None:
         return None
 
 
-def collect_stable_releases(slug: str, cwd: Path, repo: str | None) -> tuple[list[dict], str | None]:
+def collect_stable_releases(
+    slug: str, cwd: Path, repo: str | None, include_local_tags: bool = True
+) -> tuple[list[dict], str | None]:
     """Return (stable releases newest-first, error if nothing could be read)."""
     releases = None
     if repo:
         releases = gh_api(f"repos/{repo}/releases?per_page=100", default=None, paginate=True)
         if releases is not None and not isinstance(releases, list):
             releases = None
-    tags = local_tag_records(cwd)
+    tags = local_tag_records(cwd) if include_local_tags else None
     api_tags = None
     if repo and tags is None:
         api_tags = gh_api(f"repos/{repo}/tags?per_page=100", default=None, paginate=True)
@@ -1922,12 +1931,17 @@ def measure_one_stability(slug: str) -> dict:
         return {"name": NAMES[slug], "criteria": criteria}
 
     repo = canonical_repo(cwd)
+    release_repo = STABILITY_RELEASE_REPO.get(slug) or repo
     repo_home = f"https://github.com/{repo}" if repo else None
-    releases_page = f"{repo_home}/releases" if repo else None
+    releases_page = f"https://github.com/{release_repo}/releases" if release_repo else None
     pin_url = blob_url(repo, rev, "README.md") if repo else None
 
     # --- S1 / S3 pool ---
-    stable, read_err = collect_stable_releases(slug, cwd, repo)
+    # Docs stay on the pin checkout. The release pool can be a different
+    # repository when the pin's tags are not the operator release.
+    stable, read_err = collect_stable_releases(
+        slug, cwd, release_repo, include_local_tags=(release_repo == repo)
+    )
     latest = latest_product_release(stable)
     latest_url = (latest or {}).get("url") or releases_page or repo_home
     in_win = [r for r in stable if in_window(r.get("date"))]

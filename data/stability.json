@@ -2,7 +2,7 @@
   "schema_version": 1,
   "as_of": "2026-11-12",
   "status": "measured",
-  "note": "Seven mechanically checkable requisites for a stable release line, scored by scripts/measure-ecosystem-metrics.py from the GitHub API and the repo at the same pins as the other ecosystem metrics. The checklist definition is from Research's stability brief (2026-11-12). Score is met out of 7; not-measured stays in the denominator and is never read as not met. Citations: Semantic Versioning 2.0.0 and the OpenSSF Best Practices criteria for version tags, vulnerability reporting, release notes, and signed or reproducible releases. Bitcoin Untangled's Status field is not the source of the grade.",
+  "note": "Seven mechanically checkable requisites for a stable release line, scored by scripts/measure-ecosystem-metrics.py from the GitHub API and the repo at the same pins as the other ecosystem metrics. The checklist definition is from Research's stability brief (2026-11-12). Score is met out of 7; not-measured stays in the denominator and is never read as not met. Citations: Semantic Versioning 2.0.0 and the OpenSSF Best Practices criteria for version tags, vulnerability reporting, release notes, and signed or reproducible releases. Bitcoin Untangled's Status field is not the source of the grade. BLVM's release checks use the node binaries published from BTCDecoded/blvm, read 2026-11-27. The blvm-node crate tags are automated crates.io cuts and are not that release. v0.1.81 is the newest non-prerelease. v0.1.80 is the newest one inside the 12-month window.",
   "score_rule": "Score = met / total criteria, with not measured counted in the total so it never inflates a score. Shown as N of 7 met, K not measured. Tracks an upstream line is descriptive and not scored.",
   "statuses": {
     "met": "The criterion holds, with an evidence link",
@@ -87,13 +87,13 @@
       "criteria": {
         "has_stable_release": {
           "status": "met",
-          "evidence_url": "https://github.com/BTCDecoded/blvm-node/releases/tag/v0.1.92",
-          "retrieved": "2026-11-12"
+          "evidence_url": "https://github.com/BTCDecoded/blvm/releases/tag/v0.1.81",
+          "retrieved": "2026-11-27"
         },
         "stable_release_in_12m": {
           "status": "met",
-          "evidence_url": "https://github.com/BTCDecoded/blvm-node/releases/tag/v0.1.92",
-          "retrieved": "2026-11-12"
+          "evidence_url": "https://github.com/BTCDecoded/blvm/releases/tag/v0.1.80",
+          "retrieved": "2026-11-27"
         },
         "docs_not_pre_release": {
           "status": "not_met",
@@ -102,8 +102,8 @@
         },
         "version_or_lts_policy": {
           "status": "not_met",
-          "evidence_url": "https://github.com/BTCDecoded/blvm-node/releases/tag/v0.1.92",
-          "retrieved": "2026-11-12"
+          "evidence_url": "https://github.com/BTCDecoded/blvm/releases/tag/v0.1.81",
+          "retrieved": "2026-11-27"
         },
         "vulnerability_disclosure": {
           "status": "met",
@@ -111,14 +111,14 @@
           "retrieved": "2026-11-12"
         },
         "release_notes": {
-          "status": "not_met",
-          "evidence_url": "https://github.com/BTCDecoded/blvm-node/releases/tag/v0.1.92",
-          "retrieved": "2026-11-12"
+          "status": "met",
+          "evidence_url": "https://github.com/BTCDecoded/blvm/releases/tag/v0.1.81",
+          "retrieved": "2026-11-27"
         },
         "signed_or_reproducible": {
-          "status": "not_met",
-          "evidence_url": "https://github.com/BTCDecoded/blvm-node/releases/tag/v0.1.92",
-          "retrieved": "2026-11-12"
+          "status": "met",
+          "evidence_url": "https://github.com/BTCDecoded/blvm/releases/tag/v0.1.81",
+          "retrieved": "2026-11-27"
         },
         "upstream_track": {
           "status": "n/a",
