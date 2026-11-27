@@ -1707,15 +1707,17 @@ def collect_stable_releases(slug: str, cwd: Path, repo: str | None) -> tuple[lis
         )
         # If we already stored a GitHub release for this tag, remember() keeps it.
 
-    # If a GitHub release for a tag was prerelease=true, drop any tag-only copy.
+    # A draft is not a stable release. A prerelease flag is not one either.
+    # The tag list would otherwise resurrect either as an empty-bodied release.
     if releases:
-        pre = {
+        hidden = {
             (rel.get("tag_name") or "")
             for rel in releases
-            if isinstance(rel, dict) and not rel.get("draft") and rel.get("prerelease")
+            if isinstance(rel, dict) and (rel.get("draft") or rel.get("prerelease"))
         }
+        hidden.discard("")
         for name in list(found):
-            if name in pre:
+            if name in hidden:
                 del found[name]
 
     items = list(found.values())
