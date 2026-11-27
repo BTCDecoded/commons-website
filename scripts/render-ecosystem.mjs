@@ -355,7 +355,7 @@ const depthCols = [
     { id: "releases_12m", key: "releases", label: "Tagged releases, 12 months" },
     { id: "release_lines_12m", key: "series", label: "Release series, 12 months" },
     { id: "shipped_12m", key: "shipped", label: "Shipped releases, 12 months" },
-    { id: "release_year", key: "year", label: "Release year" },
+    { id: "release_checks", key: "checks", label: "Release checks" },
     { id: "ci_workflows", key: "workflows", label: "CI workflows" },
     { id: "ci_jobs", key: "jobs", label: "CI jobs" }
 ];
@@ -363,14 +363,21 @@ function depthRow(slug) {
     var r = metricBySlug[slug];
     if (!r) throw new Error("metrics row missing for " + slug);
     var isInt = slug === internal;
+    function depthCell(col) {
+        if (col.id === "release_checks") {
+            var st = stabilityFor(slug);
+            return { value: st.notMeasured ? null : st.met, text: st.text, status: st.notMeasured ? "not-measured" : "measured", note: "" };
+        }
+        return metricCell(r, col.id);
+    }
     var dataAttrs = depthCols.map(function (col) {
-        return "data-" + col.key + "=\"" + metricVal(metricCell(r, col.id)) + "\"";
+        return "data-" + col.key + "=\"" + metricVal(depthCell(col)) + "\"";
     }).join(" ");
     var tds = depthCols.map(function (col) {
-        return "<td data-label=\"" + esc(col.label) + "\">" + esc(metricText(metricCell(r, col.id))) + "</td>";
+        return "<td data-label=\"" + esc(col.label) + "\">" + esc(metricText(depthCell(col))) + "</td>";
     }).join("");
     var notes = depthCols.map(function (col) {
-        var c = metricCell(r, col.id);
+        var c = depthCell(col);
         if (!c.note) return "";
         return "<li><span class=\"eco-meta\">" + esc(col.label) + ".</span> " + esc(c.note) + "</li>";
     }).filter(Boolean).join("");
@@ -379,8 +386,8 @@ function depthRow(slug) {
         (open ? "<tr data-slug=\"" + esc(slug) + "\" class=\"eco-open-row\"><td class=\"eco-open m-full\" colspan=\"" + (depthCols.length + 1) + "\">" + open + "</td></tr>" : "");
 }
 slots.depth = glanceOrder.map(depthRow).join("");
-slots["depth-caption"] = esc("Declared fuzz targets; test lines split into in-source tests and test-folder tests (a folder split, not unit vs integration), plus fuzz and property test lines; test-vector and spec file counts; human commit authors from 2025-11-25 through 2026-11-25 (identical email addresses, bots and agents excluded); tagged releases in the 12 months from " + (metrics.window_start || "2025-11-12") + " to " + (metrics.window_end || "2026-11-12") + "; release series in that window (a new major, or a new 0.y before 1.0); shipped releases in that window (no release candidates); the release year, which multiplies a 1-or-2 series fit by shipment fill capped at 13; and GitHub Actions workflow and job counts. Measured " + (metrics.as_of || data.measured_at) + ". Sort buttons need JavaScript; the figures are in the table without it.");
-slots["depth-note"] = Object.keys(metrics.methods || {}).filter(function (k) { return k !== "plugin_system" && k !== "blvm_size"; }).map(function (k) {
+slots["depth-caption"] = esc("Declared fuzz targets; test lines split into in-source tests and test-folder tests (a folder split, not unit vs integration), plus fuzz and property test lines; test-vector and spec file counts; human commit authors from 2025-11-25 through 2026-11-25 (identical email addresses, bots and agents excluded); tagged releases in the 12 months from " + (metrics.window_start || "2025-11-12") + " to " + (metrics.window_end || "2026-11-12") + "; release series in that window (a new major, or a new 0.y before 1.0); shipped releases in that window (no release candidates); release checks met out of the seven on the stability grid; and GitHub Actions workflow and job counts. Measured " + (metrics.as_of || data.measured_at) + ". Sort buttons need JavaScript; the figures are in the table without it.");
+slots["depth-note"] = Object.keys(metrics.methods || {}).filter(function (k) { return k !== "plugin_system" && k !== "blvm_size" && k !== "release_year"; }).map(function (k) {
     return "<li>" + esc(k) + ". " + esc(metrics.methods[k]) + "</li>";
 }).join("");
 
