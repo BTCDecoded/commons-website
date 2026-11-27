@@ -7,7 +7,7 @@
 import { esc, govMark, releaseMark, assuranceRank, assuranceEmblem } from "../charts.mjs";
 
 const PEND_FIELD = { fuzz_targets: "fuzz_targets", authors_12m: "authors_12m", ci_workflows: "ci_workflows", ci_jobs: "ci_jobs", rules_share: "rules_share" };
-const STAR = { test_split_total: 1, vector_files: 1, spec_files: 1, release_year: 1, fuzz_targets: 1, authors_12m: 1, plugin_system: 1, direct_deps: 1, program_code: 1, checkout: 1, share_lines_ge_1000: 1, test_per_implementation: 1, rules_share: 1 };
+const STAR = { test_split_total: 1, vector_files: 1, spec_files: 1, fuzz_targets: 1, authors_12m: 1, plugin_system: 1, direct_deps: 1, program_code: 1, checkout: 1, share_lines_ge_1000: 1, test_per_implementation: 1, rules_share: 1 };
 
 function md(s) { return esc(s).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>"); }
 
@@ -36,7 +36,7 @@ export default {
             gl += "</dl>";
         });
         const st = ctx.model.stability;
-        gl += "<h4 class=\"eco-gloss-g\">Release stability</h4><dl class=\"eco-gloss\"><dt>Release stability checklist</dt><dd><b>What:</b> a checklist of what a release line needs to count as stable, one segment per criterion: met, not met, or not measured. <b>Why:</b> a node that changes under you, or has no release to pin, can drift from the network. <b>How:</b> " + esc(st.rule) + " " + esc(st.note) + " <a href=\"#stability\">Open the grid<span class=\"visually-hidden\">: release stability</span></a></dd></dl>";
+        gl += "<h4 class=\"eco-gloss-g\">Release stability</h4><dl class=\"eco-gloss\"><dt>Release stability checklist <span class=\"eco-gloss-tag\">star axis</span></dt><dd><b>What:</b> a checklist of what a release line needs to count as stable, one segment per criterion: met, not met, or not measured. <b>Why:</b> a node that changes under you, or has no release to pin, can drift from the network. The checks spoke counts how many of the seven are met. <b>How:</b> " + esc(st.rule) + " " + esc(st.note) + " <a href=\"#stability\">Open the grid<span class=\"visually-hidden\">: release stability</span></a></dd></dl>";
         // Research's how-to-read lines, verbatim except where a line states a
         // count the data gives (tree coverage), which is computed here.
         const noTree = ctx.model.rows.filter(function (r) { return r.size.value === null; }).map(function (r) { return r.name; });
