@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Fetches BTCDecoded/blvm latest GitHub Release and writes:
+ * Fetches the BTCDecoded/blvm release the homepage should show and writes:
  *   assets/blvm-release.json — public metadata for the homepage
  *   Updates the #release-banner-badge and #prerelease-banner-badge text in index.html
  *
@@ -59,6 +59,42 @@ function patchSpan(html, id, text, hidden) {
   });
 }
 
+function tagName(release) {
+  return typeof release?.tag_name === "string" ? release.tag_name.trim() : "";
+}
+
+function isLegacyPatchTrain(tag) {
+  return /^v?0\.1\.\d+$/.test(tag);
+}
+
+function isProjectPreRelease(tag) {
+  return /^v?\d+\.\d+\.\d+-(?:alpha|beta|rc)(?:\.|$)/i.test(tag);
+}
+
+function isRealProjectRelease(tag) {
+  return /^v?\d+\.\d+\.\d+$/.test(tag) && !isLegacyPatchTrain(tag);
+}
+
+// Same rule as website/scripts/blvm-release-title.mjs selectDisplayedReleases.
+// No real project release: newest beta or candidate is the only badge.
+// After one exists: that tag is the main badge and the pre-release stays beside it.
+function selectDisplayedReleases(releases) {
+  const published = (Array.isArray(releases) ? releases : []).filter(
+    (release) => release && release.draft !== true && tagName(release),
+  );
+  const real = published.find((release) => isRealProjectRelease(tagName(release))) ?? null;
+  const pre = published.find((release) => isProjectPreRelease(tagName(release))) ?? null;
+  if (real) {
+    return {
+      primary: real,
+      secondary: pre && tagName(pre) !== tagName(real) ? pre : null,
+    };
+  }
+  if (pre) return { primary: pre, secondary: null };
+  const fallback = published.find((release) => release.prerelease !== true) ?? published[0] ?? null;
+  return { primary: fallback, secondary: null };
+}
+
 function patchBadges(html, displayTag, prereleaseTag) {
   const withStable = patchSpan(html, "release-banner-badge", displayTag, false);
   return patchSpan(withStable, "prerelease-banner-badge", prereleaseTag || "", !prereleaseTag);
@@ -87,38 +123,22 @@ async function main() {
   let releasesLatestUrl = `https://github.com/${REPO}/releases/latest`;
   let releasesTagUrl = releasesLatestUrl;
   try {
-    const latest = await ghFetch(`https://api.github.com/repos/${REPO}/releases/latest`);
-    const tag = latest.tag_name ?? "";
-    semver =
-      typeof latest.tag_name === "string"
-        ? (latest.tag_name.startsWith("v") ? latest.tag_name.slice(1) : latest.tag_name)
-        : "";
-    displayTag =
-      typeof latest.tag_name === "string" && latest.tag_name.trim()
-        ? latest.tag_name.trim()
-        : semver
-          ? `v${semver}`
-          : "Latest";
-    releasesLatestUrl = `https://github.com/${REPO}/releases/latest`;
-    releasesTagUrl =
-      typeof latest.html_url === "string" && latest.html_url.trim()
-        ? latest.html_url.trim()
-        : `https://github.com/${REPO}/releases/tag/${tag}`;
-
     const releasesList = await ghFetch(
       `https://api.github.com/repos/${REPO}/releases?per_page=30`,
     );
-    const pre = (Array.isArray(releasesList) ? releasesList : []).find(
-      (release) =>
-        release &&
-        release.draft !== true &&
-        release.prerelease === true &&
-        typeof release.tag_name === "string" &&
-        release.tag_name.trim() &&
-        release.tag_name.trim() !== displayTag,
-    );
-    const prereleaseTag =
-      pre && typeof pre.tag_name === "string" ? pre.tag_name.trim() : "";
+    const picked = selectDisplayedReleases(releasesList);
+    const primary = picked.primary;
+    if (!primary) throw new Error("No published GitHub release to display");
+    const tag = tagName(primary);
+    semver = tag.startsWith("v") ? tag.slice(1) : tag;
+    displayTag = tag || (semver ? `v${semver}` : "Latest");
+    releasesTagUrl =
+      typeof primary.html_url === "string" && primary.html_url.trim()
+        ? primary.html_url.trim()
+        : `https://github.com/${REPO}/releases/tag/${tag}`;
+    releasesLatestUrl = releasesTagUrl;
+    const pre = picked.secondary;
+    const prereleaseTag = pre ? tagName(pre) : "";
     const prereleaseUrl =
       pre && typeof pre.html_url === "string" ? pre.html_url.trim() : "";
 
