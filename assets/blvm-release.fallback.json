@@ -1,8 +1,10 @@
 {
-  "displayTag": "v0.1.35",
-  "semver": "0.1.35",
-  "releasesLatestUrl": "https://github.com/BTCDecoded/blvm/releases/latest",
-  "releasesTagUrl": "https://github.com/BTCDecoded/blvm/releases/tag/v0.1.35",
-  "generatedAt": "2026-06-07T12:58:45.941Z",
+  "displayTag": "v0.3.0-beta.9",
+  "semver": "0.3.0-beta.9",
+  "releasesLatestUrl": "https://github.com/BTCDecoded/blvm/releases/tag/v0.3.0-beta.9",
+  "releasesTagUrl": "https://github.com/BTCDecoded/blvm/releases/tag/v0.3.0-beta.9",
+  "prereleaseTag": "",
+  "prereleaseUrl": "",
+  "generatedAt": "2026-11-28T03:16:03.621Z",
   "source": "github://BTCDecoded/blvm"
 }
